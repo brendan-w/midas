@@ -1,9 +1,21 @@
 #!/bin/bash
 
+#
+# Production deployment script for OpenShift
+#
+
+
+# Node
 export NODE_ENV=production
+export NODE_IP=$OPENSHIFT_NODEJS_IP
+export NODE_PORT=OPENSHIFT_NODEJS_PORT
 
-# If there is a grunt file, run $ grunt prod
-if [ -f "${OPENSHIFT_REPO_DIR}"/Gruntfile.js ]; then
-    (cd "${OPENSHIFT_REPO_DIR}"; node_modules/grunt-cli/bin/grunt prod)
-fi
+# PostgreSQL
+export POSTGRESQL_IP=$OPENSHIFT_POSTGRESQL_DB_HOST
+export POSTGRESQL_PORT=$OPENSHIFT_POSTGRESQL_DB_PORT
+export POSTGRESQL_USERNAME=$OPENSHIFT_POSTGRESQL_DB_USERNAME
+export POSTGRESQL_PASSWORD=$OPENSHIFT_POSTGRESQL_DB_PASSWORD
+export POSTGRESQL_DATABASE=$PGDATABASE
 
+cd $OPENSHIFT_REPO_DIR
+npm run build # this runs grunt build
