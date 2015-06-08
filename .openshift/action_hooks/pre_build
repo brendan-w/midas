@@ -1,8 +1,0 @@
-
-#
-# WARNING: this is a hack to get Midas to run on an OpenShift Free tier account
-# The NodeJS cartridge makes copies of node_modules, which hits the file limit
-#
-
-# delete redundant deps that clog up the filesystem
-rm -rf $OPENSHIFT_HOMEDIR/app-root/runtime/dependencies/.npm
