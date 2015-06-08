@@ -37,10 +37,11 @@ module.exports.connections = {
   // and database name
   postgresql: {
     adapter     : 'sails-postgresql',
-    host        : 'localhost',
-    user        : 'midas',
-    password    : 'midas',
-    database    : 'midas',
+    host        : process.env.POSTGRESQL_IP || 'localhost',
+    port        : process.env.POSTGRESQL_PORT || 5432,
+    user        : process.env.POSTGRESQL_USERNAME || 'midas',
+    password    : process.env.POSTGRESQL_PASSWORD || 'midas',
+    database    : process.env.POSTGRESQL_DATABASE || 'midas',
     softDelete  : true
   }
 

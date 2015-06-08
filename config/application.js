@@ -9,7 +9,9 @@ module.exports = {
   httpProtocol: 'http',
 
   // hostName defines the domain upon which your app will be deployed (e.g. 'localhost:1337', for development)
-  hostName: 'localhost:1337',
+  hostName:     process.env.NODE_IP || 'localhost',
+  explicitHost: process.env.NODE_IP || 'localhost', // openshift requires an explicit host to be set
+
 
   // The `port` setting determines which TCP port your app will be deployed on
   // Ports are a transport-layer concept designed to allow many different
@@ -22,6 +24,7 @@ module.exports = {
   // In production, you'll probably want to change this setting
   // to 80 (http://) or 443 (https://) if you have an SSL certificate
   // port: process.env.PORT || 1337,
+  port: process.env.NODE_PORT || 8080, //simply to make the env var names consistent
 
   // The runtime "environment" of your Sails app is either 'development' or 'production'.
   //
