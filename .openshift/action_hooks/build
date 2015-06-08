@@ -6,7 +6,7 @@
 #
 
 # delete redundant deps that clog up the filesystem
-rm -rf $OPENSHIFT_HOMEDIR/app-root/runtime/dependencies/.npm
+rm -rf $OPENSHIFT_HOMEDIR/app-root/runtime/dependencies/.npm/*
 
 
 #
