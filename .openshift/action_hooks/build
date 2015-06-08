@@ -1,0 +1,7 @@
+
+#
+# Build production files
+#
+
+cd $OPENSHIFT_REPO_DIR
+npm run build # this runs grunt build

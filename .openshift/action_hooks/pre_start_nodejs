@@ -1,9 +1,8 @@
 #!/bin/bash
 
 #
-# Production deployment script for OpenShift
+# Set the apps required environment vars to OpenShift values
 #
-
 
 # Node
 export NODE_ENV=production
@@ -16,6 +15,3 @@ export POSTGRESQL_PORT=$OPENSHIFT_POSTGRESQL_DB_PORT
 export POSTGRESQL_USERNAME=$OPENSHIFT_POSTGRESQL_DB_USERNAME
 export POSTGRESQL_PASSWORD=$OPENSHIFT_POSTGRESQL_DB_PASSWORD
 export POSTGRESQL_DATABASE=$PGDATABASE
-
-cd $OPENSHIFT_REPO_DIR
-npm run build # this runs grunt build
