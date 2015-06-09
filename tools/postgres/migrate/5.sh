@@ -1,5 +1,5 @@
 # create association join tables
-psql -U midas -c "
+psql -U $POSTGRESQL_USERNAME -c "
 --
 -- Name: project_tags__tagentity_projects; Type: TABLE; Schema: public; Owner: midas; Tablespace:
 --
@@ -109,17 +109,17 @@ ALTER TABLE ONLY tagentity_users__user_tags
 "
 
 # move data from tag table to association tables
-psql -U midas -c "INSERT INTO tagentity_users__user_tags (tagentity_users, user_tags)
+psql -U $POSTGRESQL_USERNAME -c "INSERT INTO tagentity_users__user_tags (tagentity_users, user_tags)
 SELECT \"tagId\" as tagentity_users, \"userId\" as user_tags FROM tag
 WHERE \"userId\" is not null;"
 
-psql -U midas -c "INSERT INTO tagentity_tasks__task_tags (tagentity_tasks, task_tags)
+psql -U $POSTGRESQL_USERNAME -c "INSERT INTO tagentity_tasks__task_tags (tagentity_tasks, task_tags)
 SELECT \"tagId\" as tagentity_tasks, \"taskId\" as task_tags FROM tag
 WHERE \"taskId\" is not null;"
 
-psql -U midas -c "INSERT INTO project_tags__tagentity_projects (tagentity_projects, project_tags)
+psql -U $POSTGRESQL_USERNAME -c "INSERT INTO project_tags__tagentity_projects (tagentity_projects, project_tags)
 SELECT \"tagId\" as tagentity_projects, \"projectId\" as project_tags FROM tag
 WHERE \"projectId\" is not null;"
 
 # Update the schema version
-psql -U midas -d midas -c "UPDATE schema SET version = 5 WHERE schema = 'current';"
+psql -U $POSTGRESQL_USERNAME -d $POSTGRESQL_DATABASE -c "UPDATE schema SET version = 5 WHERE schema = 'current';"

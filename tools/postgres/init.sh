@@ -10,8 +10,8 @@
 SRC_DIR=$(cd "${0%/*}/"; pwd)
 SCHEMA=$SRC_DIR/schema/current.sql
 SCRIPTS=$SRC_DIR/migrate
-DB="midas"
-USER="midas"
+DB=$POSTGRESQL_DATABASE
+USER=$POSTGRESQL_USERNAME
 
 # Get file names
 FILES=($SCRIPTS/*.sh)

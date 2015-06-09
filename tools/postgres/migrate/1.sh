@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Add schema table
-psql -U midas -d midas -c "CREATE TABLE \"schema\" (
+psql -U $POSTGRESQL_USERNAME -d $POSTGRESQL_DATABASE -c "CREATE TABLE \"schema\" (
   \"schema\" varchar,
   \"version\" integer
 );
