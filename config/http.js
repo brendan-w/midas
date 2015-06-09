@@ -34,6 +34,7 @@ module.exports.http = {
 
     order: [
       'startRequestTimer',
+      'httpsRedirect',
       'cookieParser',
       'session',
       'passportInit',
@@ -58,7 +59,23 @@ module.exports.http = {
 
     passportInit    : require('passport').initialize(),
     passportSession : require('passport').session(),
-
+    httpsRedirect   : (function() {
+      //choose whether to redirect requests to HTTPS
+      if(process.env.NODE_ENV == 'production')
+      {
+        //redirect
+        return function(req, res, next) {
+          if(req.headers['x-forwarded-proto'] != 'https')
+            return res.redirect('https://' + req.get('host') + req.url);
+          next();
+        };
+      }
+      else
+      {
+        //pass through
+        return function(req, res, next) { next(); };
+      }
+    })(),
 
   /***************************************************************************
   *                                                                          *
