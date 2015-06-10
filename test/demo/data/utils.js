@@ -1,7 +1,10 @@
-var conf = require('./config');
 var fs = require('fs');
 var request = require('request');
 var path = require('path');
+
+//get the URL from the application config
+var app = require('../../../config/application.js');
+var app_url = "http://" + app.hostName + ":" + app.port + "/api";
 
 module.exports = {
   init: function () {
@@ -12,14 +15,14 @@ module.exports = {
 
   login: function (request, username, password, cb) {
     // logout first
-    request.get({ url: conf.url + '/auth/logout' }, function (err, response, body) {
+    request.get({ url: app_url + '/auth/logout' }, function (err, response, body) {
       if (err) { return cb(err); }
       // then login
-      request.post({ url: conf.url + '/auth/local',
+      request.post({ url: app_url + '/auth/local',
                      form: { username: username, password: password, json: true },
                    }, function (err, response, body) {
         var getUser = function (cb) {
-          request(conf.url + '/user', function (err, response, body) {
+          request(app_url + '/user', function (err, response, body) {
             if (err) { return cb(err); }
             if (response.statusCode !== 200) {
               return cb('Error: Login unsuccessful. ' + body);
@@ -31,7 +34,7 @@ module.exports = {
         if (response.statusCode == 403) {
           // this could be because the user isn't registered; try to register
           // console.log('register user: '+username);
-          request.post({ url: conf.url + '/auth/register',
+          request.post({ url: app_url + '/auth/register',
                          form: { username: username, password: password, json: true },
                        }, function (err, response, body) {
             if (err) { return cb(err); }
@@ -49,7 +52,7 @@ module.exports = {
 
   user_info: function (request, cb) {
     var r = request.get({
-      url: conf.url + '/user/'
+      url: app_url + '/user/'
     }, function(err, response, body) {
       if (err) { return cb(err, null); }
       var b = JSON.parse(body);
@@ -59,7 +62,7 @@ module.exports = {
 
   user_put: function (request, id, user_attrs, cb) {
     var r = request.put({
-      url: conf.url + '/user/' + id,
+      url: app_url + '/user/' + id,
       body: JSON.stringify(user_attrs)
     }, function(err, response, body) {
       if (err) { return cb(err, null); }
@@ -70,7 +73,7 @@ module.exports = {
 
   user_disable: function (request, user, cb) {
     var r = request.get({
-      url: conf.url + '/user/disable/' + user.id,
+      url: app_url + '/user/disable/' + user.id,
     }, function(err, response, body) {
       if (err) { return cb(err, null); }
       var b = JSON.parse(body);
@@ -80,7 +83,7 @@ module.exports = {
 
   file_create: function(request, filename, square, cb) {
     var r = request.post({
-      url: conf.url + '/file'
+      url: app_url + '/file'
     }, function (err, response, body) {
       if (err) return cb(err, null);
       // posting a file doesn't actually return JSON, if successful
@@ -122,16 +125,16 @@ module.exports = {
   },
 
   proj_create: function(request, proj, cb) {
-    this.post(request, conf.url + '/project', proj, cb);
+    this.post(request, app_url + '/project', proj, cb);
   },
 
   projowner_create: function(request, proj, cb) {
-    this.post(request, conf.url + '/projectowner', proj, cb);
+    this.post(request, app_url + '/projectowner', proj, cb);
   },
 
   proj_put: function(request, proj, cb) {
     var r = request.put({
-      url: conf.url + '/project/'+proj.id,
+      url: app_url + '/project/'+proj.id,
       body: JSON.stringify(proj)
     }, function(err, response, body) {
       if (response.statusCode !== 200) {
@@ -145,19 +148,19 @@ module.exports = {
   },
 
   comment_create: function(request, comment, cb) {
-    this.post(request, conf.url + '/comment', comment, cb);
+    this.post(request, app_url + '/comment', comment, cb);
   },
 
   event_create: function(request, ev, cb) {
-    this.post(request, conf.url + '/event', ev, cb);
+    this.post(request, app_url + '/event', ev, cb);
   },
 
   task_create: function(request, task, cb) {
-    this.post(request, conf.url + '/task', task, cb);
+    this.post(request, app_url + '/task', task, cb);
   },
 
   tag_find: function(request, name, type, cb) {
-    var url = conf.url + '/ac/tag?q=' + encodeURIComponent(name);
+    var url = app_url + '/ac/tag?q=' + encodeURIComponent(name);
     if (type) {
       url = url + '&type=' + encodeURIComponent(type);
     }
@@ -176,14 +179,14 @@ module.exports = {
   },
 
   tag_add: function(request, tag, cb) {
-    this.post(request, conf.url + '/tagentity', tag, cb);
+    this.post(request, app_url + '/tagentity', tag, cb);
   },
 
   tag_create: function(request, tag, cb) {
     var model = (tag.projectId) ? 'project': 'user',
         modelId = tag[model + 'Id'],
         data = { tags: [tag.tagId] };
-    this.put(request, conf.url + '/' + model + '/' + modelId, data, cb);
+    this.put(request, app_url + '/' + model + '/' + modelId, data, cb);
   }
 
 };
