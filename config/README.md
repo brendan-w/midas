@@ -1,13 +1,9 @@
-
-Notes
-=====
-
-Environment Variables
+Notes on Environment Variables
 ---------------------
 
-### Node
+### Node.js
 
-```
+```shell
 NODE_ENV = "development"
          = "production"
 
@@ -19,7 +15,7 @@ NODE_PORT = 1337
 
 ### PostgreSQL
 
-```
+```shell
 POSTGRESQL_IP = "127.9.1.1"
               = "localhost"
 
@@ -30,4 +26,14 @@ POSTGRESQL_DATABASE = "midas"
 POSTGRESQL_USERNAME = "midas"
 
 POSTGRESQL_PASSWORD = "midas"
+```
+
+### Other
+
+```shell
+# the NPM "gm" package defaults to using graphicsmagick,
+# but openshift currently only has imageMagick installed
+# see api/controllers/FileController.js
+GM_USE_IMAGEMAGICK = true
+
 ```

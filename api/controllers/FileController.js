@@ -5,9 +5,13 @@
  * @description	:: Contains logic for handling requests.
  */
 var fs = require('fs');
-var gm = require('gm');
 var _ = require('underscore');
 var async = require('async');
+var gm = require('gm');
+
+//since gm defaults to graphicsmagick
+if(process.env.GM_USE_IMAGEMAGICK)
+  gm = gm.subClass({ imageMagick: true });
 
 module.exports = {
   find: function(req, res) {
