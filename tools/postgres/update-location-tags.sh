@@ -1,6 +1,12 @@
+#!/bin/bash
+
+# include main environment variables
+source $(dirname "$(realpath "$0")")/../env.sh
+
+
 # Updates location tags to use data from geocoder. Consolidates duplicative tags.
 
-psql -U midas -d midas -c "
+psql -U $POSTGRESQL_USERNAME -d $POSTGRESQL_DATABASE -c "
 -- update name and data for Washington DC 23
 UPDATE tagentity SET name = 'Washington, D.C.' where id = 23;
 UPDATE tagentity SET data = '{\"lat\":\"38.89511\",\"lon\":\"-77.03637\",\"source\":\"geonames\",\"sourceId\":\"4140963\",\"gmtOffset\":\"-5\",\"timeZoneId\":\"America/New_York\",\"dstOffset\":\"-4\"}' where id = 23;
