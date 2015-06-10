@@ -7,6 +7,9 @@
 # current schema version, apply migration scripts (migrate/*) until the
 # database version is up to date.
 
+# include main environment variables
+source $(dirname "$(realpath "$0")")/../env.sh
+
 SRC_DIR=$(cd "${0%/*}/"; pwd)
 SCHEMA=$SRC_DIR/schema/current.sql
 SCRIPTS=$SRC_DIR/migrate
