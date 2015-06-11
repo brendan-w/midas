@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # include main environment variables
-source $(dirname "$(realpath "$0")")/../env.sh
+DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+source $DIR/../env.sh
 
 
 # Updates location tags to use data from geocoder. Consolidates duplicative tags.

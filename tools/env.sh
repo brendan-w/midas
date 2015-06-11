@@ -4,7 +4,9 @@
 # for shell scripts connecting to Node or PostgreSQL
 
 # to include main environment variables
-# source $(dirname "$(realpath "$0")")/..path..to../env.sh
+#
+# DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+# source $DIR/..path.to.script../env.sh
 
 # Node.JS
 if [ -z "$NODE_ENV"  ]; then

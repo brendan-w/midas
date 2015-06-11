@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # include main environment variables
-source $(dirname "$(realpath "$0")")/../env.sh
+DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+source $DIR/../env.sh
 
 # this fixes the database errors that were caused by a bug fixed in 0.2.0
 # https://github.com/18F/midas-open-opportunities/issues/60
