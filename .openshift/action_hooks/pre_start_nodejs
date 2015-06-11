@@ -8,7 +8,7 @@ cd $OPENSHIFT_HOMEDIR/.env/user_vars
 
 # Node.js
 echo "production"           > NODE_ENV
-echo $OPENSHIFT_APP_DNS     > PUBLIC_HOSTNAME
+echo $OPENSHIFT_GEAR_DNS    > PUBLIC_HOSTNAME
 echo $OPENSHIFT_NODEJS_IP   > NODE_IP
 echo $OPENSHIFT_NODEJS_PORT > NODE_PORT
 
