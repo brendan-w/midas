@@ -9,9 +9,8 @@ module.exports = {
   httpProtocol: 'http',
 
   // hostName defines the domain upon which your app will be deployed (e.g. 'localhost:1337', for development)
-  hostName:     process.env.NODE_IP || 'localhost',
+  hostName:     process.env.PUBLIC_HOSTNAME || 'localhost',
   explicitHost: process.env.NODE_IP || 'localhost', // openshift requires an explicit host to be set
-
 
   // The `port` setting determines which TCP port your app will be deployed on
   // Ports are a transport-layer concept designed to allow many different
