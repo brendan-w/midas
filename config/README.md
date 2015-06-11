@@ -1,5 +1,5 @@
 Notes on Environment Variables
----------------------
+------------------------------
 
 ### Node.js
 
@@ -11,6 +11,10 @@ NODE_IP = "127.9.1.1"
         = "localhost"
 
 NODE_PORT = 1337
+
+# publically accessible hostname
+# used in email templates for links
+PUBLIC_HOSTNAME = "midas-deployment.com"
 ```
 
 ### PostgreSQL
