@@ -34,6 +34,13 @@ POSTGRESQL_PASSWORD = "midas"
 # the NPM "gm" package defaults to using graphicsmagick,
 # but openshift currently only has imageMagick installed
 # see api/controllers/FileController.js
-GM_USE_IMAGEMAGICK = true
+GM_USE_IMAGEMAGICK = "true"
 
+# these are options for nodemailer:
+# https://github.com/andris9/Nodemailer
+SMTP_SERVICE = ""
+
+SMTP_USERNAME = ""
+
+SMTP_PASSWORD = ""
 ```

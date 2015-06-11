@@ -12,7 +12,7 @@ module.exports = {
   smtp: {
     // Specify to use a supported service; leave blank for SMTP
     // See: https://github.com/andris9/Nodemailer#well-known-services-for-smtp
-    service             : '',
+    service             : process.env.SMTP_SERVICE || '',
     // remote SMTP host
     host                : '',
     // true to use SSL connections
@@ -21,8 +21,8 @@ module.exports = {
     port                : 465,
     // username and password settings for secure connections
     auth                : {
-      user              : '',
-      pass              : ''
+      user              : process.env.SMTP_USERNAME || '',
+      pass              : process.env.SMTP_PASSWORD || ''
     },
     // ignore server support for STARTTLS (defaults to false)
     ignoreTLS           : false,
