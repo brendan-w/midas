@@ -76,7 +76,7 @@
     "build": "$npm_package_config_grunt build",
     "start": "node app.js",
     "migrate": "./tools/postgres/init.sh",
-    "init": "mocha test/test.upstart.js --development --recursive test/init",
+    "init": "./tools/tagtool/tagtool.js ./tools/tagtool/unicef.txt",
     "demo": "mocha test/test.upstart.js --development --recursive test/demo",
     "import": "cp -v $npm_package_config_dir/exclude.txt exclude.txt | true && rsync -av --exclude-from=exclude.txt $npm_package_config_dir/* .",
     "watch": "source .env | true && nodemon --watch assets --watch api --watch config --watch views -i assets/build -e js,html"

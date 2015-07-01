@@ -1,0 +1,20 @@
+task-time-required : Part Time
+task-time-required : Full Time
+task-time-required : 20% Time
+task-people : 1 person
+task-people : 2 - 5 people
+task-people : > 5 people
+task-people : A Team
+task-skills-required : Required
+task-skills-required : Not Required
+task-length : 1 Day
+task-length : 1 - 3 Days
+task-length : 1 Week
+task-length : 1 Month
+task-length : A Few Months-
+task-time-estimate : Less than 1 hour
+task-time-estimate : 1 - 3 hours
+task-time-estimate : 4 - 8 hours
+task-time-estimate : 9 - 24 hours
+task-time-estimate : 25 - 40 hours
+task-time-estimate : longer than 40 hours

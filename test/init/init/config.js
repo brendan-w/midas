@@ -6,6 +6,50 @@ module.exports = {
   tags: [
 
     /*
+      experience
+    */
+    {
+      type: "experience",
+      name: "0-2 years"
+    },
+    {
+      type: "experience",
+      name: "3-4 years"
+    },
+    {
+      type: "experience",
+      name: "5-7 years"
+    },
+    {
+      type: "experience",
+      name: "8-10 years"
+    },
+    {
+      type: "experience",
+      name: "10+ years"
+    },
+
+    /*
+      education
+    */
+    {
+      type: "education",
+      name: "High School Diploma"
+    },
+    {
+      type: "education",
+      name: "Undergraduate-Level"
+    },
+    {
+      type: "education",
+      name: "Graduate-Level"
+    },
+    {
+      type: "education",
+      name: "post-graduate"
+    },
+
+    /*
       task-time-required
     */
     {

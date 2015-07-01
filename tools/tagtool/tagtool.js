@@ -38,21 +38,46 @@ if (tagType.length === 0) {
 }
 
 var tags = [];
+
 // load tags from file
 if (fs.existsSync(tagFile)) {
-  tags = fs.readFileSync(tagFile).toString().split("\n");
-}
-else {
+
+  raw_tags = fs.readFileSync(tagFile).toString().split("\n");
+
+  raw_tags.forEach(function(tag) {
+    if (tag.length > 0)
+    {
+      parts = tag.trim().split(/\s*:\s*/);
+      if(parts.length === 2)
+      {
+        parts[0] = parts[0].trim();
+        parts[1] = parts[1].trim();
+        if((parts[0].length > 0) && (parts[1].length > 0))
+        {
+          tags.push({ type: parts[0], name: parts[1] });
+        }
+        else
+        {
+          console.log("Failed to parse tag (empty type or name): " + tag);
+        }
+      }
+      else
+      {
+        console.log("Failed to parse tag (couldn't find the delimeter): " + tag);
+      }
+    }
+  });
+} else {
   help_and_quit('Failed to find tag file (' + tagFile + ')');
 }
 
 // open database
 var client = new pg.Client({
-  user: config.adapters.postgresql.user, 
-  password: config.adapters.postgresql.password,
-  database: config.adapters.postgresql.database,
-  host: config.adapters.postgresql.host,
-  port: 5432
+  host     : process.env.POSTGRESQL_IP || 'localhost',
+  port     : process.env.POSTGRESQL_PORT || 5432,
+  user     : process.env.POSTGRESQL_USERNAME || 'midas',
+  password : process.env.POSTGRESQL_PASSWORD || 'midas',
+  database : process.env.POSTGRESQL_DATABASE || 'midas',
 });
 
 client.on('drain', client.end.bind(client)); //disconnect client when all queries are finished
@@ -63,17 +88,22 @@ client.connect(function (err) {
   }
   // loop over records in the file, creating a record for each
   var date = new Date();
-  for (i in tags) {
-    if (tags[i].length > 0) {
-      var insert = client.query({
-          text: 'INSERT INTO tagEntity ("type","name","createdAt","updatedAt") SELECT $1, $2, $3, $4 WHERE NOT EXISTS (SELECT id FROM tagEntity WHERE "name" = $5 AND "type" = $6)',
-          values: [tagType, tags[i], date, date, tags[i], tagType]
-        }, function(err, result) {
-          if (err) {
-            console.log('Failed to add tag to the database: ' + tags[i] + ' with error '  + err);
-            return 1;
-          }
-      });
+
+  tags.forEach(function(tag) {
+
+    var query = {
+      text: 'INSERT INTO tagEntity ("type","name","createdAt","updatedAt") SELECT $1, $2, $3, $4 WHERE NOT EXISTS (SELECT id FROM tagEntity WHERE "name" = $5 AND "type" = $6)',
+      values: [tag.type, tag.name, date, date, tag.name, tag.type]
     }
-  }
+
+    client.query(query, function(err, result) {
+        if (err) {
+          console.log('Failed to add tag to the database (' + tag.type + " : " + tag.name + ') with error '  + err);
+        } else if (result.rowCount === 0) {
+          console.log("[skipped]    " + tag.type + " : " + tag.name);
+        } else {
+          console.log("[added]    " + tag.type + " : " + tag.name);
+        }
+    });
+  });
 });
