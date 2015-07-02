@@ -410,6 +410,7 @@ ALTER SEQUENCE notification_id_seq OWNED BY notification.id;
 CREATE TABLE permissions (
     id integer NOT NULL,
     name text,
+    registration_option boolean,
     admin_pages boolean,
     apply boolean,
     project_create boolean,

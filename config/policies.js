@@ -31,7 +31,8 @@ module.exports.policies = {
 
   // Auth controller can be accessed by anyone
   AuthController : {
-    '*': true
+    '*': true,
+    'register': ['register']
   },
 
   UserAuthController: {

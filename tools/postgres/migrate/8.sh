@@ -12,12 +12,13 @@ psql -U midas -d midas -c "
 
 CREATE TABLE permissions (
     id integer NOT NULL,
-	\"name\" text,
-	\"admin_pages\" boolean,
-	\"apply\" boolean,
-	\"project_create\" boolean,
-	\"task_create\" boolean,
-	\"moderate\" boolean,
+    \"name\" text,
+    \"registration_option\" boolean,
+    \"admin_pages\" boolean,
+    \"apply\" boolean,
+    \"project_create\" boolean,
+    \"task_create\" boolean,
+    \"moderate\" boolean,
 
     \"createdAt\" timestamp with time zone,
     \"updatedAt\" timestamp with time zone,
