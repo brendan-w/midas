@@ -36,7 +36,7 @@ module.exports = {
     }
     // check if a user already has this email
     userUtils.findUser(req.route.params.id, function (err, user) {
-      if (err) { return res.send(400, { message:'Error looking up username.' }); }
+      if (err) { sails.log.error(err); return res.send(400, { message:'Error looking up username.' }); }
       if (!user) { return res.send(false); }
       if (req.user && req.user[0].id == user.id) { return res.send(false); }
       return res.send(true);

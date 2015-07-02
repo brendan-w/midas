@@ -30,6 +30,11 @@ module.exports = {
     // Use the URL directly as the resource identifier for the photo.
     photoUrl: 'STRING',
 
+    //reference to the users permision group
+    permissions: {
+      model: 'Permissions'
+    },
+
     // User metadata for service delivery
     isAdmin: {
       type: 'BOOLEAN',

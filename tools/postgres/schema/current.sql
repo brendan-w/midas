@@ -323,6 +323,7 @@ CREATE TABLE midas_user (
     bio text,
     "photoId" integer,
     "photoUrl" text,
+    permissions integer,
     "isAdmin" boolean,
     disabled boolean,
     "passwordAttempts" integer,
@@ -370,7 +371,7 @@ CREATE TABLE notification (
     "createdDate" timestamp with time zone,
     "localParams" text,
     "globalParams" text,
-    "model" json,
+    model json,
     "isActive" boolean,
     id integer NOT NULL,
     "createdAt" timestamp with time zone,
@@ -400,6 +401,47 @@ ALTER TABLE notification_id_seq OWNER TO midas;
 --
 
 ALTER SEQUENCE notification_id_seq OWNED BY notification.id;
+
+
+--
+-- Name: permissions; Type: TABLE; Schema: public; Owner: midas; Tablespace:
+--
+
+CREATE TABLE permissions (
+    id integer NOT NULL,
+    name text,
+    admin_pages boolean,
+    apply boolean,
+    project_create boolean,
+    task_create boolean,
+    moderate boolean,
+    "createdAt" timestamp with time zone,
+    "updatedAt" timestamp with time zone,
+    "deletedAt" timestamp with time zone
+);
+
+
+ALTER TABLE permissions OWNER TO midas;
+
+--
+-- Name: permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: midas
+--
+
+CREATE SEQUENCE permissions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE permissions_id_seq OWNER TO midas;
+
+--
+-- Name: permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: midas
+--
+
+ALTER SEQUENCE permissions_id_seq OWNED BY permissions.id;
 
 
 --
@@ -1138,6 +1180,13 @@ ALTER TABLE ONLY notification ALTER COLUMN id SET DEFAULT nextval('notification_
 -- Name: id; Type: DEFAULT; Schema: public; Owner: midas
 --
 
+ALTER TABLE ONLY permissions ALTER COLUMN id SET DEFAULT nextval('permissions_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: midas
+--
+
 ALTER TABLE ONLY project ALTER COLUMN id SET DEFAULT nextval('project_id_seq'::regclass);
 
 
@@ -1326,6 +1375,14 @@ ALTER TABLE ONLY notification
 
 
 --
+-- Name: permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: midas; Tablespace:
+--
+
+ALTER TABLE ONLY permissions
+    ADD CONSTRAINT permissions_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: project_pkey; Type: CONSTRAINT; Schema: public; Owner: midas; Tablespace:
 --
 
@@ -1482,3 +1539,4 @@ GRANT ALL ON SCHEMA public TO PUBLIC;
 --
 -- PostgreSQL database dump complete
 --
+
