@@ -1,7 +1,7 @@
 /**
 * Checks that a user is allowed to register with their requested account type (permissions)
 */
-module.exports = function admin (req, res, next) {
+module.exports = function register (req, res, next) {
   // Check the user is logged in and is an admin
   var type = req.param("type");
   if (!type) { return res.send(400, { message: 'Please specify an account type' }); }
