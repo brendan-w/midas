@@ -109,12 +109,13 @@ module.exports = {
       req = {};
     }
     var userData = {
-      name: providerUser.displayName,
-      photoUrl: providerUser.photoUrl,
-      title: providerUser.title,
-      bio: providerUser.bio,
-      username: username.toLowerCase(),
-      password: password
+      name:        providerUser.displayName,
+      permissions: providerUser.permissions,
+      photoUrl:    providerUser.photoUrl,
+      title:       providerUser.title,
+      bio:         providerUser.bio,
+      username:    username.toLowerCase(),
+      password:    password
     };
 
     // for unit tests; only works when NODE_ENV=test is set in the environment
@@ -176,6 +177,7 @@ module.exports = {
             username:    userData.username,
             permissions: userData.permissions
           };
+
           if (updateAction) {
             userCreateParam = userData;
           }

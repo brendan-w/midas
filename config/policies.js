@@ -36,43 +36,43 @@ module.exports.policies = {
   },
 
   UserAuthController: {
-    '*': ['authenticated', 'requireUserId', 'requireId', 'userAuthIdMatch']
+    '*': ['authenticated', 'hasIdParam', 'userAuthIdMatch']
   },
 
   // Limit user controller view to just the /user endpoint
   UserController : {
     '*': false,
     'profile':       ['authenticated'],
-    'photo':         ['authenticated', 'requireId'],
-    'info':          ['authenticated', 'requireId'],
-    'update':        ['authenticated', 'requireUserId', 'requireId', 'user', 'protectAdmin'],
-    'username':      ['authenticated'],
-    'find':          ['authenticated', 'requireUserId'],
-    'all':           ['authenticated', 'requireUserId'],
-    'findOne':       ['authenticated', 'requireUserId'],
+    'photo':         ['authenticated', 'hasIdParam'],
+    'info':          ['authenticated', 'hasIdParam'],
+    'update':        ['authenticated', 'hasIdParam', 'user', 'protectAdmin'],
+    'username':      [],
+    'find':          ['authenticated'],
+    'all':           ['authenticated'],
+    'findOne':       ['authenticated'],
     'activities':    ['authenticated'],
-    'disable':       ['authenticated', 'requireId', 'requireUserId'],
-    'enable':        ['authenticated', 'requireId', 'requireUserId', 'admin'],
-    'resetPassword': ['authenticated', 'requireUserId'],
+    'disable':       ['authenticated', 'hasIdParam'],
+    'enable':        ['authenticated', 'hasIdParam', 'admin'],
+    'resetPassword': ['authenticated'],
     'emailCount':    ['test'],
     'export':        ['authenticated', 'admin']
   },
 
   UserEmailController : {
-    '*':               ['authenticated', 'requireUserId'],
-    'find':            ['authenticated', 'requireUserId', 'requireId', 'userEmailIdMatch'],
-    'findOne':         ['authenticated', 'requireUserId', 'requireId', 'userEmailIdMatch'],
-    'findAllByUserId': ['authenticated', 'requireUserId', 'requireId', 'user'],
-    'create':          ['authenticated', 'requireUserId', 'addUserId'],
-    'update':          ['authenticated', 'requireUserId', 'requireId', 'userEmailIdMatch'],
-    'destroy':         ['authenticated', 'requireUserId', 'requireId', 'userEmailIdMatch'],
+    '*':               ['authenticated'],
+    'find':            ['authenticated', 'hasIdParam', 'userEmailIdMatch'],
+    'findOne':         ['authenticated', 'hasIdParam', 'userEmailIdMatch'],
+    'findAllByUserId': ['authenticated', 'hasIdParam', 'user'],
+    'create':          ['authenticated', 'addUserId'],
+    'update':          ['authenticated', 'hasIdParam', 'userEmailIdMatch'],
+    'destroy':         ['authenticated', 'hasIdParam', 'userEmailIdMatch'],
   },
 
   UserSettingController : {
-    '*':       ['authenticated', 'requireUserId', 'addUserId'],
-    'find':    ['authenticated', 'requireUserId', 'addUserId'],
-    'findOne': ['authenticated', 'requireUserId', 'addUserId'],
-    'destroy': ['authenticated', 'requireUserId', 'requireId','userSettingIdMatch']
+    '*':       ['authenticated', 'addUserId'],
+    'find':    ['authenticated', 'addUserId'],
+    'findOne': ['authenticated', 'addUserId'],
+    'destroy': ['authenticated', 'hasIdParam','userSettingIdMatch']
   },
 
   // Disable the index blueprints for FileController due to security concerns
@@ -90,62 +90,62 @@ module.exports.policies = {
 
   ProjectController : {
     '*':       ['authenticated', 'addUserId', 'project'],
-    'find':    ['authenticated', 'requireId', 'project'],
-    'findOne': ['authenticated', 'requireId', 'project'],
-    'update':  ['authenticated', 'requireUserId', 'requireId', 'project', 'ownerOrAdmin'],
-    'destroy': ['authenticated', 'requireUserId', 'requireId', 'project', 'ownerOrAdmin']
+    'find':    ['authenticated', 'hasIdParam', 'project'],
+    'findOne': ['authenticated', 'hasIdParam', 'project'],
+    'update':  ['authenticated', 'hasIdParam', 'project', 'ownerOrAdmin'],
+    'destroy': ['authenticated', 'hasIdParam', 'project', 'ownerOrAdmin']
   },
 
   ProjectOwnerController : {
     '*':       false,
-    'create':  ['authenticated', 'requireUserId', 'projectId'],
-    'destroy': ['authenticated', 'requireUserId', 'requireId']
+    'create':  ['authenticated', 'projectId'],
+    'destroy': ['authenticated', 'hasIdParam']
   },
 
   LikeController : {
     '*':       ['authenticated', 'addUserId'],
-    'count':   ['authenticated', 'requireId', 'project'],
-    'countt':  ['authenticated', 'requireId', 'task'],
-    'countu':  ['authenticated', 'requireId', 'requireUserId'],
-    'like':    ['authenticated', 'requireUserId', 'addUserId', 'requireId'],
-    'liket':   ['authenticated', 'requireUserId', 'addUserId', 'requireId'],
-    'likeu':   ['authenticated', 'requireUserId', 'addUserId', 'requireId'],
-    'unlike':  ['authenticated', 'requireUserId', 'addUserId', 'requireId'],
-    'unliket': ['authenticated', 'requireUserId', 'addUserId', 'requireId'],
-    'unlikeu': ['authenticated', 'requireUserId', 'addUserId', 'requireId'],
-    'create':  ['authenticated', 'requireUserId', 'addUserId'],
+    'count':   ['authenticated', 'hasIdParam', 'project'],
+    'countt':  ['authenticated', 'hasIdParam', 'task'],
+    'countu':  ['authenticated', 'hasIdParam'],
+    'like':    ['authenticated', 'addUserId', 'hasIdParam'],
+    'liket':   ['authenticated', 'addUserId', 'hasIdParam'],
+    'likeu':   ['authenticated', 'addUserId', 'hasIdParam'],
+    'unlike':  ['authenticated', 'addUserId', 'hasIdParam'],
+    'unliket': ['authenticated', 'addUserId', 'hasIdParam'],
+    'unlikeu': ['authenticated', 'addUserId', 'hasIdParam'],
+    'create':  ['authenticated', 'addUserId'],
     'destroy': false,
     'update':  false
   },
 
   VolunteerController : {
     '*': false,
-    'create':  ['authenticated', 'requireUserId', 'addUserId'],
-    'destroy': ['authenticated', 'requireUserId', 'requireId', 'volunteer', 'ownerOrAdmin'],
+    'create':  ['authenticated', 'addUserId'],
+    'destroy': ['authenticated', 'hasIdParam', 'volunteer', 'ownerOrAdmin'],
   },
 
   EventController : {
     '*': false,
     'find':               ['authenticated'],
     'findOne':            ['authenticated'],
-    'create':             ['authenticated', 'requireUserId', 'addUserId', 'projectId', 'eventUuid'],
-    'update':             ['authenticated', 'requireUserId', 'projectId'],
-    'findAllByProjectId': ['authenticated', 'addUserId', 'requireId', 'project'],
-    'attend':             ['authenticated', 'requireUserId', 'addUserId', 'requireId'],
-    'cancel':             ['authenticated', 'requireUserId', 'addUserId', 'requireId'],
-    'rsvp':               ['authenticated', 'requireUserId', 'addUserId'],
+    'create':             ['authenticated', 'addUserId', 'projectId', 'eventUuid'],
+    'update':             ['authenticated', 'projectId'],
+    'findAllByProjectId': ['authenticated', 'addUserId', 'hasIdParam', 'project'],
+    'attend':             ['authenticated', 'addUserId', 'hasIdParam'],
+    'cancel':             ['authenticated', 'addUserId', 'hasIdParam'],
+    'rsvp':               ['authenticated', 'addUserId'],
     'ical':               ['authenticated', 'addUserId', 'project'],
-    'destroy':            ['authenticated', 'requireId', 'admin']
+    'destroy':            ['authenticated', 'hasIdParam', 'admin']
   },
 
   CommentController : {
     'find':               false,
     'findOne':            false,
-    'create':             ['authenticated', 'requireUserId', 'addUserId', 'projectId', 'taskId'],
-    'update':             ['authenticated', 'requireUserId', 'projectId', 'taskId', 'comment', 'ownerOrAdmin'],
-    'destroy':            ['authenticated', 'requireUserId', 'requireId', 'admin'],
-    'findAllByProjectId': ['authenticated', 'requireId', 'project'],
-    'findAllByTaskId':    ['authenticated', 'requireId', 'task']
+    'create':             ['authenticated', 'addUserId', 'projectId', 'taskId'],
+    'update':             ['authenticated', 'projectId', 'taskId', 'comment', 'ownerOrAdmin'],
+    'destroy':            ['authenticated', 'hasIdParam', 'admin'],
+    'findAllByProjectId': ['authenticated', 'hasIdParam', 'project'],
+    'findAllByTaskId':    ['authenticated', 'hasIdParam', 'task']
   },
 
   TagEntityController : {
@@ -158,22 +158,22 @@ module.exports.policies = {
   TaskController : {
     'find':               ['authenticated', 'task'],
     'findOne':            ['authenticated', 'task'],
-    'findAllByProjectId': ['authenticated', 'requireId', 'project'],
-    'copy':               ['authenticated', 'requireUserId', 'addUserId'],
-    'create':             ['authenticated', 'requireUserId', 'addUserId'],
-    'update':             ['authenticated', 'requireUserId', 'requireId', 'projectId', 'task', 'ownerOrAdmin'],
-    'destroy':            ['authenticated', 'requireUserId', 'requireId', 'task', 'ownerOrAdmin'],
+    'findAllByProjectId': ['authenticated', 'hasIdParam', 'project'],
+    'copy':               ['authenticated', 'addUserId'],
+    'create':             ['authenticated', 'addUserId'],
+    'update':             ['authenticated', 'hasIdParam', 'projectId', 'task', 'ownerOrAdmin'],
+    'destroy':            ['authenticated', 'hasIdParam', 'task', 'ownerOrAdmin'],
     'export':             ['authenticated', 'admin']
   },
 
   AttachmentController: {
-    'find':               ['authenticated', 'requireId'],
-    'findOne':            ['authenticated', 'requireId'],
-    'findAllByProjectId': ['authenticated', 'requireId', 'project'],
-    'findAllByTaskId':    ['authenticated', 'requireId', 'task'],
-    'create':             ['authenticated', 'requireUserId', 'addUserId'],
+    'find':               ['authenticated', 'hasIdParam'],
+    'findOne':            ['authenticated', 'hasIdParam'],
+    'findAllByProjectId': ['authenticated', 'hasIdParam', 'project'],
+    'findAllByTaskId':    ['authenticated', 'hasIdParam', 'task'],
+    'create':             ['authenticated', 'addUserId'],
     'update':             false,
-    'destroy':            ['authenticated', 'requireUserId']
+    'destroy':            ['authenticated']
   },
 
   SearchController : {
