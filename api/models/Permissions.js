@@ -17,7 +17,10 @@ module.exports = {
 
     // name of the permission group
     // used for human display purposes
-    name: 'STRING',
+    name: {
+      type: 'STRING',
+      unique: true
+    },
 
     // whether or not a user can register with these permissions
     // for instance, a user should NOT be allowed to freely register as an Admin
