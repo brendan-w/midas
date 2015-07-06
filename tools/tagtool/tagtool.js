@@ -17,26 +17,10 @@ function help_and_quit(msg) {
 var fs = require('fs');
 var pg = require('pg');
 
-// load db config file
-try {
-  var config = require('../../config/local');
-} catch(e) {
-  help_and_quit("Please create a config/local.js file with your postgresql information");
-}
-
 var args = process.argv.slice(2);
-
-if (args.length < 2) {
+if (args.length < 1) 
   help_and_quit();
-}
-
-var tagType = args[0];
-var tagFile = args[1];
-
-if (tagType.length === 0) {
-  help_and_quit('Tag type must be provided.');
-}
-
+var tagFile = args[0];
 var tags = [];
 
 // load tags from file
