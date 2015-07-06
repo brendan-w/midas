@@ -11,6 +11,7 @@ module.exports = function register (req, res, next) {
     if (err || !p || !p.registration_option) {
       return res.send(400, { message: 'Invalid account type' });
     } else {
+      req.permissions = p.id
       return next();
     }
   });

@@ -44,7 +44,10 @@ passport.use('local', new LocalStrategy(
 
 passport.use('register', new LocalStrategy({ passReqToCallback: true },
   function (req, username, password, done) {
-    var userData = { displayName: req.param('name') };
+    var userData = {
+      displayName: req.param('name'),
+      permissions: req.permissions
+    };
     userUtils.createLocalUser(username, password, userData, null, done);
   }
 ));
@@ -68,12 +71,13 @@ passport.use('sspi', new LocalStrategy({
       var user = providerUsers.users.pop();
       user = user || {};
       // map fields to what passport expects for profiles
-      user.id = user.id;
-      user.emails = [ {value: user.email, type: 'work'} ];
+      user.id          = user.id;
+      user.emails      = [ {value: user.email, type: 'work'} ];
       user.displayName = user.fullname;
-      user.photoUrl = user.image;
-      user.skill = user.skills.tags;
-      user.topic = user.proftags.tags;
+      user.photoUrl    = user.image;
+      user.skill       = user.skills.tags;
+      user.topic       = user.proftags.tags;
+      user.permissions = req.permissions;
       // check if the settings should be overwritten
       if (sails.config.auth.auth.sspi.overwrite === true) {
         user.overwrite = true;
@@ -103,10 +107,10 @@ passport.use('oauth2', new OAuth2Strategy({
                 }, function (err, req, providerUser) {
       if (!providerUser) { return done(null, false, { message: 'An error occurred while loading user information.' });}
       // map fields to what passport expects for profiles
-      providerUser.id = providerUser.user_id;
-      providerUser.emails = [ {value: providerUser.email, type:'work'} ];
+      providerUser.id          = providerUser.user_id;
+      providerUser.emails      = [ {value: providerUser.email, type:'work'} ];
       providerUser.displayName = providerUser.name;
-      providerUser.photoUrl = providerUser.photo;
+      providerUser.photoUrl    = providerUser.photo;
       // Send through standard OAuth token flow to store credentials
       userUtils.createOauthUser(
         'oauth2',

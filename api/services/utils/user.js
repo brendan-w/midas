@@ -173,7 +173,8 @@ module.exports = {
           if (err) { return done(null, false, { message: 'Unable to hash password.'}); }
           // Create and store the user
           var userCreateParam = {
-            username: userData.username
+            username:    userData.username,
+            permissions: userData.permissions
           };
           if (updateAction) {
             userCreateParam = userData;
