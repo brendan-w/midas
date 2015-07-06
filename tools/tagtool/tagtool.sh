@@ -4,4 +4,4 @@
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 cd $DIR/../../
 source ./tools/env.sh
-$DIR/permtool.js $1
+$DIR/tagtool.js $1

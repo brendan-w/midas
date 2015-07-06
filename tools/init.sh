@@ -4,9 +4,8 @@
 #
 ##
 
-# bring in the environment vars
+# get the location of this script
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-source $DIR/env.sh
 
 # go up to the root source directory, or else sails wont lift properly
 # cd ../
@@ -15,7 +14,7 @@ source $DIR/env.sh
 $DIR/postgres/init.sh
 
 # load intitial data into the database
-$DIR/tagtool/tagtool.js $DIR/tagtool/unicef.txt
-$DIR/permtool/permtool.sh unicef.js
+$DIR/tagtool/tagtool.js   unicef.tags
+$DIR/permtool/permtool.sh unicef.perms
 
-echo "Done"
+echo "Init Finished"
