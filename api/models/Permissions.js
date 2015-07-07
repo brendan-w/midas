@@ -35,7 +35,9 @@ module.exports = {
     */
 
     // access to the admin pages
-    admin_pages: {
+    // also somewhat of a catch-all for operations outside of
+    // the admin pages that should be restricted to superusers
+    admin: {
       type: 'BOOLEAN',
       defaultsTo: false
     },

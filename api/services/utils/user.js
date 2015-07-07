@@ -16,7 +16,7 @@ module.exports = {
   findUser: function (username, done) {
     username = username.toLowerCase();
     // Check if the username already exists
-    User.findOneByUsername(username, function (err, user) {
+    User.findOneByUsername(username).populate('permissions').exec(function (err, user) {
       if (err) { return done(err, null); }
       if (user) { return done(null, user); }
       // user not found, try again by email address
@@ -24,7 +24,7 @@ module.exports = {
         if (err) { return done(err, null); }
         if (!userEmail) { return done(null, null); }
         // email address found; look up the user object
-        User.findOneById(userEmail.userId, function (err, user) {
+        User.findOneById(userEmail.userId).populate('permissions').exec(function (err, user) {
           if (err) { return done(err, null); }
           return done(null, user);
         });
@@ -710,7 +710,10 @@ module.exports = {
       cb = reqUser;
       reqUser = undefined;
     }
-    User.findOne({ id: userId }).populate('tags').exec(function (err, user) {
+    User.findOne({ id: userId })
+        .populate('tags')
+        .populate('permissions')
+        .exec(function (err, user) {
       if (err || !user) { return cb("Error finding User.", null); }
       delete user.deletedAt;
       if (userId != reqId) {

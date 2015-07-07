@@ -3,7 +3,7 @@ module.exports = [
   {
     name:                'applicant',
     registration_option: true,
-    admin_pages:         false,
+    admin:               false,
     apply:               true,
     project_create:      false,
     task_create:         false,
@@ -12,7 +12,7 @@ module.exports = [
   {
     name:                'poster',
     registration_option: true,
-    admin_pages:         false,
+    admin:               false,
     apply:               true,
     project_create:      true,
     task_create:         true,
@@ -21,7 +21,7 @@ module.exports = [
   {
     name:                'admin',
     registration_option: false,
-    admin_pages:         true,
+    admin:               true,
     apply:               true,
     project_create:      true,
     task_create:         true,

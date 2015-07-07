@@ -411,7 +411,7 @@ CREATE TABLE permissions (
     id integer NOT NULL,
     name text,
     registration_option boolean,
-    admin_pages boolean,
+    admin boolean,
     apply boolean,
     project_create boolean,
     task_create boolean,
