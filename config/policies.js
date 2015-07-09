@@ -92,6 +92,7 @@ module.exports.policies = {
     '*':       ['authenticated', 'addUserId', 'project'],
     'find':    ['authenticated', 'hasIdParam', 'project'],
     'findOne': ['authenticated', 'hasIdParam', 'project'],
+    'create':  ['authenticated', 'addUserId', 'canCreateProject'],
     'update':  ['authenticated', 'hasIdParam', 'project', 'ownerOrAdmin'],
     'destroy': ['authenticated', 'hasIdParam', 'project', 'ownerOrAdmin']
   },
@@ -160,7 +161,7 @@ module.exports.policies = {
     'findOne':            ['authenticated', 'task'],
     'findAllByProjectId': ['authenticated', 'hasIdParam', 'project'],
     'copy':               ['authenticated', 'addUserId'],
-    'create':             ['authenticated', 'addUserId'],
+    'create':             ['authenticated', 'addUserId', 'canCreateTask'],
     'update':             ['authenticated', 'hasIdParam', 'projectId', 'task', 'ownerOrAdmin'],
     'destroy':            ['authenticated', 'hasIdParam', 'task', 'ownerOrAdmin'],
     'export':             ['authenticated', 'admin']
