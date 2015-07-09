@@ -11,7 +11,7 @@ function help_and_quit(msg) {
               "Usage:\n" +
               "    ./permtool.js [file]\n" +
               "\n" +
-              "    file - file containing a newline delimited list of tag values to be loaded\n");
+              "    file - JS file that exports an array of permissions to load\n");
   process.exit(1);
 }
 
