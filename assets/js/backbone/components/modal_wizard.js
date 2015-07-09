@@ -176,7 +176,7 @@ ModalWizard = BaseView.extend({
 
     $('.modal.in').modal('hide');
     if (state) d.state = state;
-    this.collection.trigger(this.options.modelName + ":save", d);
+    this.collection.addAndSave(d);
   },
 
   cancel: function (e) {
