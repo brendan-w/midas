@@ -31,6 +31,7 @@ catch(e)
 
 
 tool_utils.sailsForEach(perms, function(p, done) {
+
   Permissions.countByName(p.name, function(err, count) {
     if(err)
     {

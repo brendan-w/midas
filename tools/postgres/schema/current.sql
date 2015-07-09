@@ -323,7 +323,7 @@ CREATE TABLE midas_user (
     bio text,
     "photoId" integer,
     "photoUrl" text,
-    permissions integer,
+    permissions text,
     "isAdmin" boolean,
     disabled boolean,
     "passwordAttempts" integer,
@@ -408,8 +408,7 @@ ALTER SEQUENCE notification_id_seq OWNED BY notification.id;
 --
 
 CREATE TABLE permissions (
-    id integer NOT NULL,
-    name text,
+    name text NOT NULL,
     registration_option boolean,
     admin boolean,
     apply boolean,
@@ -423,26 +422,6 @@ CREATE TABLE permissions (
 
 
 ALTER TABLE permissions OWNER TO midas;
-
---
--- Name: permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: midas
---
-
-CREATE SEQUENCE permissions_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE permissions_id_seq OWNER TO midas;
-
---
--- Name: permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: midas
---
-
-ALTER SEQUENCE permissions_id_seq OWNED BY permissions.id;
 
 
 --
@@ -1181,13 +1160,6 @@ ALTER TABLE ONLY notification ALTER COLUMN id SET DEFAULT nextval('notification_
 -- Name: id; Type: DEFAULT; Schema: public; Owner: midas
 --
 
-ALTER TABLE ONLY permissions ALTER COLUMN id SET DEFAULT nextval('permissions_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: midas
---
-
 ALTER TABLE ONLY project ALTER COLUMN id SET DEFAULT nextval('project_id_seq'::regclass);
 
 
@@ -1380,7 +1352,7 @@ ALTER TABLE ONLY notification
 --
 
 ALTER TABLE ONLY permissions
-    ADD CONSTRAINT permissions_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT permissions_pkey PRIMARY KEY (name);
 
 
 --

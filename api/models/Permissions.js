@@ -9,6 +9,10 @@
  */
 module.exports = {
 
+  //the primary key is the string name
+  //force this to be set upon creation
+  autoPK:false,
+
   attributes: {
 
     /*
@@ -19,7 +23,9 @@ module.exports = {
     // used for human display purposes
     name: {
       type: 'STRING',
-      unique: true
+      primaryKey: true,
+      required: true,
+      unique: true,
     },
 
     // whether or not a user can register with these permissions
