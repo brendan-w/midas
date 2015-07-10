@@ -31,7 +31,6 @@ Project.ShowController = BaseController.extend({
   events: {
     "click #project-close"                 : "stateClose",
     "click #project-reopen"                : "stateReopen",
-    'click #editProject'                   : 'toggleEditMode',
     "mouseenter .project-people-show-div"  : popovers.popoverPeopleOn,
     "click .project-people-show-div"       : popovers.popoverClick
   },
@@ -148,15 +147,6 @@ Project.ShowController = BaseController.extend({
     popovers.popoverPeopleInit(".project-people-show-div");
   },
 
-  toggleEditMode: function(e){
-    if (e.preventDefault) e.preventDefault();
-    var action = '';
-    if (!(this.action && this.action == 'edit')) {
-      action = '/edit';
-    }
-    Backbone.history.navigate('projects/' + this.id + action, { trigger: true });
-  },
-
   stateClose: function (e) {
     if (e.preventDefault) e.preventDefault();
     var self = this;
@@ -203,13 +193,9 @@ Project.ShowController = BaseController.extend({
   //= Utility Methods
   // ---------------------
   cleanup: function() {
-    if (this.projectShowItemCoreMetaView) this.projectShowItemCoreMetaView.cleanup();
     if (this.taskListController) this.taskListController.cleanup();
-    // if (this.eventListController) this.eventListController.cleanup();
-    // if (this.commentListController) this.commentListController.cleanup();
     if (this.projectShowItemView) this.projectShowItemView.cleanup();
     if (this.projectownerShowView) this.projectownerShowView.cleanup();
-    // if (this.attachmentView) this.attachmentView.cleanup();
     removeView(this);
   }
 

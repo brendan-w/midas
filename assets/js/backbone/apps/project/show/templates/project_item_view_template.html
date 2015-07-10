@@ -13,7 +13,7 @@
 
   .job-header
   {
-    border:1px solid blue;
+    background: rgb(255, 255, 255);
   }
 
 </style>
@@ -22,62 +22,84 @@
 
 
 
-  <section class="row job-header">
-    <div class="container">
-      <div class="col-sm-9">
+<section class="row job-header">
+  <div class="container">
 
-        <% if( !edit ) { %>
+    <!-- the main group description box -->
+    <div class="col-sm-9">
 
-          <h1><%- project.title %></h1>
-          <div><%= project.description_html %></div>
+      <% if( !edit ) { %>
 
-        <% } else { %>
+        <h1><%- project.title %></h1>
+        <div><%= project.description_html %></div>
 
-          <div class="form-group">
-            <h2 class="box-pad-t">Group Title</h2>
-            <input id="project-edit-form-title" class="form-control input-lg" value="<%- project.title %>" type="text" data-validate="empty,count100" title="Title"/>
-            <span class="help-block error-empty" style="display:none;">You must enter a <span data-i18n="project">project</span> title.</span>
-            <span class="help-block error-count100" style="display:none;">Your title must be less than 100 characters.</span>
-          </div>
+      <% } else { %>
 
-          <div class="form-group">
-            <h2 class="box-pad-t">Group Description</h2>
-            <div class="markdown-edit"></div>
-            <span class="help-block error-empty" style="display:none;">You must enter a <span data-i18n="project">project</span> description.</span>
-          </div>
+        <div class="form-group">
+          <h2 class="box-pad-t">Group Title</h2>
+          <input id="project-edit-form-title" class="form-control input-lg" value="<%- project.title %>" type="text" data-validate="empty,count100" title="Title"/>
+          <span class="help-block error-empty"    style="display:none;">You must enter a <span data-i18n="project">project</span> title.</span>
+          <span class="help-block error-count100" style="display:none;">Your title must be less than 100 characters.</span>
+        </div>
 
-        <% } %>
+        <div class="form-group">
+          <h2 class="box-pad-t">Group Description</h2>
+          <div class="markdown-edit"></div>
+          <span class="help-block error-empty" style="display:none;">You must enter a <span data-i18n="project">project</span> description.</span>
+        </div>
 
-      </div>
-      <div class="col-sm-3">
+      <% } %>
 
-        <% if (project.isOwner || user.isAdmin) { %>
-        <div class="navbar-side">
-          <ul class="nav nav-pills nav-stacked">
+    </div>
+
+    <!-- the options side-pane -->
+    <div class="col-sm-3">
+
+      <% if (project.isOwner || user.isAdmin) { %>
+
+      <div class="navbar-side">
+        <ul class="nav nav-pills nav-stacked">
+
+          <% if ( !edit ) { %>
+
+            <!-- Edit Group button -->
             <li>
               <a href="#" id="editProject"><i class="fa fa-pencil"></i> <span class="box-icon-text">Edit <span data-i18n="Project">Project</span></span></a>
             </li>
-            <% if ( !edit ) { %>
-            <li id="li-project-close" style="<% if (project.state == 'closed') { %>display: none;<% } %>">
-              <a href="#" id="project-close"><i class="fa fa-times-circle"></i> <span class="box-icon-text">Close <span data-i18n="Project">Project</span></span></a>
-            </li>
-            <li id="li-project-reopen" style="<% if (project.state != 'closed') { %>display: none;<% } %>">
-              <a href="#" id="project-reopen"><i class="fa fa-share"></i> <span class="box-icon-text">Reopen <span data-i18n="Project">Project</span></span></a>
-            </li>
+
+            <% if (project.state == 'closed') { %>
+
+              <li>
+                <a href="#" id="project-reopen"><i class="fa fa-share"></i> <span class="box-icon-text">Reopen <span data-i18n="Project">Project</span></span></a>
+              </li>
+
+            <% } else { %> <!-- if the group is OPEN -->
+
+              <li>
+                <a href="#" id="project-close"><i class="fa fa-times-circle"></i> <span class="box-icon-text">Close <span data-i18n="Project">Project</span></span></a>
+              </li>
+
             <% } %>
-            <!--
+
+          <% } else { %> <!-- if this IS edit mode -->
+
             <li>
-              <a href="#" id="project-delete"><i class="fa fa-trash-o"></i> <span class="box-icon-text">Delete <span data-i18n="Project">Project</span></span></a>
+              <button id="discardChanges" class="btn btn-c0">Discard Changes</button>
             </li>
-            -->
-          </ul>
-        </div>
-        <% } %>
+            <li>
+              <button id="saveChanges" class="btn btn-c2">Save <span data-i18n="Project">Project</span></button>
+            </li>
 
+          <% } %>
 
+        </ul>
       </div>
+
+      <% } %>
+
     </div>
-  </section>
+  </div>
+</section>
 
 
 

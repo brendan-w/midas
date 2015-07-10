@@ -16,6 +16,9 @@ var ProjectShowView = Backbone.View.extend({
   el: "#container",
 
   events: {
+    "click #editProject"    : "enter_edit_mode",
+    "click #discardChanges" : "exit_edit_mode",
+    "click #saveChanges"    : "exit_edit_mode_and_save",
   },
 
   initialize: function (options) {
@@ -42,7 +45,6 @@ var ProjectShowView = Backbone.View.extend({
     this.$el.html(t);
     this.$el.i18n();
 
-    this.initializeToggle();
     this.updateProjectEmail();
 
     //idf we're in edit mode, setup the edit controls
@@ -69,6 +71,27 @@ var ProjectShowView = Backbone.View.extend({
 
   },
 
+  enter_edit_mode: function(e) {
+    if (e.preventDefault) e.preventDefault();
+    Backbone.history.navigate('projects/' + this.model.get('id') + '/edit', { trigger: true });
+  },
+
+  exit_edit_mode: function(e) {
+    if (e.preventDefault) e.preventDefault();
+    Backbone.history.navigate('projects/' + this.model.get('id'), { trigger: true });    
+  },
+
+  exit_edit_mode_and_save: function(e) {
+    if (e.preventDefault) e.preventDefault();
+
+    //TODO: save the model here
+
+    this.exit_edit_mode(e);
+  },
+
+
+
+
 
   updateProjectEmail: function() {
     var subject = 'Take A Look At This Project',
@@ -85,16 +108,8 @@ var ProjectShowView = Backbone.View.extend({
     this.$('#email').attr('href', link);
   },
 
-  initializeToggle: function () {
-    if(this.edit){
-      this.$('#editProject').find('.box-icon-text').html('View ' + i18n.t('Project'));
-    }
-    else{
-      this.$('#editProject').find('.box-icon-text').html('Edit ' + i18n.t('Project'));
-    }
-  },
-
   cleanup: function () {
+    if (this.md) { this.md.cleanup(); }
     removeView(this);
   },
 });
