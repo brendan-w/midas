@@ -52,14 +52,6 @@ var ProjectItemCoreMetaView = Backbone.View.extend({
       $('#project-coremeta-success').show();
       self.viewProject({});
     });
-
-    /*
-    this.model.on("project:tags:save:success", function (data) {
-      self.render();
-      $('#project-coremeta-success').show();
-      self.viewProject({});
-    });
-    */
   },
 
   render: function () {
@@ -119,31 +111,13 @@ var ProjectItemCoreMetaView = Backbone.View.extend({
     }
 
     // process and update the data model for the project
-    var self = this;
-    var pId = self.model.attributes.id;
-    var title = self.$('#project-edit-form-title').val();
-    var description = self.$('#project-edit-form-description').val();
-    function getTags() {
-      var modelTags = self.model.get('tags'),
-          tags = [];
-      tags.push.apply(tags, this.$("#tag_topic").select2('data'));
-      tags.push.apply(tags, this.$("#tag_skill").select2('data'));
-      tags.push.apply(tags, this.$("#tag_location").select2('data'));
-      tags.push.apply(tags, this.$("#tag_agency").select2('data'));
-      return _(modelTags.concat(tags)).chain().filter(function(tag) {
-          return _(tag).isObject() && !tag.context;
-        }).map(function(tag) {
-          return (tag.id && tag.id !== tag.name) ? +tag.id : {
-            name: tag.name,
-            type: tag.tagType,
-            data: tag.data
-          };
-        }).unique().value();
-    }
-    var params = { title :title, description: description, tags: getTags() };
+    var pId = this.model.attributes.id;
+    var params = {
+      title:       this.$('#project-edit-form-title').val(),
+      description: this.$('#project-edit-form-description').val(),
+    };
 
-    self.model.trigger("project:tag:update:start");
-    self.model.trigger("project:model:update", params);
+    this.model.trigger("project:model:update", params);
   },
 
   viewProject: function (e) {

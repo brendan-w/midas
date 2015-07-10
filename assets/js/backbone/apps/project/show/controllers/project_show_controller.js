@@ -7,10 +7,7 @@ var BaseController = require('../../../../base/base_controller');
 var ProjectItemView = require('../views/project_item_view');
 var ProjectItemCoreMetaView = require('../views/project_item_coremeta_view');
 var ProjectownerShowView = require('../../../projectowner/show/views/projectowner_show_view');
-// var AttachmentView = require('../../../attachment/views/attachment_show_view');
 var TaskListController = require('../../../tasks/list/controllers/task_list_controller');
-// var EventListController = require('../../../events/list/controllers/event_list_controller');
-// var CommentListController = require('../../../comments/list/controllers/comment_list_controller');
 var ModalComponent = require('../../../../components/modal');
 var ModalAlert = require('../../../../components/modal_alert');
 var TaskModel = require('../../../../entities/tasks/task_model');
@@ -88,7 +85,6 @@ Project.ShowController = BaseController.extend({
       self.initializeOwners();
       self.initializeItemViewControllers();
       self.initializeHandlers();
-      // self.initializeLikes();
       self.initializeUI();
     });
   },
@@ -128,51 +124,8 @@ Project.ShowController = BaseController.extend({
       this.taskListController = new TaskListController({
         projectId: this.model.id
       });
-
-      // Events
-      /*
-      if (this.eventListController) this.eventListController.cleanup();
-      this.eventListController = new EventListController({
-        projectId: this.model.id
-      });
-      */
-      // Comments
-      /*
-      if (this.commentListController) this.commentListController.cleanup();
-      this.commentListController = new CommentListController({
-        target: 'project',
-        id: this.model.id
-      });
-      */
-      // Attachments
-      /*
-      if (this.attachmentView) this.attachmentView.cleanup();
-      this.attachmentView = new AttachmentView({
-        target: 'project',
-        id: this.model.attributes.id,
-        action: this.action,
-        data: this.data,
-        owner: this.model.attributes.isOwner,
-        el: '.attachment-wrapper'
-      }).render();
-      */
     }
   },
-
-  /*
-  initializeLikes: function() {
-    $("#like-number").text(this.model.attributes.likeCount);
-    if (parseInt(this.model.attributes.likeCount) === 1) {
-      $("#like-text").text($("#like-text").data('singular'));
-    } else {
-      $("#like-text").text($("#like-text").data('plural'));
-    }
-    if (this.model.attributes.like) {
-      $("#like-button-icon").removeClass('fa-star-o');
-      $("#like-button-icon").addClass('fa fa-star');
-    }
-  },
-  */
 
   initializeHandlers: function() {
     this.listenTo(this.model, "project:update:state:success", function (data) {
@@ -242,50 +195,6 @@ Project.ShowController = BaseController.extend({
     if (e.preventDefault) e.preventDefault();
     this.model.trigger("project:update:state", 'open');
   },
-
-  /*
-  like: function (e) {
-    if (e.preventDefault) e.preventDefault();
-    var self = this;
-    var child = $(e.currentTarget).children("#like-button-icon");
-    var likenumber = $("#like-number");
-    // Not yet liked, initiate like
-    if (child.hasClass('fa-star-o')) {
-      child.removeClass('fa-star-o');
-      child.addClass('fa fa-star');
-      likenumber.text(parseInt(likenumber.text()) + 1);
-      if (parseInt(likenumber.text()) === 1) {
-        $("#like-text").text($("#like-text").data('singular'));
-      } else {
-        $("#like-text").text($("#like-text").data('plural'));
-      }
-      $.ajax({
-        url: '/api/like/like/' + this.model.attributes.id
-      }).done( function (data) {
-        // liked!
-        // response should be the like object
-        // console.log(data.id);
-      });
-    }
-    // Liked, initiate unlike
-    else {
-      child.removeClass('fa-star');
-      child.addClass('fa-star-o');
-      likenumber.text(parseInt(likenumber.text()) - 1);
-      if (parseInt(likenumber.text()) === 1) {
-        $("#like-text").text($("#like-text").data('singular'));
-      } else {
-        $("#like-text").text($("#like-text").data('plural'));
-      }
-      $.ajax({
-        url: '/api/like/unlike/' + this.model.attributes.id
-      }).done( function (data) {
-        // un-liked!
-        // response should be null (empty)
-      });
-    }
-  },
-  */
 
   // ---------------------
   //= Utility Methods
