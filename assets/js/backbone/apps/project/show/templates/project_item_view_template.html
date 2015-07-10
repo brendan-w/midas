@@ -1,8 +1,59 @@
 <!-- ALERTS -->
 <div class="alert alert-danger" id="alert-closed" style="<% if (data.state != 'closed') { %>display: none;<% } %>">This <span data-i18n="project">project</span> is <strong>closed</strong>.  It is no longer active, and no more modifications may be made.</div>
 
-<!-- the full-width container -->
-<div class="container-fluid">
+<!-- MODALS -->
+<div id="modal-close"></div>
+
+<style>
+
+.job-header
+{
+  border:1px solid blue;
+}
+
+</style>
+
+<section class="row job-header">
+  <div class="container">
+    <div class="col-sm-9">
+      <h1>TITLE</h1>
+      <p>Description</p>
+    </div>
+    <div class="col-sm-3">
+
+      <% if (data.isOwner || user.isAdmin) { %>
+      <div class="navbar-side">
+        <ul class="nav nav-pills nav-stacked">
+          <li>
+            <a href="#" id="editProject"><i class="fa fa-pencil"></i> <span class="box-icon-text">Edit <span data-i18n="Project">Project</span></span></a>
+          </li>
+          <% if ( !edit ) { %>
+          <li id="li-project-close" style="<% if (data.state == 'closed') { %>display: none;<% } %>">
+            <a href="#" id="project-close"><i class="fa fa-times-circle"></i> <span class="box-icon-text">Close <span data-i18n="Project">Project</span></span></a>
+          </li>
+          <li id="li-project-reopen" style="<% if (data.state != 'closed') { %>display: none;<% } %>">
+            <a href="#" id="project-reopen"><i class="fa fa-share"></i> <span class="box-icon-text">Reopen <span data-i18n="Project">Project</span></span></a>
+          </li>
+          <% } %>
+          <!--
+          <li>
+            <a href="#" id="project-delete"><i class="fa fa-trash-o"></i> <span class="box-icon-text">Delete <span data-i18n="Project">Project</span></span></a>
+          </li>
+          -->
+        </ul>
+      </div>
+      <% } %>
+
+
+    </div>
+  </div>
+</section>
+
+
+
+
+
+
 
 <div class="row">
   <div class="col-sm-4 col-md-4 col-lg-4 project-sidebar md-nopadding-right sm-nopadding">
@@ -31,29 +82,6 @@
               </li>
             </ul>
           </div>
-          <% if (data.isOwner || user.isAdmin) { %>
-          <div class="navbar-side">
-            <div id="modal-close"></div>
-            <ul class="nav nav-pills nav-stacked">
-              <li>
-                <a href="#" id="editProject"><i class="fa fa-pencil"></i> <span class="box-icon-text">Edit <span data-i18n="Project">Project</span></span></a>
-              </li>
-              <% if ( !edit ) { %>
-              <li id="li-project-close" style="<% if (data.state == 'closed') { %>display: none;<% } %>">
-                <a href="#" id="project-close"><i class="fa fa-times-circle"></i> <span class="box-icon-text">Close <span data-i18n="Project">Project</span></span></a>
-              </li>
-              <li id="li-project-reopen" style="<% if (data.state != 'closed') { %>display: none;<% } %>">
-                <a href="#" id="project-reopen"><i class="fa fa-share"></i> <span class="box-icon-text">Reopen <span data-i18n="Project">Project</span></span></a>
-              </li>
-              <% } %>
-              <!--
-              <li>
-                <a href="#" id="project-delete"><i class="fa fa-trash-o"></i> <span class="box-icon-text">Delete <span data-i18n="Project">Project</span></span></a>
-              </li>
-              -->
-            </ul>
-          </div>
-          <% } %>
         </div>
       </div>
     </div>
@@ -92,7 +120,3 @@
 
   </div>
 </div>
-
-
-
-</div> <!-- /fluid-container -->
