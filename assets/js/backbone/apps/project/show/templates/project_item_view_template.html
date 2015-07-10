@@ -1,10 +1,14 @@
 <!-- ALERTS -->
 <div class="alert alert-danger" id="alert-closed" style="<% if (data.state != 'closed') { %>display: none;<% } %>">This <span data-i18n="project">project</span> is <strong>closed</strong>.  It is no longer active, and no more modifications may be made.</div>
 
+<!-- the full-width container -->
+<div class="container-fluid">
+
 <div class="row">
   <div class="col-sm-4 col-md-4 col-lg-4 project-sidebar md-nopadding-right sm-nopadding">
     <!-- LEFT SIDEBAR -->
 
+    <!--
     <div class="row">
       <div class="col-md-12 box project-header-wrapper">
         <% if (data.coverId) { %>
@@ -25,6 +29,7 @@
       </div>
     </div>
   </div>
+  -->
 
   <div class="col-sm-8 col-md-8 col-lg-8 md-nopadding sm-nopadding">
 
@@ -95,6 +100,10 @@
 
   </div>
 </div>
+
+</div> <!-- /row -->
+
+
 <div class="row">
 
   <div class="col-sm-5 col-md-4 md-nopadding-right sm-nopadding">
@@ -165,3 +174,7 @@
 
   </div>
 </div>
+
+
+
+</div> <!-- /fluid-container -->

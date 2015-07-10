@@ -53,12 +53,13 @@ var ProjectItemCoreMetaView = Backbone.View.extend({
       self.viewProject({});
     });
 
+    /*
     this.model.on("project:tags:save:success", function (data) {
       self.render();
       $('#project-coremeta-success').show();
       self.viewProject({});
     });
-
+    */
   },
 
   render: function () {

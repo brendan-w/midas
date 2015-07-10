@@ -3,7 +3,7 @@ var Backbone = require('backbone');
 var utils = require('../../../../mixins/utilities');
 var ProjectShowTemplate = require('../templates/project_item_view_template.html');
 var ShareTemplate = require('../templates/project_share_template.txt');
-var TagShowView = require('../../../tag/show/views/tag_show_view');
+// var TagShowView = require('../../../tag/show/views/tag_show_view');
 
 
 var ProjectShowView = Backbone.View.extend({
@@ -42,13 +42,14 @@ var ProjectShowView = Backbone.View.extend({
     this.initializeToggle();
     // this.initializeFileUpload();
     // this.initializeTags();
-    this.updatePhoto();
+    // this.updatePhoto();
     this.updateProjectEmail();
     this.model.trigger("project:show:rendered");
 
     return this;
   },
 
+  /*
   updatePhoto: function () {
     this.listenTo(this.model, "project:updated:photo:success", function (data) {
       var model = data.toJSON(), url;
@@ -59,6 +60,7 @@ var ProjectShowView = Backbone.View.extend({
       $('#file-upload-progress-container').hide();
     });
   },
+  */
 
   updateProjectEmail: function() {
     var subject = 'Take A Look At This Project',
