@@ -5,7 +5,7 @@ var utils = require('../../../../mixins/utilities');
 var Popovers = require('../../../../mixins/popovers');
 var BaseController = require('../../../../base/base_controller');
 var ProjectItemView = require('../views/project_item_view');
-var ProjectItemCoreMetaView = require('../views/project_item_coremeta_view');
+// var ProjectItemCoreMetaView = require('../views/project_item_coremeta_view');
 var ProjectownerShowView = require('../../../projectowner/show/views/projectowner_show_view');
 var TaskListController = require('../../../tasks/list/controllers/task_list_controller');
 var ModalComponent = require('../../../../components/modal');
@@ -29,11 +29,9 @@ Project.ShowController = BaseController.extend({
   model: null,
 
   events: {
-    "click #like-button"              : "like",
-    "keyup .comment-content"          : "search",
-    "click #project-close"            : "stateClose",
-    "click #project-reopen"           : "stateReopen",
-    'click #editProject'              : 'toggleEditMode',
+    "click #project-close"                 : "stateClose",
+    "click #project-reopen"                : "stateReopen",
+    'click #editProject'                   : 'toggleEditMode',
     "mouseenter .project-people-show-div"  : popovers.popoverPeopleOn,
     "click .project-people-show-div"       : popovers.popoverClick
   },
@@ -43,11 +41,11 @@ Project.ShowController = BaseController.extend({
     var self = this;
 
     this.router = options.router;
-    this.id = options.id;
-    this.data = options.data;
+    this.id     = options.id;
+    this.data   = options.data;
     this.action = options.action;
+    this.edit   = (options.action == 'edit');
 
-    this.model.trigger("project:model:fetch", this.model.id);
     this.listenTo(this.model, "project:model:fetch:success", function (projectModel) {
       self.model = projectModel;
       if (self.action == 'edit') {
@@ -80,13 +78,17 @@ Project.ShowController = BaseController.extend({
       self.$el.html(template);
     });
 
+
     this.model.on("project:show:rendered", function () {
-      self.initializeItemCoreMetaView();
+      // self.initializeItemCoreMetaView();
       self.initializeOwners();
       self.initializeItemViewControllers();
       self.initializeHandlers();
       self.initializeUI();
     });
+
+    //this fetch will trigger the handlers above to get things started
+    this.model.trigger("project:model:fetch", this.model.id);
   },
 
   initializeItemView: function () {
@@ -98,6 +100,7 @@ Project.ShowController = BaseController.extend({
                             }).render();
   },
 
+  /*
   initializeItemCoreMetaView: function () {
     if (this.projectShowItemCoreMetaView) this.projectShowItemCoreMetaView.cleanup();
     this.projectShowItemCoreMetaView  = new ProjectItemCoreMetaView({
@@ -106,7 +109,7 @@ Project.ShowController = BaseController.extend({
                               data: this.data
                              }).render();
   },
-
+  */
 
   initializeOwners : function(){
     if (this.projectownerShowView) this.projectownerShowView.cleanup();

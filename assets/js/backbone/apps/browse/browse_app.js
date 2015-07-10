@@ -68,7 +68,12 @@ var BrowseRouter = Backbone.Router.extend({
 
   showHome: function () {
     this.cleanupChildren();
-    this.homeController = new HomeController({target: 'home', el: '#container', router: this, data: this.data });
+    this.homeController = new HomeController({
+      target: 'home',
+      el: '#container',
+      router: this,
+      data: this.data
+    });
   },
 
   listProjects: function () {
@@ -91,27 +96,41 @@ var BrowseRouter = Backbone.Router.extend({
 
   showProject: function (id, action) {
     this.cleanupChildren();
+    
     var model = new ProjectModel();
     model.set({ id: id });
-    this.projectShowController = new ProjectShowController({ model: model, router: this, id: id, action: action, data: this.data });
+    
+    this.projectShowController = new ProjectShowController({
+      model: model,
+      router: this,
+      id: id,
+      action: action,
+      data: this.data
+    });
   },
 
   showTask: function (id, action) {
     this.cleanupChildren();
+    
     var model = new TaskModel();
     model.set({ id: id });
-    this.taskShowController = new TaskShowController({ model: model, router: this, id: id, action: action, data: this.data });
+    
+    this.taskShowController = new TaskShowController({
+      model: model,
+      router: this,
+      id: id,
+      action: action,
+      data: this.data
+    });
   },
 
   showProfile: function (id, action) {
     this.cleanupChildren();
+
     // normalize input
-    if (id) {
-      id = id.toLowerCase();
-    }
-    if (action) {
-      action = action.toLowerCase();
-    }
+    if(id)     id     = id.toLowerCase();
+    if(action) action = action.toLowerCase();
+
     // normalize actions that don't have ids
     if (!action && id) {
       if (id == 'edit') {

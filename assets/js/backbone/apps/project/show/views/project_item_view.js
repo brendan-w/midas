@@ -1,8 +1,14 @@
-var _ = require('underscore');
+
+var        _ = require('underscore');
 var Backbone = require('backbone');
-var utils = require('../../../../mixins/utilities');
+var   marked = require('marked');
+var    utils = require('../../../../mixins/utilities');
+
+var      MarkdownEditor = require('../../../../components/markdown_editor');
 var ProjectShowTemplate = require('../templates/project_item_view_template.html');
-var ShareTemplate = require('../templates/project_share_template.txt');
+var       ShareTemplate = require('../templates/project_share_template.txt');
+
+
 
 
 var ProjectShowView = Backbone.View.extend({
@@ -14,29 +20,53 @@ var ProjectShowView = Backbone.View.extend({
 
   initialize: function (options) {
     this.options = options;
-    this.data = options.data;
-    this.action = options.action;
-    this.edit = (this.options.action == 'edit');
+    this.data    = options.data;
+    this.action  = options.action;
+    this.edit    = (options.action == 'edit');
   },
 
   render: function () {
-    var compiledTemplate;
-    var data = {
-      hostname: window.location.hostname,
-      data:     this.model.toJSON(),
-      user:     window.cache.currentUser || {},
-      edit:     this.edit
-    };
 
-    compiledTemplate = _.template(ProjectShowTemplate)(data);
-    this.$el.html(compiledTemplate);
+    //convert the model to JSON, and translate the description
+    //out of markdown, and into HTML
+    var project = this.model.toJSON();
+    project.description_html = marked(project.description || "");
+
+    var t = _.template(ProjectShowTemplate)({
+      project:  project,
+      edit:     this.edit,
+      user:     window.cache.currentUser || {},
+      hostname: window.location.hostname,
+    });
+
+    this.$el.html(t);
     this.$el.i18n();
 
     this.initializeToggle();
     this.updateProjectEmail();
+
+    //idf we're in edit mode, setup the edit controls
+    if(this.edit) this.render_edit();
+
     this.model.trigger("project:show:rendered");
 
     return this;
+  },
+
+
+  render_edit: function() {
+
+    if (this.md) this.md.cleanup();
+
+    this.md = new MarkdownEditor({
+      data: this.model.toJSON().description,
+      el: ".markdown-edit",
+      id: 'project-edit-form-description',
+      title: 'Project Description',
+      rows: 4,
+      validate: ['empty']
+    }).render();
+
   },
 
 

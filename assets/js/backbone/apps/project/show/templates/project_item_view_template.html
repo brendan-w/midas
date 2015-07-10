@@ -1,53 +1,85 @@
+
 <!-- ALERTS -->
-<div class="alert alert-danger" id="alert-closed" style="<% if (data.state != 'closed') { %>display: none;<% } %>">This <span data-i18n="project">project</span> is <strong>closed</strong>.  It is no longer active, and no more modifications may be made.</div>
+<div class="alert alert-danger" id="alert-closed" style="<% if (project.state != 'closed') { %>display: none;<% } %>">This <span data-i18n="project">project</span> is <strong>closed</strong>.  It is no longer active, and no more modifications may be made.</div>
 
 <!-- MODALS -->
 <div id="modal-close"></div>
 
+
+
+
+
 <style>
 
-.job-header
-{
-  border:1px solid blue;
-}
+  .job-header
+  {
+    border:1px solid blue;
+  }
 
 </style>
 
-<section class="row job-header">
-  <div class="container">
-    <div class="col-sm-9">
-      <h1>TITLE</h1>
-      <p>Description</p>
-    </div>
-    <div class="col-sm-3">
 
-      <% if (data.isOwner || user.isAdmin) { %>
-      <div class="navbar-side">
-        <ul class="nav nav-pills nav-stacked">
-          <li>
-            <a href="#" id="editProject"><i class="fa fa-pencil"></i> <span class="box-icon-text">Edit <span data-i18n="Project">Project</span></span></a>
-          </li>
-          <% if ( !edit ) { %>
-          <li id="li-project-close" style="<% if (data.state == 'closed') { %>display: none;<% } %>">
-            <a href="#" id="project-close"><i class="fa fa-times-circle"></i> <span class="box-icon-text">Close <span data-i18n="Project">Project</span></span></a>
-          </li>
-          <li id="li-project-reopen" style="<% if (data.state != 'closed') { %>display: none;<% } %>">
-            <a href="#" id="project-reopen"><i class="fa fa-share"></i> <span class="box-icon-text">Reopen <span data-i18n="Project">Project</span></span></a>
-          </li>
-          <% } %>
-          <!--
-          <li>
-            <a href="#" id="project-delete"><i class="fa fa-trash-o"></i> <span class="box-icon-text">Delete <span data-i18n="Project">Project</span></span></a>
-          </li>
-          -->
-        </ul>
+
+
+
+  <section class="row job-header">
+    <div class="container">
+      <div class="col-sm-9">
+
+        <% if( !edit ) { %>
+
+          <h1><%- project.title %></h1>
+          <div><%= project.description_html %></div>
+
+        <% } else { %>
+
+          <div class="form-group">
+            <h2 class="box-pad-t">Group Title</h2>
+            <input id="project-edit-form-title" class="form-control input-lg" value="<%- project.title %>" type="text" data-validate="empty,count100" title="Title"/>
+            <span class="help-block error-empty" style="display:none;">You must enter a <span data-i18n="project">project</span> title.</span>
+            <span class="help-block error-count100" style="display:none;">Your title must be less than 100 characters.</span>
+          </div>
+
+          <div class="form-group">
+            <h2 class="box-pad-t">Group Description</h2>
+            <div class="markdown-edit"></div>
+            <span class="help-block error-empty" style="display:none;">You must enter a <span data-i18n="project">project</span> description.</span>
+          </div>
+
+        <% } %>
+
       </div>
-      <% } %>
+      <div class="col-sm-3">
+
+        <% if (project.isOwner || user.isAdmin) { %>
+        <div class="navbar-side">
+          <ul class="nav nav-pills nav-stacked">
+            <li>
+              <a href="#" id="editProject"><i class="fa fa-pencil"></i> <span class="box-icon-text">Edit <span data-i18n="Project">Project</span></span></a>
+            </li>
+            <% if ( !edit ) { %>
+            <li id="li-project-close" style="<% if (project.state == 'closed') { %>display: none;<% } %>">
+              <a href="#" id="project-close"><i class="fa fa-times-circle"></i> <span class="box-icon-text">Close <span data-i18n="Project">Project</span></span></a>
+            </li>
+            <li id="li-project-reopen" style="<% if (project.state != 'closed') { %>display: none;<% } %>">
+              <a href="#" id="project-reopen"><i class="fa fa-share"></i> <span class="box-icon-text">Reopen <span data-i18n="Project">Project</span></span></a>
+            </li>
+            <% } %>
+            <!--
+            <li>
+              <a href="#" id="project-delete"><i class="fa fa-trash-o"></i> <span class="box-icon-text">Delete <span data-i18n="Project">Project</span></span></a>
+            </li>
+            -->
+          </ul>
+        </div>
+        <% } %>
 
 
+      </div>
     </div>
-  </div>
-</section>
+  </section>
+
+
 
 
 
@@ -72,13 +104,13 @@
       <div class="col-sm-4 col-md-3 padding-left-none sm-nopadding">
         <div class="box padding-none">
 
-          <div class="navbar-side <% if (data.isOwner || user.isAdmin) { %>border-bottom<% } %>">
+          <div class="navbar-side <% if (project.isOwner || user.isAdmin) { %>border-bottom<% } %>">
             <ul class="nav nav-pills nav-stacked">
               <li>
                 <a href="#" id="email"><i class="fa fa-envelope-o"></i> <span class="box-icon-text">Share</span></a>
               </li>
               <li>
-                <a href="webcal://<%- hostname %>/api/event/ical/<%- data.id %>"><span class="fa fa-calendar"></span> <span class="box-icon-text">Calendar</span></a>
+                <a href="webcal://<%- hostname %>/api/event/ical/<%- project.id %>"><span class="fa fa-calendar"></span> <span class="box-icon-text">Calendar</span></a>
               </li>
             </ul>
           </div>
@@ -104,13 +136,13 @@
   </div>
   <div class="col-sm-7 col-md-8 md-nopadding-right sm-nopadding">
 
-  <% if (!(data.isOwner || user.isAdmin) || !edit) { %>
+  <% if (!(project.isOwner || user.isAdmin) || !edit) { %>
 
     <div class="row">
       <div class="col-md-12 sm-nopadding md-nopadding">
         <!-- BEGIN TASKS -->
         <div class="wrapper-addTask"></div>
-        <div class="box" id="task-list-wrapper" data-project-id="<%- data.id %>">
+        <div class="box" id="task-list-wrapper" data-project-id="<%- project.id %>">
         </div>
         <!-- END TASKS -->
       </div>
