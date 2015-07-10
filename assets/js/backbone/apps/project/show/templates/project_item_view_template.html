@@ -24,7 +24,6 @@
         </div>
       </div>
     </div>
-
   </div>
 
   <div class="col-sm-8 col-md-8 col-lg-8 md-nopadding sm-nopadding">
@@ -40,6 +39,7 @@
       <div class="col-sm-4 col-md-3 padding-left-none sm-nopadding">
         <div class="box padding-none">
 
+          <!--
           <div class="navbar-side like-row border-bottom">
             <% if (user) { %>
             <button id="like-button" class="btn btn-link like-button" title="Click to Like or Unlike">
@@ -55,6 +55,7 @@
             <span class="like-number" id="like-number"><%- data.likeCount %></span>
             <span class="like-plural" id="like-text" data-plural="likes" data-singular="like">likes</span>
           </div>
+          -->
           <div class="navbar-side <% if (data.isOwner || user.isAdmin) { %>border-bottom<% } %>">
             <ul class="nav nav-pills nav-stacked">
               <li>
@@ -103,13 +104,16 @@
         </div>
       </div>
     </div>
+    <!--
     <div class="row">
       <div class="col-md-12 box">
         <div class="box-main tag-wrapper">
         </div>
       </div>
     </div>
+    -->
 
+    <!--
     <% if (!(data.isOwner || user.isAdmin) || !edit) { %>
     <div class="row">
       <div class="col-md-12 box">
@@ -118,19 +122,21 @@
       </div>
     </div>
     <% } %>
+    -->
 
   </div>
   <div class="col-sm-7 col-md-8 md-nopadding-right sm-nopadding">
 
   <% if (!(data.isOwner || user.isAdmin) || !edit) { %>
+
+    <!-- EVENTS
     <div class="row">
       <div class="col-md-12 sm-nopadding md-nopadding">
-        <!-- BEGIN EVENTS -->
         <div class="box" id="event-list-wrapper">
         </div>
-        <!-- END EVENTS -->
       </div>
     </div>
+    -->
 
     <div class="row">
       <div class="col-md-12 sm-nopadding md-nopadding">
@@ -142,13 +148,14 @@
       </div>
     </div>
 
+    <!--
     <div class="row">
       <div class="col-md-12 sm-nopadding md-nopadding">
-
         <div class="box comment-list-wrapper" style="clear: both;">
         </div>
       </div>
     </div>
+    -->
 
     <% } %> <!-- end of check for edit mode -->
 

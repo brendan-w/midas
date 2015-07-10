@@ -7,11 +7,10 @@ var BaseController = require('../../../../base/base_controller');
 var ProjectItemView = require('../views/project_item_view');
 var ProjectItemCoreMetaView = require('../views/project_item_coremeta_view');
 var ProjectownerShowView = require('../../../projectowner/show/views/projectowner_show_view');
-var AttachmentView = require('../../../attachment/views/attachment_show_view');
+// var AttachmentView = require('../../../attachment/views/attachment_show_view');
 var TaskListController = require('../../../tasks/list/controllers/task_list_controller');
-var EventListController = require('../../../events/list/controllers/event_list_controller');
-var CommentListController = require('../../../comments/list/controllers/comment_list_controller');
-var CommentFormView = require('../../../comments/new/views/comment_form_view');
+// var EventListController = require('../../../events/list/controllers/event_list_controller');
+// var CommentListController = require('../../../comments/list/controllers/comment_list_controller');
 var ModalComponent = require('../../../../components/modal');
 var ModalAlert = require('../../../../components/modal_alert');
 var TaskModel = require('../../../../entities/tasks/task_model');
@@ -89,7 +88,7 @@ Project.ShowController = BaseController.extend({
       self.initializeOwners();
       self.initializeItemViewControllers();
       self.initializeHandlers();
-      self.initializeLikes();
+      // self.initializeLikes();
       self.initializeUI();
     });
   },
@@ -131,17 +130,22 @@ Project.ShowController = BaseController.extend({
       });
 
       // Events
+      /*
       if (this.eventListController) this.eventListController.cleanup();
       this.eventListController = new EventListController({
         projectId: this.model.id
       });
+      */
       // Comments
+      /*
       if (this.commentListController) this.commentListController.cleanup();
       this.commentListController = new CommentListController({
         target: 'project',
         id: this.model.id
       });
+      */
       // Attachments
+      /*
       if (this.attachmentView) this.attachmentView.cleanup();
       this.attachmentView = new AttachmentView({
         target: 'project',
@@ -151,9 +155,11 @@ Project.ShowController = BaseController.extend({
         owner: this.model.attributes.isOwner,
         el: '.attachment-wrapper'
       }).render();
+      */
     }
   },
 
+  /*
   initializeLikes: function() {
     $("#like-number").text(this.model.attributes.likeCount);
     if (parseInt(this.model.attributes.likeCount) === 1) {
@@ -166,6 +172,7 @@ Project.ShowController = BaseController.extend({
       $("#like-button-icon").addClass('fa fa-star');
     }
   },
+  */
 
   initializeHandlers: function() {
     this.listenTo(this.model, "project:update:state:success", function (data) {
@@ -236,6 +243,7 @@ Project.ShowController = BaseController.extend({
     this.model.trigger("project:update:state", 'open');
   },
 
+  /*
   like: function (e) {
     if (e.preventDefault) e.preventDefault();
     var self = this;
@@ -277,6 +285,7 @@ Project.ShowController = BaseController.extend({
       });
     }
   },
+  */
 
   // ---------------------
   //= Utility Methods
@@ -284,11 +293,11 @@ Project.ShowController = BaseController.extend({
   cleanup: function() {
     if (this.projectShowItemCoreMetaView) this.projectShowItemCoreMetaView.cleanup();
     if (this.taskListController) this.taskListController.cleanup();
-    if (this.eventListController) this.eventListController.cleanup();
-    if (this.commentListController) this.commentListController.cleanup();
+    // if (this.eventListController) this.eventListController.cleanup();
+    // if (this.commentListController) this.commentListController.cleanup();
     if (this.projectShowItemView) this.projectShowItemView.cleanup();
     if (this.projectownerShowView) this.projectownerShowView.cleanup();
-    if (this.attachmentView) this.attachmentView.cleanup();
+    // if (this.attachmentView) this.attachmentView.cleanup();
     removeView(this);
   }
 

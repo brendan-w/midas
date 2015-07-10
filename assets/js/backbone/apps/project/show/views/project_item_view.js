@@ -1,14 +1,9 @@
-var jqIframe = require('blueimp-file-upload/js/jquery.iframe-transport');
-var jqFU = require('blueimp-file-upload/js/jquery.fileupload.js');
-var select2 = require('Select2');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var utils = require('../../../../mixins/utilities');
-var async = require('async');
 var ProjectShowTemplate = require('../templates/project_item_view_template.html');
 var ShareTemplate = require('../templates/project_share_template.txt');
 var TagShowView = require('../../../tag/show/views/tag_show_view');
-var TagFactory = require('../../../../components/tag_factory');
 
 
 var ProjectShowView = Backbone.View.extend({
@@ -28,7 +23,6 @@ var ProjectShowView = Backbone.View.extend({
         this.edit = true;
       }
     }
-    this.tagFactory = new TagFactory();
     this.data.newItemTags = [];
   },
 
@@ -46,8 +40,8 @@ var ProjectShowView = Backbone.View.extend({
     this.$el.i18n();
 
     this.initializeToggle();
-    this.initializeFileUpload();
-    this.initializeTags();
+    // this.initializeFileUpload();
+    // this.initializeTags();
     this.updatePhoto();
     this.updateProjectEmail();
     this.model.trigger("project:show:rendered");
@@ -90,6 +84,7 @@ var ProjectShowView = Backbone.View.extend({
     }
   },
 
+  /*
   initializeTags: function () {
     this.tagView = new TagShowView({
       model: this.model,
@@ -100,7 +95,9 @@ var ProjectShowView = Backbone.View.extend({
     });
     this.tagView.render();
   },
+  */
 
+  /*
   initializeFileUpload: function () {
     var self = this;
 
@@ -145,6 +142,7 @@ var ProjectShowView = Backbone.View.extend({
     });
 
   },
+  */
 
   cleanup: function () {
     if (this.tagView) { this.tagView.cleanup(); }
