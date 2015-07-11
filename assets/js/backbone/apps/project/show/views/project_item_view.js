@@ -19,6 +19,9 @@ var ProjectShowView = Backbone.View.extend({
     "click #editProject"    : "enter_edit_mode",
     "click #discardChanges" : "exit_edit_mode",
     "click #saveChanges"    : "exit_edit_mode_and_save",
+
+    "blur #project-edit-title"       : "v",
+    "blur #project-edit-description" : "v",
   },
 
   initialize: function (options) {
@@ -83,9 +86,17 @@ var ProjectShowView = Backbone.View.extend({
 
   exit_edit_mode_and_save: function(e) {
     if (e.preventDefault) e.preventDefault();
-
     var self = this;
-    
+
+    // validate the form fields
+    var validateIds = ['#project-edit-title', '#project-edit-description'];
+    for(var i in validateIds)
+    {
+      if(validate({ currentTarget: validateIds[i] }))
+        return;
+    }
+
+    //on success, exit edit mode
     this.model.on("project:save:success", function() {
       self.exit_edit_mode(e);
     });
@@ -114,6 +125,10 @@ var ProjectShowView = Backbone.View.extend({
           '&body=' + encodeURIComponent(body);
 
     this.$('#email').attr('href', link);
+  },
+
+  v: function(e) {
+    return validate(e);
   },
 
   cleanup: function () {
