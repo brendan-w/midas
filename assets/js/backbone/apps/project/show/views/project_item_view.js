@@ -63,7 +63,7 @@ var ProjectShowView = Backbone.View.extend({
     this.md = new MarkdownEditor({
       data: this.model.toJSON().description,
       el: ".markdown-edit",
-      id: 'project-edit-form-description',
+      id: 'project-edit-description',
       title: 'Project Description',
       rows: 4,
       validate: ['empty']
@@ -84,9 +84,17 @@ var ProjectShowView = Backbone.View.extend({
   exit_edit_mode_and_save: function(e) {
     if (e.preventDefault) e.preventDefault();
 
-    //TODO: save the model here
+    var self = this;
+    
+    this.model.on("project:save:success", function() {
+      self.exit_edit_mode(e);
+    });
 
-    this.exit_edit_mode(e);
+    //update the model
+    this.model.update({
+      title:       this.$('#project-edit-title').val(),
+      description: this.$('#project-edit-description').val(),
+    });
   },
 
 

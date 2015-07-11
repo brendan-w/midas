@@ -63,7 +63,8 @@ var ProjectModel = Backbone.Model.extend({
       title: data.title,
       description: data.description,
       tags: data.tags
-    }, { success: function (data) {
+    }, {
+      success: function (data) {
         self.trigger("project:save:success", data);
       }
     });

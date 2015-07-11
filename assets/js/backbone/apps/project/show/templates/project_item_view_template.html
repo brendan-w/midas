@@ -37,7 +37,7 @@
 
         <div class="form-group">
           <h2 class="box-pad-t">Group Title</h2>
-          <input id="project-edit-form-title" class="form-control input-lg" value="<%- project.title %>" type="text" data-validate="empty,count100" title="Title"/>
+          <input id="project-edit-title" class="form-control input-lg" value="<%- project.title %>" type="text" data-validate="empty,count100" title="Title"/>
           <span class="help-block error-empty"    style="display:none;">You must enter a <span data-i18n="project">project</span> title.</span>
           <span class="help-block error-count100" style="display:none;">Your title must be less than 100 characters.</span>
         </div>
@@ -104,46 +104,6 @@
 
 
 
-
-
-
-
-
-<div class="row">
-  <div class="col-sm-4 col-md-4 col-lg-4 project-sidebar md-nopadding-right sm-nopadding">
-    <!-- LEFT SIDEBAR -->
-
-  <div class="col-sm-8 col-md-8 col-lg-8 md-nopadding sm-nopadding">
-
-    <!-- RIGHT MAIN BAR -->
-    <div class="row">
-      <div class="col-sm-8 col-md-9 sm-nopadding">
-        <div class="main-section">
-          <div class="box box-main" id="project-coremeta-wrapper">
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-4 col-md-3 padding-left-none sm-nopadding">
-        <div class="box padding-none">
-
-          <div class="navbar-side <% if (project.isOwner || user.isAdmin) { %>border-bottom<% } %>">
-            <ul class="nav nav-pills nav-stacked">
-              <li>
-                <a href="#" id="email"><i class="fa fa-envelope-o"></i> <span class="box-icon-text">Share</span></a>
-              </li>
-              <li>
-                <a href="webcal://<%- hostname %>/api/event/ical/<%- project.id %>"><span class="fa fa-calendar"></span> <span class="box-icon-text">Calendar</span></a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-</div> <!-- /row -->
 
 
 <div class="row">
