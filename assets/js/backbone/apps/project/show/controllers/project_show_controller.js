@@ -5,7 +5,6 @@ var utils = require('../../../../mixins/utilities');
 var Popovers = require('../../../../mixins/popovers');
 var BaseController = require('../../../../base/base_controller');
 var ProjectItemView = require('../views/project_item_view');
-// var ProjectItemCoreMetaView = require('../views/project_item_coremeta_view');
 var ProjectownerShowView = require('../../../projectowner/show/views/projectowner_show_view');
 var TaskListController = require('../../../tasks/list/controllers/task_list_controller');
 var ModalComponent = require('../../../../components/modal');
@@ -79,7 +78,6 @@ Project.ShowController = BaseController.extend({
 
 
     this.model.on("project:show:rendered", function () {
-      // self.initializeItemCoreMetaView();
       self.initializeOwners();
       self.initializeItemViewControllers();
       self.initializeHandlers();
@@ -98,17 +96,6 @@ Project.ShowController = BaseController.extend({
                               data: this.data
                             }).render();
   },
-
-  /*
-  initializeItemCoreMetaView: function () {
-    if (this.projectShowItemCoreMetaView) this.projectShowItemCoreMetaView.cleanup();
-    this.projectShowItemCoreMetaView  = new ProjectItemCoreMetaView({
-                              model: this.model,
-                              action: this.action,
-                              data: this.data
-                             }).render();
-  },
-  */
 
   initializeOwners : function(){
     if (this.projectownerShowView) this.projectownerShowView.cleanup();

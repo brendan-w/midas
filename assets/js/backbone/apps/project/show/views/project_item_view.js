@@ -48,7 +48,7 @@ var ProjectShowView = Backbone.View.extend({
     this.$el.html(t);
     this.$el.i18n();
 
-    this.updateProjectEmail();
+    // this.updateProjectEmail();
 
     //idf we're in edit mode, setup the edit controls
     if(this.edit) this.render_edit();
@@ -90,11 +90,12 @@ var ProjectShowView = Backbone.View.extend({
 
     // validate the form fields
     var validateIds = ['#project-edit-title', '#project-edit-description'];
+    var abort = false;
     for(var i in validateIds)
     {
-      if(validate({ currentTarget: validateIds[i] }))
-        return;
+      abort = abort || validate({ currentTarget: validateIds[i] });
     }
+    if(abort) return;
 
     //on success, exit edit mode
     this.model.on("project:save:success", function() {
@@ -108,10 +109,7 @@ var ProjectShowView = Backbone.View.extend({
     });
   },
 
-
-
-
-
+  /*
   updateProjectEmail: function() {
     var subject = 'Take A Look At This Project',
         data = {
@@ -126,6 +124,7 @@ var ProjectShowView = Backbone.View.extend({
 
     this.$('#email').attr('href', link);
   },
+  */
 
   v: function(e) {
     return validate(e);
