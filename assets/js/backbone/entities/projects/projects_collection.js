@@ -45,6 +45,14 @@ var ProjectsCollection = Backbone.Collection.extend({
       success: function (data) {
         self.add(project);
         self.trigger("project:save:success", data);
+
+        /*
+          Warning: This is a temporary hack to update the projects dropdown in the
+                   navbar.
+          TODO: instead of using userEvents as a global event broker, there should
+                be a system-wide Project Collection to avoid redundant fetch()es
+        */
+        window.cache.userEvents.trigger("project:save:success", data);
       }
     });
   }
