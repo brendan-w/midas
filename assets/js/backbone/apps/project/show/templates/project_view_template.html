@@ -17,7 +17,7 @@
     <div class="row">
 
       <!-- the main group description box -->
-      <div class="col-md-8">
+      <div class="col-md-9">
 
         <% if( !edit ) { %>
 
@@ -44,7 +44,12 @@
       </div>
 
       <!-- the options side-pane -->
-      <div class="col-md-4">
+      <div class="col-md-3">
+
+        <!-- If the user is logged in, present them with the vet button -->
+        <% if(user && !edit) { %>
+          <button class="btn btn-c2">Vet me for this group</button>
+        <% } %>
 
         <% if (project.isOwner || user.isAdmin) { %>
 
