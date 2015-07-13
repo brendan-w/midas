@@ -47,7 +47,10 @@
   "home" : {
     "headline" : "Hassle Free Collaboration",
     "subhead" : "Work with other federal employees on projects you are passionate about.",
-    "callToAction" : "Get Started Today"
+    "callToAction" : "Get Started Today",
+    "callToLogin" : "Login",
+    "callToRegister" : "Register",
+    "callToBrowse" : "Browse"
   },
 
   "commonAPI" : {
