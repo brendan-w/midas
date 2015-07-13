@@ -56,9 +56,16 @@ $(function () {
         message: jqXHR.responseJSON.message || ""
       });
     } else {
-      $('.alert')
-        .html("<strong>" + errorText + "</strong>. " + jqXHR.responseJSON.message || "")
-        .show();
+
+      var alert = $('.alert');
+
+      //if a message was returned, show it
+      if(jqXHR.responseJSON && jqXHR.responseJSON.message)
+        alert.html("<strong>" + errorText + "</strong>. " + jqXHR.responseJSON.message);
+      else
+        alert.html("<strong>An unknown error occurred</strong>. Please contact your system administrator.");
+
+      alert.show();
     }
   });
 });
