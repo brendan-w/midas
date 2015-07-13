@@ -26,11 +26,10 @@ Project.ShowController = BaseController.extend({
   model: null,
 
   events: {
-    "mouseenter .project-people-show-div"  : popovers.popoverPeopleOn,
-    "click .project-people-show-div"       : popovers.popoverClick
+    "mouseenter .project-people-show-div" : popovers.popoverPeopleOn,
+    "click      .project-people-show-div" : popovers.popoverClick
   },
 
-  // The initialize method is mainly used for event bindings (for effeciency)
   initialize: function (options) {
     var self = this;
 
@@ -38,33 +37,27 @@ Project.ShowController = BaseController.extend({
     this.id     = options.id;
     this.data   = options.data;
     this.action = options.action;
-    this.edit   = (options.action == 'edit');
 
+    //fetch the model
     this.listenTo(this.model, "project:model:fetch:success", function (projectModel) {
-
       self.model = projectModel;
-      if (self.action == 'edit') {
-        var model = this.model.toJSON();
-        // check if the user owns the task
-        var owner = model.isOwner;
-        if (owner !== true) {
-          // if none of these apply, are they an admin?
-          if (window.cache.currentUser) {
-            if (window.cache.currentUser.isAdmin === true) {
-              owner = true;
-            }
-          }
-        }
-        // if not the owner, trigger the login dialog.
-        if (owner !== true) {
+
+      if(options.action == 'edit')
+      {
+        var allowed_to_edit = (self.model.get('isOwner') ||
+                              (window.cache.currentUser && window.cache.currentUser.isAdmin));
+
+        if(!allowed_to_edit)
+        {
           window.cache.userEvents.trigger("user:request:login", {
-            message: "You are not the owner of this project. <a class='link-backbone' href='/projects/" + _.escape(model.id) + "'>View the project instead.</a>",
+            message: "You are not the owner of this project. <a class='link-backbone' href='/projects/" + _.escape(self.model.get('id')) + "'>View the project instead.</a>",
             disableClose: true
           });
-          return;
+          self.action = ""; //don't render the editor
         }
       }
-      self.initializeItemView();
+
+      self.render();
     });
 
     this.listenTo(this.model, "project:model:fetch:error", function (projectModel, xhr) {
@@ -72,7 +65,6 @@ Project.ShowController = BaseController.extend({
       var template = _.template(AlertTemplate)();
       self.$el.html(template);
     });
-
 
     this.model.on("project:show:rendered", function () {
       self.initializeOwners();
@@ -83,22 +75,22 @@ Project.ShowController = BaseController.extend({
     this.model.trigger("project:model:fetch", this.model.id);
   },
 
-  initializeItemView: function () {
+  render: function() {
     if (this.projectShowItemView) this.projectShowItemView.cleanup();
-    this.projectShowItemView  = new ProjectItemView({
-                              model: this.model,
-                              action: this.action,
-                              data: this.data
-                            }).render();
+    this.projectShowItemView = new ProjectItemView({
+      model: this.model,
+      action: this.action,
+      data: this.data
+    }).render();
   },
 
-  initializeOwners : function(){
+  initializeOwners : function() {
     if (this.projectownerShowView) this.projectownerShowView.cleanup();
     this.projectownerShowView = new ProjectownerShowView({
-                              model: this.model,
-                              action: this.action,
-                              data: this.data
-                             }).render();
+      model: this.model,
+      action: this.action,
+      data: this.data
+     }).render();
   },
 
   initializeUI: function() {
