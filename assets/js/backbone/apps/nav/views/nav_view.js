@@ -12,6 +12,7 @@ var UIConfig = require('../../../config/ui.json');
 var Login = require('../../../config/login.json');
 var LoginController = require('../../login/controllers/login_controller');
 var NavTemplate = require('../templates/nav_template.html');
+var ProjectsCollection = require('../../../entities/projects/projects_collection');
 
 
 var NavView = Backbone.View.extend({
@@ -26,6 +27,21 @@ var NavView = Backbone.View.extend({
   initialize: function (options) {
     var self = this;
     this.options = options;
+    this.projects = [];
+
+    this.projectsCollection = new ProjectsCollection();
+
+    this.projectsCollection.on("projects:fetch:success", function(collection) {
+      self.projects = collection.map(function(project) {
+        return {
+          title: project.get("title"),
+          url: "/projects/" + project.get("id"),
+        };
+      });
+      self.render();
+    });
+
+    this.projectsCollection.loadAll();
 
     this.listenTo(window.cache.userEvents, "user:login:success", function (userData) {
       self.doRender({ user: userData });
@@ -63,7 +79,11 @@ var NavView = Backbone.View.extend({
 
   render: function () {
     var self = this;
-    this.doRender({ user: window.cache.currentUser, systemName: window.cache.system.name });
+    this.doRender({
+      user: window.cache.currentUser,
+      systemName: window.cache.system.name,
+      projects: this.projects,
+    });
     return this;
   },
 

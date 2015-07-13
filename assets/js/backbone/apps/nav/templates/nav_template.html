@@ -28,11 +28,15 @@
               <span class="navbar-title-big" data-i18n="ProjectPlural">Projects</span>
             </a>
             <ul class="dropdown-menu" role="menu" aria-labelledby="navbar-profile">
-              <li role="presentation"><a role="menuitem" class="nav-link" href="/projects/1">Development</a></li>
-              <li role="presentation" class="divider"></li>
-              <li role="presentation"><a role="menuitem" tabindex="-1" href="/projects/2" class="nav-link">Design</a></li>
-              <li role="presentation" class="divider"></li>
-              <li role="presentation"><a role="menuitem" tabindex="-1" href="/projects/3" class="nav-link">Translation</a></li>
+              <!-- loop to populate the project dropdown -->
+              <% for(var i = 0; i < projects.length; i++) { %>
+                <li role="presentation"><a role="menuitem" class="nav-link" href="<%- projects[i].url %>"><%- projects[i].title %></a></li>
+
+                <!-- skip the last divider -->
+                <% if(i !== projects.length - 1) { %>
+                  <li role="presentation" class="divider"></li>
+                <% } %>
+              <% } %>
             </ul>
           </li>
         <% } %>
