@@ -22,12 +22,12 @@
           </a>
         </li> -->
         <li class="profile dropdown">
-            <a href="/projects" id="navbar-profile" role="button" class="dropdown-toggle" data-toggle="dropdown">
+            <a href="/projects" role="button" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-comments-o"></i>
               <span class="navbar-title-small" data-i18n="Browse">Browse</span><br/>
               <span class="navbar-title-big" data-i18n="ProjectPlural">Projects</span>
             </a>
-            <ul class="dropdown-menu" role="menu" aria-labelledby="navbar-profile">
+            <ul class="dropdown-menu" role="menu">
               <!-- loop to populate the project dropdown -->
               <% for(var i = 0; i < projects.length; i++) { %>
                 <li role="presentation"><a role="menuitem" class="nav-link" href="<%- projects[i].url %>"><%- projects[i].title %></a></li>
