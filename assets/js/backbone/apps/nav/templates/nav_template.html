@@ -32,12 +32,18 @@
             </a>
             <ul class="dropdown-menu" role="menu">
               <!-- loop to populate the project dropdown -->
-              <% for(var i = 0; i < projects.length; i++) { %>
-                <li role="presentation"><a role="menuitem" class="nav-link" href="<%- projects[i].url %>"><%- projects[i].title %></a></li>
 
-                <!-- skip the last divider -->
-                <% if(i !== projects.length - 1) { %>
-                  <li role="presentation" class="divider"></li>
+              <% if(projects.length === 0) { %>
+                  <li role="presentation"><a role="menuitem" href="#"><i>No Projects Found</i></a></li>
+              <% } else { %>
+
+                <% for(var i = 0; i < projects.length; i++) { %>
+                  <li role="presentation"><a role="menuitem" class="nav-link" href="<%- projects[i].url %>"><%- projects[i].title %></a></li>
+
+                  <!-- skip the last divider -->
+                  <% if(i !== projects.length - 1) { %>
+                    <li role="presentation" class="divider"></li>
+                  <% } %>
                 <% } %>
               <% } %>
             </ul>
