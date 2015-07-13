@@ -49,9 +49,9 @@ module.exports = {
       reqId = req.user[0].id;
     }
     sails.services.utils.user.getUser(req.route.params.id, reqId, function (err, user) {
+      if (err) { return res.send(400, { message: err }); }
       // prune out any info you don't want to be public here.
       if (reqId !== req.route.params.id) user.username = null;
-      if (err) { return res.send(400, { message: err }); }
       sails.log.debug('User Get:', user);
       res.send(user);
     });

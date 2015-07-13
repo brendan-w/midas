@@ -104,17 +104,8 @@
 
   <section id="section-4">
     <div class="form-group fullwidth">
-      <label for="time-estimate">
-        The <span data-i18n="task">opportunity</span> will require
-      </label>
-      <select id="time-estimate" class="dropdown">
-        <% _.each(tags['task-time-estimate'], function (timeEstimate) { %>
-          <option value="<%- timeEstimate.id %>"><%- timeEstimate.name %></option>
-        <% }); %>
-      </select>
-
       <label for="time-required">
-        of
+        This
       </label>
       <select id="time-required" class="dropdown">
         <% _.each(tags['task-time-required'], function (time) { %>
@@ -122,8 +113,19 @@
         <% }); %>
       </select>
 
+      <label for="time-estimate">
+        <span data-i18n="task">opportunity</span> will require
+      </label>
+      <select id="time-estimate" class="dropdown">
+        <% _.each(tags['task-time-estimate'], function (timeEstimate) { %>
+          <option value="<%- timeEstimate.id %>"><%- timeEstimate.name %></option>
+        <% }); %>
+      </select>
+
+
+
       <label for="length">
-        work, and must be completed within
+        of work, and must be completed within
       </label>
       <select id="length" class="dropdown">
         <% _.each(tags['task-length'], function (item) { %>

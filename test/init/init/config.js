@@ -6,15 +6,11 @@ module.exports = {
   tags: [
     {
       type: 'task-time-required',
-      name: 'Part Time'
+      name: 'One time'
     },
     {
       type: 'task-time-required',
-      name: 'Full Time'
-    },
-    {
-      type: 'task-time-required',
-      name: '20% Time'
+      name: 'Ongoing'
     },
     // ------------
     {
@@ -45,23 +41,19 @@ module.exports = {
     // ------------
     {
       type: 'task-length',
-      name: '1 Day'
+      name: '1 week'
     },
     {
       type: 'task-length',
-      name: '1 - 3 Days'
+      name: '1 month'
     },
     {
       type: 'task-length',
-      name: '1 Week'
+      name: '3 months'
     },
     {
       type: 'task-length',
-      name: '1 Month'
-    },
-    {
-      type: 'task-length',
-      name: 'A Few Months'
+      name: '6 months'
     },
     // -------------
     {
@@ -70,7 +62,11 @@ module.exports = {
     },
     {
       type: 'task-time-estimate',
-      name: '1 - 3 hours'
+      name: 'Up to 2 hours'
+    },
+    {
+      type: 'task-time-estimate',
+      name: '2 - 4 hours'
     },
     {
       type: 'task-time-estimate',
@@ -78,16 +74,15 @@ module.exports = {
     },
     {
       type: 'task-time-estimate',
-      name: '9 - 24 hours'
+      name: '8 - 16 hours'
     },
     {
       type: 'task-time-estimate',
-      name: '25 - 40 hours'
+      name: '16 - 24 hours'
     },
     {
       type: 'task-time-estimate',
-      name: 'longer than 40 hours'
-    },
-
+      name: '24 - 40 hours'
+    }
   ]
 };
