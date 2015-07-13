@@ -1,11 +1,15 @@
-var _ = require('underscore');
+var        _ = require('underscore');
 var Backbone = require('backbone');
-var utils = require('../../../../mixins/utilities');
-var async = require('async');
-var Popovers = require('../../../../mixins/popovers');
-var ModalComponent = require('../../../../components/modal');
+var    utils = require('../../../../mixins/utilities');
+var    async = require('async');
+
+var                 Popovers = require('../../../../mixins/popovers');
+var           ModalComponent = require('../../../../components/modal');
 var ProjectownerShowTemplate = require('../templates/projectowner_show_template.html');
 
+
+//create the popovers context
+var popovers = new Popovers();
 
 var ProjectownerShowView = Backbone.View.extend({
 
@@ -21,7 +25,10 @@ var ProjectownerShowView = Backbone.View.extend({
     "click button.owner-form-toggle"      : "toggleOwners",
     "click #owner-save"                   : "saveOwners",
     "click #owner-cancel"                 : "initializeOwnerSelect2",
-    "click .delete-projectowner"          : "removeOwner"
+    "click .delete-projectowner"          : "removeOwner",
+
+    "mouseenter .project-people-show-div" : popovers.popoverPeopleOn,
+    "click      .project-people-show-div" : popovers.popoverClick,
   },
 
   // The initialize method is mainly used for event bindings (for effeciency)
@@ -39,7 +46,9 @@ var ProjectownerShowView = Backbone.View.extend({
 
     this.model.on("projectowner:show:rendered", function () {
       self.initializeOwnerSelect2();
+      popovers.popoverPeopleInit(".project-people-show-div");
     });
+
     //when owner set is updated, re-render and re-init popovers
     this.model.on("project:update:owners:success", function (data) {
       self.render();

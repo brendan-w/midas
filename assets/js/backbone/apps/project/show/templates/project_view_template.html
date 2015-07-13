@@ -1,6 +1,4 @@
 
-<!-- ALERTS -->
-<div class="alert alert-danger" id="alert-closed" style="<% if (project.state != 'closed') { %>display: none;<% } %>">This <span data-i18n="project">project</span> is <strong>closed</strong>.  It is no longer active, and no more modifications may be made.</div>
 
 <!-- MODALS -->
 <div id="modal-close"></div>
@@ -14,6 +12,13 @@
   }
 
 </style>
+
+<!-- ALERTS -->
+<% if(project.state == 'closed') { %>
+
+  <div class="alert alert-danger" id="alert-closed">This <span data-i18n="project">project</span> is <strong>closed</strong>.  It is no longer active, and no more modifications may be made.</div>
+
+<% } %>
 
 
 <section class="row job-header">
@@ -99,28 +104,21 @@
 
 
 
-<!-- only show the task list if we're NOT in edit mode -->
-<% if ( !edit ) { %>
+<% if ( !edit ) { %> <!-- only show these if we're NOT in edit mode -->
 
+<!-- the task list -->
 <section class="row job-header">
   <div class="container">
-
-    <!-- the task list -->
     <div class="col-sm-12">
-
       <div class="box" id="task-list-wrapper" data-project-id="<%- project.id %>"></div>
-
     </div>
-
   </div>
 </section>
 
-<% } %>
+<% } else { %> <!-- only show these if we ARE in edit mode -->
 
-
-
-<div class="row">
-
+<!-- the project owner -->
+<section class="row">
   <div class="col-sm-5 col-md-4 md-nopadding-right sm-nopadding">
     <div class="row">
       <div class="col-md-12 box">
@@ -129,5 +127,6 @@
       </div>
     </div>
   </div>
+</section>
 
-</div>
+<% } %>

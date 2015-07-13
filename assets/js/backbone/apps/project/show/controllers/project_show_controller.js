@@ -4,19 +4,12 @@ var Backbone = require('backbone');
 var    async = require('async');
 var    utils = require('../../../../mixins/utilities');
 
-var             Popovers = require('../../../../mixins/popovers');
-var       BaseController = require('../../../../base/base_controller');
-var      ProjectItemView = require('../views/project_item_view');
-var ProjectownerShowView = require('../../../projectowner/show/views/projectowner_show_view');
-var   TaskListController = require('../../../tasks/list/controllers/task_list_controller');
-var        AlertTemplate = require('../../../../components/alert_template.html');
+var  BaseController = require('../../../../base/base_controller');
+var ProjectItemView = require('../views/project_item_view');
+var   AlertTemplate = require('../../../../components/alert_template.html');
 
 
-var popovers = new Popovers();
-
-Project = {};
-
-Project.ShowController = BaseController.extend({
+var ProjectShowController = BaseController.extend({
 
   el: "#container",
 
@@ -25,10 +18,6 @@ Project.ShowController = BaseController.extend({
   // and get ready for the new data for the project show view.
   model: null,
 
-  events: {
-    "mouseenter .project-people-show-div" : popovers.popoverPeopleOn,
-    "click      .project-people-show-div" : popovers.popoverClick
-  },
 
   initialize: function (options) {
     var self = this;
@@ -42,6 +31,8 @@ Project.ShowController = BaseController.extend({
     this.listenTo(this.model, "project:model:fetch:success", function (projectModel) {
       self.model = projectModel;
 
+      //if the user is trying to edit the project,
+      //check if they have the right permissions
       if(options.action == 'edit')
       {
         var allowed_to_edit = (self.model.get('isOwner') ||
@@ -49,8 +40,9 @@ Project.ShowController = BaseController.extend({
 
         if(!allowed_to_edit)
         {
+          var url = "/projects/" + self.model.get('id');
           window.cache.userEvents.trigger("user:request:login", {
-            message: "You are not the owner of this project. <a class='link-backbone' href='/projects/" + _.escape(self.model.get('id')) + "'>View the project instead.</a>",
+            message: "You are not the owner of this project. <a class='link-backbone' href='" + url + "'>View the project instead.</a>",
             disableClose: true
           });
           self.action = ""; //don't render the editor
@@ -66,11 +58,6 @@ Project.ShowController = BaseController.extend({
       self.$el.html(template);
     });
 
-    this.model.on("project:show:rendered", function () {
-      self.initializeOwners();
-      self.initializeUI();
-    });
-
     //this fetch will trigger the handlers above to get things started
     this.model.trigger("project:model:fetch", this.model.id);
   },
@@ -84,22 +71,6 @@ Project.ShowController = BaseController.extend({
     }).render();
   },
 
-  initializeOwners : function() {
-    if (this.projectownerShowView) this.projectownerShowView.cleanup();
-    this.projectownerShowView = new ProjectownerShowView({
-      model: this.model,
-      action: this.action,
-      data: this.data
-     }).render();
-  },
-
-  initializeUI: function() {
-    popovers.popoverPeopleInit(".project-people-show-div");
-  },
-
-  // ---------------------
-  //= Utility Methods
-  // ---------------------
   cleanup: function() {
     // if (this.taskListController) this.taskListController.cleanup();
     if (this.projectShowItemView) this.projectShowItemView.cleanup();
@@ -109,4 +80,4 @@ Project.ShowController = BaseController.extend({
 
 });
 
-module.exports = Project.ShowController;
+module.exports = ProjectShowController;

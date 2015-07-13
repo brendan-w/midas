@@ -11,6 +11,7 @@ var   TaskListController = require('../../../tasks/list/controllers/task_list_co
 var        ShareTemplate = require('../templates/project_share_template.txt');
 var           ModalAlert = require('../../../../components/modal_alert');
 var       ModalComponent = require('../../../../components/modal');
+var ProjectownerShowView = require('../../../projectowner/show/views/projectowner_show_view');
 
 
 var ProjectShowView = Backbone.View.extend({
@@ -28,14 +29,14 @@ var ProjectShowView = Backbone.View.extend({
     "blur #project-edit-description" : "v",
   },
 
-  initialize: function (options) {
+  initialize: function(options) {
     this.options = options;
     this.data    = options.data;
     this.action  = options.action;
     this.edit    = (options.action == 'edit');
   },
 
-  render: function () {
+  render: function() {
 
     //convert the model to JSON, and translate the description
     //out of markdown, and into HTML
@@ -55,7 +56,7 @@ var ProjectShowView = Backbone.View.extend({
 
     // this.updateProjectEmail();
 
-    //populate the .task-list-wrapper
+    //populate the #task-list-wrapper
     if (this.taskListController) this.taskListController.cleanup();
     this.taskListController = new TaskListController({
       projectId: this.model.id
@@ -64,15 +65,12 @@ var ProjectShowView = Backbone.View.extend({
     //if we're in edit mode, setup the edit controls
     if(this.edit) this.render_edit();
 
-    this.model.trigger("project:show:rendered");
     return this;
   },
-
 
   render_edit: function() {
 
     if (this.md) this.md.cleanup();
-
     this.md = new MarkdownEditor({
       data: this.model.toJSON().description,
       el: ".markdown-edit",
@@ -82,6 +80,13 @@ var ProjectShowView = Backbone.View.extend({
       validate: ['empty']
     }).render();
 
+    //populate the #projectowner-wrapper
+    if (this.projectownerShowView) this.projectownerShowView.cleanup();
+    this.projectownerShowView = new ProjectownerShowView({
+      model: this.model,
+      action: this.action,
+      data: this.data
+    }).render();
   },
 
   enter_edit_mode: function(e) {
