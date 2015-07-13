@@ -6,9 +6,6 @@
 <div id="modal-close"></div>
 
 
-
-
-
 <style>
 
   .job-header
@@ -17,9 +14,6 @@
   }
 
 </style>
-
-
-
 
 
 <section class="row job-header">
@@ -64,17 +58,19 @@
 
             <!-- Edit Group button -->
             <li>
-              <a href="#" id="editProject"><i class="fa fa-pencil"></i> <span class="box-icon-text">Edit <span data-i18n="Project">Project</span></span></a>
+              <a href="#" id="project-edit"><i class="fa fa-pencil"></i> <span class="box-icon-text">Edit <span data-i18n="Project">Project</span></span></a>
             </li>
 
             <% if (project.state == 'closed') { %>
 
+              <!-- Reopen Group button -->
               <li>
                 <a href="#" id="project-reopen"><i class="fa fa-share"></i> <span class="box-icon-text">Reopen <span data-i18n="Project">Project</span></span></a>
               </li>
 
             <% } else { %> <!-- if the group is OPEN -->
 
+              <!-- Close Group button -->
               <li>
                 <a href="#" id="project-close"><i class="fa fa-times-circle"></i> <span class="box-icon-text">Close <span data-i18n="Project">Project</span></span></a>
               </li>
@@ -84,10 +80,10 @@
           <% } else { %> <!-- if this IS edit mode -->
 
             <li>
-              <button id="discardChanges" class="btn btn-c0">Discard Changes</button>
+              <button id="project-discard" class="btn btn-c0">Discard Changes</button>
             </li>
             <li>
-              <button id="saveChanges" class="btn btn-c2">Save <span data-i18n="Project">Project</span></button>
+              <button id="project-save" class="btn btn-c2">Save <span data-i18n="Project">Project</span></button>
             </li>
 
           <% } %>
@@ -103,6 +99,23 @@
 
 
 
+<!-- only show the task list if we're NOT in edit mode -->
+<% if ( !edit ) { %>
+
+<section class="row job-header">
+  <div class="container">
+
+    <!-- the task list -->
+    <div class="col-sm-12">
+
+      <div class="box" id="task-list-wrapper" data-project-id="<%- project.id %>"></div>
+
+    </div>
+
+  </div>
+</section>
+
+<% } %>
 
 
 
@@ -116,21 +129,5 @@
       </div>
     </div>
   </div>
-  <div class="col-sm-7 col-md-8 md-nopadding-right sm-nopadding">
 
-  <% if (!(project.isOwner || user.isAdmin) || !edit) { %>
-
-    <div class="row">
-      <div class="col-md-12 sm-nopadding md-nopadding">
-        <!-- BEGIN TASKS -->
-        <div class="wrapper-addTask"></div>
-        <div class="box" id="task-list-wrapper" data-project-id="<%- project.id %>">
-        </div>
-        <!-- END TASKS -->
-      </div>
-    </div>
-
-    <% } %> <!-- end of check for edit mode -->
-
-  </div>
 </div>

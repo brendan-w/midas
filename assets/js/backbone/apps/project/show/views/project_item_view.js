@@ -4,11 +4,13 @@ var Backbone = require('backbone');
 var   marked = require('marked');
 var    utils = require('../../../../mixins/utilities');
 
-var      MarkdownEditor = require('../../../../components/markdown_editor');
-var ProjectShowTemplate = require('../templates/project_item_view_template.html');
-var       ShareTemplate = require('../templates/project_share_template.txt');
-
-
+var       MarkdownEditor = require('../../../../components/markdown_editor');
+var  ProjectShowTemplate = require('../templates/project_view_template.html');
+var ProjectCloseTemplate = require('../templates/project_close_template.html');
+var   TaskListController = require('../../../tasks/list/controllers/task_list_controller');
+var        ShareTemplate = require('../templates/project_share_template.txt');
+var           ModalAlert = require('../../../../components/modal_alert');
+var       ModalComponent = require('../../../../components/modal');
 
 
 var ProjectShowView = Backbone.View.extend({
@@ -16,9 +18,11 @@ var ProjectShowView = Backbone.View.extend({
   el: "#container",
 
   events: {
-    "click #editProject"    : "enter_edit_mode",
-    "click #discardChanges" : "exit_edit_mode",
-    "click #saveChanges"    : "exit_edit_mode_and_save",
+    "click #project-edit"    : "enter_edit_mode",
+    "click #project-discard" : "exit_edit_mode",
+    "click #project-save"    : "exit_edit_mode_and_save",
+    "click #project-close"   : "close",
+    "click #project-reopen"  : "reopen",
 
     "blur #project-edit-title"       : "v",
     "blur #project-edit-description" : "v",
@@ -38,6 +42,7 @@ var ProjectShowView = Backbone.View.extend({
     var project = this.model.toJSON();
     project.description_html = marked(project.description || "");
 
+    //render the main page template
     var t = _.template(ProjectShowTemplate)({
       project:  project,
       edit:     this.edit,
@@ -50,11 +55,16 @@ var ProjectShowView = Backbone.View.extend({
 
     // this.updateProjectEmail();
 
-    //idf we're in edit mode, setup the edit controls
+    //populate the .task-list-wrapper
+    if (this.taskListController) this.taskListController.cleanup();
+    this.taskListController = new TaskListController({
+      projectId: this.model.id
+    });
+
+    //if we're in edit mode, setup the edit controls
     if(this.edit) this.render_edit();
 
     this.model.trigger("project:show:rendered");
-
     return this;
   },
 
@@ -76,12 +86,14 @@ var ProjectShowView = Backbone.View.extend({
 
   enter_edit_mode: function(e) {
     if (e.preventDefault) e.preventDefault();
-    Backbone.history.navigate('projects/' + this.model.get('id') + '/edit', { trigger: true });
+    var url = 'projects/' + this.model.get('id') + '/edit';
+    Backbone.history.navigate(url, { trigger: true });
   },
 
   exit_edit_mode: function(e) {
     if (e.preventDefault) e.preventDefault();
-    Backbone.history.navigate('projects/' + this.model.get('id'), { trigger: true });    
+    var url = 'projects/' + this.model.get('id');
+    Backbone.history.navigate(url, { trigger: true });
   },
 
   exit_edit_mode_and_save: function(e) {
@@ -109,6 +121,52 @@ var ProjectShowView = Backbone.View.extend({
     });
   },
 
+
+  close: function(e) {
+    if (e.preventDefault) e.preventDefault();
+    var self = this;
+
+    var taskCount = this.taskListController.collection.countOpen();
+
+    if (this.modalAlert)     this.modalAlert.cleanup();
+    if (this.modalComponent) this.modalComponent.cleanup();
+
+    //make a single-page modal
+    this.modalComponent = new ModalComponent({
+      el: "#modal-close",
+      id: "check-close",
+      modalTitle: "Close "+i18n.t("Project")
+    }).render();
+
+    //make and show the modal form
+    this.modalAlert = new ModalAlert({
+      el: "#check-close .modal-template",
+      modalDiv: '#check-close',
+      content: _.template(ProjectCloseTemplate)({ count: taskCount }),
+      submit: "Close " + i18n.t("Project"),
+      cancel: 'Cancel',
+      callback: function (e) {
+        // user clicked the submit button
+        if(taskCount > 0)
+          self.model.trigger("project:update:tasks:orphan", self.taskListController.collection);
+
+        self.model.trigger("project:update:state", 'closed');
+        self.render();
+      }
+    }).render();
+  },
+
+  reopen: function(e) {
+    if (e.preventDefault) e.preventDefault();
+    var self = this;
+
+    this.model.on("project:update:state:success", function() {
+      self.render();
+    });
+
+    this.model.trigger("project:update:state", 'open');
+  },
+
   /*
   updateProjectEmail: function() {
     var subject = 'Take A Look At This Project',
@@ -131,7 +189,8 @@ var ProjectShowView = Backbone.View.extend({
   },
 
   cleanup: function () {
-    if (this.md) { this.md.cleanup(); }
+    if (this.md)                 this.md.cleanup();
+    if (this.taskListController) this.taskListController.cleanup();
     removeView(this);
   },
 });

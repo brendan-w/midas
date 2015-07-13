@@ -38,7 +38,17 @@ var TasksCollection = Backbone.Collection.extend({
         self.trigger("task:save:success", self.task.id);
       }
     });
-  }
+  },
+
+  countOpen: function() {
+    var count = 0;
+    _.each(this.models, function(task) {
+      if ( _.indexOf(['open','assigned'], task.attributes.state) != -1 )
+        count++;
+    });
+    return count;
+  },
+
 
 });
 
