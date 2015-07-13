@@ -14,13 +14,27 @@
       <ul class="nav navbar-nav">
 
         <% if (ui.project.show) { %>
-        <li class="projects">
+        <!-- <li class="projects">
           <a href="/projects" class="nav-link">
             <i class="fa fa-comments-o"></i>
             <span class="navbar-title-small" data-i18n="Browse">Browse</span><br/>
             <span class="navbar-title-big" data-i18n="ProjectPlural">Projects</span>
           </a>
-        </li>
+        </li> -->
+        <li class="profile dropdown">
+            <a href="/projects" id="navbar-profile" role="button" class="dropdown-toggle" data-toggle="dropdown">
+              <i class="fa fa-comments-o"></i>
+              <span class="navbar-title-small" data-i18n="Browse">Browse</span><br/>
+              <span class="navbar-title-big" data-i18n="ProjectPlural">Projects</span>
+            </a>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="navbar-profile">
+              <li role="presentation"><a role="menuitem" class="nav-link" href="/projects/1">Development</a></li>
+              <li role="presentation" class="divider"></li>
+              <li role="presentation"><a role="menuitem" tabindex="-1" href="/projects/2" class="nav-link">Design</a></li>
+              <li role="presentation" class="divider"></li>
+              <li role="presentation"><a role="menuitem" tabindex="-1" href="/projects/3" class="nav-link">Translation</a></li>
+            </ul>
+          </li>
         <% } %>
         <li class="tasks">
           <a href="/tasks" class="nav-link">
