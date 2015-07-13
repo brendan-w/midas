@@ -37,44 +37,16 @@ var AdminTagView = Backbone.View.extend({
 
   tagSelector: function(type) {
     var self = this;
-    $('#' + type).select2({
-      placeholder: 'Search for a tag',
-      minimumInputLength: 2,
-      formatResult: function (obj, container, query) {
-        return obj.name;
-      },
-      formatSelection: function (obj, container, query) {
-        return obj.name;
-      },
-      createSearchChoice: function (term, values) {
-        var vals = values.map(function(value) {
-          return value.value.toLowerCase();
-        });
-        return (vals.indexOf(term.toLowerCase()) >=0) ? false : {
-          unmatched: true,
-          tagType: type,
-          id: term,
-          value: term,
-          name: "<b>"+term+"</b> <i>click to create a new tag with this value</i>"
-        };
-      },
-      ajax: {
-        url: '/api/ac/tag',
-        dataType: 'json',
-        data: function (term) {
-          return {
-            type: type,
-            q: term
-          };
-        },
-        results: function (data) {
-          return { results: data };
-        }
-      }
-    }).on('change', function(e) {
+
+    var $sel = this.tagFactory.createTagDropDown({
+      type: type,
+      selector: "#" + type,
+    })
+
+    $sel.on('change', function(e) {
       var $el = self.$(e.currentTarget);
       self.tagFactory.addTagEntities(e.added, self, function() {
-        $('#' + type).select2('data', null);
+        $sel.select2('data', null);
         if (e.added && e.added.value === e.added.id) {
           $el.next('.form-status').text('Added tag: ' + e.added.value);
         } else {
@@ -82,6 +54,7 @@ var AdminTagView = Backbone.View.extend({
         }
       });
     });
+
   },
 
   cleanup: function () {

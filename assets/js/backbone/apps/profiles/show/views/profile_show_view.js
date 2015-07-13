@@ -26,10 +26,9 @@ var ProfileShowView = Backbone.View.extend({
     "click .link-backbone"       : linkBackbone,
     "click #profile-cancel"      : "profileCancel",
     "click #like-button"         : "like",
-    "keyup #name, #title, #bio"  : "fieldModified",
-    "keyup"                      : "checkName",
-    "change"                     : "checkName",
-    "blur"                       : "checkName",
+    "keyup"                      : "fieldModified",
+    "change"                     : "fieldModified",
+    "blur"                       : "fieldModified",
     "click .removeAuth"          : "removeAuth"
   },
 
@@ -208,14 +207,6 @@ var ProfileShowView = Backbone.View.extend({
   initializeForm: function() {
     var self = this;
 
-    $("#topics").on('change', function (e) {
-      self.model.trigger("profile:input:changed", e);
-    });
-
-    $("#skills").on('change', function (e) {
-      self.model.trigger("profile:input:changed", e);
-    });
-
     this.listenTo(self.model, "profile:save:success", function (data) {
       // Bootstrap .button() has execution order issue since it
       // uses setTimeout to change the text of buttons.
@@ -263,142 +254,29 @@ var ProfileShowView = Backbone.View.extend({
 
   initializeSelect2: function () {
     var self = this;
-
-    var formatResult = function (object, container, query) {
-      return object.name;
-    };
-
     var modelJson = this.model.toJSON();
 
-    var locationSettings = {
-      placeholder: 'Select a Location',
-      formatResult: formatResult,
-      formatSelection: formatResult,
-      minimumInputLength: 1,
-      data: [ location ],
-      createSearchChoice: function (term, values) {
-        var vals = values.map(function(value) {
-          return value.value.toLowerCase();
-        });
-
-        //unmatched = true is the flag for saving these "new" tags to tagEntity when the opp is saved
-        return (vals.indexOf(term.toLowerCase()) >=0) ? false : {
-          tagType: 'location',
-          id: term,
-          value: term,
-          temp: true,
-          name: "<b>"+term+"</b> <i>search for this location</i>"
-        };
-      },
-      ajax: {
-        url: '/api/ac/tag',
-        dataType: 'json',
-        data: function (term) {
-          return {
-            type: 'location',
-            q: term
-          };
-        },
-        results: function (data) {
-          return { results: data };
-        }
-      }
-    };
-
-    $("#company").select2({
-      placeholder: 'Select an Agency',
-      formatResult: formatResult,
-      formatSelection: formatResult,
-      minimumInputLength: 2,
-      ajax: {
-        url: '/api/ac/tag',
-        dataType: 'json',
-        data: function (term) {
-          return {
-            type: 'agency',
-            q: term
-          };
-        },
-        results: function (data) {
-          return { results: data };
-        }
-      }
-    });
-    if (modelJson.agency) {
-      $("#company").select2('data', modelJson.agency);
-    }
-
-    $("#topics").on('change', function (e) {
-      self.model.trigger("profile:input:changed", e);
+    /*
+      The location and company selectors differ from the
+      defaults in tag_show_view, so they are explicitly
+      created here (with different HTML IDs than normal,
+      to avoid conflicts).
+    */
+    this.tagFactory.createTagDropDown({
+      type:        "location",
+      selector:    "#location",
+      multiple:    false,
+      data:        modelJson.location,
+      width:       "100%"
     });
 
-    $("#skills").on('change', function (e) {
-      self.model.trigger("profile:input:changed", e);
-    });
-
-    $("#company").on('change', function (e) {
-      self.model.trigger("profile:input:changed", e);
-    });
-    $('#location').select2(locationSettings).on('select2-selecting', function(e) {
-      var $el = self.$(e.currentTarget),
-          el = this;
-      if (e.choice.temp) {
-        this.temp = true;
-        $('#location').select2('data', e.choice.name);
-        $.get('/api/location/suggest?q=' + e.choice.value, function(d) {
-          d = _(d).map(function(item) {
-            return {
-              id: item.name,
-              text: item.name,
-              name: item.name,
-              unmatched: true,
-              tagType: 'location',
-              data: _(item).omit('name')
-            };
-          });
-          el.reload = true;
-          el.open = true;
-          $('#location').select2({
-            data: d,
-            formatResult: function (obj) { return obj.name; },
-            formatSelection: function (obj) { return obj.name; },
-            createSearchChoice: function (term, values) {
-              if (!values.some(function (v) {
-                  return (v.name.toLowerCase().indexOf(term.toLowerCase()) >= 0);
-                })) {
-                return {
-                  tagType: 'location',
-                  id: term,
-                  value: term,
-                  temp: true,
-                  name: "<b>" + term + "</b> <i>search for this location</i>"
-                };
-              }
-            }
-          }).select2('open');
-        });
-      } else {
-        delete this.temp;
-      }
-    }).on('select2-open', function(e) {
-      if (!this.reload && this.open) {
-        delete this.open;
-        delete this.temp;
-        var cache = $("#location").select2('data');
-        setTimeout(function() {
-          $("#location").select2(locationSettings)
-            .select2('data', cache)
-            .select2('open');
-        }, 0);
-      } else if (this.reload && this.open) {
-        delete this.reload;
-      }
-    });
-    if (modelJson.location) {
-      $("#location").select2('data', modelJson.location);
-    }
-    $("#location").on('change', function (e) {
-      self.model.trigger("profile:input:changed", e);
+    this.tagFactory.createTagDropDown({
+      type:        "agency",
+      selector:    "#company",
+      multiple:    false,
+      allowCreate: false,
+      data:        modelJson.agency,
+      width:       "100%",
     });
   },
 
@@ -415,16 +293,12 @@ var ProfileShowView = Backbone.View.extend({
   },
 
   fieldModified: function (e) {
-    this.model.trigger("profile:input:changed", e);
-  },
 
-  checkName: function (e) {
-    var name = this.$("#name").val();
-    if (name && name !== '') {
-      $("#name").closest(".form-group").find(".help-block").hide();
-    } else {
-      $("#name").closest(".form-group").find(".help-block").show();
-    }
+    //check that the name isn't a null string
+    var $help = this.$("#name").closest(".form-group").find(".help-block");
+    $help.toggle( this.$("#name").val() === "" );
+
+    this.model.trigger("profile:input:changed", e);
   },
 
   profileCancel: function (e) {
@@ -452,17 +326,15 @@ var ProfileShowView = Backbone.View.extend({
           $("#company").select2('data'),
           $("#tag_topic").select2('data'),
           $("#tag_skill").select2('data'),
-          $("#tag_location").select2('data'),
-          $("#location").select2('data'),
-          $("#tag_agency").select2('data')
+          $("#location").select2('data')
         ),
         modelTags = _(this.model.get('tags')).filter(function(tag) {
           return (tag.type !== 'agency' && tag.type !== 'location');
         }),
         data = {
-          name: $("#name").val(),
+          name:  $("#name").val(),
           title: $("#title").val(),
-          bio: $("#bio").val(),
+          bio:   $("#bio").val(),
         },
         email = this.model.get('emails')[0],
         self = this,

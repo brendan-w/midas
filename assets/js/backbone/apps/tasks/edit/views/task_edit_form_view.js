@@ -137,23 +137,27 @@ var TaskEditFormView = Backbone.View.extend({
     }
 
     this.tagFactory.createTagDropDown({
-      type:"skill",selector:"#task_tag_skills",width: "100%", tokenSeparators: [","]
+      type: "skill",
+      selector: "#task_tag_skills",
+      width: "100%",
+      tokenSeparators: [","],
+      data: this.data['madlibTags'].skill
     });
-    if (this.data['madlibTags'].skill) {
-      this.$("#task_tag_skills").select2('data', this.data['madlibTags'].skill);
-    }
 
     this.tagFactory.createTagDropDown({
-      type:"topic", selector: "#task_tag_topics", width: "100%", tokenSeparators: [","]
+      type: "topic",
+      selector: "#task_tag_topics",
+      width: "100%",
+      tokenSeparators: [","],
+      data: this.data['madlibTags'].topic
     });
-    if (this.data['madlibTags'].topic) {
-      this.$("#task_tag_topics").select2('data', this.data['madlibTags'].topic);
-    }
 
-    this.tagFactory.createTagDropDown({type:"location",selector:"#task_tag_location",width: "100%"});
-    if (this.data['madlibTags'].location) {
-      this.$("#task_tag_location").select2('data', this.data['madlibTags'].location);
-    }
+    this.tagFactory.createTagDropDown({
+      type: "location",
+      selector: "#task_tag_location",
+      width: "100%",
+      data: this.data['madlibTags'].location
+    });
 
     $("#skills-required").select2({
       placeholder: "required/not-required",
