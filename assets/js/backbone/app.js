@@ -27,8 +27,12 @@ marked.setOptions({
 });
 
 // App
-window.Application      = window.Application || {};
-window.cache            = { userEvents: {}, currentUser: null, system: {} };
+window.Application = window.Application || {};
+window.cache = {
+  userEvents: {},
+  currentUser: null,
+  system: {}
+};
 
 // Events
 window.entities = { request: {} };

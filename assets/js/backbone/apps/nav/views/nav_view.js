@@ -43,6 +43,17 @@ var NavView = Backbone.View.extend({
 
     this.projectsCollection.loadAll();
 
+    /*
+      Warning: This is a temporary hack to update the projects dropdown in the
+               navbar.
+      TODO: instead of using userEvents as a global event broker, there should
+            be a system-wide Project Collection to avoid redundant fetch()es
+    */
+    this.listenTo(window.cache.userEvents, "project:save:success", function() {
+      self.projectsCollection.loadAll(); //TODO: get rid of this, in favor of a global Project Collection
+      self.render();
+    });
+
     this.listenTo(window.cache.userEvents, "user:login:success", function (userData) {
       self.doRender({ user: userData });
     });
