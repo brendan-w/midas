@@ -1,14 +1,17 @@
-var jqIframe = require('blueimp-file-upload/js/jquery.iframe-transport');
-var jqFU = require('blueimp-file-upload/js/jquery.fileupload.js');
-var select2 = require('Select2');
-var _ = require('underscore');
+
+var        _ = require('underscore');
 var Backbone = require('backbone');
-var utils = require('../../../../mixins/utilities');
-var async = require('async');
-var ProjectShowTemplate = require('../templates/project_item_view_template.html');
-var ShareTemplate = require('../templates/project_share_template.txt');
-var TagShowView = require('../../../tag/show/views/tag_show_view');
-var TagFactory = require('../../../../components/tag_factory');
+var   marked = require('marked');
+var    utils = require('../../../../mixins/utilities');
+
+var       MarkdownEditor = require('../../../../components/markdown_editor');
+var  ProjectShowTemplate = require('../templates/project_view_template.html');
+var ProjectCloseTemplate = require('../templates/project_close_template.html');
+var   TaskListController = require('../../../tasks/list/controllers/task_list_controller');
+var        ShareTemplate = require('../templates/project_share_template.txt');
+var           ModalAlert = require('../../../../components/modal_alert');
+var       ModalComponent = require('../../../../components/modal');
+var ProjectownerShowView = require('../../../projectowner/show/views/projectowner_show_view');
 
 
 var ProjectShowView = Backbone.View.extend({
@@ -16,56 +19,160 @@ var ProjectShowView = Backbone.View.extend({
   el: "#container",
 
   events: {
+    "click #project-edit"    : "enter_edit_mode",
+    "click #project-discard" : "exit_edit_mode",
+    "click #project-save"    : "exit_edit_mode_and_save",
+    "click #project-close"   : "close",
+    "click #project-reopen"  : "reopen",
+
+    "blur #project-edit-title"       : "v",
+    "blur #project-edit-description" : "v",
   },
 
-  initialize: function (options) {
+  initialize: function(options) {
     this.options = options;
-    this.data = options.data;
-    this.action = options.action;
-    this.edit = false;
-    if (this.options.action) {
-      if (this.options.action == 'edit') {
-        this.edit = true;
-      }
-    }
-    this.tagFactory = new TagFactory();
-    this.data.newItemTags = [];
+    this.data    = options.data;
+    this.action  = options.action;
+    this.edit    = (options.action == 'edit');
   },
 
-  render: function () {
-    var compiledTemplate;
-    var data = {
-      hostname: window.location.hostname,
-      data: this.model.toJSON(),
-      user: window.cache.currentUser || {},
-      edit: this.edit
-    };
+  render: function() {
 
-    compiledTemplate = _.template(ProjectShowTemplate)(data);
-    this.$el.html(compiledTemplate);
+    //convert the model to JSON, and translate the description
+    //out of markdown, and into HTML
+    var project = this.model.toJSON();
+    project.description_html = marked(project.description || "");
+
+    //render the main page template
+    var t = _.template(ProjectShowTemplate)({
+      project:  project,
+      edit:     this.edit,
+      user:     window.cache.currentUser || {},
+      hostname: window.location.hostname,
+    });
+
+    this.$el.html(t);
     this.$el.i18n();
 
-    this.initializeToggle();
-    this.initializeFileUpload();
-    this.initializeTags();
-    this.updatePhoto();
-    this.updateProjectEmail();
-    this.model.trigger("project:show:rendered");
+    // this.updateProjectEmail();
+
+    //populate the #task-list-wrapper
+    if (this.taskListController) this.taskListController.cleanup();
+    this.taskListController = new TaskListController({
+      projectId: this.model.id
+    });
+
+    //if we're in edit mode, setup the edit controls
+    if(this.edit) this.render_edit();
 
     return this;
   },
 
-  updatePhoto: function () {
-    this.listenTo(this.model, "project:updated:photo:success", function (data) {
-      var model = data.toJSON(), url;
-      if (model.coverId) {
-        url = '/api/file/get/' + model.coverId;
-        $("#project-header").css('background-image', "url(" + url + ")");
-      }
-      $('#file-upload-progress-container').hide();
+  render_edit: function() {
+
+    if (this.md) this.md.cleanup();
+    this.md = new MarkdownEditor({
+      data: this.model.toJSON().description,
+      el: ".markdown-edit",
+      id: 'project-edit-description',
+      title: 'Project Description',
+      rows: 4,
+      validate: ['empty']
+    }).render();
+
+    //populate the #projectowner-wrapper
+    if (this.projectownerShowView) this.projectownerShowView.cleanup();
+    this.projectownerShowView = new ProjectownerShowView({
+      model: this.model,
+      action: this.action,
+      data: this.data
+    }).render();
+  },
+
+  enter_edit_mode: function(e) {
+    if (e.preventDefault) e.preventDefault();
+    var url = 'projects/' + this.model.get('id') + '/edit';
+    Backbone.history.navigate(url, { trigger: true });
+  },
+
+  exit_edit_mode: function(e) {
+    if (e.preventDefault) e.preventDefault();
+    var url = 'projects/' + this.model.get('id');
+    Backbone.history.navigate(url, { trigger: true });
+  },
+
+  exit_edit_mode_and_save: function(e) {
+    if (e.preventDefault) e.preventDefault();
+    var self = this;
+
+    // validate the form fields
+    var validateIds = ['#project-edit-title', '#project-edit-description'];
+    var abort = false;
+    for(var i in validateIds)
+    {
+      abort = abort || validate({ currentTarget: validateIds[i] });
+    }
+    if(abort) return;
+
+    //on success, exit edit mode
+    this.model.on("project:save:success", function() {
+      self.exit_edit_mode(e);
+    });
+
+    //update the model
+    this.model.update({
+      title:       this.$('#project-edit-title').val(),
+      description: this.$('#project-edit-description').val(),
     });
   },
 
+
+  close: function(e) {
+    if (e.preventDefault) e.preventDefault();
+    var self = this;
+
+    var taskCount = this.taskListController.collection.countOpen();
+
+    if (this.modalAlert)     this.modalAlert.cleanup();
+    if (this.modalComponent) this.modalComponent.cleanup();
+
+    //make a single-page modal
+    this.modalComponent = new ModalComponent({
+      el: "#modal-close",
+      id: "check-close",
+      modalTitle: "Close "+i18n.t("Project")
+    }).render();
+
+    //make and show the modal form
+    this.modalAlert = new ModalAlert({
+      el: "#check-close .modal-template",
+      modalDiv: '#check-close',
+      content: _.template(ProjectCloseTemplate)({ count: taskCount }),
+      submit: "Close " + i18n.t("Project"),
+      cancel: 'Cancel',
+      callback: function (e) {
+        // user clicked the submit button
+        if(taskCount > 0)
+          self.model.trigger("project:update:tasks:orphan", self.taskListController.collection);
+
+        self.model.trigger("project:update:state", 'closed');
+        self.render();
+      }
+    }).render();
+  },
+
+  reopen: function(e) {
+    if (e.preventDefault) e.preventDefault();
+    var self = this;
+
+    this.model.on("project:update:state:success", function() {
+      self.render();
+    });
+
+    this.model.trigger("project:update:state", 'open');
+  },
+
+  /*
   updateProjectEmail: function() {
     var subject = 'Take A Look At This Project',
         data = {
@@ -80,74 +187,15 @@ var ProjectShowView = Backbone.View.extend({
 
     this.$('#email').attr('href', link);
   },
+  */
 
-  initializeToggle: function () {
-    if(this.edit){
-      this.$('#editProject').find('.box-icon-text').html('View ' + i18n.t('Project'));
-    }
-    else{
-      this.$('#editProject').find('.box-icon-text').html('Edit ' + i18n.t('Project'));
-    }
-  },
-
-  initializeTags: function () {
-    this.tagView = new TagShowView({
-      model: this.model,
-      el: '.tag-wrapper',
-      target: 'project',
-      targetId: 'projectId',
-      edit: this.edit
-    });
-    this.tagView.render();
-  },
-
-  initializeFileUpload: function () {
-    var self = this;
-
-    $('#fileupload').fileupload({
-        url: "/api/file/create",
-        dataType: 'text',
-        acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
-        formData: { 'type': 'image' },
-        add: function (e, data) {
-          self.$('#file-upload-progress-container').show();
-          data.submit();
-        },
-        progressall: function (e, data) {
-          var progress = parseInt(data.loaded / data.total * 100, 10);
-          self.$('#file-upload-progress').css(
-            'width',
-            progress + '%'
-          );
-        },
-        done: function (e, data) {
-          var result;
-          // for IE8/9 that use iframe
-          if (data.dataType == 'iframe text') {
-            result = JSON.parse(data.result);
-          }
-          // for modern XHR browsers
-          else {
-            result = JSON.parse($(data.result).text());
-          }
-          self.model.trigger("project:update:photoId", result[0]);
-        },
-        fail: function (e, data) {
-          // notify the user that the upload failed
-          var message = data.errorThrown;
-          self.$('#file-upload-progress-container').hide();
-          if (data.jqXHR.status == 413) {
-            message = "The uploaded file exceeds the maximum file size.";
-          }
-          self.$(".file-upload-alert").html(message);
-          self.$(".file-upload-alert").show();
-        }
-    });
-
+  v: function(e) {
+    return validate(e);
   },
 
   cleanup: function () {
-    if (this.tagView) { this.tagView.cleanup(); }
+    if (this.md)                 this.md.cleanup();
+    if (this.taskListController) this.taskListController.cleanup();
     removeView(this);
   },
 });

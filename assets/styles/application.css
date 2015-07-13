@@ -291,9 +291,11 @@ h1, h2, h3, h4, h5, h6 {
 .navbar {
   margin-bottom: 0px;
 }
+
 #container {
-  margin-top: 20px;
+  margin-top:20px;
 }
+
 /*-----------------*/
 
 .navbar .nav .navbar-title-small {
@@ -1715,12 +1717,6 @@ ul.task-tags > li {
 /*****************
 =  Home
 ******************/
-
-#container.home {
-  padding:0px;
-  margin:0px;
-  width:100%;
-}
 
 #container.home #splash1 {
   background-image: url('/images/home/hp-rotunda-looking-down.jpg');

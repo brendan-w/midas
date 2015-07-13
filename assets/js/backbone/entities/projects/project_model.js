@@ -63,7 +63,8 @@ var ProjectModel = Backbone.Model.extend({
       title: data.title,
       description: data.description,
       tags: data.tags
-    }, { success: function (data) {
+    }, {
+      success: function (data) {
         self.trigger("project:save:success", data);
       }
     });
@@ -104,22 +105,6 @@ var ProjectModel = Backbone.Model.extend({
         self.trigger("project:update:owners:success", data);
       }
     });
-  },
-
-  hasOpenTasks: function(tasks){
-    //takes a task collection object
-    var hasOpenTasks = false;
-    var self = this;
-    var count = 0;
-
-    _.each(tasks.models,function(task){
-      if ( _.indexOf(['open','assigned'],task.attributes.state) != -1 ){
-        hasOpenTasks = true;
-        count++;
-      }
-    });
-
-    return {hasOpenTasks:hasOpenTasks,count:count};
   },
 
   orphan: function(tasks) {

@@ -1,0 +1,14 @@
+<div>
+  <% if(count > 0) { %>
+
+    <p>This <span data-i18n="project">project</span> has <strong><%- count %></strong> open, or in progress, <span data-i18n="taskPlural">opportunities</span>. Closing this <span data-i18n="project">project</span> will cause any such opportunities to be orphaned (no longer associated with any <span data-i18n="project">project</span>).</p>
+
+  <% } else { %> <!-- if there are no open or asigned tasks for this group -->
+
+    <p>Are you sure you want to close this <span data-i18n="project">project</span>? Once the <span data-i18n="project">project</span> is closed, participants will no longer be able to contribute.</p>
+
+  <% } %>
+
+  <p>Are you sure you wish to proceed?</p>
+
+</div>
