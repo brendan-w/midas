@@ -4,15 +4,6 @@
 <div id="modal-close"></div>
 
 
-<style>
-
-  .job-header
-  {
-    background: rgb(255, 255, 255);
-  }
-
-</style>
-
 <!-- ALERTS -->
 <% if(project.state == 'closed') { %>
 
@@ -21,7 +12,7 @@
 <% } %>
 
 
-<section class="row job-header">
+<section class="row">
   <div class="container">
 
     <!-- the main group description box -->
@@ -107,7 +98,7 @@
 <% if ( !edit ) { %> <!-- only show these if we're NOT in edit mode -->
 
 <!-- the task list -->
-<section class="row job-header">
+<section class="row">
   <div class="container">
     <div class="col-sm-12">
       <div class="box" id="task-list-wrapper" data-project-id="<%- project.id %>"></div>
