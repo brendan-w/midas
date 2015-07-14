@@ -677,21 +677,17 @@ module.exports = {
    * @return a new user object
    */
   cleanUser: function (user, reqId) {
-    var u = {
+    return {
       id: user.id,
       username: user.username,
       name: user.name,
       title: user.title,
       bio: user.bio,
       tags: user.tags,
+      permissions: user.permissions,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt
     };
-    // if the requestor is the same as the user, show admin status
-    if (user.id === reqId) {
-      u.isAdmin = user.isAdmin;
-    }
-    return u;
   },
 
   /**
@@ -702,7 +698,7 @@ module.exports = {
    */
   getUser: function (userId, reqId, reqUser, cb) {
     var self = this,
-        admin = (reqUser && reqUser[0] && reqUser[0].isAdmin) ? true : false;
+        admin = (reqUser && reqUser[0] && reqUser[0].permissions.admin) ? true : false;
     if (!_.isFinite(userId)) {
       return cb({ message: 'User ID must be a numeric value' }, null);
     }
