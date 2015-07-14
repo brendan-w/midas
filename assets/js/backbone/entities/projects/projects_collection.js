@@ -13,23 +13,18 @@ var ProjectsCollection = Backbone.Collection.extend({
     return response.projects;
   },
 
-  loadAll: function() {
-    var self = this;
-    this.fetch({
-      success: function(collection, response, options) {
-        self.trigger("projects:fetch:success", collection);
-      },
-      error: function(collection, response, options) {
-        self.trigger("projects:fetch:error", collection);
-      },
-    })
-  },
-
   initialize: function () {
     var self = this;
 
     this.listenTo(this, "project:save", function (data) {
       self.addAndSave(data);
+    });
+  },
+
+  open: function() {
+    return this.where({
+      state: "open",
+      archived: false
     });
   },
 

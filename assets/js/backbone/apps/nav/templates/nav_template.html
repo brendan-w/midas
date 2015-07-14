@@ -38,7 +38,7 @@
               <% } else { %>
 
                 <% for(var i = 0; i < projects.length; i++) { %>
-                  <li role="presentation"><a role="menuitem" class="nav-link" href="<%- projects[i].url %>"><%- projects[i].title %></a></li>
+                  <li role="presentation"><a role="menuitem" class="nav-link" href="/projects/<%- projects[i].id %>"><%- projects[i].title %></a></li>
 
                   <!-- skip the last divider -->
                   <% if(i !== projects.length - 1) { %>

@@ -31,21 +31,14 @@ var NavView = Backbone.View.extend({
 
     this.projectsCollection = new ProjectsCollection();
 
-    this.projectsCollection.on("projects:fetch:success", function(collection) {
-      self.projects = collection.map(function(project) {
-        //don't show closed or archived groups
-        if((project.get("state") != "open") ||
-            project.get("archived"))
-          return;
-        return {
-          title: project.get("title"),
-          url: "/projects/" + project.get("id"),
-        };
+    this.projectsCollection.on("sync", function(collection) {
+      self.projects = collection.open().map(function(project) {
+        return project.toJSON();
       });
       self.render();
     });
 
-    this.projectsCollection.loadAll();
+    this.projectsCollection.fetch();
 
     /*
       Warning: This is a temporary hack to update the projects dropdown in the
@@ -54,7 +47,7 @@ var NavView = Backbone.View.extend({
             be a system-wide Project Collection to avoid redundant fetch()es
     */
     this.listenTo(window.cache.userEvents, "project:save:success", function() {
-      self.projectsCollection.loadAll(); //TODO: get rid of this, in favor of a global Project Collection
+      self.projectsCollection.fetch(); //TODO: get rid of this, in favor of a global Project Collection
     });
 
     this.listenTo(window.cache.userEvents, "user:login:success", function (userData) {
