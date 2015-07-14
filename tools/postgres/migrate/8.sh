@@ -18,6 +18,7 @@ CREATE TABLE permissions (
     \"project_create\" boolean,
     \"task_create\" boolean,
     \"moderate\" boolean,
+    \"vet\" boolean,
 
     \"createdAt\" timestamp with time zone,
     \"updatedAt\" timestamp with time zone,

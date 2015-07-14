@@ -67,7 +67,7 @@
               <% } %>
             </ul>
           </div>
-          <% if (model.isOwner || (user && user.isAdmin)) { %>
+          <% if (model.isOwner || (user && user.permissions.admin)) { %>
           <div class="navbar-side <% if (user) { %>border-bottom<% } %>">
             <div id="modal-close"></div>
             <ul class="nav nav-pills nav-stacked">
@@ -77,7 +77,7 @@
               <li class="li-task-view" style="display: none;">
                 <a href="#" id="task-view"><i class="fa fa-pencil"></i> <span class="box-icon-text">View <span data-i18n="Task">Opportunity</span></span></a>
               </li>
-              <% if (!draftAdminOnly || model.state !== 'draft' || (user && user.isAdmin)) { %>
+              <% if (!draftAdminOnly || model.state !== 'draft' || (user && user.permissions.admin)) { %>
               <li id="li-task-close" style="<% if (model.state == 'closed') { %>display: none;<% } %>">
                 <a href="#" id="task-close"><i class="fa fa-times-circle"></i> <span class="box-icon-text">Change <span data-i18n="Task">Opportunity</span> State</span></a>
               </li>

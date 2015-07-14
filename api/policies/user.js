@@ -3,7 +3,7 @@
 */
 
 module.exports = function user (req, res, next) {
-  if (req.user && req.user[0].isAdmin) {
+  if (req.user && req.user[0].permissions.admin) {
     //admins are allowed to do anything
     return next();
   } else {

@@ -23,7 +23,7 @@
 
   <% _.each(events, function (event, iterator) { %>
   <div class="event border-left" data-id="<%- event.id %>">
-    <% if ((user && user.isAdmin)) { %>
+    <% if ((user && user.permissions.admin)) { %>
     <a href="#" class="delete-project-event"><span class='fa fa-times'></span></a>
     <% } %>
     <% if (user) { %>

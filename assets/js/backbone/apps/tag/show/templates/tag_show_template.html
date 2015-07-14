@@ -1,7 +1,7 @@
 <% for (var i = 0; i < tags.length; i++) { %>
 <div class="tag-title <%- tags[i]['class'] %>" id="<%- tags[i].id %>">
   <h2><i class="<%- tags[i].icon %>"></i> <span class="box-icon-text"><%- tags[i].plural %></span></h2>
-  <% if ((data.isOwner || user.isAdmin) && edit) { %>
+  <% if ((data.isOwner || user.permissions.admin) && edit) { %>
   <div style='margin-bottom: 5px'>
     <input type="text" id="tag_<%- tags[i].id.toLowerCase() %>" class="fullwidth" name="tag_<%- tags[i].name.toLowerCase() %>"/>
   </div>

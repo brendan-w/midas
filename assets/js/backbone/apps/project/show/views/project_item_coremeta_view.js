@@ -89,7 +89,7 @@ var ProjectItemCoreMetaView = Backbone.View.extend({
 
   initializeToggledElements: function() {
     var self = this;
-    if ((this.model.attributes.isOwner || this.user.isAdmin) && this.edit){
+    if ((this.model.attributes.isOwner || this.user.permissions.admin) && this.edit){
       self.$('#project-coremeta-form').show();
       self.$('#project-coremeta-show').hide();
     }
@@ -104,7 +104,7 @@ var ProjectItemCoreMetaView = Backbone.View.extend({
 
   saveCoreMeta: function (e){
     if (e.preventDefault) e.preventDefault();
-    if (!(this.model.attributes.isOwner || this.user.isAdmin) && this.edit) return false;
+    if (!(this.model.attributes.isOwner || this.user.permissions.admin) && this.edit) return false;
 
     // validate the form fields
     var validateIds = ['#project-edit-form-title', '#project-edit-form-description'];

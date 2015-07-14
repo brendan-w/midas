@@ -196,10 +196,10 @@ var AdminUserView = Backbone.View.extend({
           if (data.disabled === false) {
             $(t.siblings(".admin-user-disable")[0]).show();
           }
-          if (data.isAdmin === true) {
+          if (data.permissions.admin === true) {
             $(t.siblings(".admin-user-rmadmin")[0]).show();
           }
-          if (data.isAdmin === false) {
+          if (data.permissions.admin === false) {
             $(t.siblings(".admin-user-mkadmin")[0]).show();
           }
         }

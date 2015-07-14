@@ -61,7 +61,7 @@ Project.ShowController = BaseController.extend({
         if (owner !== true) {
           // if none of these apply, are they an admin?
           if (window.cache.currentUser) {
-            if (window.cache.currentUser.isAdmin === true) {
+            if (window.cache.currentUser.permissions.admin === true) {
               owner = true;
             }
           }

@@ -3,7 +3,7 @@
 */
 module.exports = function protectedFile (req, res, next) {
   // Admins can do anything
-  if (req.user && req.user[0].isAdmin) { return next(); }
+  if (req.user && req.user[0].permissions.admin) { return next(); }
   // Posts don't require an id
   if (req.user && (req.route.method == 'post')) { return next(); }
   // Id must be specified; can't execute findAll or find with no parameters
