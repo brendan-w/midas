@@ -30,10 +30,22 @@ var ProjectShowView = Backbone.View.extend({
   },
 
   initialize: function(options) {
+    var self = this;
+
     this.options = options;
     this.data    = options.data;
     this.action  = options.action;
     this.edit    = (options.action == 'edit');
+
+    //whenever the model gets synced, re-render
+    this.model.on("sync", function() {
+      self.render();
+    });
+
+    this.model.on("change", function(model, response) {
+      //the nav needs to update itself for changes in the models name
+      window.cache.userEvents.trigger("project:save:success");
+    });
   },
 
   render: function() {
@@ -114,15 +126,15 @@ var ProjectShowView = Backbone.View.extend({
     }
     if(abort) return;
 
-    //on success, exit edit mode
-    this.model.on("project:save:success", function() {
-      self.exit_edit_mode(e);
-    });
-
-    //update the model
-    this.model.update({
+    //save the changes to the server
+    this.model.save({
       title:       this.$('#project-edit-title').val(),
       description: this.$('#project-edit-description').val(),
+    }, {
+      success: function() {
+        //on success, exit edit mode
+        self.exit_edit_mode(e);
+      },
     });
   },
 
@@ -155,8 +167,7 @@ var ProjectShowView = Backbone.View.extend({
         if(taskCount > 0)
           self.model.trigger("project:update:tasks:orphan", self.taskListController.collection);
 
-        self.model.trigger("project:update:state", 'closed');
-        self.render();
+        self.model.save({"state": "closed"}); //close the project
       }
     }).render();
   },
@@ -165,11 +176,8 @@ var ProjectShowView = Backbone.View.extend({
     if (e.preventDefault) e.preventDefault();
     var self = this;
 
-    this.model.on("project:update:state:success", function() {
-      self.render();
-    });
-
-    this.model.trigger("project:update:state", 'open');
+    //open the project
+    self.model.save({"state": "open"});
   },
 
   /*

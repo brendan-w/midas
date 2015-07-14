@@ -7,7 +7,8 @@ var ProjectModel = Backbone.Model.extend({
   defaults: {
     title       : null,
     description : null,
-    archived    : false
+    archived    : false,
+    state       : "open",
   },
 
   // Initialize contains only event bindings and if/then response
@@ -25,10 +26,6 @@ var ProjectModel = Backbone.Model.extend({
 
     this.listenTo(this, "project:update:photoId", function (file) {
       self.updatePhoto(file);
-    });
-
-    this.listenTo(this, "project:update:state", function (state) {
-      self.updateState(state);
     });
 
     this.listenTo(this, "projectowner:show:changed", function (data) {
@@ -59,21 +56,9 @@ var ProjectModel = Backbone.Model.extend({
   update: function (data) {
     var self = this;
 
-    this.save({
-      title: data.title,
-      description: data.description,
-      tags: data.tags
-    }, {
+    this.save(data, {
       success: function (data) {
         self.trigger("project:save:success", data);
-
-        /*
-          Warning: This is a temporary hack to update the projects dropdown in the
-                   navbar.
-          TODO: instead of using userEvents as a global event broker, there should
-                be a system-wide Project Collection to avoid redundant fetch()es
-        */
-        window.cache.userEvents.trigger("project:save:success", data);
       }
     });
   },
@@ -87,18 +72,6 @@ var ProjectModel = Backbone.Model.extend({
     }, {
       success: function (data) {
         self.trigger("project:updated:photo:success", data);
-      }
-    });
-  },
-
-  updateState: function (state) {
-    var self = this;
-
-    this.save({
-      state: state
-    }, {
-      success: function(data) {
-        self.trigger("project:update:state:success", data);
       }
     });
   },

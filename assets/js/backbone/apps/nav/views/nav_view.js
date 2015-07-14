@@ -33,6 +33,10 @@ var NavView = Backbone.View.extend({
 
     this.projectsCollection.on("projects:fetch:success", function(collection) {
       self.projects = collection.map(function(project) {
+        //don't show closed or archived groups
+        if((project.get("state") != "open") ||
+            project.get("archived"))
+          return;
         return {
           title: project.get("title"),
           url: "/projects/" + project.get("id"),
@@ -51,7 +55,6 @@ var NavView = Backbone.View.extend({
     */
     this.listenTo(window.cache.userEvents, "project:save:success", function() {
       self.projectsCollection.loadAll(); //TODO: get rid of this, in favor of a global Project Collection
-      self.render();
     });
 
     this.listenTo(window.cache.userEvents, "user:login:success", function (userData) {
