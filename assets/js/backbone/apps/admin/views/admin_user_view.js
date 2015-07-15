@@ -215,10 +215,18 @@ var AdminUserView = Backbone.View.extend({
   changePermissions: function(e) {
     if (e.preventDefault) e.preventDefault();
     var t = $(e.currentTarget);
+    var spinner = this.spinnerForControl(t);
+    spinner.show();
+    t.hide();
 
     this.saveUserProperty({
       id: this.controlToID(t),
       permissions: t.val(),
+    }, {
+      success: function() {
+        spinner.hide();
+        t.show();
+      },
     });
   },
 
