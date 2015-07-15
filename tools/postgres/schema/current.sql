@@ -324,7 +324,6 @@ CREATE TABLE midas_user (
     "photoId" integer,
     "photoUrl" text,
     permissions text,
-    "isAdmin" boolean,
     disabled boolean,
     "passwordAttempts" integer,
     id integer NOT NULL,

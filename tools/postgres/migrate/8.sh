@@ -3,6 +3,14 @@
 # Add a model column for the users permissions ID
 psql -U midas -d midas -c "ALTER TABLE midas_user ADD COLUMN permissions text;"
 
+# old administrators should stay administrators
+psql -U midas -d midas -c "UPDATE midas_user SET midas_user.permissions=\"admin\" WHERE midas_user.isAdmin=TRUE;"
+# non-admins become applicants by default
+psql -U midas -d midas -c "UPDATE midas_user SET midas_user.permissions=\"applicant\" WHERE midas_user.isAdmin=FALSE;"
+
+# remove the isAdmin column
+psql -U midas -d midas -c "ALTER TABLE midas_user DROP COLUMN isAdmin;"
+
 # Make the permissions table
 psql -U midas -d midas -c "
 

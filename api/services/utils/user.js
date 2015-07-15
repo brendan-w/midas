@@ -120,7 +120,7 @@ module.exports = {
 
     // for unit tests; only works when NODE_ENV=test is set in the environment
     if ((username == 'admin@midascrowd.com') && (process.env.NODE_ENV == 'test')) {
-      userData.isAdmin = true;
+      userData.permissions = "admin";
       updateAction = true;
     }
 

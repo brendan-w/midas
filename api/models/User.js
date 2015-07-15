@@ -35,12 +35,6 @@ module.exports = {
       model: 'Permissions'
     },
 
-    // User metadata for service delivery
-    isAdmin: {
-      type: 'BOOLEAN',
-      defaultsTo: false
-    },
-
     // is the user's login disabled
     disabled: {
       type: 'BOOLEAN',
@@ -74,7 +68,7 @@ module.exports = {
     'location': {field: 'location', filter: exportUtils.nullToEmptyString},
 
     'bio': {field: 'bio', filter: exportUtils.nullToEmptyString},
-    'admin': 'isAdmin',
+    'type': 'permissions',
     'disabled': 'disabled'
   },
 
