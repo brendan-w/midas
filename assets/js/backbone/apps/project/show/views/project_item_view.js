@@ -41,11 +41,6 @@ var ProjectShowView = Backbone.View.extend({
     this.model.on("sync", function() {
       self.render();
     });
-
-    this.model.on("change", function(model, response) {
-      //the nav needs to update itself for changes in the models name
-      window.cache.userEvents.trigger("project:save:success");
-    });
   },
 
   render: function() {
