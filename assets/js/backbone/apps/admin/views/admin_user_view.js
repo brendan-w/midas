@@ -97,7 +97,7 @@ var AdminUserView = Backbone.View.extend({
     // load this page of data
     this.fetchData(self, {
       page: $(e.currentTarget).data('page'),
-      q: $($(e.currentTarget).parent('ul')[0]).data('filter'),
+      q: $(e.currentTarget).parent('ul').eq(0).data('filter'),
       limit: this.limit
     });
   },
@@ -137,11 +137,11 @@ var AdminUserView = Backbone.View.extend({
 
 
   spinnerForControl: function($target) {
-    return $($($target.parent()[0]).children('.btn-spin')[0]);
+    return $target.parent().eq(0).children('.btn-spin').eq(0);
   },
 
   controlToID: function($target) {
-    return $($target.parents('tr')[0]).data('id');
+    return $target.parents('tr').eq(0).data('id');
   },
 
   /*
@@ -170,7 +170,7 @@ var AdminUserView = Backbone.View.extend({
         // hide the spinner
         spinner.hide();
         // show the opposite button
-        $(t.siblings(".admin-user-disable")[0]).show();
+        t.siblings(".admin-user-disable").eq(0).show();
       }
     });
   },
@@ -190,7 +190,7 @@ var AdminUserView = Backbone.View.extend({
         // hide the spinner
         spinner.hide();
         // show the opposite button
-        $(t.siblings(".admin-user-enable")[0]).show();
+        t.siblings(".admin-user-enable").eq(0).show();
       }
     });
   },
@@ -235,10 +235,10 @@ var AdminUserView = Backbone.View.extend({
     if (this.passwordView) { this.passwordView.cleanup(); }
     if (this.modalComponent) this.modalComponent.cleanup();
 
-    var tr = $($(e.currentTarget).parents('tr')[0]);
+    var tr = $(e.currentTarget).parents('tr').eq(0);
     var user = {
       id: tr.data('id'),
-      name: $(tr.find('td.admin-table-name')[0]).text().trim()
+      name: tr.find('td.admin-table-name').eq(0).text().trim()
     };
 
     // set up the modal
