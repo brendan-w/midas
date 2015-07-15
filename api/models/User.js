@@ -78,11 +78,36 @@ module.exports = {
     'disabled': 'disabled'
   },
 
+  beforeCreate: function(model, done) {
+    //same handling as updates
+    this.beforeUpdate(model, done);
+  },
+
+  beforeUpdate: function(model, done) {
+
+    //if no permissions are defined, pass it through with no errors
+    if(!model.permissions)
+      return done();
+
+    //ensure that permissions are ONLY referenced by name
+    //sails should never update the actuall permissions model, only the foreign key
+    if(typeof(model.permissions) !== "string")
+      return done("User permissions may only be updated by string name");
+
+    //make sure that this is an existing permissions name
+    Permissions.findOneByName(model.permissions).exec(function (err, p) {
+      if (err || !p)
+        return done("Invalid permissions name: " + model.permissions);
+      else
+        return done();
+    });
+  },
+
   afterCreate: function(model, done) {
     Notification.create({
       action: 'user.create.welcome',
       model: model
     }, done);
-  }
+  },
 
 };

@@ -1,12 +1,14 @@
-var _ = require('underscore');
+var        _ = require('underscore');
 var Backbone = require('backbone');
-var utils = require('../../../mixins/utilities');
-var ModalComponent = require('../../../components/modal');
+var    utils = require('../../../mixins/utilities');
+
+var          ProfileModel = require('../../../entities/profiles/profile_model');
+var        ModalComponent = require('../../../components/modal');
 var AdminUserPasswordView = require('./admin_user_password_view');
-var AdminUserTemplate = require('../templates/admin_user_template.html');
-var AdminUserTable = require('../templates/admin_user_table.html');
-var Paginate = require('../templates/admin_paginate.html');
-var LoginConfig = require('../../../config/login.json');
+var     AdminUserTemplate = require('../templates/admin_user_template.html');
+var        AdminUserTable = require('../templates/admin_user_table.html');
+var              Paginate = require('../templates/admin_paginate.html');
+var           LoginConfig = require('../../../config/login.json');
 
 
 var AdminUserView = Backbone.View.extend({
@@ -14,13 +16,12 @@ var AdminUserView = Backbone.View.extend({
   events: {
     "click a.page"              : "clickPage",
     "click .link-backbone"      : linkBackbone,
-    "click .admin-user-mkadmin" : "adminCreate",
-    "click .admin-user-rmadmin" : "adminRemove",
-    "click .admin-user-enable"  : "adminEnable",
-    "click .admin-user-disable" : "adminDisable",
-    "click .admin-user-unlock"  : "adminUnlock",
+    "click .admin-user-enable"  : "enable",
+    "click .admin-user-disable" : "disable",
+    "click .admin-user-unlock"  : "unlock",
     "click .admin-user-resetpw" : "resetPassword",
-    "keyup #user-filter"        : "filter"
+    "change #permissions"       : "changePermissions",
+    "keyup #user-filter"        : "filter",
   },
 
   initialize: function (options) {
@@ -44,8 +45,20 @@ var AdminUserView = Backbone.View.extend({
     var template = _.template(AdminUserTemplate)(data);
     this.$el.html(template);
     this.rendered = true;
+
+
     // fetch user data
-    this.fetchData(self, this.data);
+    $.ajax({
+      url: '/api/admin/findAllPermissions',
+      dataType: 'json',
+      success: function (data) {
+        self.allPermissions = data.permissions;
+
+        //trigger the first fetch (which triggers a render)
+        self.fetchData(self, self.data);
+      }
+    });
+
     return this;
   },
 
@@ -54,12 +67,11 @@ var AdminUserView = Backbone.View.extend({
     data.q = data.q || '';
     // if the limit of results coming back hasn't been set yet
     // use the server's default
-    if (!self.limit) {
-      self.limit = data.limit;
-    }
+    if (!self.limit) self.limit = data.limit;
     data.trueLimit = self.limit;
     data.login = LoginConfig;
     data.user = window.cache.currentUser;
+    data.allPermissions = this.allPermissions;
     // render the table
     var template = _.template(AdminUserTable)(data);
     // render the pagination
@@ -121,90 +133,93 @@ var AdminUserView = Backbone.View.extend({
     });
   },
 
-  adminCreate: function (e) {
-    if (e.preventDefault) e.preventDefault();
-    var t = $(e.currentTarget);
-    var id = $(t.parents('tr')[0]).data('id');
-    this.updateUser(t, {
-      id: id,
-      isAdmin: true,
-      url: '/api/admin/admin/' + id + '?action=true'
-    });
+
+
+
+  spinnerForControl: function($target) {
+    return $($($target.parent()[0]).children('.btn-spin')[0]);
   },
 
-  adminRemove: function (e) {
-    if (e.preventDefault) e.preventDefault();
-    var t = $(e.currentTarget);
-    var id = $(t.parents('tr')[0]).data('id');
-    this.updateUser(t, {
-      id: id,
-      isAdmin: false,
-      url: '/api/admin/admin/' + id + '?action=false'
-    });
+  controlToID: function($target) {
+    return $($target.parents('tr')[0]).data('id');
   },
 
-  adminEnable: function (e) {
-    if (e.preventDefault) e.preventDefault();
-    var t = $(e.currentTarget);
-    var id = $(t.parents('tr')[0]).data('id');
-    this.updateUser(t, {
-      id: id,
-      disabled: false,
-      url: '/api/user/enable/' + id
-    });
+  /*
+    Accepts attributes to update.
+    You should always include the user's ID in the attributes hash
+  */
+  saveUserProperty: function(attributes, options) {
+    //make a new model, and load it from the server
+    var user = new ProfileModel();
+    options = options || {};
+    user.save(attributes, options);
   },
 
-  adminDisable: function (e) {
+  enable: function (e) {
     if (e.preventDefault) e.preventDefault();
-    var t = $(e.currentTarget);
-    var id = $(t.parents('tr')[0]).data('id');
-    this.updateUser(t, {
-      id: id,
-      disabled: true,
-      url: '/api/user/disable/' + id
-    });
-  },
-
-  adminUnlock: function (e) {
-    if (e.preventDefault) e.preventDefault();
-    var t = $(e.currentTarget);
-    var id = $(t.parents('tr')[0]).data('id');
-    this.updateUser(t, {
-      id: id,
-      passwordAttempts: 0,
-      url: '/api/admin/unlock/' + id
-    });
-
-  },
-
-  updateUser: function (t, data) {
-    var self = this;
-    var spinner = $($(t.parent()[0]).children('.btn-spin')[0])
+    var t       = $(e.currentTarget);
+    var spinner = this.spinnerForControl(t);
     spinner.show();
     t.hide();
-    if (data.url) {
-      $.ajax({
-        url: data.url,
-        dataType: 'json',
-        success: function (d) {
-          // hide the spinner
-          spinner.hide();
-          // show the opposite button
-          if (data.disabled === true) {
-            $(t.siblings(".admin-user-enable")[0]).show();
-          }
-          if (data.disabled === false) {
-            $(t.siblings(".admin-user-disable")[0]).show();
-          }
-          if (data.permissions.admin === true) {
-            $(t.siblings(".admin-user-rmadmin")[0]).show();
-          }
-          if (data.permissions.admin === false) {
-            $(t.siblings(".admin-user-mkadmin")[0]).show();
-          }
-        }
-      });
-    }
+
+    this.saveUserProperty({
+      id: this.controlToID(t),
+      disabled: false,
+    }, {
+      success: function() {
+        // hide the spinner
+        spinner.hide();
+        // show the opposite button
+        $(t.siblings(".admin-user-disable")[0]).show();
+      }
+    });
+  },
+
+  disable: function (e) {
+    if (e.preventDefault) e.preventDefault();
+    var t       = $(e.currentTarget);
+    var spinner = this.spinnerForControl(t);
+    spinner.show();
+    t.hide();
+
+    this.saveUserProperty({
+      id: this.controlToID(t),
+      disabled: true,
+    }, {
+      success: function() {
+        // hide the spinner
+        spinner.hide();
+        // show the opposite button
+        $(t.siblings(".admin-user-enable")[0]).show();
+      }
+    });
+  },
+
+  unlock: function (e) {
+    if (e.preventDefault) e.preventDefault();
+    var t       = $(e.currentTarget);
+    var spinner = this.spinnerForControl(t);
+    spinner.show();
+    t.hide();
+
+    $.ajax({
+      url: '/api/admin/unlock/' + this.controlToID(t),
+      dataType: 'json',
+      success: function (d) {
+        // hide the spinner
+        spinner.hide();
+      }
+    });
+  },
+
+  changePermissions: function(e) {
+    if (e.preventDefault) e.preventDefault();
+    var t = $(e.currentTarget);
+
+    this.saveUserProperty({
+      id: this.controlToID(t),
+      permissions: t.val(),
+    });
   },
 
   resetPassword: function (e) {

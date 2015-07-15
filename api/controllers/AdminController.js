@@ -336,24 +336,18 @@ module.exports = {
 
 
   /**
-   * Add or remove admin priviledges from a user account
-   * @param id the user id to make an admin or remove
-   * @param action true to make admin, false to revoke
-   * eg: /api/admin/admin/:id?action=true
+   * returns the list of all possible permission types
+   * Used for populating options in the admin pages
+   * eg: /api/admin/findAllPermissions
    */
-  admin: function (req, res) {
-    if (!req.route.params.id) {
-      return res.send(400, { message: 'Must specify a user id for this action.' });
-    }
-    User.findOneById(req.route.params.id, function (err, user) {
-      if (err) { return res.send(400, { message: 'An error occurred looking up this user.', error: err }); }
-      user.isAdmin = (req.param('action') === 'true');
-      user.save(function (err) {
-        if (err) { return res.send(400, { message: 'An error occurred changing admin status for this user.', error: err }); }
-        return res.send(user);
-      });
+  findAllPermissions: function(req, res) {
+    //lookup all of the various permission/user types
+    Permissions.find().exec(function (err, permissions) {
+      if (err) { return res.send(400, { message: "Failed to lookup permissions" }); }
+      return res.send({ permissions: permissions });
     });
   },
+
 
   /**
    * Unlock a user's account by resetting their password attempts
