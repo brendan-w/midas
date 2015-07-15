@@ -89,7 +89,6 @@ var NavView = Backbone.View.extend({
     this.doRender({
       user: window.cache.currentUser,
       systemName: window.cache.system.name,
-      projects: this.projects,
     });
     return this;
   },
@@ -97,6 +96,7 @@ var NavView = Backbone.View.extend({
   doRender: function (data) {
     data.login = Login;
     data.ui = UIConfig;
+    data.projects = this.projects;
     var template = _.template(NavTemplate)(data);
     this.$el.html(template);
     this.$el.i18n();
