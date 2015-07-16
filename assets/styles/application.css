@@ -650,6 +650,16 @@ div.project-title {
   overflow: hidden;
   word-wrap: break-word;
 }
+
+.project-task-preview .loading {
+  font-size: 20px;
+}
+
+.project-task-preview ul {
+  padding-left:10px;
+  padding-right:10px;
+}
+
 .project-list-bottom-wrapper {
   position: absolute;
   height: 48px;
