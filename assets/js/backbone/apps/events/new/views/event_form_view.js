@@ -3,8 +3,6 @@ var Bootstrap = require('bootstrap');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var utils = require('../../../../mixins/utilities');
-var DatePicker = require('bootstrap-datetimepicker/src/js/bootstrap-datetimepicker');
-var TimePicker = require('timepicker/jquery.timepicker');
 var EventsCollection = require('../../../../entities/events/events_collection');
 var EventFormTemplate = require('../templates/event_form_template.html');
 

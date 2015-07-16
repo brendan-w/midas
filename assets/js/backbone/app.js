@@ -19,6 +19,8 @@ $.ajaxPrefilter(function(options, originalOptions, jqXHR) {
 require('blueimp-file-upload/js/vendor/jquery.ui.widget');
 i18n = require('i18next-client/i18next.commonjs.withJQuery');
 moment = require('moment');
+require('bootstrap-datetimepicker/src/js/bootstrap-datetimepicker');
+require('timepicker/jquery.timepicker');
 
 // Set markdown defaults
 var marked = require('marked');
