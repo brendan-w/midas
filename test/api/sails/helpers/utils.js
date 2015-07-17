@@ -28,23 +28,30 @@ module.exports = {
       if (err) { return cb(err); }
       // then login
       request.post({ url: conf.url + '/auth/local',
-                     form: { username: user.username, password: user.password, json: true },
+                     form: {
+                       identifier: user.username,
+                       password: user.password,
+                       json: true },
                    }, function (err, response, body) {
         var getUser = function (cb) {
           request(conf.url + '/user', function (err, response, body) {
             if (err) { return cb(err); }
             if (response.statusCode !== 200) {
-              return cb('Error: Login unsuccessful. ' + body)
+              return cb('Error: Login unsuccessful. ' + body);
             }
             var b = JSON.parse(body);
             user.obj = b;
             return cb(null);
           });
-        }
+        };
         if (response.statusCode == 403) {
           // this could be because the user isn't registered; try to register
-          request.post({ url: conf.url + '/auth/register',
-                         form: { username: user.username, password: user.password, json: true },
+          request.post({ url: conf.url + '/auth/local/register',
+                         form: {
+                           username: user.username,
+                           password: user.password,
+                           name: user.name,
+                           json: true },
                        }, function (err, response, body) {
             if (err) { return cb(err); }
             return getUser(cb);
@@ -79,7 +86,7 @@ module.exports = {
             body: JSON.stringify(task)
           }, function (err) {
             innerCallback(err);
-          })
+          });
         },
         function (err) {
           outerCallback(err);

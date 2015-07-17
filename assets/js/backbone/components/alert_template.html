@@ -1,4 +1,4 @@
-<div class="alert <% if (alert.type) { %><%- alert.type %><% } else { %>alert-danger<% } %>" id="alert-main">
+<div class="alert alert-global <% if (alert.type) { %><%- alert.type %><% } else { %>alert-danger<% } %>" id="alert-main">
   <% if (alert.dismiss) { %>
   <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
   <% } %>

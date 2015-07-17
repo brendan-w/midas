@@ -39,13 +39,67 @@ describe('user:', function() {
       done(err);
     });
   });
-  it('register', function (done) {
+  it('register with domain block (failure)', function (done) {
+    sails.config.validateDomains = true;
+    request.post({ url: conf.url + '/auth/local',
+                   form: {
+                     username: conf.DomainBlockedUser.username,
+                     password: conf.DomainBlockedUser.password,
+                     json: true
+                   },
+                 }, function (err, response, body) {
+      if (err) { return done(err); }
+      assert.equal(response.statusCode, 403);
+      request.post({ url: conf.url + '/auth/local/register',
+                     form: { name: conf.DomainBlockedUser.name, username: conf.DomainBlockedUser.username, password: conf.DomainBlockedUser.password, json: true },
+                   }, function (err, response, body) {
+        if (err) { return done(err); }
+        // Should be Blocked
+        assert.equal(response.statusCode, 403);
+        var b = JSON.parse(body);
+        assert(b.message.indexOf('This email address is not from an approved domain') === 0);
+        done();
+      });
+    });
+  });
+  it('register with domain block (success)', function (done) {
+    sails.config.validateDomains = true;
+    request.post({ url: conf.url + '/auth/local',
+                   form: {
+                     username: conf.DomainAllowedUser.username,
+                     password: conf.DomainAllowedUser.password,
+                     json: true
+                   },
+                 }, function (err, response, body) {
+      if (err) { return done(err); }
+      assert.equal(response.statusCode, 403);
+      request.post({ url: conf.url + '/auth/local/register',
+                     form: { name: conf.DomainAllowedUser.name, username: conf.DomainAllowedUser.username, password: conf.DomainAllowedUser.password, json: true },
+                   }, function (err, response, body) {
+        if (err) { return done(err); }
+        // Should be allowed
+        assert.equal(response.statusCode, 200);
+        var b = JSON.parse(body);
+        assert.equal(b.username, conf.DomainAllowedUser.username);
+        assert.equal(b.name, conf.DomainAllowedUser.name);
+        // reset domain block to false
+        sails.config.validateDomains = false;
+        // logout at end of test
+        request(conf.url + '/auth/logout', function (err, response, body) {
+          if (err) { return done(err); }
+          done();
+        });
+
+      });
+    });
+  });
+  it('register without domain block', function (done) {
     request.post({ url: conf.url + '/auth/local',
                    form: { username: conf.testUser.username, password: conf.testUser.password, json: true },
                  }, function (err, response, body) {
       if (err) { return done(err); }
       assert.equal(response.statusCode, 403);
-      request.post({ url: conf.url + '/auth/register',
+      request.post({ url: conf.url + '/auth/local/register',
                      form: { name: conf.testUser.name, username: conf.testUser.username, password: conf.testUser.password, json: true },
                    }, function (err, response, body) {
         if (err) { return done(err); }
@@ -60,7 +114,7 @@ describe('user:', function() {
   });
   it('create duplicate user logged in', function (done) {
     request.post({
-      url: conf.url + '/auth/register',
+      url: conf.url + '/auth/local/register',
       form: {
         name: conf.testUser.name,
         username: conf.testUser.username,
@@ -68,16 +122,9 @@ describe('user:', function() {
         json: true
       }
     }, function (err, response, body) {
-      if (err) { return done(err); }
-      assert.equal(response.statusCode, 200);
-      var email = conf.testUser.username,
-          url = conf.url + '/user/emailCount?email=' + email;
-      request.get(url, function(err, res, matches) {
-        if (err) { return done(err); }
-        assert.equal(res.statusCode, 200);
-        assert.equal(matches, 1);
-        done();
-      });
+      // Should be denied because the account already exists
+      assert.equal(response.statusCode, 403);
+      done();
     });
   });
   it('create duplicate user logged out', function (done) {
@@ -94,7 +141,7 @@ describe('user:', function() {
     });
     function next() {
       request.post({
-        url: conf.url + '/auth/register',
+        url: conf.url + '/auth/local/register',
         form: {
           name: conf.testUser.name,
           username: conf.testUser.username,
@@ -103,15 +150,9 @@ describe('user:', function() {
         }
       }, function (err, response, body) {
         if (err) { return done(err); }
-        assert.equal(response.statusCode, 200);
-        var email = conf.testUser.username,
-            url = conf.url + '/user/emailCount?email=' + email;
-        request.get(url, function(err, res, matches) {
-          if (err) { return done(err); }
-          assert.equal(res.statusCode, 200);
-          assert.equal(matches, 1);
-          done();
-        });
+        // Should be denied because the account already exists
+        assert.equal(response.statusCode, 403);
+        done();
       });
     }
   });
@@ -146,7 +187,7 @@ describe('user:', function() {
   });
   it('login success', function (done) {
     request.post({ url: conf.url + '/auth/local',
-                   form: { username: conf.testUser.username, password: conf.testUser.password, json: true },
+                   form: { identifier: conf.testUser.username, password: conf.testUser.password, json: true },
                  }, function (err, response, body) {
       if (err) { return done(err); }
       // Successful login or creation should result in a 200 unauthorized
@@ -193,17 +234,18 @@ describe('user:', function() {
       // Logged in users should get a 200 with the user object
       assert.equal(response.statusCode, 200);
       var obj = JSON.parse(body);
-      var emailBefore = obj.emails[0],
-          emailAfter = emailBefore.email.replace('@', '+test@');
+      var emailBefore = obj.username,
+          userBefore = obj.id,
+          emailAfter = emailBefore.replace('@', '+test@');
       request.put({
-        url: conf.url + '/useremail/' + emailBefore.id,
-        form: { email: emailAfter },
+        url: conf.url + '/user/' + userBefore,
+        form: { username: emailAfter },
       }, function(err, response, body) {
         if (err) { return done(err); }
         // Logged in users should get a 200 with the user object
         assert.equal(response.statusCode, 200);
         var obj = JSON.parse(body);
-        assert.equal(obj.email, emailAfter);
+        assert.equal(obj.username, emailAfter);
         done();
       });
     });
@@ -226,17 +268,18 @@ describe('user:', function() {
       // Logged in users should get a 200 with the user object
       assert.equal(response.statusCode, 200);
       var obj = JSON.parse(body);
-      var emailBefore = obj.emails[0],
-          emailAfter = emailBefore.email.replace('+test@', '@');
+      var emailBefore = obj.username,
+          userBefore = obj.id,
+          emailAfter = emailBefore.replace('+test@', '@');
       request.put({
-        url: conf.url + '/useremail/' + emailBefore.id,
-        form: { email: emailAfter },
+        url: conf.url + '/user/' + userBefore,
+        form: { username: emailAfter },
       }, function(err, response, body) {
         if (err) { return done(err); }
         // Logged in users should get a 200 with the user object
         assert.equal(response.statusCode, 200);
         var obj = JSON.parse(body);
-        assert.equal(obj.email, emailAfter);
+        assert.equal(obj.username, emailAfter);
         done();
       });
     });
@@ -256,7 +299,7 @@ describe('user:', function() {
       request(conf.url + '/auth/logout', function (err, response, body) {
         if (err) { return done(err); }
         request.post({ url: conf.url + '/auth/local',
-                       form: { username: conf.testUser.username, password: conf.testUser.password, json: true },
+                       form: { identifier: conf.testUser.username, password: conf.testUser.password, json: true },
                      }, function (err, response, body) {
           if (err) { return done(err); }
           // Successful login or creation should result in a 200 unauthorized
@@ -273,7 +316,7 @@ describe('user:', function() {
   it('read api with access_token', function(done) {
     // Tests the API with a bearer access_token,
     // reading from the profile and user endpoints
-    var token = '?access_token=testCode'
+    var token = '?access_token=testCode';
     request(conf.url + '/user/profile' + token, function(err, response, body) {
       if (err) { return done(err); }
       var obj = JSON.parse(body);
@@ -302,26 +345,26 @@ describe('user:', function() {
   it('lockout user', function (done) {
     var count = 0;
     async.whilst(
-      function () { return count < 7; },
+      function () { return count < 6; },
       function (callback) {
         count++;
         var extra = '';
-        if (count < 7) {
+        if (count < 6) {
           extra = 'baz';
         }
         request.post({ url: conf.url + '/auth/local',
-                       form: { username: conf.testUser.username, password: conf.testUser.password + extra, json: true },
+                       form: { identifier: conf.testUser.username, password: conf.testUser.password + extra, json: true },
                      }, function (err, response, body) {
           if (err) { return callback(err); }
           // Unsuccessful login or creation should result in a 403
           assert.equal(response.statusCode, 403);
           var b = JSON.parse(response.body);
           assert.isDefined(b.message);
-          if (count == 6) {
+          if (count == 5) {
             // still the wrong password but should be locked out
-            assert.include(b.message, 'If you have an account');
+            assert.include(b.message, 'Your account has been locked');
           }
-          if (count == 7) {
+          if (count == 6) {
             // correct password but locked out
             assert.include(b.message, 'Your account has been locked');
           }

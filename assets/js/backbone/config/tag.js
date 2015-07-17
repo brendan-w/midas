@@ -20,8 +20,8 @@ module.exports = {
       'class': 'topic',
       'id': 'topic',
       'type': 'topic',
-      'name': 'Topic',
-      'plural': 'Topics'
+      'name': 'Interest',
+      'plural': 'Interests'
     },
 
     'agency': {

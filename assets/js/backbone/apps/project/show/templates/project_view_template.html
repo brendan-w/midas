@@ -51,7 +51,7 @@
           <button class="btn btn-c2">Vet me for this group</button>
         <% } %>
 
-        <% if (project.isOwner || user.isAdmin) { %>
+        <% if (project.isOwner || user.permissions.admin) { %>
 
         <div class="navbar-side">
           <ul class="nav nav-pills nav-stacked">

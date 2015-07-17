@@ -16,7 +16,11 @@ module.exports = function authenticated (req, res, next) {
 
       // If logged in, set the user
       if (user) {
-        req.user = [user];
+        req.user = user;
+        // Make the user available throughout the frontend
+        res.locals.user = req.user;
+        // Support legacy req.user[0] format
+        if (req.user) req.user[0] = req.user;
         return next();
       }
 

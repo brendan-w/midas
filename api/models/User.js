@@ -9,10 +9,12 @@
 var exportUtils = require('../services/utils/export');
 
 module.exports = {
+  schema: true,
   tableName: 'midas_user',
   attributes: {
     // Login information
-    username: 'STRING',
+    username: { type: 'email', unique: true },
+    passports : { collection: 'Passport', via: 'user' },
 
     // Core attributes about a user
     name: 'STRING',
@@ -52,6 +54,12 @@ module.exports = {
       collection: 'tagEntity',
       via: 'users',
       dominant: true
+    },
+
+    toJSON: function() {
+      var obj = this.toObject();
+      delete obj.passports;
+      return obj;
     }
   },
 
@@ -72,11 +80,6 @@ module.exports = {
     'disabled': 'disabled'
   },
 
-  beforeCreate: function(model, done) {
-    //same handling as updates
-    this.beforeUpdate(model, done);
-  },
-
   beforeUpdate: function(model, done) {
 
     //if no permissions are defined, pass it through with no errors
@@ -94,6 +97,22 @@ module.exports = {
         return done("Invalid permissions name: " + model.permissions);
       else
         return done();
+    });
+  },
+
+  beforeCreate: function(model, done) {
+    //same handling as updates
+    this.beforeUpdate(model, function(err) {
+      if(err) return done(err);
+
+      // If configured, validate that user has an email from a valid domain
+      if (sails.config.validateDomains && sails.config.domains) {
+        if (!_.contains(sails.config.domains, model.username.split('@')[1])) {
+          return done('invalid domain');
+        }
+      }
+      done();
+
     });
   },
 

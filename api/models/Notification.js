@@ -127,7 +127,8 @@ module.exports = {
   send: function(options, done) {
 
     // Extend options with config defaults
-    options.from = sails.config.systemEmail;
+    options.from = sails.config.systemName +
+      ' <' + sails.config.systemEmail + '>';
     if (sails.config.notificationsCC) options.cc = _.compact([
       options.cc,
       sails.config.notificationsCC

@@ -70,8 +70,8 @@ describe('tasks:', function () {
         assert.equal(response.statusCode, 200);
         var saniBody = body.replace(/\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/g, "DATE");
         var testBody = '"project_id","name","description","created_date","published_date","assigned_date","creator_name","signups"\n,' +
-        '"task1","description1","DATE","DATE","DATE","",0\n,' +
-        '"task2","description2","DATE","DATE","DATE","",0\n';
+        '"task1","description1","DATE","DATE","DATE","' + conf.adminUser.name + '",0\n,' +
+        '"task2","description2","DATE","DATE","DATE","' + conf.adminUser.name + '",0\n';
         assert.equal(saniBody, testBody);
         done(err);
       });

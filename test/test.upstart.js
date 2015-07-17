@@ -3,6 +3,7 @@
    to run tests like Controller and Models test
 */
 var fs = require('fs');
+var helperConfig = require('./api/sails/helpers/config');
 
 var sails;
 var err;
@@ -17,13 +18,15 @@ before(function(done) {
     log: {
       level: 'error'
     },
+    validateDomains: false,
+    emailProtocol: '',
     hooks: {
       grunt: false,
       sockets: false,
       pubsub: false,
       csrf: false
     }
-  }
+  };
 
   if (process.env.NODE_ENV == 'test') {
     // remove the database directories
@@ -32,7 +35,7 @@ before(function(done) {
     }
     config.adapters = {
       'default': 'disk'
-    }
+    };
   }
   // Lift Sails and store the app reference
   require('sails').lift(config, function(e, s) {
@@ -43,13 +46,33 @@ before(function(done) {
     // save reference for teardown function
 
     //Add temp userauth
-    sails.models.userauth.create({
-      userId: 4,
+    sails.models.passport.create({
+      user: 1,
       provider: 'test',
+      protocol: 'test',
       accessToken: 'testCode'
     }, function(err, model) {
-      done(err);
-    })
+      if (err) return done(err);
+
+      var adminUser = helperConfig.adminUser;
+
+      // Add an admin user
+      sails.models.user.create({
+        name: adminUser.name,
+        username: adminUser.username,
+        isAdmin: true
+      }, function(err, user) {
+        if (err) return done(err);
+        sails.models.passport.create({
+          protocol: 'local',
+          password: adminUser.password,
+          user: user.id
+        }, function(err) {
+          if (err) return done(err);
+          done();
+        });
+      });
+    });
   });
 
 });

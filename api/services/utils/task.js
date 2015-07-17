@@ -119,7 +119,7 @@ var findTasks = function (where, cb) {
           var user = _.findWhere(users, { id: task.userId }) || {};
           task.user = {
             name: user.name,
-            agency: user.tags[0]
+            agency: user.tags && user.tags[0]
           };
         });
         return cb(null, tasks);

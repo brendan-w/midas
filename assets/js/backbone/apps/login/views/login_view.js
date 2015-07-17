@@ -61,7 +61,7 @@ var LoginView = Backbone.View.extend({
     var self = this;
     if (e.preventDefault) e.preventDefault();
     var data = {
-      username: this.$("#username").val(),
+      identifier: this.$("#username").val(),
       password: this.$("#password").val(),
       json: true
     };
@@ -132,7 +132,7 @@ var LoginView = Backbone.View.extend({
     }
     // Post the registration request to the server
     $.ajax({
-      url: '/api/auth/register',
+      url: '/api/auth/local/register',
       type: 'POST',
       data: data
     }).done(function (success) {

@@ -23,6 +23,9 @@ module.exports.bootstrap = function (cb) {
       path = p.join(sails.config.appPath, dir);
   if (!fs.existsSync(path)) fs.mkdirSync(path);
 
+  // Load authentication strategies
+  sails.services.passport.loadStrategies();
+
   buildDictionary.optional({
         dirname     : sails.config.paths.services,
         filter      : /(.+)\.(js|coffee|litcoffee)$/,

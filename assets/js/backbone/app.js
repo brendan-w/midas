@@ -59,7 +59,7 @@ $(function () {
       });
     } else {
 
-      var alert = $('.alert');
+      var alert = $('.alert-global');
 
       //if a message was returned, show it
       if(jqXHR.responseJSON && jqXHR.responseJSON.message)

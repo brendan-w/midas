@@ -29,7 +29,7 @@
     "icalendar": "0.6.5",
     "jquery.atwho": "ichord/At.js#v0.4.7",
     "jquery.caret": "ichord/Caret.js#v0.0.7",
-    "json2csv": "^2.2.1",
+    "json2csv": "2.2.1",
     "lodash": "~2.4.1",
     "marked": "^0.3.3",
     "mocha": "2.2.1",

@@ -13,7 +13,7 @@ module.exports = {
       systemName: sails.config.systemName,
       draftAdminOnly: sails.config.draftAdminOnly || false,
       alert: req.alert || (flash.length) ? { message: flash[0] } : null || null,
-      user: (req.user) ? _(req.user[0]).mapValues(function(value) {
+      user: (req.user) ? _(req.user).mapValues(function(value) {
         return (typeof value === 'string') ? _.escape(value) : value;
       }).omit('inspect').value() : null
     };

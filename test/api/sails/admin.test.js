@@ -49,22 +49,22 @@ describe('admin:', function () {
     });
 
     it('set admin', function (done) {
-      request.get({ url: conf.url + '/admin/admin/1?action=true'
+      request.get({ url: conf.url + '/admin/admin/2?action=true'
                    }, function (err, response, body) {
         assert.equal(response.statusCode, 200);
         var b = JSON.parse(body);
-        assert.equal(b.id, 1);
+        assert.equal(b.id, 2);
         assert.isTrue(b.isAdmin);
         done(err);
       });
     });
 
     it('remove admin', function (done) {
-      request.get({ url: conf.url + '/admin/admin/1?action=false'
+      request.get({ url: conf.url + '/admin/admin/2?action=false'
                    }, function (err, response, body) {
         assert.equal(response.statusCode, 200);
         var b = JSON.parse(body);
-        assert.equal(b.id, 1);
+        assert.equal(b.id, 2);
         assert.equal(b.isAdmin, false);
         done(err);
       });
@@ -130,23 +130,24 @@ describe('admin:', function () {
       utils.login(request, conf.testPasswordResetUser, function (err) {
         if (err) { return done(err); }
         var obj = conf.testPasswordResetUser.obj;
-        var emailBefore = obj.emails[0],
-            emailAfter = emailBefore.email.replace('+test@', '@');
+        var emailBefore = obj.username,
+            userBefore = obj.id,
+            emailAfter = emailBefore.replace('+test@', '@');
         // log back in as an administrator
         utils.login(request, conf.adminUser, function (err) {
           if (err) { return done(err); }
           var obj = conf.adminUser.obj;
-          var adminEmail = obj.emails[0];
+          var adminEmail = obj.username;
           request.put({
-            url: conf.url + '/useremail/' + emailBefore.id,
-            form: { email: emailAfter }
+            url: conf.url + '/user/' + userBefore,
+            form: { username: emailAfter }
           }, function(err, response, body) {
             if (err) { return done(err); }
             // Logged in users should get a 200 with the user object
             assert.equal(response.statusCode, 200);
             var obj = JSON.parse(body);
-            assert.equal(obj.email, emailAfter);
-            assert.notEqual(obj.email, adminEmail);
+            assert.equal(obj.username, emailAfter);
+            assert.notEqual(obj.username, adminEmail);
             done();
           });
         });
@@ -159,9 +160,9 @@ describe('admin:', function () {
       }, function (err, response, body) {
         assert.equal(response.statusCode, 200);
         var testBody = '"user_id","name","username","title","agency","location","bio","admin","disabled"\n' +
-            '1,"","' + conf.defaultUser.username + '","","","","",false,false\n' +
-            '2,"","' + conf.adminUser.username + '","","","","",true,false\n' +
-            '3,"","' + conf.testPasswordResetUser.username + '","","","","",false,false\n'
+            '1,"' + conf.adminUser.name +  '","' + conf.adminUser.username + '","","","","",true,false\n' +
+            '2,"' + conf.defaultUser.name +  '","' + conf.defaultUser.username + '","","","","",false,false\n' +
+            '3,"' + conf.testPasswordResetUser.name +  '","' + conf.testPasswordResetUser.username + '","","","","",false,false\n';
         assert.equal(body, testBody);
         done(err);
       });
