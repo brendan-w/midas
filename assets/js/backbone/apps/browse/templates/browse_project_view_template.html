@@ -1,0 +1,37 @@
+<div class="wrapper-addProject"></div>
+<div class="wrapper-addTask"></div>
+
+
+<section>
+  <div class="container">
+    <div class="row search-row">
+      <div class="col-md-9">
+        <h1><span data-i18n="ProjectPlural">Projects</span></h1>
+      </div>
+      <!-- The add-group button -->
+      <div class="col-md-3 browse-buttons">
+        <% if (ui.project.show) { %>
+        <a href="#addProject" class="btn btn-c2 add-project" data-toggle="modal" data-backdrop="static" style="<% if (!user) { %>display: none;<% } %>"><i class="fa fa-plus"></i> <span data-i18n="Project">Project</span></a>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+
+        <div id="browse-search-spinner" class="fullwidth text-center">
+          Loading... <i class="fa fa-spinner fa-spin"></i>
+        </div>
+
+        <!-- The search results -->
+        <ul id="browse-list"></ul>
+
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,7 +1,6 @@
 <div class="wrapper-addProject"></div>
 <div class="wrapper-addTask"></div>
 
-<% if ( target == "tasks" ) {%>
 
 <section>
   <div class="container">
@@ -32,33 +31,10 @@
   </div>
 </section>
 
-<% } else if( target == "projects") { %>
-
-<section>
-  <div class="container">
-    <div class="row search-row">
-      <div class="col-md-9">
-        <h1><span data-i18n="ProjectPlural">Projects</span></h1>
-      </div>
-      <!-- The add-group button -->
-      <div class="col-md-3 browse-buttons">
-        <% if (ui.project.show) { %>
-        <a href="#addProject" class="btn btn-c2 add-project" data-toggle="modal" data-backdrop="static" style="<% if (!user) { %>display: none;<% } %>"><i class="fa fa-plus"></i> <span data-i18n="Project">Project</span></a>
-        <% } %>
-      </div>
-    </div>
-  </div>
-</section>
-
-<% } %>
-
 
 <section>
   <div class="container">
     <div class="row">
-
-
-      <% if ( target == "tasks" ) {%>
 
         <!-- Filters column -->
         <div class="col-md-3 col-md-push-9 box">
@@ -66,7 +42,6 @@
             <h2>Filters</h2>
           </div>
           <div class="box-pad-t">
-            <% if ( target == "tasks" ) {%>
             <div class="box-pad-lr" id="stateFilters">
               <% _.each(ui.states, function (t) { %>
                 <label class="<% if ( t.value == "draft" ) { %>hidden draft-filter<% } %>">
@@ -78,7 +53,6 @@
                 </label>
               <% }); %>
             </div>
-            <% } %>
             <div id="search-projs-wrapper" class="box-pad-lr">
               <ul id="search-projs" class="nav nav-pills nav-stacked nav-search">
               </ul>
@@ -95,17 +69,8 @@
           </div>
         </div>
 
-      <% } %>
 
-
-
-      <!-- Different column widths for projects vs. tasks -->
-      <% if ( target == "tasks" ) { %>
       <div class="col-md-9 col-md-pull-3">
-      <% } else if ( target == "projects" ) { %>
-      <div class="col-md-12">
-      <% } %>
-
         <div id="browse-search-spinner" class="fullwidth text-center">
           Loading... <i class="fa fa-spinner fa-spin"></i>
         </div>
@@ -113,8 +78,6 @@
         <!-- The search results -->
         <ul id="browse-list"></ul>
       </div>
-
-
 
     </div>
   </div>

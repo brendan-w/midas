@@ -6,8 +6,9 @@ var UIConfig = require('../../../config/ui.json');
 var Popovers = require('../../../mixins/popovers');
 var TagConfig = require('../../../config/tag');
 var BrowseListView = require('./browse_list_view');
-var BrowseMainTemplate = require('../templates/browse_main_view_template.html');
 var BrowseSearchTag = require('../templates/browse_search_tag.html');
+var BrowseProjectTemplate = require('../templates/browse_project_view_template.html');
+var BrowseTaskTemplate = require('../templates/browse_task_view_template.html');
 
 
 var popovers = new Popovers();
@@ -34,7 +35,12 @@ var BrowseMainView = Backbone.View.extend({
       user: window.cache.currentUser,
       ui: UIConfig
     };
-    this.compiledTemplate = _.template(BrowseMainTemplate)(options);
+
+    if(options.target == 'projects')
+      this.compiledTemplate = _.template(BrowseProjectTemplate)(options);
+    else if(options.target == 'tasks')
+      this.compiledTemplate = _.template(BrowseTaskTemplate)(options);
+
     this.$el.html(this.compiledTemplate);
     this.$el.i18n();
 
