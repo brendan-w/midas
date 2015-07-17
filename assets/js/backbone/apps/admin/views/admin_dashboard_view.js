@@ -111,7 +111,6 @@ var AdminDashboardView = Backbone.View.extend({
           url: '/api/admin/taskmetrics',
           dataType: 'json',
           success: function (data) {
-            console.log(self.data.tasks);
             data.tasks.active = self.data.tasks;
             self.renderTasks(self, data);
           }
