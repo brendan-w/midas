@@ -3,17 +3,12 @@
 
 <% if ( target == "tasks" ) {%>
 
-<!-- The search box -->
 <section>
   <div class="container">
     <div class="row search-row">
-      <div class="col-md-3 col-md-push-9 browse-buttons">
-        <% if (ui.project.show) { %>
-        <a href="#addProject" class="btn btn-c2 add-project" data-toggle="modal" data-backdrop="static" style="<% if (!user) { %>display: none;<% } %>"><i class="fa fa-plus"></i> <span data-i18n="Project">Project</span></a>
-        <% } %>
-        <a href="#addTask" class="btn btn-c2 add-opportunity" data-toggle="modal" data-backdrop="static" style="<% if (!user) { %>display: none;<% } %>"><i class="fa fa-plus"></i> <span data-i18n="Task">Opportunity</span></a>
-      </div>
-      <div class="col-md-9 col-md-pull-3">
+
+      <!-- The search box -->
+      <div class="col-md-9">
         <form class="form-horizontal" role="form" id="search-form">
 
           <div class="form-group row">
@@ -26,6 +21,30 @@
           </div>
 
         </form>
+      </div>
+
+      <!-- The add-task button -->
+      <div class="col-md-3 browse-buttons">
+        <a href="#addTask" class="btn btn-c2 add-opportunity" data-toggle="modal" data-backdrop="static" style="<% if (!user) { %>display: none;<% } %>"><i class="fa fa-plus"></i> <span data-i18n="Task">Opportunity</span></a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<% } else if( target == "projects") { %>
+
+<section>
+  <div class="container">
+    <div class="row search-row">
+      <div class="col-md-9">
+        <h1><span data-i18n="ProjectPlural">Projects</span></h1>
+      </div>
+      <!-- The add-group button -->
+      <div class="col-md-3 browse-buttons">
+        <% if (ui.project.show) { %>
+        <a href="#addProject" class="btn btn-c2 add-project" data-toggle="modal" data-backdrop="static" style="<% if (!user) { %>display: none;<% } %>"><i class="fa fa-plus"></i> <span data-i18n="Project">Project</span></a>
+        <% } %>
       </div>
     </div>
   </div>

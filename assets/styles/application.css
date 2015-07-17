@@ -360,6 +360,10 @@ ul.nav-search > li {
   display: block;
 }
 
+.navbar .dropdown-menu {
+  width: 100%;
+}
+
 /*
 =  NAVBAR ADMIN
 */
@@ -724,7 +728,6 @@ div.project-title {
 
 #browse-list {
   padding: 0;
-  margin-left: -15px;
 }
 
 #browse-list li {
@@ -733,8 +736,12 @@ div.project-title {
 
 .browse-buttons {
   /*padding: 0 10px 0 0;*/
-  padding: 0;
   text-align: right;
+}
+
+#search-form .form-group {
+  margin-right: 0px;
+  margin-left: 0px;
 }
 
 /* Correctly show search input and button */
