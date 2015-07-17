@@ -36,7 +36,7 @@ var ProjectShowController = BaseController.extend({
       if(options.action == 'edit')
       {
         var allowed_to_edit = (self.model.get('isOwner') ||
-                              (window.cache.currentUser && window.cache.currentUser.isAdmin));
+                              (window.cache.currentUser && window.cache.currentUser.permissions.admin));
 
         if(!allowed_to_edit)
         {

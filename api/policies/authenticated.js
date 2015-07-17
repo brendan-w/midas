@@ -20,17 +20,10 @@ module.exports = function authenticated (req, res, next) {
         return next();
       }
 
-      // If the request is a GET, allow anyone to access.
-      if (req.route.method === 'get') {
-        return next();
-      } else {
-
-        // User is not allowed, send 403 message
-        return res.send(403, {
-          message: "You must login to perform this action."
-        });
-
-      }
+      // User is not allowed, send 403 message
+      return res.send(403, {
+        message: "You must login to perform this action."
+      });
     })(req, res);
   }
 };

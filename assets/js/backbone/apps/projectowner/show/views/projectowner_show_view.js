@@ -77,7 +77,7 @@ var ProjectownerShowView = Backbone.View.extend({
 
   initializeOwnerSelect2: function () {
     var self = this;
-    if ((this.model.attributes.isOwner || this.user.isAdmin) && this.edit){
+    if ((this.model.attributes.isOwner || this.user.permissions.admin) && this.edit){
       var formatResult = function (object, container, query) {
         return object.name;
       };
@@ -120,13 +120,13 @@ var ProjectownerShowView = Backbone.View.extend({
   },
 
   toggleOwners : function(e){
-    if (!(this.model.attributes.isOwner || this.user.isAdmin) && this.edit) return false;
+    if (!(this.model.attributes.isOwner || this.user.permissions.admin) && this.edit) return false;
     $('.owner-form-toggle').toggle(400);
   },
 
   saveOwners : function(e){
     if (e.preventDefault) e.preventDefault();
-    if (!(this.model.attributes.isOwner || this.user.isAdmin) && this.edit) return false;
+    if (!(this.model.attributes.isOwner || this.user.permissions.admin) && this.edit) return false;
     var self = this;
 
     var pId = self.model.attributes.id;

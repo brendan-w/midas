@@ -128,7 +128,7 @@ EventList = Backbone.View.extend({
     if (e.preventDefault) e.preventDefault();
     var id = $($(e.currentTarget).parents('div.event')[0]).data('id');
 
-    if ( window.cache.currentUser && window.cache.currentUser.isAdmin ) {
+    if ( window.cache.currentUser && window.cache.currentUser.permissions.admin ) {
       $.ajax({
         url: '/api/event/' + id,
         type: 'DELETE',

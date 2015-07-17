@@ -30,10 +30,9 @@ module.exports = {
     // Use the URL directly as the resource identifier for the photo.
     photoUrl: 'STRING',
 
-    // User metadata for service delivery
-    isAdmin: {
-      type: 'BOOLEAN',
-      defaultsTo: false
+    //reference to the users permision group
+    permissions: {
+      model: 'Permissions'
     },
 
     // is the user's login disabled
@@ -69,8 +68,33 @@ module.exports = {
     'location': {field: 'location', filter: exportUtils.nullToEmptyString},
 
     'bio': {field: 'bio', filter: exportUtils.nullToEmptyString},
-    'admin': 'isAdmin',
+    'type': 'permissions',
     'disabled': 'disabled'
+  },
+
+  beforeCreate: function(model, done) {
+    //same handling as updates
+    this.beforeUpdate(model, done);
+  },
+
+  beforeUpdate: function(model, done) {
+
+    //if no permissions are defined, pass it through with no errors
+    if(!model.permissions)
+      return done();
+
+    //ensure that permissions are ONLY referenced by name
+    //sails should never update the actuall permissions model, only the foreign key
+    if(typeof(model.permissions) !== "string")
+      return done("User permissions may only be updated by string name");
+
+    //make sure that this is an existing permissions name
+    Permissions.findOneByName(model.permissions).exec(function (err, p) {
+      if (err || !p)
+        return done("Invalid permissions name: " + model.permissions);
+      else
+        return done();
+    });
   },
 
   afterCreate: function(model, done) {
@@ -78,6 +102,6 @@ module.exports = {
       action: 'user.create.welcome',
       model: model
     }, done);
-  }
+  },
 
 };

@@ -22,7 +22,7 @@ var authorized = function (id, userId, user, cb) {
     }
     // If not the owner, check if there is a public task
     if (!task.projectId) {
-      if ((task.state !== 'draft') || (userId == task.userId) || (user && user.isAdmin)) {
+      if ((task.state !== 'draft') || (userId == task.userId) || (user && user.permissions.admin)) {
         return cb(null, task);
       }
       return cb(null, null);
@@ -35,7 +35,7 @@ var authorized = function (id, userId, user, cb) {
       task.project = proj;
       // user has access to the task, but is not the task owner
       // check the task state to make sure it is publicly accessible
-      if ((task.state !== 'draft') || (task.isOwner === true) || (user && user.isAdmin)) {
+      if ((task.state !== 'draft') || (task.isOwner === true) || (user && user.permissions.admin)) {
         return cb(null, task);
       }
       // In any other state, you have to be the owner.  Denied.

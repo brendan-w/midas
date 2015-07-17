@@ -66,7 +66,7 @@ var TaskShowController = BaseView.extend({
       }
       // if none of these apply, are they an admin?
       if (window.cache.currentUser) {
-        if (window.cache.currentUser.isAdmin === true) {
+        if (window.cache.currentUser.permissions.admin === true) {
           owner = true;
         }
       }
@@ -459,7 +459,7 @@ var TaskShowController = BaseView.extend({
     if (this.modalAlert) { this.modalAlert.cleanup(); }
     if (this.modalComponent) { this.modalComponent.cleanup(); }
     var states = UIConfig.states;
-    if (draftAdminOnly && !window.cache.currentUser.isAdmin) {
+    if (draftAdminOnly && !window.cache.currentUser.permissions.admin) {
       states = _(states).reject(function(state) {
         return state.value === 'draft';
       });

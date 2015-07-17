@@ -323,7 +323,7 @@ CREATE TABLE midas_user (
     bio text,
     "photoId" integer,
     "photoUrl" text,
-    "isAdmin" boolean,
+    permissions text,
     disabled boolean,
     "passwordAttempts" integer,
     id integer NOT NULL,
@@ -370,7 +370,7 @@ CREATE TABLE notification (
     "createdDate" timestamp with time zone,
     "localParams" text,
     "globalParams" text,
-    "model" json,
+    model json,
     "isActive" boolean,
     id integer NOT NULL,
     "createdAt" timestamp with time zone,
@@ -400,6 +400,28 @@ ALTER TABLE notification_id_seq OWNER TO midas;
 --
 
 ALTER SEQUENCE notification_id_seq OWNED BY notification.id;
+
+
+--
+-- Name: permissions; Type: TABLE; Schema: public; Owner: midas; Tablespace:
+--
+
+CREATE TABLE permissions (
+    name text NOT NULL,
+    registration_option boolean,
+    admin boolean,
+    apply boolean,
+    project_create boolean,
+    task_create boolean,
+    moderate boolean,
+    vet boolean,
+    "createdAt" timestamp with time zone,
+    "updatedAt" timestamp with time zone,
+    "deletedAt" timestamp with time zone
+);
+
+
+ALTER TABLE permissions OWNER TO midas;
 
 
 --
@@ -1326,6 +1348,14 @@ ALTER TABLE ONLY notification
 
 
 --
+-- Name: permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: midas; Tablespace:
+--
+
+ALTER TABLE ONLY permissions
+    ADD CONSTRAINT permissions_pkey PRIMARY KEY (name);
+
+
+--
 -- Name: project_pkey; Type: CONSTRAINT; Schema: public; Owner: midas; Tablespace:
 --
 
@@ -1482,3 +1512,4 @@ GRANT ALL ON SCHEMA public TO PUBLIC;
 --
 -- PostgreSQL database dump complete
 --
+

@@ -6,23 +6,23 @@ function help_and_quit(msg) {
   if(msg) {
     console.log("Error:\n    " + msg + "\n");
   }
-  console.log("This is a tool for loading tags into the database in bulk.\n" +
+  console.log("This is a tool for loading permissions into the database in bulk.\n" +
               "\n" +
               "Usage:\n" +
-              "    ./tagtools.js [file]\n" +
+              "    ./permtool.js [file]\n" +
               "\n" +
-              "    file - file containing a newline delimited list of tag values to be loaded\n");
+              "    file - JS file that exports an array of permissions to load\n");
   process.exit(1);
 }
 
 
 var args = process.argv.slice(2);
-if (args.length < 1)
+if (args.length < 1) 
   help_and_quit("at least one argument is required");
 
 try
 {
-  var tags = require("./" + args[0]);
+  var perms = require("./" + args[0]);
 }
 catch(e)
 {
@@ -30,9 +30,9 @@ catch(e)
 }
 
 
-tool_utils.sailsForEach(tags, function(t, done) {
-  //try a lookup, to prevent duplicate tags from being added
-  TagEntity.count(t, function(err, count) {
+tool_utils.sailsForEach(perms, function(p, done) {
+
+  Permissions.countByName(p.name, function(err, count) {
     if(err)
     {
       console.log(err);
@@ -40,14 +40,14 @@ tool_utils.sailsForEach(tags, function(t, done) {
     }
     else if(count > 0)
     {
-      console.log("[skipped]    " + t.name);
+      console.log("[skipped]    " + p.name);
       return done();
     }
     else
     {
-      TagEntity.create(t).exec(function(err) {
+      Permissions.create(p).exec(function(err) {
         if(err) console.log(err);
-        else console.log("[added]      " + t.type + " : " + t.name);
+        else console.log("[added]      " + p.name);
         return done();
       });
     }

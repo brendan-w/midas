@@ -123,6 +123,7 @@ var LoginView = Backbone.View.extend({
       name: this.$("#rname").val(),
       username: this.$("#rusername").val(),
       password: this.$("#rpassword").val(),
+      type: "applicant",
       json: true
     };
     // Add in additional, optional fields

@@ -36,7 +36,7 @@ module.exports = {
     }
     // check if a user already has this email
     userUtils.findUser(req.route.params.id, function (err, user) {
-      if (err) { return res.send(400, { message:'Error looking up username.' }); }
+      if (err) { sails.log.error(err); return res.send(400, { message:'Error looking up username.' }); }
       if (!user) { return res.send(false); }
       if (req.user && req.user[0].id == user.id) { return res.send(false); }
       return res.send(true);
@@ -273,7 +273,7 @@ module.exports = {
   // Disable a user so that they cannot log in
   disable: function (req, res) {
     // check that we're permitted to disable this user
-    if ((req.user[0].id == req.route.params.id) || (req.user[0].isAdmin)) {
+    if ((req.user[0].id == req.route.params.id) || (req.user[0].permissions.admin)) {
       if (req.user[0].id == req.route.params.id) {
         req.user[0].disabled = true;
         req.user[0].save(function (err) {
@@ -315,7 +315,7 @@ module.exports = {
     }
     var userId = req.user[0].id;
     // Allow administrators to set other users' passwords
-    if ((req.user[0].isAdmin === true) && (req.param('id'))) {
+    if ((req.user[0].permissions.admin === true) && (req.param('id'))) {
       userId = req.param('id');
     }
 
@@ -329,7 +329,7 @@ module.exports = {
     User.findOneById(userId, function (err, user) {
       if (err) { return res.send(400, { message: 'User not found.' }); }
       // Run password validator (but only if SSPI is disabled and not an admin)
-      if ((sails.config.auth.auth.sspi.enabled !== true) && (req.user[0].isAdmin !== true)) {
+      if ((sails.config.auth.auth.sspi.enabled !== true) && (req.user[0].permissions.admin !== true)) {
         // Check that the password meets validation rules
         var rules = userUtils.validatePassword(user.username, password);
         var success = true;
