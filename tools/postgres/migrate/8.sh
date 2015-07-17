@@ -9,7 +9,7 @@ psql -U midas -d midas -c "UPDATE midas_user SET permissions='admin' WHERE \"isA
 psql -U midas -d midas -c "UPDATE midas_user SET permissions='applicant' WHERE \"isAdmin\"=FALSE;"
 
 # remove the isAdmin column
-psql -U midas -d midas -c "ALTER TABLE midas_user DROP COLUMN isAdmin;"
+psql -U midas -d midas -c "ALTER TABLE midas_user DROP COLUMN \"isAdmin\";"
 
 # Make the permissions table
 psql -U midas -d midas -c "
