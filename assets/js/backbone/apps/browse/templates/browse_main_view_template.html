@@ -1,6 +1,9 @@
 <div class="wrapper-addProject"></div>
 <div class="wrapper-addTask"></div>
 
+<% if ( target == "tasks" ) {%>
+
+<!-- The search box -->
 <section>
   <div class="container">
     <div class="row search-row">
@@ -28,51 +31,71 @@
   </div>
 </section>
 
+<% } %>
+
+
 <section>
   <div class="container">
-
     <div class="row">
-      <div class="col-md-3 col-md-push-9 box">
-        <div class="border-bottom box-pad-lr">
-          <h2>Filters</h2>
-        </div>
-        <div class="box-pad-t">
-          <% if ( target == "tasks" ) {%>
-          <div class="box-pad-lr" id="stateFilters">
-            <% _.each(ui.states, function (t) { %>
-              <label class="<% if ( t.value == "draft" ) { %>hidden draft-filter<% } %>">
-                <input type='checkbox' name='state<%- t.label %>' class='stateFilter' value='<%- t.value %>'
-                <% if ( t.value == "open" ) {%>
-                  <%- checked="checked" %>
-                <% } %>
-                > <%- t.label %>
-              </label>
-            <% }); %>
+
+
+      <% if ( target == "tasks" ) {%>
+
+        <!-- Filters column -->
+        <div class="col-md-3 col-md-push-9 box">
+          <div class="border-bottom box-pad-lr">
+            <h2>Filters</h2>
           </div>
-          <% } %>
-          <div id="search-projs-wrapper" class="box-pad-lr">
-            <ul id="search-projs" class="nav nav-pills nav-stacked nav-search">
-            </ul>
-          </div>
-          <div class="box-pad-lr">
-            <ul id="search-tags" class="nav nav-pills nav-stacked nav-search">
-            </ul>
-          </div>
-          <div class="box-pad-lr search-clear" style="display: none;">
-            <div class="align-right">
-              <a href="#" id="search-clear" class="btn btn-sm btn-c0"><i class="fa fa-remove"></i> Clear Search Criteria</a>
+          <div class="box-pad-t">
+            <% if ( target == "tasks" ) {%>
+            <div class="box-pad-lr" id="stateFilters">
+              <% _.each(ui.states, function (t) { %>
+                <label class="<% if ( t.value == "draft" ) { %>hidden draft-filter<% } %>">
+                  <input type='checkbox' name='state<%- t.label %>' class='stateFilter' value='<%- t.value %>'
+                  <% if ( t.value == "open" ) {%>
+                    <%- checked="checked" %>
+                  <% } %>
+                  > <%- t.label %>
+                </label>
+              <% }); %>
+            </div>
+            <% } %>
+            <div id="search-projs-wrapper" class="box-pad-lr">
+              <ul id="search-projs" class="nav nav-pills nav-stacked nav-search">
+              </ul>
+            </div>
+            <div class="box-pad-lr">
+              <ul id="search-tags" class="nav nav-pills nav-stacked nav-search">
+              </ul>
+            </div>
+            <div class="box-pad-lr search-clear" style="display: none;">
+              <div class="align-right">
+                <a href="#" id="search-clear" class="btn btn-sm btn-c0"><i class="fa fa-remove"></i> Clear Search Criteria</a>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
+      <% } %>
+
+
+
+      <!-- Different column widths for projects vs. tasks -->
+      <% if ( target == "tasks" ) { %>
       <div class="col-md-9 col-md-pull-3">
+      <% } else if ( target == "projects" ) { %>
+      <div class="col-md-12">
+      <% } %>
+
         <div id="browse-search-spinner" class="fullwidth text-center">
           Loading... <i class="fa fa-spinner fa-spin"></i>
         </div>
-        <ul id="browse-list">
-        </ul>
+
+        <!-- The search results -->
+        <ul id="browse-list"></ul>
       </div>
+
+
 
     </div>
   </div>

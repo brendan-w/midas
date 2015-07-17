@@ -15,6 +15,7 @@
   "systemEmail" : "test@midas.com",
   "browse": {
     "pageSize" : 27,
+    "maxTaskPreview": 5,
     "useInfiniteScroll" : false
   },
   "states" : [{"value": "draft","label":"Draft"},{"value": "open","label":"Open"},{"value":"assigned","label":"Assigned"},{"value": "completed","label":"Completed"},{"value":"archived","label":"Archived"}],

@@ -12,7 +12,6 @@ var UIConfig = require('../../../config/ui.json');
 var Login = require('../../../config/login.json');
 var LoginController = require('../../login/controllers/login_controller');
 var NavTemplate = require('../templates/nav_template.html');
-var ProjectsCollection = require('../../../entities/projects/projects_collection');
 
 
 var NavView = Backbone.View.extend({
@@ -27,28 +26,6 @@ var NavView = Backbone.View.extend({
   initialize: function (options) {
     var self = this;
     this.options = options;
-    this.projects = [];
-
-    this.projectsCollection = new ProjectsCollection();
-
-    this.projectsCollection.on("sync", function(collection) {
-      self.projects = collection.open().map(function(project) {
-        return project.toJSON();
-      });
-      self.render();
-    });
-
-    this.projectsCollection.fetch();
-
-    /*
-      Warning: This is a temporary hack to update the projects dropdown in the
-               navbar.
-      TODO: instead of using userEvents as a global event broker, there should
-            be a system-wide Project Collection to avoid redundant fetch()es
-    */
-    this.listenTo(window.cache.userEvents, "project:save:success", function() {
-      self.projectsCollection.fetch(); //TODO: get rid of this, in favor of a global Project Collection
-    });
 
     this.listenTo(window.cache.userEvents, "user:login:success", function (userData) {
       self.doRender({ user: userData });
@@ -96,7 +73,6 @@ var NavView = Backbone.View.extend({
   doRender: function (data) {
     data.login = Login;
     data.ui = UIConfig;
-    data.projects = this.projects;
     var template = _.template(NavTemplate)(data);
     this.$el.html(template);
     this.$el.i18n();

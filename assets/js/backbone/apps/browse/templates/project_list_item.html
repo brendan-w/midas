@@ -1,20 +1,33 @@
 <li data-id="<%- item.id %>" class="box project-box">
+  <!--
   <% if (item.coverId) { %>
   <div class="project-background-image border-bottom" style="background-image: url(/api/file/get/<%- item.coverId %>)">
   <% } else { %>
   <div>
   <% } %>
   </div>
+  -->
   <div class="project-title">
     <a href="/projects/<%- item.id %>" class="link-backbone c1">
       <%- item.title %>
     </a>
   </div>
   <div class="project-list-description">
-    <% /* Escaped by marked() */ %>
+    <!-- Escaped by marked() -->
     <%= item.descriptionHtml %>
   </div>
+  <hr>
+  <div class="project-task-preview">
+    <div class="loading text-center">
+      <span class="fa fa-spinner fa-spin"></span>
+    </div>
 
+    <!-- the task preview list -->
+    <ul></ul>
+  </div>
+
+  <!-- Project metrics -->
+  <!--
   <div class="project-list-bottom-wrapper border-top">
     <div class="project-list-counts">
       <div class="project-list-counts-col">
@@ -43,4 +56,5 @@
       </div>
     </div>
   </div>
+  -->
 </li>

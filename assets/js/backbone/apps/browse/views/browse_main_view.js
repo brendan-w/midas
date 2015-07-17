@@ -34,7 +34,7 @@ var BrowseMainView = Backbone.View.extend({
       user: window.cache.currentUser,
       ui: UIConfig
     };
-    this.compiledTemplate = _.template(BrowseMainTemplate)(options)
+    this.compiledTemplate = _.template(BrowseMainTemplate)(options);
     this.$el.html(this.compiledTemplate);
     this.$el.i18n();
 

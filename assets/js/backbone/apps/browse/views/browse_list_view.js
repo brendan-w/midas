@@ -8,6 +8,8 @@ var TagConfig = require('../../../config/tag');
 var ProjectListItem = require('../templates/project_list_item.html');
 var TaskListItem = require('../templates/task_list_item.html');
 var NoListItem = require('../templates/no_search_results.html');
+var TaskPreview = require('../templates/project_list_task_preview.html');
+var TasksCollection = require('../../../entities/tasks/tasks_collection');
 
 
 var BrowseListView = Backbone.View.extend({
@@ -54,7 +56,7 @@ var BrowseListView = Backbone.View.extend({
       } else {
         var start = (this.data.page-1) * this.data.pageSize;
       }
-      var limit    = start + this.data.pageSize;
+      var limit = start + this.data.pageSize;
     } else {
       //reset page to 1 and return
       if ( this.data.page > 1 ) {
@@ -73,34 +75,69 @@ var BrowseListView = Backbone.View.extend({
       this.$el.append(compiledTemplate);
     } else {
 
-      for ( i = start; i < limit; i++ ){
+      for ( var i = start; i < limit; i++ ) {
 
-      if ( typeof this.options.collection[i] == 'undefined' ){ break; }
+        var model = this.options.collection[i];
+        if(!model)
+          break;
+
         var item = {
-          item: this.options.collection[i],
+          item: model,
           user: window.cache.currentUser,
           tagConfig: TagConfig,
           tagShow: ['location', 'skill', 'topic', 'task-time-estimate', 'task-time-required']
-        }
-        if (this.options.collection[i].tags) {
-          item.tags = this.organizeTags(this.options.collection[i].tags);
-        } else {
-          item.tags =[];
-        }
-        if (this.options.collection[i].description) {
-          item.item.descriptionHtml = marked(this.options.collection[i].description);
-        }
-        var compiledTemplate = '';
-        if (this.options.target == 'projects') {
-          compiledTemplate = _.template(ProjectListItem)(item);
-        } else {
-          compiledTemplate = _.template(TaskListItem)(item);
-        }
-        this.$el.append(compiledTemplate);
+        };
+
+        if (model.tags)
+          item.tags = this.organizeTags(model.tags);
+        else
+          item.tags = [];
+
+        if(model.description)
+          item.item.descriptionHtml = marked(model.description);
+
+        //compile the template, and create a new element
+        var new_el;
+        if (this.options.target == 'projects')
+          new_el = $(_.template(ProjectListItem)(item));
+        else
+          new_el = $(_.template(TaskListItem)(item));
+
+        this.loadTaskPreview(new_el, model);
+
+        //add it to the list
+        this.$el.append(new_el);
       }
     }
     this.$el.i18n();
     return this;
+  },
+
+  /*
+    helper function for displaying the project cards
+    accepts a project element and model, and populates
+    the view's task-preview section.
+  */
+  loadTaskPreview: function(project_el, model) {
+
+    var collection = new TasksCollection();
+    collection.fetch({
+      url: '/api/task/findAllByProjectId/' + model.id,
+      success: function (tasks) {
+
+        //hide the spinner
+        project_el.find(".loading").hide();
+
+        var list = project_el.find(".project-task-preview ul");
+        var max_task_previews = UIConfig.browse.maxTaskPreview;
+
+        for(var i = 0; (i < max_task_previews) && (i < tasks.length); i++)
+        {
+          var task = tasks.models[i].toJSON();
+          list.append(_.template(TaskPreview)({ task: task }));
+        }
+      }
+    });
   },
 
   cleanup: function () {
