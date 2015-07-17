@@ -80,29 +80,35 @@ module.exports = {
     'disabled': 'disabled'
   },
 
-  beforeUpdate: function(model, done) {
+  validate_permissions: function(desired_perm_name, done) {
 
-    //if no permissions are defined, pass it through with no errors
-    if(!model.permissions)
+    //if is wasn't defined, pass it through with no errors
+    if(!desired_perm_name)
       return done();
 
     //ensure that permissions are ONLY referenced by name
     //sails should never update the actuall permissions model, only the foreign key
-    if(typeof(model.permissions) !== "string")
+    if(typeof(desired_perm_name) !== "string")
       return done("User permissions may only be updated by string name");
 
     //make sure that this is an existing permissions name
-    Permissions.findOneByName(model.permissions).exec(function (err, p) {
+    Permissions.findOneByName(desired_perm_name).exec(function (err, p) {
       if (err || !p)
-        return done("Invalid permissions name: " + model.permissions);
+        return done("Invalid permissions name: " + desired_perm_name);
       else
         return done();
     });
+
+  },
+
+  beforeUpdate: function(model, done) {
+    this.validate_permissions(model.permissions, done);
   },
 
   beforeCreate: function(model, done) {
     //same handling as updates
-    this.beforeUpdate(model, function(err) {
+
+    this.validate_permissions(model.permissions, function(err) {
       if(err) return done(err);
 
       // If configured, validate that user has an email from a valid domain
