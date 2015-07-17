@@ -46,4 +46,4 @@ ALTER TABLE ONLY permissions
 
 
 # Update the schema version
-psql -U midas -d midas -c "UPDATE schema SET version = 8 WHERE schema = 'current';"
+psql -U midas -d midas -c "UPDATE schema SET version = 9 WHERE schema = 'current';"
