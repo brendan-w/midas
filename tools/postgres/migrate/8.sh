@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Add new passport table and relations
-psql -U midas -d midas -c "CREATE TABLE passport (
+psql -U $POSTGRESQL_USERNAME -d $POSTGRESQL_DATABASE -c "CREATE TABLE passport (
     protocol text,
     password text,
     \"accessToken\" text,
@@ -37,7 +37,7 @@ ALTER TABLE ONLY passport
     ADD CONSTRAINT passport_pkey PRIMARY KEY (id);"
 
 # Migrate local users
-psql -U midas -d midas -c "INSERT INTO passport (protocol, password, \"user\", \"createdAt\", \"updatedAt\", \"deletedAt\")
+psql -U $POSTGRESQL_USERNAME -d $POSTGRESQL_DATABASE -c "INSERT INTO passport (protocol, password, \"user\", \"createdAt\", \"updatedAt\", \"deletedAt\")
 SELECT
   'local',
   \"password\",
@@ -49,7 +49,7 @@ FROM userpassword
 WHERE \"userId\" is not null;"
 
 # Migrate oauth users
-psql -U midas -d midas -c "INSERT INTO passport (protocol, provider, identifier, tokens, \"user\", \"createdAt\", \"updatedAt\", \"deletedAt\")
+psql -U $POSTGRESQL_USERNAME -d $POSTGRESQL_DATABASE -c "INSERT INTO passport (protocol, provider, identifier, tokens, \"user\", \"createdAt\", \"updatedAt\", \"deletedAt\")
 SELECT
   'oauth2',
   \"provider\",
@@ -63,4 +63,4 @@ FROM userauth
 WHERE \"userId\" is not null;"
 
 # Update the schema version
-psql -U midas -d midas -c "UPDATE schema SET version = 8 WHERE schema = 'current';"
+psql -U $POSTGRESQL_USERNAME -d $POSTGRESQL_DATABASE -c "UPDATE schema SET version = 8 WHERE schema = 'current';"

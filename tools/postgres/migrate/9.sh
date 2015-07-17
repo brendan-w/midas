@@ -1,18 +1,18 @@
 #!/bin/bash
 
 # Add a model column for the users permissions ID
-psql -U midas -d midas -c "ALTER TABLE midas_user ADD COLUMN permissions text;"
+psql -U $POSTGRESQL_USERNAME -d $POSTGRESQL_DATABASE -c "ALTER TABLE midas_user ADD COLUMN permissions text;"
 
 # old administrators should stay administrators (NOTE: need double quotes around case-sensitive column names)
-psql -U midas -d midas -c "UPDATE midas_user SET permissions='admin' WHERE \"isAdmin\"=TRUE;"
+psql -U $POSTGRESQL_USERNAME -d $POSTGRESQL_DATABASE -c "UPDATE midas_user SET permissions='admin' WHERE \"isAdmin\"=TRUE;"
 # non-admins become applicants by default
-psql -U midas -d midas -c "UPDATE midas_user SET permissions='applicant' WHERE \"isAdmin\"=FALSE;"
+psql -U $POSTGRESQL_USERNAME -d $POSTGRESQL_DATABASE -c "UPDATE midas_user SET permissions='applicant' WHERE \"isAdmin\"=FALSE;"
 
 # remove the isAdmin column
-psql -U midas -d midas -c "ALTER TABLE midas_user DROP COLUMN \"isAdmin\";"
+psql -U $POSTGRESQL_USERNAME -d $POSTGRESQL_DATABASE -c "ALTER TABLE midas_user DROP COLUMN \"isAdmin\";"
 
 # Make the permissions table
-psql -U midas -d midas -c "
+psql -U $POSTGRESQL_USERNAME -d $POSTGRESQL_DATABASE -c "
 
 --
 -- Name: permissions; Type: TABLE; Schema: public; Owner: midas; Tablespace:
@@ -46,4 +46,4 @@ ALTER TABLE ONLY permissions
 
 
 # Update the schema version
-psql -U midas -d midas -c "UPDATE schema SET version = 9 WHERE schema = 'current';"
+psql -U $POSTGRESQL_USERNAME -d $POSTGRESQL_DATABASE -c "UPDATE schema SET version = 9 WHERE schema = 'current';"
