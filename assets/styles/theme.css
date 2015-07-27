@@ -31,11 +31,9 @@ h2 {
 }
 
 h3 {
-  padding-top: 10px;
-  padding-bottom: 10px;
-  padding-left: 10px;
+  color: #666;
   font-size: 21px;
-  background-color: #B72467;
+  font-weight: 300;
 }
 
 h4 {
