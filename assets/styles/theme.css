@@ -1,3 +1,17 @@
+
+/**
+
+  For when a preprocessor gets added:
+  (or simply for ease of copy/pasting)
+
+  colors:
+    Normal highlight  #1CABE2
+    Hover highlight   #78DAF8
+
+*/
+
+
+
 /**
  * HEADERS
  */
@@ -392,6 +406,14 @@ footer a {
 .navbar .navbar-nav > li.active > a,
 .navbar .navbar-nav > li.active > a:hover,
 .navbar .navbar-nav > li.active > a:focus {
+  color:inherit; /* inherits from .navbar */
+  background-color: #78DAF8;
+}
+
+/* open nav dropdowns */
+.navbar-default .navbar-nav > .open > a,
+.navbar-default .navbar-nav > .open > a:focus,
+.navbar-default .navbar-nav > .open > a:hover {
   color:inherit; /* inherits from .navbar */
   background-color: #78DAF8;
 }

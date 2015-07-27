@@ -1,12 +1,15 @@
 /*****************
 =  GLOBAL
 ******************/
+/*
 @font-face {
   font-family: 'Lato';
   font-style: normal;
   font-weight: 300;
   src: local('Lato Light'), local('Lato-Light'), url(../fonts/lato-300.woff) format('woff');
 }
+*/
+
 /*
 LATO 400 not used for anything right now
 @font-face {
@@ -16,6 +19,8 @@ LATO 400 not used for anything right now
   src: local('Lato Regular'), local('Lato-Regular'), url(../fonts/lato-400.woff) format('woff');
 }
 */
+
+/*
 @font-face {
   font-family: 'Lato';
   font-style: normal;
@@ -40,11 +45,48 @@ LATO 400 not used for anything right now
   font-weight: 700;
   src: local('Roboto Bold'), local('Roboto-Bold'), url(../fonts/roboto-700.woff) format('woff');
 }
+*/
+
+@font-face {
+  font-family: 'OpenSans';
+  font-style: normal;
+  font-weight: 300;
+  src: local('OpenSans Light'), local('OpenSans-Light'), url(../fonts/OpenSans-Light.ttf) format('ttf');
+}
+
+@font-face {
+  font-family: 'OpenSans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('OpenSans Regular'), local('OpenSans-Regular'), url(../fonts/OpenSans-Regular.ttf) format('ttf');
+}
+
+@font-face {
+  font-family: 'OpenSans';
+  font-style: normal;
+  font-weight: 600;
+  src: local('OpenSans Semibold'), local('OpenSans-Semibold'), url(../fonts/OpenSans-Semibold.ttf) format('ttf');
+}
+
+@font-face {
+  font-family: 'OpenSans';
+  font-style: normal;
+  font-weight: 700;
+  src: local('OpenSans Bold'), local('OpenSans-Bold'), url(../fonts/OpenSans-Bold.ttf) format('ttf');
+}
+
+@font-face {
+  font-family: 'OpenSans';
+  font-style: normal;
+  font-weight: 800;
+  src: local('OpenSans ExtraBold'), local('OpenSans-ExtraBold'), url(../fonts/OpenSans-ExtraBold.ttf) format('ttf');
+}
+
 
 body {
   background-color: #e5e5e5;
-  font-family: 'Roboto', Helvetica, Arial, sans-serif;
-  font-weight: 300;
+  font-family: 'OpenSans', Helvetica, Arial, sans-serif;
+  font-weight: 400;
 }
 
 header {
@@ -282,30 +324,23 @@ input[type="submit"] {
 
 h1, h2, h3, h4, h5, h6 {
   margin-top: 0;
-  font-family: 'Lato', 'Roboto', Helvetica, Arial, sans-serif;
+  font-family: 'OpenSans', Helvetica, Arial, sans-serif;
   font-weight: 300;
 }
 
 /*****************
 =  NAVBAR
 ******************/
-/* -----------------
- * make it so the space below navbar is actually space above container
- * so we can make the container flush with navbar on some pages */
 .navbar {
+/* make it so the space below navbar is actually space above container
+ * so we can make the container flush with navbar on some pages */
   margin-bottom: 0px;
+
+  font-size: 12pt;
+  font-weight: 400;
 }
 
 /*-----------------*/
-
-.navbar .nav .navbar-title-small {
-  font-size: 14px;
-  font-weight: bold;
-}
-
-.navbar .nav .navbar-title-big {
-  font-size: 18px;
-}
 
 .navbar-people {
   height: 40px;

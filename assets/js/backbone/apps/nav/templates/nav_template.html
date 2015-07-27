@@ -15,42 +15,34 @@
       <ul class="nav navbar-nav">
 
         <li class="">
-          <a href="#" class="nav-link">
-            <span class="navbar-title-big">About</span>
-          </a>
+          <a href="#" class="nav-link">About</a>
         </li>
 
         <li class="projects">
           <a href="/projects" class="nav-link">
-            <span class="navbar-title-big" data-i18n="ProjectPlural">Projects</span>
+            <span data-i18n="ProjectPlural">Projects</span>
           </a>
         </li>
 
         <li class="tasks">
           <a href="/tasks" class="nav-link">
-            <span class="navbar-title-big" data-i18n="TaskPlural">Tasks</span>
+            <span data-i18n="TaskPlural">Tasks</span>
           </a>
         </li>
 
         <li class="">
-          <a href="#" class="nav-link">
-            <span class="navbar-title-big">Talent</span>
-          </a>
+          <a href="#" class="nav-link">Talent</a>
         </li>
 
         <li class="">
-          <a href="#" class="nav-link">
-            <span class="navbar-title-big">FAQ</span>
-          </a>
+          <a href="#" class="nav-link">FAQ</a>
         </li>
 
         <% if(user) { %>
 
           <li class="profile dropdown">
             <a href="/profile" id="navbar-profile" role="button" class="dropdown-toggle" data-toggle="dropdown">
-              <span class="navbar-title-big">
                 Hi, <% if (user.name) { %><%- user.name %><% } else { %><%- user.username %><% } %>
-              </span>
             </a>
             <ul class="dropdown-menu" role="menu" aria-labelledby="navbar-profile">
               <li role="presentation"><a role="menuitem" class="nav-link" tabindex="-1" href="/profile">Profile</a></li>
