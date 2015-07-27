@@ -124,132 +124,55 @@ Working Proficiency
 
       <!-- side bar -->
       <div class="col-sm-3">
-        <div class="tag-wrapper"></div>
-      </div>
 
-    </div>
-  </div>
-</section>
-
-
-
-
-
-<section>
-  <div class="container">
-
-
-
-<div class="row">
-
-  <% if (user.permissions.admin) { %>
-  <div class="alert alert-info">
-    You are an administrator.
-    <% if (user.id !== data.id) { %>
-      <% if (edit === true) { %>
-        <strong>You are editing another user's profile.</strong>
-      <% } else { %>
-        You are viewing another user's profile.
-      <% } %>
-    <% } %>
-  </div>
-  <% } %>
-
-  <% if (saved) { %>
-  <div class="alert alert-success">Your profile has been successfully updated.</div>
-  <% } %>
-
-  <div class="col-sm-3 col-md-4 project-sidebar">
-    <!-- LEFT SIDEBAR -->
-
-    <!--
-    <div class="row">
-      <div class="col-md-12 box project-header-wrapper">
-        <div id="project-header" style="background-image:url('/api/user/photo/<%- data.id %>');">
-          <div class="btn btn-c2 fileinput-button" <% if (!((data.isOwner || user.permissions.admin) && edit)) { %>style="display:none;"<% } %>>
-            <i class="fa fa-camera fa-lg" title="Change Cover Photo" id="fileupload-icon"></i>
-            <input id="fileupload" type="file" name="files[]" title="Upload Photo">
-          </div>
-        </div>
-        <div id="file-upload-progress-container" style="display: none;" class="progress progress-striped active">
-          <div id="file-upload-progress" class="progress-bar" style="width: 0"></div>
-        </div>
-        <div id="file-upload-alert" class="alert alert-warning" style="display:none;">
-        </div>
-      </div>
-    </div>
-  </div>
-  -->
-
-  <div class="col-sm-9 col-md-8">
-    <!-- RIGHT MAIN BAR -->
-    <% if (edit) { %> <!-- in edit mode -->
-    <div class="box box-main">
-
-      <form class="form-horizontal" role="form" id="profile-form">
-        <h1>
-          <div class="form-group">
-            <input type="text" class="form-control validate input-lg" id="name" name="name" placeholder="Your Full Name" value="<% if (data.name) { %><%- data.name %><% } %>" data-validate="empty" title="Your Full Name"/>
-            <span class="help-block error-empty" style="display:none;font-size:14px;">Please enter your full name.</span>
-          </div>
-        </h1>
-
-        <h2> Bio </h2>
-
-        <div class="form-group">
-          <label for="title" class="col-md-3 control-label">Title</label>
-          <div class="col-md-9">
-            <input type="text" class="form-control" id="title" name="title" placeholder="Title" value="<% if (data.title) { %><%- data.title %><% } %>"/>
-          </div>
+        <div class="row">
+          <div class="tag-wrapper"></div>
         </div>
 
-        <div class="form-group">
-          <label for="company" class="col-md-3 control-label">Agency</label>
-          <div class="col-md-9">
-            <input type="hidden" id="company" name="company" style="width: 100%"/>
-          </div>
-        </div>
+        <hr>
 
-        <!--
-        <div class="form-group">
-          <label for="location" class="col-md-3 control-label">Location</label>
-          <div class="col-md-9">
-            <input type="hidden" id="location" name="location" style="width: 100%"/>
-          </div>
-        </div>
-        -->
-
-        <!--
-        <div class="form-group">
-          <label for="bio" class="col-md-3 control-label">A brief public biography</label>
-          <div class="col-md-9">
-            <div class="markdown-edit"></div>
-          </div>
-        </div>
-        -->
-
-        <h2> Account Information </h2>
-
-        <div class="form-group">
+        <div class="row">
           <label for="profile-email" class="col-md-3 control-label">Email</label>
-          <div class="col-md-9">
-            <input type="text" class="form-control" id="profile-email" name="username"
-              placeholder="Email" value="<%- email %>">
+
+          <% if(!edit) { %>
+            <div><% if(email) { %><%- email %><% } else { %>No email addresses<% } %></div>
+          <% } else { %>
+            <input type="text" class="form-control" id="profile-email" name="username" placeholder="Email" value="<%- email %>">
             <div id="email-update-alert" class="alert alert-warning" style="display:none;"></div>
-          </div>
+          <% } %>
         </div>
 
-        <div class="form-group">
-          <% if (login.oauth.length > 0) { %>
-          <label for="services" class="col-md-3 control-label">Connected Accounts</label>
-          <div class="col-md-9" id="services">
-            <form class="form-horizontal" role="form">
-            <% _.each(login.oauth, function (a) { %>
-              <div class="form-group">
-                <div class="col-xs-8 col-sm-9 col-md-9">
+        <hr>
+
+        <div class="row">
+          <label for="services" class="control-label">Connected Accounts</label>
+
+          <% if(!edit) { %>
+
+            <% if (login.oauth.length > 0) { %>
+              <div>
+                <% if (data.auths.length === 0) { %>
+                  No connected accounts.
+                <% } %>
+                <% _.each(login.oauth, function (a) { console.log(a); %>
+
+                  <% if (_(data.auths).chain().pluck('provider').contains(a).value()) { %>
+                  <div>
+                    <%- login.config[a].name %>
+                    <span class="label label-success">Connected</span>
+                  </div>
+                  <% } %>
+                <% }); %>
+              </div>
+            <% } %>
+
+          <% } else { %>
+
+            <% if (login.oauth.length > 0) { %>
+              <form class="form-horizontal" role="form">
+              <% _.each(login.oauth, function (a) { %>
+                <div class="form-group">
                   <img src="<%- login.config[a].image %>" alt="<%- login.config[a].name %>" style="height: 30px"/>
-                </div>
-                <div class="col-xs-4 col-sm-3 col-md-3">
                   <% if (_.findWhere(data.auths, { provider: a })) { %>
                   <a href="#" class="btn btn-danger btn-sm removeAuth pull-right" data-service="<%- a %>" data-id="<%- _.findWhere(data.auths, { provider: a }).id %>"><span class="fa fa-remove"></span> Disconnect</a>
                   <% } else { %>
@@ -257,158 +180,16 @@ Working Proficiency
                   <% } %>
                   <!-- <%- login.config[a].name %> -->
                 </div>
-              </div>
-            <% }); %>
-            </form>
-          </div>
+              <% }); %>
+              </form>
+            <% } %>
+
           <% } %>
-        </div>
 
-      </form>
-    </div>
-    <% } else { %> <!-- not in edit mode -->
-    <div class="row">
-      <div class="col-md-9 sm-nopadding md-nopadding">
-        <div class="box box-main">
-          <!--
-          <h1><% if (data.name) { %><%- data.name %><% } else { %><%- data.username %><% } %></h1>
 
-          <div class="profile-jobtitle"><% if (data.title) { %><i class="fa fa-briefcase"></i> <span class="box-icon-text"><%- data.title %></span><% } %></div>
-          <div class="profile-company"><% if (data.agency) { %><i class="icon-library"></i> <span class="box-icon-text"><%- data.agency.name %></span><% } %></div>
-          <div class="profile-location"><% if (data.location) { %><span class="fa fa-map-marker"></span> <span class="box-icon-text"><%- data.location.name %></span><% } %></div>
-
-          <div class="profile-bio box-pad-t">
-            <% /* Escaped with marked() */ %>
-            <% if (data.bioHtml) { %><%= data.bioHtml %><% } else { %>This person doesn't have a bio yet.<% } %>
-          </div>
-          -->
         </div>
       </div>
-      <div class="col-md-3 sm-nopadding md-nopadding padding-left-none">
-        <div class="box padding-none">
-<!--
-          <div class="navbar-side like-row border-bottom">
-            <a href="#" id="like-button" class="like-button">
-              <i id="like-button-icon" class="fa fa-star-o fa-lg gold"></i>
-            </a>
-            <span class="like-number" id="like-number"><%- data.likeCount %></span>
-            <span class="like-plural" id="like-text" data-plural="followers" data-singular="follower">followers</span>
-          </div>
--->
-          <div class="navbar-side <% if (data.isOwner || user.permissions.admin) { %>border-bottom<% } %>">
-            <ul class="nav nav-pills nav-stacked">
-              <li>
-                <a href="#" id="email"><i class="fa fa-envelope-o"></i> <span class="box-icon-text">Share</span></a>
-              </li>
-              <% if (data.isOwner || user.permissions.admin) { %>
-              <li>
-                <a href="/api/event/ical/"><span class="fa fa-calendar"></span> <span class="box-icon-text">Calendar</span></a>
-              </li>
-            </ul>
-          </div>
-          <div class="navbar-side">
-            <ul class="nav nav-pills nav-stacked">
-              <% } %>
-            </ul>
-          </div>
-        </div>
 
-      </div>
     </div>
-
-    <% if (data.isOwner) { %>
-    <div class="box">
-      <div class="box-pad-lr border-bottom">
-        <h2>Account Information</h2>
-      </div>
-
-      <div class="box-pad-lr box-pad-t">
-        <div class="row">
-          <div class="col-xs-3 col-sm-3 col-md-3">
-            Email:
-          </div>
-          <div class="col-xs-9 col-sm-9 col-md-9">
-            <% if (email) { %>
-            <%- email %>
-            <% } else { %>
-            No email addresses
-            <% } %>
-          </div>
-        </div>
-
-        <% if (login.oauth.length > 0) { %>
-        <div class="row">
-          <div class="col-xs-3 col-sm-3 col-md-3">
-            Connected Accounts:
-          </div>
-          <div class="col-xs-9 col-sm-9 col-md-9">
-            <% if (data.auths.length === 0) { %>
-              No connected accounts.
-            <% } %>
-            <% _.each(login.oauth, function (a) { console.log(a); %>
-
-              <% if (_(data.auths).chain().pluck('provider').contains(a).value()) { %>
-              <div>
-                <%- login.config[a].name %>
-                <span class="label label-success">Connected</span>
-              </div>
-              <% } %>
-            <% }); %>
-          </div>
-        </div>
-        <% } %>
-      </div>
-    </div>
-    <% } %>
-
-
-    <!--
-      user metrics, such as:
-
-      - projects created/closed/etc...
-      - tasks created/closed/etc...
-      - things they volunteered for
-    -->
-
-    <!--
-
-    <% if (ui.project.show) { %>
-    <div class="box">
-      <div class="box-pad-lr border-bottom">
-        <h2><span data-i18n="ProjectPlural">Projects</span></h2>
-      </div>
-      <div class="box-pad-lr box-pad-t">
-        <div class="project-activity-wrapper"></div>
-      </div>
-    </div>
-    <% } %>
-
-    <div class="box">
-      <div class="box-pad-lr border-bottom">
-        <h2><span data-i18n="TaskPlural">Opportunities</span> Participated In</h2>
-      </div>
-      <div class="box-pad-lr box-pad-t">
-        <div class="task-activity-wrapper"></div>
-      </div>
-    </div>
-
-    <div class="box">
-      <div class="box-pad-lr border-bottom">
-        <h2><span data-i18n="TaskPlural">Opportunities</span> Created</h2>
-      </div>
-      <div class="box-pad-lr box-pad-t">
-        <div class="task-createdactivity-wrapper"></div>
-      </div>
-    </div>
-
-    -->
-
-    <% } %> <!-- /edit check -->
-
-  </div>
-</div>
-
-
-
   </div>
 </section>

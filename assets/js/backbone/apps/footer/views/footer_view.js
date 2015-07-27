@@ -19,7 +19,7 @@ var FooterView = Backbone.View.extend({
     };
     var compiledTemplate = _.template(FooterTemplate)(data);
     this.$el.html(compiledTemplate);
-
+    /*
     function resizeElements() {
       headerHeight = $('.navbar').height();
       footerHeight = $('footer').height();
@@ -31,6 +31,7 @@ var FooterView = Backbone.View.extend({
     }
     resizeElements();
     $(".container").bind("DOMSubtreeModified", resizeElements);
+    */
   },
 
   cleanup: function () {
