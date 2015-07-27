@@ -47,7 +47,11 @@ body {
   font-weight: 300;
 }
 
-#footer {
+header {
+  padding: 30px 0px;
+}
+
+footer {
   font-size: 11px;
   padding-bottom: 3px;
 }
@@ -292,10 +296,6 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 0px;
 }
 
-#container {
-  margin-top:20px;
-}
-
 /*-----------------*/
 
 .navbar .nav .navbar-title-small {
@@ -307,36 +307,11 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 18px;
 }
 
-.navbar .nav .navbar-divider {
-  /* vertical divider */
-  background-color: white;
-  height: 40px;
-  width: 1px;
-}
-
-@media (max-width: 768px) {
-  /* horizontal divider */
-  .navbar .nav .navbar-divider {
-    height: 1px;
-    width: 100%;
-  }
-}
-
-#navbar-profile {
-  font-weight: 400;
-  font-size: 18px;
-}
-
 .navbar-people {
   height: 40px;
   width: 40px;
   max-height: 40px;
   border-radius: 25px;
-}
-
-.navbar-1line {
-  margin-top: 10px;
-  margin-bottom: 5px;
 }
 
 .navbar-side {
@@ -359,6 +334,8 @@ ul.nav-search > li {
   position: relative;
   display: block;
 }
+
+
 
 .navbar .dropdown-menu {
   width: 100%;
@@ -1631,7 +1608,8 @@ ul.task-tags > li {
   line-height: 1.2em;
 }
 
-#task-form #section-1 p,li {
+#task-form #section-1 p,
+#task-form #section-1 li {
   margin-top: 0.5em;
 }
 

@@ -1,4 +1,6 @@
+<!-- the login modal -->
 <div id="login-wrapper"></div>
+
 <div class="navbar navbar-default navbar-static-top">
   <div class="container">
     <div class="navbar-header">
@@ -7,38 +9,48 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="/" title="<%- systemName %> Home">
-        <img src="/images/logo.png" height="60px" />
-      </a>
     </div>
-    <div class="navbar-collapse collapse pull-right">
+
+    <div class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 
-        <% if (ui.project.show) { %>
+        <li class="">
+          <a href="#" class="nav-link">
+            <span class="navbar-title-big">About</span>
+          </a>
+        </li>
+
         <li class="projects">
           <a href="/projects" class="nav-link">
-            <i class="fa fa-comments-o"></i>
-            <span class="navbar-title-small" data-i18n="Browse">Browse</span><br/>
             <span class="navbar-title-big" data-i18n="ProjectPlural">Projects</span>
           </a>
         </li>
-        <% } %>
+
         <li class="tasks">
           <a href="/tasks" class="nav-link">
-            <i class="fa fa-rocket"></i>
-            <span class="navbar-title-small" data-i18n="Browse">Browse</span><br/>
             <span class="navbar-title-big" data-i18n="TaskPlural">Tasks</span>
           </a>
         </li>
 
-        <li class="navbar-divider navbar-text"></li>
-        <% if (user) { %>
+        <li class="">
+          <a href="#" class="nav-link">
+            <span class="navbar-title-big">Talent</span>
+          </a>
+        </li>
+
+        <li class="">
+          <a href="#" class="nav-link">
+            <span class="navbar-title-big">FAQ</span>
+          </a>
+        </li>
+
+        <% if(user) { %>
+
           <li class="profile dropdown">
             <a href="/profile" id="navbar-profile" role="button" class="dropdown-toggle" data-toggle="dropdown">
-            <img src="/api/user/photo/<%- user.id %>" class="navbar-people" alt="" /> &nbsp;
-              <% if (user.name) { %><%- user.name %>
-              <% } else { %><%- user.username %>
-              <% } %>
+              <span class="navbar-title-big">
+                Hi, <% if (user.name) { %><%- user.name %><% } else { %><%- user.username %><% } %>
+              </span>
             </a>
             <ul class="dropdown-menu" role="menu" aria-labelledby="navbar-profile">
               <li role="presentation"><a role="menuitem" class="nav-link" tabindex="-1" href="/profile">Profile</a></li>
@@ -54,11 +66,13 @@
               <% } %>
             </ul>
           </li>
+
         <% } else { %>
-          <% if (login.signin !== false) { %>
-          <li class="navbar-1line"><a href="/auth" class="login"><i class="fa fa-plus-circle"></i> Sign In</a></li>
-          <% } %>
-        <% }; %>
+
+          <li><a href="/auth" class="login">Sign In</a></li>
+
+        <% } %>
+
       </ul>
     </div>
   </div>
