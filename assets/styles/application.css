@@ -94,6 +94,7 @@ header {
 }
 
 footer {
+  padding-top: 30px;
   font-size: 11px;
   padding-bottom: 3px;
 }
