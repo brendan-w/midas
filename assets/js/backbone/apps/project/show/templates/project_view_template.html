@@ -1,5 +1,20 @@
 
 
+<style>
+  #project-title {
+    display:inline-block;
+    padding-bottom: 30px;
+    border-bottom:1px solid white;
+    color:white;
+  }
+
+  #project-desc {
+    color:white;
+  }
+</style>
+
+
+
 <!-- MODALS -->
 <div id="modal-close"></div>
 
@@ -12,91 +27,66 @@
 <% } %>
 
 
-<section>
+<!-- the big project banner -->
+<section style="background:#555">
   <div class="container">
-    <div class="row">
 
-      <!-- the main group description box -->
-      <div class="col-md-9">
+    <!-- the main group description box -->
+    <div class="row text-center">
 
         <% if( !edit ) { %>
 
-          <h1><%- project.title %></h1>
-          <div><%= project.description_html %></div>
+          <div class="col-md-12">
+            <h1 id="project-title"><%- project.title %></h1>
+            <h3 id="project-desc"><%= project.description_html %></h3>
+
+            <!-- If the user is logged in, present them with the vet button -->
+            <% if(user && user.permissions.apply) { %>
+              <button id="vet" class="btn btn-c2">Vet me for this group</button>
+              <div><a href="#">What does it mean to get vetted?</a></div>
+            <% } %>
+
+            <% if(user.isOwner || user.permissions.admin) { %>
+              <!-- Edit Group button -->
+              <a href="#" id="project-edit" class="btn btn-c2"><i class="fa fa-pencil">&nbsp;</i>Edit <span data-i18n="Project">Project</span></a>
+
+              <% if (project.state == 'closed') { %>
+                <!-- Reopen Group button -->
+                <a href="#" id="project-reopen" class="btn btn-c2"><i class="fa fa-share">&nbsp;</i>Reopen <span data-i18n="Project">Project</span></a>
+              <% } else { %> <!-- if the group is OPEN -->
+                <!-- Close Group button -->
+                <a href="#" id="project-close" class="btn btn-c2"><i class="fa fa-times-circle">&nbsp;</i>Close <span data-i18n="Project">Project</span></a>
+              <% } %>
+            <% } %>
+
+          </div>
 
         <% } else { %>
 
-          <div class="form-group">
-            <h2 class="box-pad-t">Group Title</h2>
-            <input id="project-edit-title" class="form-control input-lg" value="<%- project.title %>" type="text" data-validate="empty,count100" title="Title"/>
-            <span class="help-block error-empty"    style="display:none;">You must enter a <span data-i18n="project">project</span> title.</span>
-            <span class="help-block error-count100" style="display:none;">Your title must be less than 100 characters.</span>
+          <div class="col-md-8 col-md-offset-2">
+            <div class="form-group">
+              <h2 class="box-pad-t">Group Title</h2>
+              <input id="project-edit-title" class="form-control input-lg" value="<%- project.title %>" type="text" data-validate="empty,count100" title="Title"/>
+              <span class="help-block error-empty"    style="display:none;">You must enter a <span data-i18n="project">project</span> title.</span>
+              <span class="help-block error-count100" style="display:none;">Your title must be less than 100 characters.</span>
+            </div>
+
+            <div class="form-group">
+              <h2 class="box-pad-t">Group Description</h2>
+              <div class="markdown-edit"></div>
+              <span class="help-block error-empty" style="display:none;">You must enter a <span data-i18n="project">project</span> description.</span>
+            </div>
+
+            <div class="form-group">
+              <button id="project-discard" class="btn btn-c0">Discard Changes</button>
+              <button id="project-save" class="btn btn-c2">Save <span data-i18n="Project">Project</span></button>
+            </div>            
           </div>
 
-          <div class="form-group">
-            <h2 class="box-pad-t">Group Description</h2>
-            <div class="markdown-edit"></div>
-            <span class="help-block error-empty" style="display:none;">You must enter a <span data-i18n="project">project</span> description.</span>
-          </div>
-
         <% } %>
 
-      </div>
-
-      <!-- the options side-pane -->
-      <div class="col-md-3">
-
-        <!-- If the user is logged in, present them with the vet button -->
-        <% if(user && !edit) { %>
-          <button class="btn btn-c2">Vet me for this group</button>
-        <% } %>
-
-        <% if (project.isOwner || user.permissions.admin) { %>
-
-        <div class="navbar-side">
-          <ul class="nav nav-pills nav-stacked">
-
-            <% if ( !edit ) { %>
-
-              <!-- Edit Group button -->
-              <li>
-                <a href="#" id="project-edit"><i class="fa fa-pencil"></i> <span class="box-icon-text">Edit <span data-i18n="Project">Project</span></span></a>
-              </li>
-
-              <% if (project.state == 'closed') { %>
-
-                <!-- Reopen Group button -->
-                <li>
-                  <a href="#" id="project-reopen"><i class="fa fa-share"></i> <span class="box-icon-text">Reopen <span data-i18n="Project">Project</span></span></a>
-                </li>
-
-              <% } else { %> <!-- if the group is OPEN -->
-
-                <!-- Close Group button -->
-                <li>
-                  <a href="#" id="project-close"><i class="fa fa-times-circle"></i> <span class="box-icon-text">Close <span data-i18n="Project">Project</span></span></a>
-                </li>
-
-              <% } %>
-
-            <% } else { %> <!-- if this IS edit mode -->
-
-              <li>
-                <button id="project-discard" class="btn btn-c0">Discard Changes</button>
-              </li>
-              <li>
-                <button id="project-save" class="btn btn-c2">Save <span data-i18n="Project">Project</span></button>
-              </li>
-
-            <% } %>
-
-          </ul>
-        </div>
-
-        <% } %>
-
-      </div>
     </div>
+
   </div>
 </section>
 

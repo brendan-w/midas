@@ -15,14 +15,17 @@
 /**
  * HEADERS
  */
+
 h1 {
-  font-size: 48px;
+  font-size: 60pt;
+  font-weight: 300;
   color: #1CABE2;
 }
 
 h2 {
-  color: #297BB5;
-  font-size: 22px;
+  color: #1CABE2;
+  /*color: #297BB5;*/
+  font-size: 48px;
 }
 
 .tag-title > h2 {
@@ -32,7 +35,7 @@ h2 {
 
 h3 {
   color: #666;
-  font-size: 21px;
+  font-size: 20px;
   font-weight: 300;
 }
 
@@ -132,7 +135,7 @@ footer a {
  * BUTTONS
  */
 .btn {
-  font-family: 'Roboto', Helvetica, Arial, sans-serif;
+  font-family: 'OpenSans', Helvetica, Arial, sans-serif;
   font-weight: 400;
 }
 

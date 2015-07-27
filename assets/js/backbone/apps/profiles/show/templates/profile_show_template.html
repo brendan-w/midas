@@ -4,7 +4,6 @@
   .col-sm-9,
   .col-sm-3 {
     background-color:#FFF;
-    padding-top:30px;
   }
 
   .profile-bio {
@@ -14,186 +13,186 @@
 
 </style>
 
-<!-- everything is wrapped in a giant form, which is used for update submission -->
-<form id="profile-form">
 
 <section>
-  <div class="container">
-    <div class="row">
+  <!-- everything is wrapped in a giant form, which is used for update submission -->
+  <form id="profile-form">
+    <div class="container">
+      <div class="row">
 
-      <!-- main column -->
-      <div class="col-sm-9">
-        <!-- edit buttons -->
+        <!-- main column -->
+        <div class="col-sm-9">
+          <!-- edit buttons -->
 
-        <div class="pull-right">
+          <div class="pull-right">
 
-          <% if(!edit) { %>
+            <% if(!edit) { %>
 
-            <% if(data.isOwner || user.permissions.admin) { %>
-              <% if(login.profile.edit === true) { %>
-                <a href="/profile/<%- data.id %>/edit" class="btn btn-c2 link-backbone">Edit Profile</a>
-              <% } else if(login.profile.editUrl) { %>
-                <a href="<%- login.profile.editUrl %>" class="btn btn-c2" target="_blank">Edit Profile</a>
-              <% } %>
-            <% } %>
-
-          <% } else { %>
-
-            <a href="#" class="btn btn-c0" id="profile-cancel">Discard Changes</a>
-            <button id="profile-save" type="submit" class="btn btn-c2" disabled="disabled" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Saving..." data-success-text="Saved!" data-fail-text="Save Failed.">Save Profile</button>
-
-          <% } %>
-
-        </div>
-
-        <!-- main profile information -->
-
-        <h1><% if (data.name) { %><%- data.name %><% } else { %><%- data.username %><% } %></h1>
-
-        <ul class="vet-list">
-          <!-- simply add a .vetted class to each <li> that the user is vetted for -->
-          <li class="vetted"><i class='fa fa-check'>&nbsp;</i>Development</li>
-          <li><i class='fa fa-check'>&nbsp;</i>Design</li>
-          <li><i class='fa fa-check'>&nbsp;</i>Translation</li>
-        </ul>
-
-        <div class="form-group profile-bio">
-          <% if(!edit) { %>
-            <h3>
-              <!-- Escaped with marked() -->
-              <% if (data.bioHtml) { %><%= data.bioHtml %><% } else { %>This person doesn't have a bio yet.<% } %>
-            </h3>
-          <% } else { %>
-            <label>A brief public biography</label>
-            <div class="markdown-edit"></div>
-          <% } %>
-        </div>
-
-        <hr> <!-- //////////////////////////////////////////////////// -->
-
-        <div class="form-group profile-location">
-          <label for="location">Current location</label>
-
-          <% if(!edit) { %>
-            <div><% if (data.location) { %><%- data.location.name %><% } else { %>Not specified<% } %></div>
-          <% } else { %>
-            <input type="hidden" id="location" name="location" style="width: 100%"/>
-          <% } %>
-
-        </div>
-
-        <div class="form-group profile-education">
-          <label>Highest education level completed</label>
-          <div><% if (data.education) { %><%- data.education %><% } else { %>Not specified<% } %></div>
-        </div>
-
-        <div class="form-group profile-experience">
-          <label>Years of professional experience</label>
-          <div><% if (data.experience) { %><%- data.experience %><% } else { %>Not specified<% } %></div>
-        </div>
-
-        <div class="form-group profile-topic">
-          <label>Interested in what types of work?</label>
-          <div>topic tags...</div><!-- TODO -->
-        </div>
-
-        <div class="form-group profile-location-pref">
-          <label>Work location preferences</label>
-          <div><% if (data.location_pref) { %><%- data.location_pref %><% } else { %>Not specified<% } %></div>
-        </div>
-
-        <div class="form-group profile-seeking">
-          <label>Type of work opportunities in which I am insterested</label>
-          <div><% if (data.seeking) { %><%- data.seeking %><% } else { %>Not specified<% } %></div>
-        </div>
-
-        <div class="form-group profile-fellowship">
-          <label>Would you like to be considered for possible fellowship opportunities</label>
-          <div><% if (data.fellowship) { %><%- data.fellowship %><% } else { %>Not specified<% } %></div>
-        </div>
-
-
-<!--
-LANGUAGES
-English - Written Proficiency: Native or Bilingual; Spoken Proficiency: Native or Bilingual
-French - Written Proficiency: Native or Bilingual; Spoken Proficiency: Native or Bilingual
-Spanish - Written Proficiency: Limited Working Proficiency; Spoken Proficiency: Limited
-Working Proficiency
--->
-
-
-      </div> <!-- end main column -->
-
-      <!-- side bar -->
-      <div class="col-sm-3">
-
-        <div class="row">
-          <div class="tag-wrapper"></div>
-        </div>
-
-        <hr>
-
-        <div class="row">
-          <label for="profile-email" class="col-md-3 control-label">Email</label>
-
-          <% if(!edit) { %>
-            <div><% if(email) { %><%- email %><% } else { %>No email addresses<% } %></div>
-          <% } else { %>
-            <input type="text" class="form-control" id="profile-email" name="username" placeholder="Email" value="<%- email %>">
-            <div id="email-update-alert" class="alert alert-warning" style="display:none;"></div>
-          <% } %>
-        </div>
-
-        <hr>
-
-        <div class="row">
-          <label for="services" class="control-label">Connected Accounts</label>
-
-          <% if(!edit) { %>
-
-            <% if (login.oauth.length > 0) { %>
-              <div>
-                <% if (data.auths.length === 0) { %>
-                  No connected accounts.
+              <% if(data.isOwner || user.permissions.admin) { %>
+                <% if(login.profile.edit === true) { %>
+                  <a href="/profile/<%- data.id %>/edit" class="btn btn-c2 link-backbone">Edit Profile</a>
+                <% } else if(login.profile.editUrl) { %>
+                  <a href="<%- login.profile.editUrl %>" class="btn btn-c2" target="_blank">Edit Profile</a>
                 <% } %>
-                <% _.each(login.oauth, function (a) { console.log(a); %>
+              <% } %>
 
-                  <% if (_(data.auths).chain().pluck('provider').contains(a).value()) { %>
-                  <div>
-                    <%- login.config[a].name %>
-                    <span class="label label-success">Connected</span>
-                  </div>
-                  <% } %>
-                <% }); %>
-              </div>
+            <% } else { %>
+
+              <a href="#" class="btn btn-c0" id="profile-cancel">Discard Changes</a>
+              <button id="profile-save" type="submit" class="btn btn-c2" disabled="disabled" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Saving..." data-success-text="Saved!" data-fail-text="Save Failed.">Save Profile</button>
+
             <% } %>
 
-          <% } else { %>
+          </div>
 
-            <% if (login.oauth.length > 0) { %>
-              <form class="form-horizontal" role="form">
-              <% _.each(login.oauth, function (a) { %>
-                <div class="form-group">
-                  <img src="<%- login.config[a].image %>" alt="<%- login.config[a].name %>" style="height: 30px"/>
-                  <% if (_.findWhere(data.auths, { provider: a })) { %>
-                  <a href="#" class="btn btn-danger btn-sm removeAuth pull-right" data-service="<%- a %>" data-id="<%- _.findWhere(data.auths, { provider: a }).id %>"><span class="fa fa-remove"></span> Disconnect</a>
-                  <% } else { %>
-                  <a href="<%- login.config[a].endpoint %>" class="btn btn-success btn-sm pull-right"><span class="fa fa-plus"></span> Connect</a>
+          <!-- main profile information -->
+
+          <h2><% if (data.name) { %><%- data.name %><% } else { %><%- data.username %><% } %></h2>
+
+          <ul class="vet-list">
+            <!-- simply add a .vetted class to each <li> that the user is vetted for -->
+            <li class="vetted"><i class='fa fa-check'>&nbsp;</i>Development</li>
+            <li><i class='fa fa-check'>&nbsp;</i>Design</li>
+            <li><i class='fa fa-check'>&nbsp;</i>Translation</li>
+          </ul>
+
+          <div class="form-group profile-bio">
+            <% if(!edit) { %>
+              <h3>
+                <!-- Escaped with marked() -->
+                <% if (data.bioHtml) { %><%= data.bioHtml %><% } else { %>This person doesn't have a bio yet.<% } %>
+              </h3>
+            <% } else { %>
+              <label>A brief public biography</label>
+              <div class="markdown-edit"></div>
+            <% } %>
+          </div>
+
+          <hr> <!-- //////////////////////////////////////////////////// -->
+
+          <div class="form-group profile-location">
+            <label for="location">Current location</label>
+
+            <% if(!edit) { %>
+              <div><% if (data.location) { %><%- data.location.name %><% } else { %>Not specified<% } %></div>
+            <% } else { %>
+              <input type="hidden" id="location" name="location" style="width: 100%"/>
+            <% } %>
+
+          </div>
+
+          <div class="form-group profile-education">
+            <label>Highest education level completed</label>
+            <div><% if (data.education) { %><%- data.education %><% } else { %>Not specified<% } %></div>
+          </div>
+
+          <div class="form-group profile-experience">
+            <label>Years of professional experience</label>
+            <div><% if (data.experience) { %><%- data.experience %><% } else { %>Not specified<% } %></div>
+          </div>
+
+          <div class="form-group profile-topic">
+            <label>Interested in what types of work?</label>
+            <div>topic tags...</div><!-- TODO -->
+          </div>
+
+          <div class="form-group profile-location-pref">
+            <label>Work location preferences</label>
+            <div><% if (data.location_pref) { %><%- data.location_pref %><% } else { %>Not specified<% } %></div>
+          </div>
+
+          <div class="form-group profile-seeking">
+            <label>Type of work opportunities in which I am insterested</label>
+            <div><% if (data.seeking) { %><%- data.seeking %><% } else { %>Not specified<% } %></div>
+          </div>
+
+          <div class="form-group profile-fellowship">
+            <label>Would you like to be considered for possible fellowship opportunities</label>
+            <div><% if (data.fellowship) { %><%- data.fellowship %><% } else { %>Not specified<% } %></div>
+          </div>
+
+
+  <!--
+  LANGUAGES
+  English - Written Proficiency: Native or Bilingual; Spoken Proficiency: Native or Bilingual
+  French - Written Proficiency: Native or Bilingual; Spoken Proficiency: Native or Bilingual
+  Spanish - Written Proficiency: Limited Working Proficiency; Spoken Proficiency: Limited
+  Working Proficiency
+  -->
+
+
+        </div> <!-- end main column -->
+
+        <!-- side bar -->
+        <div class="col-sm-3">
+
+          <div class="row">
+            <div class="tag-wrapper"></div>
+          </div>
+
+          <hr>
+
+          <div class="row">
+            <label for="profile-email" class="col-md-3 control-label">Email</label>
+
+            <% if(!edit) { %>
+              <div><% if(email) { %><%- email %><% } else { %>No email addresses<% } %></div>
+            <% } else { %>
+              <input type="text" class="form-control" id="profile-email" name="username" placeholder="Email" value="<%- email %>">
+              <div id="email-update-alert" class="alert alert-warning" style="display:none;"></div>
+            <% } %>
+          </div>
+
+          <hr>
+
+          <div class="row">
+            <label for="services" class="control-label">Connected Accounts</label>
+
+            <% if(!edit) { %>
+
+              <% if (login.oauth.length > 0) { %>
+                <div>
+                  <% if (data.auths.length === 0) { %>
+                    No connected accounts.
                   <% } %>
-                  <!-- <%- login.config[a].name %> -->
+                  <% _.each(login.oauth, function (a) { console.log(a); %>
+
+                    <% if (_(data.auths).chain().pluck('provider').contains(a).value()) { %>
+                    <div>
+                      <%- login.config[a].name %>
+                      <span class="label label-success">Connected</span>
+                    </div>
+                    <% } %>
+                  <% }); %>
                 </div>
-              <% }); %>
-              </form>
+              <% } %>
+
+            <% } else { %>
+
+              <% if (login.oauth.length > 0) { %>
+                <form class="form-horizontal" role="form">
+                <% _.each(login.oauth, function (a) { %>
+                  <div class="form-group">
+                    <img src="<%- login.config[a].image %>" alt="<%- login.config[a].name %>" style="height: 30px"/>
+                    <% if (_.findWhere(data.auths, { provider: a })) { %>
+                    <a href="#" class="btn btn-danger btn-sm removeAuth pull-right" data-service="<%- a %>" data-id="<%- _.findWhere(data.auths, { provider: a }).id %>"><span class="fa fa-remove"></span> Disconnect</a>
+                    <% } else { %>
+                    <a href="<%- login.config[a].endpoint %>" class="btn btn-success btn-sm pull-right"><span class="fa fa-plus"></span> Connect</a>
+                    <% } %>
+                    <!-- <%- login.config[a].name %> -->
+                  </div>
+                <% }); %>
+                </form>
+              <% } %>
+
             <% } %>
 
-          <% } %>
 
-
+          </div>
         </div>
-      </div>
 
+      </div>
     </div>
-  </div>
+  </form>
 </section>
 
-</form>
