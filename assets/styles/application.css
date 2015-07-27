@@ -106,12 +106,13 @@ input {
   padding: 0 0 0 5px;
 }
 
+.row {
+  margin-left: 0;
+  margin-right: 0;
+}
+
 /* Override bootstrap's .row margins for mobile & tablet */
 @media (max-width: 978px) {
-  .row {
-    margin-left: 0;
-    margin-right: 0;
-  }
 }
 
 .navbar-toggle {
@@ -342,12 +343,14 @@ h1, h2, h3, h4, h5, h6 {
 
 /*-----------------*/
 
+/*
 .navbar-people {
   height: 40px;
   width: 40px;
   max-height: 40px;
   border-radius: 25px;
 }
+*/
 
 .navbar-side {
   padding: 5px;
@@ -369,8 +372,6 @@ ul.nav-search > li {
   position: relative;
   display: block;
 }
-
-
 
 .navbar .dropdown-menu {
   width: 100%;
@@ -620,6 +621,38 @@ ul.password-rules {
 
 .white .comment-created-at {
   color: #FFFFFF;
+}
+
+/*****************
+=  VET LIST
+******************/
+
+ul.vet-list {
+  list-style: none;
+  padding-left:0px;
+}
+
+ul.vet-list li {
+  display: inline;
+  padding:2px 5px;
+  border:2px solid #BBB;
+  color: #AAA;
+}
+
+ul.vet-list li.vetted {
+  border-color:#4C4;
+  color: #000;
+}
+
+/* hide checkmark icons for unvetted groups*/
+ul.vet-list li .fa {
+  color:#4C4;
+  display:none;
+}
+
+/* show checkmark icons for VETTED groups */
+ul.vet-list li.vetted .fa {
+  display:inline;
 }
 
 /*****************

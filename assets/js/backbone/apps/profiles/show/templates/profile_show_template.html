@@ -1,4 +1,37 @@
 
+
+
+<section>
+  <div class="container">
+    <div class="row">
+        <div class="col-sm-9" style="background-color:#ddd;">
+          <h1><% if (data.name) { %><%- data.name %><% } else { %><%- data.username %><% } %></h1>
+
+          <ul class="vet-list">
+            <!-- simply add a .vetted class to each <li> that the user is vetted for -->
+            <li class="vetted"><i class='fa fa-check'>&nbsp;</i>Development</li>
+            <li><i class='fa fa-check'>&nbsp;</i>Design</li>
+            <li><i class='fa fa-check'>&nbsp;</i>Translation</li>
+          </ul>
+
+          <div class="profile-bio box-pad-t">
+            <!-- Escaped with marked() -->
+            <% if (data.bioHtml) { %><%= data.bioHtml %><% } else { %>This person doesn't have a bio yet.<% } %>
+          </div>
+
+
+        </div>
+        <div class="col-sm-3" style="background-color:#eee;">
+          <div class="tag-wrapper"></div>
+        </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+
 <section>
   <div class="container">
 
@@ -44,8 +77,8 @@
 
     <div class="row">
       <div class="col-md-12 box">
-        <div class="box-main tag-wrapper">
-        </div>
+<!--         <div class="box-main tag-wrapper">
+        </div>-->
       </div>
     </div>
   </div>
