@@ -45,35 +45,43 @@ before(function(done) {
     sails.localAppURL = localAppURL = ( sails.usingSSL ? 'https' : 'http' ) + '://' + sails.config.host + ':' + sails.config.port + '';
     // save reference for teardown function
 
-    //Add temp userauth
-    sails.models.passport.create({
-      user: 1,
-      provider: 'test',
-      protocol: 'test',
-      accessToken: 'testCode'
-    }, function(err, model) {
-      if (err) return done(err);
+    if (process.env.NODE_ENV === 'test') {
 
-      var adminUser = helperConfig.adminUser;
-
-      // Add an admin user
-      sails.models.user.create({
-        name: adminUser.name,
-        username: adminUser.username,
-        isAdmin: true
-      }, function(err, user) {
+      //Add temp userauth
+      sails.models.passport.create({
+        user: 1,
+        provider: 'test',
+        protocol: 'test',
+        accessToken: 'testCode'
+      }, function(err, model) {
         if (err) return done(err);
-        sails.models.passport.create({
-          protocol: 'local',
-          password: adminUser.password,
-          user: user.id
-        }, function(err) {
+
+        var adminUser = helperConfig.adminUser;
+
+        // Add an admin user
+        sails.models.user.create({
+          name: adminUser.name,
+          username: adminUser.username,
+          isAdmin: true
+        }, function(err, user) {
           if (err) return done(err);
-          done();
+          sails.models.passport.create({
+            protocol: 'local',
+            password: adminUser.password,
+            user: user.id
+          }, function(err) {
+            if (err) return done(err);
+            done();
+          });
         });
       });
-    });
+
+    } else {
+      done();
+    }
+
   });
+
 
 });
 

@@ -19,6 +19,13 @@
 
   "SaveTask"  : "Save Job",
 
+  "Profile": "Person",
+  "ProfilePlural": "People",
+  "ProfileIndefinite" : "Someone",
+  "ProfilePluralIndefinite": "Some people",
+  "profile" : "person",
+  "profilePlural" : "people",
+
   "like" : "like",
   "likePlural" : "likes",
 

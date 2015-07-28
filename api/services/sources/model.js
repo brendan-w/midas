@@ -19,7 +19,7 @@ module.exports = {
     var results = [];
 
     var doIt = function (field, done) {
-      var where = { where: {} }
+      var where = { where: {} };
       // If this is a query to get everthing, start by checking that
       if (!((_.isUndefined(params['list']) == false) && config.list)) {
         if (!term) {
@@ -37,7 +37,7 @@ module.exports = {
         for (var i = 0; i < config.params.length; i++) {
           if (_.has(params, config.params[i])) {
             // if the parameter is in the config, add it to the where clause
-            var paramWhere = {}
+            var paramWhere = {};
             var paramValue = params[config.params[i]];
             // check if the value is actually a list, and if so,
             // split it into a list so the where clause is
@@ -57,7 +57,7 @@ module.exports = {
                           id: models[i].id,
                           field: field['name'],
                           target: config.target.toLowerCase()
-                        }
+                        };
           // If search by multiple fields, include the values
           // for the other fields (eg, if the match is in the
           // username of a user profile, also return the name)

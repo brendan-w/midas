@@ -18,8 +18,8 @@ module.exports = {
     request.get({ url: app_url + '/auth/logout' }, function (err, response, body) {
       if (err) { return cb(err); }
       // then login
-      request.post({ url: app_url + '/auth/local',
-                     form: { username: username, password: password, json: true },
+      request.post({ url: conf.url + '/auth/local',
+                     form: { identifier: username, password: password, json: true },
                    }, function (err, response, body) {
         var getUser = function (cb) {
           request(app_url + '/user', function (err, response, body) {
@@ -34,7 +34,7 @@ module.exports = {
         if (response.statusCode == 403) {
           // this could be because the user isn't registered; try to register
           // console.log('register user: '+username);
-          request.post({ url: app_url + '/auth/register',
+          request.post({ url: conf.url + '/auth/local/register',
                          form: { username: username, password: password, json: true },
                        }, function (err, response, body) {
             if (err) { return cb(err); }

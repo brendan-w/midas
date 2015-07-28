@@ -57,7 +57,7 @@ describe('user:', function() {
         // Should be Blocked
         assert.equal(response.statusCode, 403);
         var b = JSON.parse(body);
-        assert(b.message.indexOf('This email address is not from an approved domain') === 0);
+        assert.equal(b.message, 'You need to have a .gov or .mil email address.');
         done();
       });
     });

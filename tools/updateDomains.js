@@ -26,6 +26,10 @@ var domains = [
 
 async.map(domains, get, function(err, domains) {
   if (err) return console.error(err);
+
+  // Add .mil domains
+  domains.push({ result: { mil: { string: '.mil' } } });
+
   domains = _(domains).chain().pluck('result').reduce(function(memo, values) {
     return _(memo).extend(values);
   }, {}).values().pluck('string').unique().value().sort();

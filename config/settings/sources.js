@@ -56,7 +56,8 @@ console.log('Loading... ', __filename);
       ],
       include: [
         'name',
-        'type'
+        'type',
+        'updatedAt'
       ]
     },
     'wikipedia': {

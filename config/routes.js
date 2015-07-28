@@ -76,7 +76,7 @@ module.exports.routes = {
     controller: 'main',
     action: 'index'
   },
-  '/people': {
+  '/profiles': {
     controller: 'main',
     action: 'index'
   },

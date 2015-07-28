@@ -24,7 +24,7 @@ var BrowseListView = Backbone.View.extend({
     this.data = {
       pageSize: pageSize,
       page: 1
-    }
+    };
     $(window).on('scroll',function(e){
       self.scrollCheck(e);
     });
@@ -69,7 +69,7 @@ var BrowseListView = Backbone.View.extend({
     if ( this.options.collection.length == 0 ){
       var settings = {
         ui: UIConfig
-      }
+      };
       compiledTemplate = _.template(NoListItem)(settings);
       this.$el.append(compiledTemplate);
     } else {
@@ -87,23 +87,21 @@ var BrowseListView = Backbone.View.extend({
           tagShow: ['location', 'skill', 'topic', 'task-time-estimate', 'task-time-required']
         };
 
-        if (model.tags)
-          item.tags = this.organizeTags(model.tags);
-        else
-          item.tags = [];
-
-        if(model.description)
-          item.item.descriptionHtml = marked(model.description);
-
-        //compile the template, and create a new element
-        var new_el;
-        if (this.options.target == 'projects')
-          new_el = $(_.template(ProjectListItem)(item));
-        else
-          new_el = $(_.template(TaskListItem)(item));
-
-        //add it to the list
-        this.$el.append(new_el);
+        if (this.options.collection[i].tags) {
+          item.tags = this.organizeTags(this.options.collection[i].tags);
+        } else {
+          item.tags =[];
+        }
+        if (this.options.collection[i].description) {
+          item.item.descriptionHtml = marked(this.options.collection[i].description);
+        }
+        var compiledTemplate = '';
+        if (this.options.target == 'projects') {
+          compiledTemplate = _.template(ProjectListItem)(item);
+        } else {
+          compiledTemplate = _.template(TaskListItem)(item);
+        }
+        this.$el.append(compiledTemplate);
       }
     }
     this.$el.i18n();

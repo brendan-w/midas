@@ -104,7 +104,7 @@ var AuthController = {
       var message = (err === 'locked') ?
             'Your account has been locked, please reset your password.' :
             (err === 'invalid domain') ?
-            'This email address is not from an approved domain. Please sign in with an official government email address. If you think this may be an error, please contact: ' + sails.config.systemEmail :
+            'You need to have a .gov or .mil email address.' :
             'Invalid email address or password.';
 
       if (req.param('json')) {

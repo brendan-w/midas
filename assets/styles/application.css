@@ -756,6 +756,12 @@ ul.vet-list li.vetted .fa {
   margin-bottom: 30px;
 }
 
+#browse-map {
+  display: none;
+  padding: 0;
+  margin-left: -15px;
+}
+
 #browse-list {
   padding: 0;
 }

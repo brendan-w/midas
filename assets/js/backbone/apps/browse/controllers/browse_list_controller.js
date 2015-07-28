@@ -7,6 +7,7 @@ var BaseController = require('../../../base/base_controller');
 var BrowseMainView = require('../views/browse_main_view');
 var ProjectsCollection = require('../../../entities/projects/projects_collection');
 var TasksCollection = require('../../../entities/tasks/tasks_collection');
+var ProfilesCollection = require('../../../entities/profiles/profiles_collection');
 var TaskModel = require('../../../entities/tasks/task_model');
 var ProjectFormView = require('../../project/new/views/project_new_form_view');
 var TaskFormView = require('../../tasks/new/views/task_form_view');
@@ -27,7 +28,6 @@ Browse.ListController = BaseController.extend({
   },
 
   initialize: function ( options ) {
-    var self = this;
     // this.options = options;
     this.target = options.target;
     this.fireUpCollection();
@@ -66,20 +66,22 @@ Browse.ListController = BaseController.extend({
     var self = this;
     this.projectsCollection = new ProjectsCollection();
     this.tasksCollection = new TasksCollection();
+    this.profilesCollection = new ProfilesCollection();
     if (this.target == 'projects') {
       this.collection = this.projectsCollection;
-    }
-    else if (this.target == 'tasks') {
+    } else if (this.target == 'tasks') {
       this.collection = this.tasksCollection;
-    }
-    else {
-      this.collection = new ProfilesCollection();
+    } else {
+      this.collection = this.profilesCollection;
     }
     this.listenToOnce(this.collection, 'browse:' + this.target + ":fetch", function () {
       self.collection.fetch({
         success: function (collection) {
           self.collection = collection;
           self.browseMainView.renderList(self.collection.toJSON());
+          if (self.target == 'profiles') {
+            self.browseMainView.renderMap(self.collection.toJSON());
+          }
         }
       });
     });

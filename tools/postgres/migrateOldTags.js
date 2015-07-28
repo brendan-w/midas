@@ -33,8 +33,19 @@ Sails.lift(opts, function(err, sails) {
     '20% Time': 'Ongoing',
     '1 Day': '1 week',
     '1 - 3 Days': '1 week',
-    'longer than 40 hours': '24 - 40 hours'
+    'longer than 40 hours': '24 - 40 hours',
+    '25 - 40 hours': '24 - 40 hours'
   };
+
+  var orderedTaskTimeEstimateTags = [
+    'Less than 1 hour',
+    'Up to 2 hours',
+    '2 - 4 hours',
+    '4 - 8 hours',
+    '8 - 16 hours',
+    '16 - 24 hours',
+    '24 - 40 hours'
+  ];
 
   function renameTags (cb) {
     _.keys(tagsToRename).forEach(function(oldTag) {
@@ -87,7 +98,7 @@ Sails.lift(opts, function(err, sails) {
         TagEntity.findOne({ name: oldTag })
         .populate('users').populate('tasks').populate('projects')
         .exec(function (err, oldTagEntity) {
-          if (err) { return cb(err); }
+          if (err) return cb(err);
           if (!oldTagEntity) { return }
 
           if (oldTagEntity.users.length != 0) {
@@ -108,6 +119,11 @@ Sails.lift(opts, function(err, sails) {
             });
           }
 
+          TagEntity.destroy({id: oldTagEntity.id }).exec(function(err, t) {
+            if (err) return cb(err);
+            console.log('Deleting tag "' + oldTagEntity.name + '"')
+          });
+
         });
       });
     });
@@ -126,7 +142,19 @@ Sails.lift(opts, function(err, sails) {
     });
   }
 
-  async.series([renameTags, addTags, migrateTags], function (err, result) {
+  function orderTaskTimeEstimate (cb) {
+    orderedTaskTimeEstimateTags.forEach(function(tag) {
+      TagEntity.find().where({ name: tag }).exec(function (err, t) {
+        if (err) return cb(err);
+
+        t[0].updatedAt = new Date();
+        t[0].save();
+      });
+    });
+    cb(null);
+  }
+//renameTags, addTags, migrateTags,
+  async.series([migrateTags, orderTaskTimeEstimate], function (err, result) {
     if (err) return err;
 
     console.log('Migration done');

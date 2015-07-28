@@ -106,19 +106,18 @@ module.exports = {
   },
 
   beforeCreate: function(model, done) {
-    //same handling as updates
-
     this.validate_permissions(model.permissions, function(err) {
       if(err) return done(err);
 
       // If configured, validate that user has an email from a valid domain
       if (sails.config.validateDomains && sails.config.domains) {
-        if (!_.contains(sails.config.domains, model.username.split('@')[1])) {
-          return done('invalid domain');
-        }
-      }
-      done();
-
+        var domains = sails.config.domains.map(function(domain) {
+              return new RegExp(domain.replace(/\./g, '\.') + '$');
+            });
+        if (!_.find(domains, function(domain) {
+          return domain.test(values.username.split('@')[1]);
+        })) return done('invalid domain');
+        done();
     });
   },
 
