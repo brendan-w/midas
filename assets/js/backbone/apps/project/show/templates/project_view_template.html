@@ -77,6 +77,7 @@
               <span class="help-block error-empty" style="display:none;">You must enter a <span data-i18n="project">project</span> description.</span>
             </div>
 
+            <!-- the project owner -->
             <div class="form-group">
               <div class="box" id="projectowner-wrapper"></div>
             </div>
@@ -102,21 +103,7 @@
 <section>
   <div class="container">
     <div class="row">
-      <div class="col-md-12">
-        <div class="box" id="task-list-wrapper" data-project-id="<%- project.id %>"></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<% } else { %> <!-- only show these if we ARE in edit mode -->
-
-<!-- the project owner -->
-<section>
-  <div class="col-sm-5 col-md-4 md-nopadding-right sm-nopadding">
-    <div class="row">
-      <div class="col-md-12 box">
-      </div>
+      <div id="task-list-wrapper" data-project-id="<%- project.id %>" class="col-md-12"></div>
     </div>
   </div>
 </section>

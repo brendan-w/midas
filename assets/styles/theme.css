@@ -372,6 +372,27 @@ footer a {
 }
 */
 
+/* white borders between navitems */
+nav.main .nav > li {
+  border-left:1px solid white;
+  text-align: center;
+}
+
+nav.main .nav > li:last-of-type {
+  border-right:1px solid white;
+}
+
+@media (max-width: 768px) {
+  nav.main .nav > li {
+    border-left:none;
+    text-align: left;
+  }
+
+  nav.main .nav > li:last-of-type {
+    border-right:none;
+  }
+}
+
 .navbar {
   background-color: #1CABE2;
   color:#FFF;

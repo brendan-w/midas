@@ -12,39 +12,35 @@
     </div>
 
     <div class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
+      <ul class="nav navbar-nav row" style="width:100%;">
 
-        <li class="">
+        <li class="col-sm-2 nopadding">
           <a href="#" class="nav-link">About</a>
         </li>
 
-        <li class="projects">
+        <li class="col-sm-2 nopadding">
           <a href="/projects" class="nav-link">
             <span data-i18n="ProjectPlural">Projects</span>
           </a>
         </li>
 
-        <li class="tasks">
+        <li class="col-sm-2 nopadding">
           <a href="/tasks" class="nav-link">
             <span data-i18n="TaskPlural">Tasks</span>
           </a>
         </li>
 
-        <li class="">
+        <li class="col-sm-2 nopadding">
           <a href="#" class="nav-link">Talent</a>
         </li>
 
-        <li class="">
+        <li class="col-sm-2 nopadding">
           <a href="#" class="nav-link">FAQ</a>
         </li>
 
-      </ul>
-
-      <ul class="nav navbar-nav navbar-right">
-
         <% if(user) { %>
 
-          <li class="profile dropdown">
+          <li class="profile dropdown col-sm-2 nopadding">
             <a href="/profile" id="navbar-profile" role="button" class="dropdown-toggle" data-toggle="dropdown">
                 Hi, <% if (user.name) { %><%- user.name %><% } else { %><%- user.username %><% } %>
             </a>
@@ -68,7 +64,6 @@
           <li><a href="/auth" class="login">Sign In</a></li>
 
         <% } %>
-
       </ul>
     </div>
   </div>
