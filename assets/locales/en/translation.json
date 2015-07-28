@@ -76,7 +76,7 @@
   },
 
   "noSearchResults": {
-    "text" : "<h2>Oops we didn't find any results</h2><p>Maybe your search was too specific. You could try including more filters like <b>Completed</b> or <b>Archived</b>. Maybe there are too many search terms, try removing some or using more general terms.</p><p>Still not finding what you wanted?</p><p>Did you mean to:</p>"
+    "text" : "<h3>Oops we didn't find any results</h3><p>Maybe your search was too specific. You could try including more filters like <b>Completed</b> or <b>Archived</b>. Maybe there are too many search terms, try removing some or using more general terms.</p><p>Still not finding what you wanted?</p><p>Did you mean to:</p>"
   },
 
   "modalHome" : {

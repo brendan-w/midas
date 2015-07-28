@@ -32,11 +32,11 @@
   <div class="container">
 
     <!-- the main group description box -->
-    <div class="row text-center">
+    <div class="row">
 
         <% if( !edit ) { %>
 
-          <div class="col-md-12">
+          <div class="col-md-12 text-center">
             <h1 id="project-title"><%- project.title %></h1>
             <h3 id="project-desc"><%= project.description_html %></h3>
 
@@ -65,22 +65,26 @@
 
           <div class="col-md-8 col-md-offset-2">
             <div class="form-group">
-              <h2 class="box-pad-t">Group Title</h2>
+              <label>Group Title</label>
               <input id="project-edit-title" class="form-control input-lg" value="<%- project.title %>" type="text" data-validate="empty,count100" title="Title"/>
               <span class="help-block error-empty"    style="display:none;">You must enter a <span data-i18n="project">project</span> title.</span>
               <span class="help-block error-count100" style="display:none;">Your title must be less than 100 characters.</span>
             </div>
 
             <div class="form-group">
-              <h2 class="box-pad-t">Group Description</h2>
+              <label>Group Description</label>
               <div class="markdown-edit"></div>
               <span class="help-block error-empty" style="display:none;">You must enter a <span data-i18n="project">project</span> description.</span>
             </div>
 
             <div class="form-group">
+              <div class="box" id="projectowner-wrapper"></div>
+            </div>
+
+            <div class="form-group pull-right">
               <button id="project-discard" class="btn btn-c0">Discard Changes</button>
               <button id="project-save" class="btn btn-c2">Save <span data-i18n="Project">Project</span></button>
-            </div>            
+            </div>
           </div>
 
         <% } %>
@@ -112,8 +116,6 @@
   <div class="col-sm-5 col-md-4 md-nopadding-right sm-nopadding">
     <div class="row">
       <div class="col-md-12 box">
-        <div class="box" id="projectowner-wrapper">
-        </div>
       </div>
     </div>
   </div>

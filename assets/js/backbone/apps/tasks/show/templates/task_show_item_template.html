@@ -14,7 +14,7 @@
               <div class="main-section">
                 <div class="edit-task-section">
 
-                  <h1><%- model.title %></h1>
+                  <h2><%- model.title %></h2>
                   <% if (!_.isUndefined(model.project) && ui.project.show) { %>
                   <div class="task-project">
                     <a href="/projects/<%- model.projectId %>" class="link-backbone">
@@ -216,21 +216,7 @@
 
         <div class="row">
           <div class="col-md-12 task-view sm-nopadding md-nopadding">
-
-            <div class="box comment-list-wrapper" style="clear: both;">
-              <div class="box-pad-lr border-bottom">
-                <h2>Discussion
-                <% if (user) { %>
-                <button class="btn btn-c0 btn-sm file-add new-topic" id="project-topic-new">New Topic</button>
-                <% } %>
-                </h2>
-              </div>
-              <div class="">
-                <div class="box-pad-lr box-pad-t topic-form-wrapper"></div>
-                <ul id="comment-list-null">
-                </ul>
-              </div>
-            </div>
+            <div class="box comment-list-wrapper clear"></div>
           </div>
         </div>
 
@@ -249,8 +235,7 @@
           <div class="col-md-12 box sm-nopadding">
             <div class="box task-both">
               <div class="box-pad-lr border-bottom">
-                <h2>Requestor and Participants
-                </h2>
+                <h3>Requestor and Participants</h3>
               </div>
               <div class="box-main" id="task-volunteers">
                 <div class="project-people-show-div" data-userid="<%- model.userId %>">

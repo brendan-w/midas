@@ -358,6 +358,10 @@ h1, h2, h3, h4, h5, h6 {
 }
 */
 
+.navbar-right {
+  margin-right:0px;
+}
+
 .navbar-side {
   padding: 5px;
 }
