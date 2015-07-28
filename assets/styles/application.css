@@ -695,10 +695,8 @@ ul.vet-list li.vetted .fa {
   position: relative;
 }
 
-div.project-title {
+.project-title {
   padding: 5px 10px 0;
-  font-weight: 400;
-  font-size: 18px;
 }
 
 .project-list-description {

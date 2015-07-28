@@ -7,11 +7,11 @@
   <% } %>
   </div>
   -->
-  <div class="project-title">
+  <h3 class="project-title">
     <a href="/projects/<%- item.id %>" class="link-backbone c1">
       <%- item.title %>
     </a>
-  </div>
+  </h3>
   <div class="project-list-description">
     <!-- Escaped by marked() -->
     <%= item.descriptionHtml %>
@@ -27,7 +27,6 @@
   </div>
 
   <!-- Project metrics -->
-  <!--
   <div class="project-list-bottom-wrapper border-top">
     <div class="project-list-counts">
       <div class="project-list-counts-col">
@@ -35,9 +34,14 @@
           <%- item.taskCount %>
         </div>
         <div class="project-list-count-text c2">
-          opp<% if (item.taskCount != 1) { %>s<% } %>
+          <% if(item.taskCount == 1) { %>
+            <span data-i18n="Task">Job</span>
+          <% } else { %>
+            <span data-i18n="TaskPlural">Jobs</span>
+          <% } %>
         </div>
       </div>
+      <!--
       <div class="project-list-counts-col">
         <div class="project-list-count c2">
           <%- item.commentCount %>
@@ -54,7 +58,7 @@
           <% if (item.ownerCount != 1) { %>people<% } else { %>person<% } %>
         </div>
       </div>
+      -->
     </div>
   </div>
-  -->
 </li>
