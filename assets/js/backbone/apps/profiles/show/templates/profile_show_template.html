@@ -1,11 +1,6 @@
 
 <style>
 
-  .col-sm-9,
-  .col-sm-3 {
-    background-color:#FFF;
-  }
-
   .profile-bio {
     padding-top: 30px;
     padding-bottom: 15px;
@@ -21,7 +16,7 @@
       <div class="row">
 
         <!-- main column -->
-        <div class="col-sm-9">
+        <div class="col-sm-9" style="background-color:white;">
           <!-- edit buttons -->
 
           <div class="pull-right">
@@ -58,10 +53,10 @@
 
           <div class="form-group profile-bio">
             <% if(!edit) { %>
-              <h3>
+              <h4>
                 <!-- Escaped with marked() -->
                 <% if (data.bioHtml) { %><%= data.bioHtml %><% } else { %>This person doesn't have a bio yet.<% } %>
-              </h3>
+              </h4>
             <% } else { %>
               <label>A brief public biography</label>
               <div class="markdown-edit"></div>
@@ -124,70 +119,71 @@
         </div> <!-- end main column -->
 
         <!-- side bar -->
-        <div class="col-sm-3">
+        <div class="col-sm-3 padding-right-none">
+          <div class="box box-main">
 
-          <div class="row">
-            <div class="tag-wrapper"></div>
-          </div>
+            <div class="row">
+              <div class="tag-wrapper"></div>
+            </div>
 
-          <hr>
+            <hr>
 
-          <div class="row">
-            <label for="profile-email" class="col-md-3 control-label">Email</label>
+            <div class="row">
+              <label for="profile-email" class="col-md-3 control-label">Email</label>
 
-            <% if(!edit) { %>
-              <div><% if(email) { %><%- email %><% } else { %>No email addresses<% } %></div>
-            <% } else { %>
-              <input type="text" class="form-control" id="profile-email" name="username" placeholder="Email" value="<%- email %>">
-              <div id="email-update-alert" class="alert alert-warning" style="display:none;"></div>
-            <% } %>
-          </div>
-
-          <hr>
-
-          <div class="row">
-            <label for="services" class="control-label">Connected Accounts</label>
-
-            <% if(!edit) { %>
-
-              <% if (login.oauth.length > 0) { %>
-                <div>
-                  <% if (data.auths.length === 0) { %>
-                    No connected accounts.
-                  <% } %>
-                  <% _.each(login.oauth, function (a) { console.log(a); %>
-
-                    <% if (_(data.auths).chain().pluck('provider').contains(a).value()) { %>
-                    <div>
-                      <%- login.config[a].name %>
-                      <span class="label label-success">Connected</span>
-                    </div>
-                    <% } %>
-                  <% }); %>
-                </div>
+              <% if(!edit) { %>
+                <div><% if(email) { %><%- email %><% } else { %>No email addresses<% } %></div>
+              <% } else { %>
+                <input type="text" class="form-control" id="profile-email" name="username" placeholder="Email" value="<%- email %>">
+                <div id="email-update-alert" class="alert alert-warning" style="display:none;"></div>
               <% } %>
+            </div>
 
-            <% } else { %>
+            <hr>
 
-              <% if (login.oauth.length > 0) { %>
-                <form class="form-horizontal" role="form">
-                <% _.each(login.oauth, function (a) { %>
-                  <div class="form-group">
-                    <img src="<%- login.config[a].image %>" alt="<%- login.config[a].name %>" style="height: 30px"/>
-                    <% if (_.findWhere(data.auths, { provider: a })) { %>
-                    <a href="#" class="btn btn-danger btn-sm removeAuth pull-right" data-service="<%- a %>" data-id="<%- _.findWhere(data.auths, { provider: a }).id %>"><span class="fa fa-remove"></span> Disconnect</a>
-                    <% } else { %>
-                    <a href="<%- login.config[a].endpoint %>" class="btn btn-success btn-sm pull-right"><span class="fa fa-plus"></span> Connect</a>
+            <div class="row">
+              <label for="services" class="control-label">Connected Accounts</label>
+
+              <% if(!edit) { %>
+
+                <% if (login.oauth.length > 0) { %>
+                  <div>
+                    <% if (data.auths.length === 0) { %>
+                      No connected accounts.
                     <% } %>
-                    <!-- <%- login.config[a].name %> -->
+                    <% _.each(login.oauth, function (a) { console.log(a); %>
+
+                      <% if (_(data.auths).chain().pluck('provider').contains(a).value()) { %>
+                      <div>
+                        <%- login.config[a].name %>
+                        <span class="label label-success">Connected</span>
+                      </div>
+                      <% } %>
+                    <% }); %>
                   </div>
-                <% }); %>
-                </form>
+                <% } %>
+
+              <% } else { %>
+
+                <% if (login.oauth.length > 0) { %>
+                  <form class="form-horizontal" role="form">
+                  <% _.each(login.oauth, function (a) { %>
+                    <div class="form-group">
+                      <img src="<%- login.config[a].image %>" alt="<%- login.config[a].name %>" style="height: 30px"/>
+                      <% if (_.findWhere(data.auths, { provider: a })) { %>
+                      <a href="#" class="btn btn-danger btn-sm removeAuth pull-right" data-service="<%- a %>" data-id="<%- _.findWhere(data.auths, { provider: a }).id %>"><span class="fa fa-remove"></span> Disconnect</a>
+                      <% } else { %>
+                      <a href="<%- login.config[a].endpoint %>" class="btn btn-success btn-sm pull-right"><span class="fa fa-plus"></span> Connect</a>
+                      <% } %>
+                      <!-- <%- login.config[a].name %> -->
+                    </div>
+                  <% }); %>
+                  </form>
+                <% } %>
+
               <% } %>
 
-            <% } %>
-
-
+            </div>
           </div>
         </div>
 
