@@ -8,7 +8,6 @@ var TagConfig = require('../../../config/tag');
 var ProjectListItem = require('../templates/project_list_item.html');
 var TaskListItem = require('../templates/task_list_item.html');
 var NoListItem = require('../templates/no_search_results.html');
-var TaskPreview = require('../templates/project_list_task_preview.html');
 var TasksCollection = require('../../../entities/tasks/tasks_collection');
 
 
@@ -103,41 +102,12 @@ var BrowseListView = Backbone.View.extend({
         else
           new_el = $(_.template(TaskListItem)(item));
 
-        this.loadTaskPreview(new_el, model);
-
         //add it to the list
         this.$el.append(new_el);
       }
     }
     this.$el.i18n();
     return this;
-  },
-
-  /*
-    helper function for displaying the project cards
-    accepts a project element and model, and populates
-    the view's task-preview section.
-  */
-  loadTaskPreview: function(project_el, model) {
-
-    var collection = new TasksCollection();
-    collection.fetch({
-      url: '/api/task/findAllByProjectId/' + model.id,
-      success: function (tasks) {
-
-        //hide the spinner
-        project_el.find(".loading").hide();
-
-        var list = project_el.find(".project-task-preview ul");
-        var max_task_previews = UIConfig.browse.maxTaskPreview;
-
-        for(var i = 0; (i < max_task_previews) && (i < tasks.length); i++)
-        {
-          var task = tasks.models[i].toJSON();
-          list.append(_.template(TaskPreview)({ task: task }));
-        }
-      }
-    });
   },
 
   cleanup: function () {

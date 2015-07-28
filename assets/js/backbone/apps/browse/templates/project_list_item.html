@@ -1,64 +1,27 @@
-<li data-id="<%- item.id %>" class="box project-box">
-  <!--
-  <% if (item.coverId) { %>
-  <div class="project-background-image border-bottom" style="background-image: url(/api/file/get/<%- item.coverId %>)">
-  <% } else { %>
-  <div>
-  <% } %>
-  </div>
-  -->
-  <h3 class="project-title">
+<li data-id="<%- item.id %>" class="box project-box row">
+
+  <h3 class="project-title col-sm-4 col-md-2">
     <a href="/projects/<%- item.id %>" class="link-backbone c1">
       <%- item.title %>
     </a>
   </h3>
-  <div class="project-list-description">
+
+  <div class="project-list-description col-sm-6 col-md-4">
     <!-- Escaped by marked() -->
     <%= item.descriptionHtml %>
   </div>
-  <hr>
-  <div class="project-task-preview">
-    <div class="loading text-center">
-      <span class="fa fa-spinner fa-spin"></span>
+
+  <div class="project-list-counts col-sm-2 col-sm-2 pull-right">
+    <div class="project-list-count c2">
+      <%- item.taskCount %>
     </div>
-
-    <!-- the task preview list -->
-    <ul></ul>
-  </div>
-
-  <!-- Project metrics -->
-  <div class="project-list-bottom-wrapper border-top">
-    <div class="project-list-counts">
-      <div class="project-list-counts-col">
-        <div class="project-list-count c2">
-          <%- item.taskCount %>
-        </div>
-        <div class="project-list-count-text c2">
-          <% if(item.taskCount == 1) { %>
-            <span data-i18n="Task">Job</span>
-          <% } else { %>
-            <span data-i18n="TaskPlural">Jobs</span>
-          <% } %>
-        </div>
-      </div>
-      <!--
-      <div class="project-list-counts-col">
-        <div class="project-list-count c2">
-          <%- item.commentCount %>
-        </div>
-        <div class="project-list-count-text c2">
-          comment<% if (item.commentCount != 1) { %>s<% } %>
-        </div>
-      </div>
-      <div class="project-list-counts-col">
-        <div class="project-list-count c2">
-          <%- item.ownerCount %>
-        </div>
-        <div class="project-list-count-text c2  ">
-          <% if (item.ownerCount != 1) { %>people<% } else { %>person<% } %>
-        </div>
-      </div>
-      -->
+    <div class="project-list-count-text c2">
+      <% if(item.taskCount == 1) { %>
+        <span data-i18n="Task">Job</span>
+      <% } else { %>
+        <span data-i18n="TaskPlural">Jobs</span>
+      <% } %>
     </div>
   </div>
+
 </li>

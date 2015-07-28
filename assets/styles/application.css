@@ -685,18 +685,12 @@ ul.vet-list li.vetted .fa {
 }
 
 .project-box {
-  width: 240px;
-  height: 307px;
   overflow: hidden;
-  float: left;
-  padding-top: 0;
-  margin-right: 20px;
-  margin-bottom: 10px;
   position: relative;
 }
 
 .project-title {
-  padding: 5px 10px 0;
+  text-transform: uppercase;
 }
 
 .project-list-description {
@@ -706,15 +700,6 @@ ul.vet-list li.vetted .fa {
   font-size: 13px;
   overflow: hidden;
   word-wrap: break-word;
-}
-
-.project-task-preview .loading {
-  font-size: 20px;
-}
-
-.project-task-preview ul {
-  padding-left:10px;
-  padding-right:10px;
 }
 
 .project-list-bottom-wrapper {
@@ -727,13 +712,6 @@ ul.vet-list li.vetted .fa {
 
 .project-list-counts {
   padding-top: 10px;
-  display: inline-table;
-  width: 100%;
-}
-
-.project-list-counts-col {
-  display: table-cell;
-  width: 33%;
 }
 
 .project-list-count {

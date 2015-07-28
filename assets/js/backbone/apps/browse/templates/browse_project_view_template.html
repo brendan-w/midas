@@ -1,25 +1,20 @@
 <div class="wrapper-addProject"></div>
 <div class="wrapper-addTask"></div>
 
-
 <section>
   <div class="container">
-    <div class="row search-row">
-      <!-- The add-group button -->
-      <div class="col-md-3 browse-buttons">
-        <% if (ui.project.show) { %>
-        <a href="#addProject" class="btn btn-c2 add-project" data-toggle="modal" data-backdrop="static" style="<% if (!user) { %>display: none;<% } %>"><i class="fa fa-plus"></i> <span data-i18n="Project">Project</span></a>
-        <% } %>
+
+    <% if(user) { %>
+    <div class="row">
+      <div class="col-md-12 nopadding">
+        <a href="#addProject" class="btn btn-c2 add-project pull-right" data-toggle="modal" data-backdrop="static"><i class="fa fa-plus">&nbsp;</i><span data-i18n="Project">Project</span></a>
       </div>
     </div>
-  </div>
-</section>
+    <% } %>
 
 
-<section>
-  <div class="container">
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-md-12 nopadding">
 
         <div id="browse-search-spinner" class="fullwidth text-center">
           Loading... <i class="fa fa-spinner fa-spin"></i>
