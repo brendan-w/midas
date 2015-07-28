@@ -186,17 +186,15 @@ input {
   border: 0;
 }
 
-.border-top {
-  border-top: 1px solid #e5e5e5;
-}
+.border-top    { border-top:    1px solid #BBB; }
+.border-bottom { border-bottom: 1px solid #BBB; }
+.border-left   { border-left:   2px solid #BBB; }
+.border-right  { border-right:  2px solid #BBB; }
 
-.border-bottom {
-  border-bottom: 1px solid #e5e5e5;
-}
-
-.border-left {
-  border-left: 2px solid #e5e5e5;
-}
+.box .border-top    { border-top:    1px solid #e5e5e5; }
+.box .border-bottom { border-bottom: 1px solid #e5e5e5; }
+.box .border-left   { border-left:   2px solid #e5e5e5; }
+.box .border-right  { border-right:  2px solid #e5e5e5; }
 
 .padding-none {
   padding: 0;
@@ -689,14 +687,15 @@ ul.vet-list li.vetted .fa {
   position: relative;
 }
 
+.project-box > * {
+  height: 75px;
+}
+
 .project-title {
   text-transform: uppercase;
 }
 
 .project-list-description {
-  height: 75px;
-  padding-left: 10px;
-  padding-right: 10px;
   font-size: 13px;
   overflow: hidden;
   word-wrap: break-word;
@@ -1439,29 +1438,18 @@ a.delete-comment {
 }
 
 .task-box {
-  width: 240px;
-  height: 307px;
   overflow: hidden;
-  float: left;
-  padding-top: 0;
-  margin-right: 20px;
-  margin-bottom: 10px;
   position: relative;
 }
 
+.task-box > * {
+  height: 75px;
+}
+
 .task-list-title {
-  padding: 5px 10px 0;
-  font-weight: 400;
-  font-size: 16px;
-  max-height: 50px;
 }
 
 .task-list-description {
-  max-height: 95px;
-  padding-left: 10px;
-  padding-right: 10px;
-  padding-bottom: 5px;
-  font-size: 13px;
   word-wrap: break-word;
 }
 
@@ -1513,9 +1501,6 @@ a.delete-comment {
   color: #505050;
 }
 
-.float-left {
-  float: left;
-}
 /*****************
 =  TASKS
 ******************/

@@ -33,37 +33,50 @@
 
     </div>
 
+    <!-- header row -->
+    <div class="row box-pad-b">
+      <div class="col-md-9 nopadding">
+        <div class="row border-bottom">
+          <div class="col-md-4"><h4>Opportunity</h4></div>
+          <div class="col-md-2"><h4>Location</h4></div>
+          <div class="col-md-2"><h4>Duration</h4></div>
+          <div class="col-md-2"><h4>Apply By</h4></div>
+        </div>
+      </div>
+    </div>
+
     <!-- results & filters row -->
     <div class="row">
 
         <!-- Filters column -->
-        <div class="col-md-3 col-md-push-9 box">
-          <div class="border-bottom box-pad-lr">
-            <h4>Filters</h4>
-          </div>
-          <div class="box-pad-t">
-            <div class="box-pad-lr" id="stateFilters">
-              <% _.each(ui.states, function (t) { %>
-                <label class="<% if ( t.value == "draft" ) { %>hidden draft-filter<% } %>">
-                  <input type='checkbox' name='state<%- t.label %>' class='stateFilter' value='<%- t.value %>'
-                  <% if ( t.value == "open" ) {%>
-                    <%- checked="checked" %>
-                  <% } %>
-                  > <%- t.label %>
-                </label>
-              <% }); %>
+        <div class="col-md-3 col-md-push-9 padding-right-none">
+          <div class="box box-main">
+            <div class="border-bottom">
+              <h4>Filters</h4>
             </div>
-            <div id="search-projs-wrapper" class="box-pad-lr">
-              <ul id="search-projs" class="nav nav-pills nav-stacked nav-search">
-              </ul>
-            </div>
-            <div class="box-pad-lr">
-              <ul id="search-tags" class="nav nav-pills nav-stacked nav-search">
-              </ul>
-            </div>
-            <div class="box-pad-lr search-clear" style="display: none;">
-              <div class="align-right">
-                <a href="#" id="search-clear" class="btn btn-sm btn-c0"><i class="fa fa-remove"></i> Clear Search Criteria</a>
+            <div class="box-pad-t">
+              <div id="stateFilters">
+                <% _.each(ui.states, function (t) { %>
+                  <label class="<% if ( t.value == "draft" ) { %>hidden draft-filter<% } %>">
+                    <input type='checkbox' name='state<%- t.label %>' class='stateFilter' value='<%- t.value %>'
+                    <% if ( t.value == "open" ) {%>
+                      <%- checked="checked" %>
+                    <% } %>
+                    > <%- t.label %>
+                  </label>
+                <% }); %>
+              </div>
+              <div id="search-projs-wrapper" class="box-pad-lr">
+                <ul id="search-projs" class="nav nav-pills nav-stacked nav-search">
+                </ul>
+              </div>
+              <div>
+                <ul id="search-tags" class="nav nav-pills nav-stacked nav-search"></ul>
+              </div>
+              <div class="search-clear" style="display: none;">
+                <div class="align-right">
+                  <a href="#" id="search-clear" class="btn btn-sm btn-c0"><i class="fa fa-remove"></i> Clear Search Criteria</a>
+                </div>
               </div>
             </div>
           </div>

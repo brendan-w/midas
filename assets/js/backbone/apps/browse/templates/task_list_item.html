@@ -1,16 +1,22 @@
-<li data-id="<%- item.id %>" class="box task-box">
+<li data-id="<%- item.id %>" class="box task-box row">
 
-    <div class="task-list-title task-title-overflow-multi">
-      <a href="/tasks/<%- item.id %>" class="link-backbone c1">
-        <%- item.title %>
-      </a>
-    </div>
 
-  <div class="task-list-description task-desc-overflow-multi">
-    <% /* Escaped by marked() */ %>
+  <h3 class="task-list-title task-title-overflow-multi col-sm-4 col-md-3">
+    <a href="/tasks/<%- item.id %>" class="link-backbone c1">
+      <%- item.title %>
+    </a>
+  </h3>
+
+
+
+  <!-- Escaped by marked() -->
+  <!--
+  <div class="task-list-description task-desc-overflow-multi col-sm-6 col-md-4">
     <%= item.descriptionHtml %>
   </div>
+  -->
 
+  <!--
   <div class="task-list-bottom border-top">
 
     <% _.each(tagShow, function (tagType) { %>
@@ -27,13 +33,14 @@
     <% }); %>
 
   </div>
+  -->
+
+  <!--
   <div class="task-list-bottom-person border-top">
     <div class="task-list-person">
-      <!--
-      <div class="project-people-div float-left" data-userid="<%- item.userId %>" style="text-align: right;">
+      <div class="project-people-div pull-left" data-userid="<%- item.userId %>" style="text-align: right;">
         <img src="/api/user/photo/<%- item.userId %>" class="project-people"/>
       </div>
-      -->
       <div class="task-list-requestbox">
         <div class="task-list-requested">requested by</div>
         <div class="task-list-name"><%- item.user.name %></div>
@@ -42,7 +49,7 @@
         <% } %>
       </div>
     </div>
-
   </div>
+  -->
 
 </li>
