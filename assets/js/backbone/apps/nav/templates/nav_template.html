@@ -40,6 +40,8 @@
 
         <% if(user) { %>
 
+          <!-- if there's a user logged in -->
+
           <li class="profile dropdown col-sm-2 nopadding">
             <a href="/profile" id="navbar-profile" role="button" class="dropdown-toggle" data-toggle="dropdown">
                 Hi, <% if (user.name) { %><%- user.name %><% } else { %><%- user.username %><% } %>
@@ -61,7 +63,7 @@
 
         <% } else { %>
 
-          <li><a href="/auth" class="login">Sign In</a></li>
+          <li class="col-sm-2 nopadding"><a href="/auth" class="login">Sign In</a></li>
 
         <% } %>
       </ul>

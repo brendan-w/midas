@@ -76,8 +76,9 @@ module.exports.policies = {
 
   ProjectController : {
     '*':       ['passport', 'authenticated', 'addUserId', 'project'],
-    'find':    ['passport', 'authenticated', 'hasIdParam', 'project'],
-    'findOne': ['passport', 'authenticated', 'hasIdParam', 'project'],
+    'find':    ['passport',                  'hasIdParam', 'project'],
+    'findOne': ['passport',                  'hasIdParam', 'project'],
+    'findAll': ['passport'],
     'create':  ['passport', 'authenticated', 'addUserId', 'canCreateProject'],
     'update':  ['passport', 'authenticated', 'hasIdParam', 'project', 'ownerOrAdmin'],
     'destroy': ['passport', 'authenticated', 'hasIdParam', 'project', 'ownerOrAdmin']
@@ -143,9 +144,9 @@ module.exports.policies = {
   },
 
   TaskController : {
-    'find':               ['passport', 'authenticated', 'task'],
-    'findOne':            ['passport', 'authenticated', 'task'],
-    'findAllByProjectId': ['passport', 'authenticated', 'hasIdParam', 'project'],
+    'find':               ['passport',                  'task'],
+    'findOne':            ['passport',                  'task'],
+    'findAllByProjectId': ['passport',                  'hasIdParam', 'project'],
     'copy':               ['passport', 'authenticated', 'addUserId'],
     'create':             ['passport', 'authenticated', 'addUserId', 'canCreateTask'],
     'update':             ['passport', 'authenticated', 'hasIdParam', 'projectId', 'task', 'ownerOrAdmin'],

@@ -57,7 +57,7 @@
               </div>
             <% } %>
 
-            <% if(user.isOwner || user.permissions.admin) { %>
+            <% if(user && (user.isOwner || user.permissions.admin)) { %>
               <div>
                 <!-- Edit Group button -->
                 <a href="#" id="project-edit" class="btn btn-c2"><i class="fa fa-pencil">&nbsp;</i>Edit <span data-i18n="Project">Project</span></a>
