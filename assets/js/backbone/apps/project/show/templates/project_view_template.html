@@ -1,9 +1,16 @@
 
 
 <style>
+
+  #project > *
+  {
+    margin-bottom: 30px;
+  }
+
   #project-title {
     display:inline-block;
-    padding-bottom: 30px;
+    padding-top: 30px;
+    padding-bottom: 40px;
     border-bottom:1px solid white;
     color:white;
   }
@@ -36,34 +43,42 @@
 
         <% if( !edit ) { %>
 
-          <div class="col-md-12 text-center">
+          <!-- NORMAL MODE -->
+
+          <div id="project" class="col-md-6 col-md-offset-3 text-center">
             <h1 id="project-title"><%- project.title %></h1>
             <h3 id="project-desc"><%= project.description_html %></h3>
 
-            <!-- If the user is logged in, present them with the vet button -->
+            <!-- If the user is allowed to apply to jobs, present them with the vet button -->
             <% if(user && user.permissions.apply) { %>
-              <button id="vet" class="btn btn-c2">Vet me for this group</button>
-              <div><a href="#">What does it mean to get vetted?</a></div>
+              <div id="project-vet">
+                <button id="vet" class="btn btn-c2">Get pre-approved for this group</button>
+                <div><a href="#">What does it mean to get vetted?</a></div>
+              </div>
             <% } %>
 
             <% if(user.isOwner || user.permissions.admin) { %>
-              <!-- Edit Group button -->
-              <a href="#" id="project-edit" class="btn btn-c2"><i class="fa fa-pencil">&nbsp;</i>Edit <span data-i18n="Project">Project</span></a>
+              <div>
+                <!-- Edit Group button -->
+                <a href="#" id="project-edit" class="btn btn-c2"><i class="fa fa-pencil">&nbsp;</i>Edit <span data-i18n="Project">Project</span></a>
 
-              <% if (project.state == 'closed') { %>
-                <!-- Reopen Group button -->
-                <a href="#" id="project-reopen" class="btn btn-c2"><i class="fa fa-share">&nbsp;</i>Reopen <span data-i18n="Project">Project</span></a>
-              <% } else { %> <!-- if the group is OPEN -->
-                <!-- Close Group button -->
-                <a href="#" id="project-close" class="btn btn-c2"><i class="fa fa-times-circle">&nbsp;</i>Close <span data-i18n="Project">Project</span></a>
-              <% } %>
+                <% if (project.state == 'closed') { %>
+                  <!-- Reopen Group button -->
+                  <a href="#" id="project-reopen" class="btn btn-c2"><i class="fa fa-share">&nbsp;</i>Reopen <span data-i18n="Project">Project</span></a>
+                <% } else { %> <!-- if the group is OPEN -->
+                  <!-- Close Group button -->
+                  <a href="#" id="project-close" class="btn btn-c2"><i class="fa fa-times-circle">&nbsp;</i>Close <span data-i18n="Project">Project</span></a>
+                <% } %>
+              </div>
             <% } %>
 
           </div>
 
         <% } else { %>
 
-          <div class="col-md-8 col-md-offset-2">
+          <!-- EDIT MODE -->
+
+          <div class="col-md-6 col-md-offset-3">
             <div class="form-group">
               <label>Group Title</label>
               <input id="project-edit-title" class="form-control input-lg" value="<%- project.title %>" type="text" data-validate="empty,count100" title="Title"/>
@@ -96,9 +111,6 @@
 </section>
 
 
-
-<% if ( !edit ) { %> <!-- only show these if we're NOT in edit mode -->
-
 <!-- the task list -->
 <section>
   <div class="container">
@@ -109,5 +121,3 @@
     </div>
   </div>
 </section>
-
-<% } %>
