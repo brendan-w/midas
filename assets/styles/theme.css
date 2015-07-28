@@ -393,7 +393,7 @@ nav.main .nav > li:last-of-type {
   }
 }
 
-.navbar {
+nav.main .navbar {
   background-color: #1CABE2;
   color:#FFF;
   text-shadow: none;
