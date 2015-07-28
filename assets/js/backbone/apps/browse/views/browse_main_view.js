@@ -8,7 +8,6 @@ var TagConfig = require('../../../config/tag');
 var BrowseListView = require('./browse_list_view');
 var ProfileListView = require('./profile_list_view');
 var ProfileMapView = require('./profile_map_view');
-var BrowseMainTemplate = require('../templates/browse_main_view_template.html');
 var BrowseSearchTag = require('../templates/browse_search_tag.html');
 var BrowseProjectTemplate = require('../templates/browse_project_view_template.html');
 var BrowseTaskTemplate = require('../templates/browse_task_view_template.html');

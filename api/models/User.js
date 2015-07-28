@@ -117,7 +117,9 @@ module.exports = {
         if (!_.find(domains, function(domain) {
           return domain.test(values.username.split('@')[1]);
         })) return done('invalid domain');
-        done();
+      }
+
+      done();
     });
   },
 
