@@ -3,7 +3,6 @@ var Backbone = require('backbone');
 var utils = require('../../../mixins/utilities');
 var LoginPasswordView = require('./login_password_view');
 var LoginTemplate = require('../templates/login_template.html');
-var ModalComponent = require('../../../components/modal');
 
 
 var LoginView = Backbone.View.extend({
