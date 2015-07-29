@@ -19,19 +19,18 @@ var FooterView = Backbone.View.extend({
     };
     var compiledTemplate = _.template(FooterTemplate)(data);
     this.$el.html(compiledTemplate);
-    /*
+
     function resizeElements() {
-      headerHeight = $('.navbar').height();
-      footerHeight = $('footer').height();
-      if (($(document.body).height() + footerHeight) < $(window).height()) {
-        self.$el.addClass('navbar-fixed-bottom');
-      } else {
-        self.$el.removeClass('navbar-fixed-bottom');
-      }
+      var px_in_window = $(window).height() - ($(document.body).height() - self.$el.height());
+
+      //peg at zero if the footer is already off screen
+      px_in_window = Math.max(px_in_window, 0);
+      self.$el.css({ "margin-top": px_in_window + "px" });
     }
-    resizeElements();
-    $(".container").bind("DOMSubtreeModified", resizeElements);
-    */
+
+    // resizeElements(); //trigger initial size calculation
+    // $("#container").bind("DOMSubtreeModified", resizeElements);
+    // $(window).bind("resize", resizeElements);
   },
 
   cleanup: function () {

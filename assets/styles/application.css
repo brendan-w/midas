@@ -98,12 +98,6 @@ header {
   padding-top: 30px;
 }
 
-footer {
-  padding-top: 30px;
-  font-size: 11px;
-  padding-bottom: 3px;
-}
-
 .clear {
   clear: both;
 }
@@ -115,10 +109,6 @@ input {
 .row {
   margin-left: 0;
   margin-right: 0;
-}
-
-/* Override bootstrap's .row margins for mobile & tablet */
-@media (max-width: 978px) {
 }
 
 .navbar-toggle {
@@ -144,19 +134,11 @@ input {
   padding: 10px 0;
   margin-bottom: 10px;
   background-color: #fff;
-  /*-webkit-border-radius: 3px;*/
-  /*border-radius: 3px;*/
-  /*-webkit-box-shadow: 1px 1px 3px rgba(0,0,0,0.1);*/
-  /*box-shadow: 1px 1px 3px rgba(0,0,0,0.1);*/
 }
 
 .tight-box {
   margin-bottom: 10px;
   background-color: #fff;
-  /*-webkit-border-radius: 3px;*/
-  /*border-radius: 3px;*/
-  /*-webkit-box-shadow: 1px 1px 3px rgba(0,0,0,0.1);*/
-  /*box-shadow: 1px 1px 3px rgba(0,0,0,0.1);*/
 }
 
 .box-main {
@@ -331,6 +313,31 @@ h1, h2, h3, h4, h5, h6 {
   margin-top: 0;
   font-family: 'OpenSans', Helvetica, Arial, sans-serif;
   font-weight: 300;
+}
+
+/*****************
+=  FOOTER
+******************/
+
+footer {
+  padding-top: 30px;
+  font-size: 11px;
+}
+
+footer > section {
+  padding-bottom: 30px;
+  padding-top: 30px;
+}
+
+footer ul {
+  list-style: none;
+  padding-left:0px;
+}
+
+footer ul li {
+  color: #DDD;
+  font-weight: 400;
+  font-size: 12px;
 }
 
 /*****************

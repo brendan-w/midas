@@ -1,15 +1,46 @@
-<footer class="container">
-  <div class="row">
-    <div class="col-md-12">
-      <a target="_blank" href="https://github.com/18F/midas"><i class="fa fa-github"></i> Powered by Midas</a>
-      |
-      Version <a target="_blank" href="https://github.com/18F/midas/releases/tag/<%- version.version %>"><%- version.version %></a>
-      <% if (login.terms.enabled === true) { %>
-      |
-      <a href="<%- login.terms.link %>"><%- login.terms.name %></a>
-      <% } %>
-      |
-      Locations provided by <a target="_blank" href="http://www.geonames.org/">GeoNames</a>
+
+<section style="background:#555">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-2 col-sm-offset-2">
+        <h5>Site Map</h5>
+        <ul>
+          <li><a href="/about"    class="pretty">About</a></li>
+          <li><a href="/projects" class="pretty">Groups</a></li>
+          <li><a href="/tasks"    class="pretty">Jobs</a></li>
+        </ul>
+      </div>
+      <div class="col-sm-2">
+        <h5>FAQ</h5>
+      </div>
+      <div class="col-sm-2">
+        <h5>Legal</h5>
+        <ul>
+          <li><a href="/terms"   class="pretty">Terms of Use</a></li>
+          <li><a href="/privacy" class="pretty">Privacy Policy</a></li>
+        </ul>
+      </div>
+      <div class="col-sm-2">
+        <h5>Contact</h5>
+      </div>
     </div>
   </div>
-</footer>
+</section>
+
+<cite>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <a target="_blank" href="https://github.com/18F/midas"><i class="fa fa-github"></i> Powered by Midas</a>
+        |
+        Version <a target="_blank" href="https://github.com/18F/midas/releases/tag/<%- version.version %>"><%- version.version %></a>
+        <% if (login.terms.enabled === true) { %>
+        |
+        <a href="<%- login.terms.link %>"><%- login.terms.name %></a>
+        <% } %>
+        |
+        Locations provided by <a target="_blank" href="http://www.geonames.org/">GeoNames</a>
+      </div>
+    </div>
+  </div>
+</cite>
