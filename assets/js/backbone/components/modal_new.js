@@ -27,8 +27,8 @@ var ModalStepTemplate = require('./modal_step_template.html');
 ModalWizard = BaseView.extend({
 
   events: {
-    "click .wizard-forward" : "moveWizardForward",
-    "click .wizard-backward": "moveWizardBackward",
+    "click .wizard-forward" : "next",
+    "click .wizard-backward": "prev",
     "click .wizard-submit"  : "submit",
     "click .wizard-cancel"  : "close",
     "show.bs.modal"         : "wizardButtons"
@@ -41,18 +41,25 @@ ModalWizard = BaseView.extend({
   */
   initialize: function(options) {
     this.options = options;
-    // this.initializeListeners();
+
+    //default callbacks
+    this.on_next_cb   = function() { return true; };
+    this.on_prev_cb   = function() { return true; };
+    this.on_submit_cb = function() { return true; };
   },
 
-  initializeListeners: function() {
-    var self = this;
-    if (this.model) {
-      this.listenTo(this.model, this.options.modelName + ':modal:hide', function() {
-        self.close();
-      });
-    }
-  },
 
+  /*
+    sets of the modal for the given form HTML
+
+    the HTML should consist of:
+
+    <form id="name-of-form">
+      <section name="name-of-page"></section>
+      <section name="name-of-page"></section>
+      ...
+    </form>
+  */
   render: function(compiledTemplate) {
 
     //render the modal wrapper
@@ -67,20 +74,25 @@ ModalWizard = BaseView.extend({
     //make a few selections, so we don't waste time later
     this.$body       = $(".modal-body");
     this.$steps_list = $(".modal-steps");
+    this.$forward    = $("#wizard-forward-button");
+    this.$backward   = $("#wizard-backward-button");
+    this.$submit     = $("#wizard-create-button");
+    //the draft button isn't wired yet
 
     //load the child view's HTML
     this.$body.html(compiledTemplate);
     //find the form, and each of the pages
-    this.$form  = this.$body.find(">form");
-    this.$pages = this.$form.children();
+    this.$form     = this.$body.find(">form");
+    this.$pages    = this.$form.children();
+    this.num_pages = this.$pages.length;
 
     //if there are multiple pages, load them as steps in the header
-    if(this.$pages.length > 2)
+    if(this.num_pages > 2)
     {
       this.$steps_list.show();
 
       //append a numbered step for each page in the form
-      for(var i = 0; i < this.$pages.length; i++)
+      for(var i = 0; i < this.num_pages; i++)
       {
         this.$steps_list.append(_.template(ModalStepTemplate)({
           i: i+1, // +1 for human readable numbers
@@ -98,8 +110,10 @@ ModalWizard = BaseView.extend({
   },
 
   gotoPage: function(i) {
-    if((i >= 0) && (i < this.$pages.length))
+    if((i >= 0) && (i < this.num_pages))
     {
+      this.current_page = i;
+
       //select it, and save it
       this.$current = this.$pages.eq(i);
 
@@ -110,10 +124,35 @@ ModalWizard = BaseView.extend({
       //highlight the currect step
       this.$steps_list.find(".active").removeClass("active");
       this.$steps_list.children().eq(i).addClass("active");
+
+      //update the button states
+      this.updateButtons();
+    }
+    // else, not a valid page number, do nothing
+  },
+
+  updateButtons: function() {
+    //if multiple pages
+    if(this.num_pages > 2)
+    {
+      var is_first_page = (this.current_page === 0);
+      var is_last_page = (this.current_page === this.num_pages - 1);
+
+      this.$forward.show();
+      this.$backward.show();
+      this.$submit.toggle(is_last_page);
+
+      //disable/enable the correct next/prev buttons
+      this.$forward.prop( 'disabled', is_last_page);
+      this.$backward.prop('disabled', is_first_page);
     }
     else
     {
-      console.log("invalid page number for modal");
+      //single page form
+      //hide the next/back buttons
+      this.$forward.hide();
+      this.$backward.hide();
+      this.$submit.show();
     }
   },
 
@@ -132,125 +171,45 @@ ModalWizard = BaseView.extend({
     $(".modal").modal('hide');
   },
 
-  
+  next: function(e) {
+    if(e && e.preventDefault) e.preventDefault();
 
-
-
-
-
-
-
-
-
-
-  /**
-   * Set the child of this view, so we can remove it
-   * when the view is destroyed
-   * @return this for chaining
-   */
-  setChildView: function(view) {
-    this.childView = view;
-    return this;
+    //check if we're allowed to continue
+    if(this.on_next_cb(this.$page))
+      this.gotoPage(this.current_page + 1);
   },
 
-  /**
-   * Set the callback on the next button of the modal.
-   * Useful for callbacks
-   * @return this for chaining
-   */
-  setNext: function(fn) {
-    this.childNext = fn;
-    return this;
+  prev: function(e) {
+    if(e && e.preventDefault) e.preventDefault();
+
+    //check if we're allowed to go backwards
+    if(this.on_next_cb(this.$page))
+      this.gotoPage(this.current_page - 1);        
   },
 
-  /**
-   * Set the callback on the submit button of the modal.
-   * Useful for callbacks
-   * @return this for chaining
-   */
-  setSubmit: function(fn) {
-    this.childSubmit = fn;
-    return this;
-  },
-
-  // Set up wizard buttons based on whether or not position in flow.
-  // Assumes current step if one not given.
-  //
-  // If you want to force disable one or more buttons on a step of the wizard,
-  // add a data-disable-buttons attribute with a space-separated lst.
-  wizardButtons: function(e, step) {
-    if (_.isUndefined(step)) {
-      step = $('.current');
-    }
-    var prevAvailable = step.prev() && !_.isUndefined(step.prev().html());
-    var nextAvailable = step.next() && !_.isUndefined(step.next().html());
-    if (nextAvailable) {
-      $("#wizard-forward-button").show();
-      $("#wizard-create-button").hide();
-    } else {
-      $("#wizard-forward-button").hide();
-      $("#wizard-create-button").show();
-    }
-    this.$(".btn").prop('disabled', false);
-    $("#wizard-backward-button").prop('disabled', !prevAvailable);
-    var disables = step.data('disable-buttons');
-    if (disables) {
-      disables.split(" ").forEach(function(disable) {
-        $("#wizard-" + disable + "-button").prop('disabled', true);
-      });
-    }
-  },
-
-  // In order for the ModalWizard to work it expects a section
-  // by section layout inside the modal, with a 'current' class on
-  // the first you want to always start on (re)render.
-  moveWizardForward: function(e) {
-    if (e.preventDefault) e.preventDefault();
-
-    // Store $(".current") in cache to reduce query times for DOM lookup
-    // on future children and adjacent element to the current el.
-    var current = $(".current");
-    var next = current.next();
-
-    // Notify the sub-view to see if it is safe to proceed
-    // if not, return and stop processing.
-    if (this.childNext) {
-      var abort = this.childNext(e, current);
-      if (abort) return;
-    }
-    this.wizardButtons(null, next);
-    current.hide();
-    current.removeClass("current");
-    next.addClass("current");
-    next.show();
-  },
-
-  moveWizardBackward: function(e) {
-    if (e.preventDefault) e.preventDefault();
-
-    var current = $(".current");
-    var prev = current.prev();
-
-    if (!_.isUndefined(prev.html())) {
-      this.wizardButtons(null, prev);
-      current.hide();
-      current.removeClass("current");
-      prev.addClass("current");
-      prev.show();
-    }
-  },
-
-  // Dumb submit.  Everything is expected via a promise from
-  // from the instantiation of this modal wizard.
   submit: function(e) {
     if (e.preventDefault) e.preventDefault();
 
+    //call child view's submission
+    this.on_submit_cb(this.$form)
+  },
+
+  onNext: function(cb) {
+    this.on_next_cb = cb;
+  },
+
+  onPrev: function(cb) {
+    this.on_prev_cb = cb;
+  },
+
+  onSubmit: function(cb) {
+    this.on_submit_cb = cb;
   },
 
   cleanup: function() {
-    this.hide();
+    this.close();
     removeView(this);
-  }
+  },
 });
 
 module.exports = ModalWizard;

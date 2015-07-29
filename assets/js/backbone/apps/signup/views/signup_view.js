@@ -23,8 +23,8 @@ var Signup = Backbone.View.extend({
       title: "Sign Up",
     });
 
-    // this.modal.onNext(this.next);
-    // this.modal.onSubmit(this.submit);
+    this.modal.onNext(this.next);
+    this.modal.onSubmit(this.submit);
 
     this.options = options;
   },
@@ -42,7 +42,7 @@ var Signup = Backbone.View.extend({
   },
 
   next: function() {
-
+    return true;
   },
 
   submit: function() {
