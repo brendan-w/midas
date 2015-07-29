@@ -20,7 +20,7 @@ var Signup = Backbone.View.extend({
 
     this.modal = new ModalView({
       el: this.el,
-      title: "Sign Up",
+      doneButtonText: "Sign Up",
     });
 
     this.modal.onNext(this.next);

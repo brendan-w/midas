@@ -1,20 +1,3 @@
-// Similar to Modal component in every way in all ways but two:
-// 1) This modal has a next button instead of save button.
-// 2) This modal has some expectations inside the modal-body form.
-//    ^ More on this below
-//
-// This is all the component expects for it to work:
-// <div class='modal-body'>
-//  <section class="current">First content section</section>
-//  <section>Second content section</section>
-//  <section>Third content section</section>
-//  <!-- and so on -->
-// </div>
-//
-// REMEMBER: This goes inside your formTemplate.  This
-// is the ModalWizardComponent, which is scoped to list controller,
-// then the Form itself for the addition to the list is scoped to the
-// modal-body within this modal-component template.
 
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -23,8 +6,46 @@ var BaseView = require('../base/base_view');
 var ModalTemplate     = require('./modal_wizard_template.html');
 var ModalStepTemplate = require('./modal_step_template.html');
 
+/*
+  Here's how it works:
 
-ModalWizard = BaseView.extend({
+  Make your own view, using the modal-wrapper as it's element.
+
+  Inside your view, you instantiate one of these ModalView's, and
+  also set it's `el` to your modal-wrapper.
+
+  When you call ModalView.render(), hand it your form HTML (post templating).
+  The HTML should consist of:
+
+
+  <form id="name-of-form">
+    <section name="name-of-page"> ... </section>
+    <section name="name-of-page"> ... </section>
+    ...
+  </form>
+
+
+  Each <section> will become a page of your form (requiring the user to
+  click "next"). Pages (<section>s) should be given names, which will
+  appear as a list of steps in the header. 
+
+  You can register 3 callbacks with the ModalView:
+
+    onNext(callback)
+      The callback will be given a jQuery element for the current page (pre-advance)
+      Return True if it is safe to proceed (useful for validation)
+    
+    onPrev(callback)
+      The callback will be given a jQuery element for the current page
+      Return True if it is safe to go back (useful for... no clue, but might need it someday)
+
+    onSubmit(callback)
+      The callback will be given a jQuery element for the entire <form>
+      run your custom submission code here
+
+*/
+
+ModalView = BaseView.extend({
 
   events: {
     "click .wizard-forward" : "next",
@@ -36,8 +57,7 @@ ModalWizard = BaseView.extend({
 
   /*
     @param {Object} options
-    @param {String} options.title
-
+    @param {String} options.doneButtonText
   */
   initialize: function(options) {
     this.options = options;
@@ -45,27 +65,20 @@ ModalWizard = BaseView.extend({
     //default callbacks
     this.on_next_cb   = function() { return true; };
     this.on_prev_cb   = function() { return true; };
-    this.on_submit_cb = function() { return true; };
+    this.on_submit_cb = function() {};
   },
 
 
   /*
-    sets of the modal for the given form HTML
-
-    the HTML should consist of:
-
-    <form id="name-of-form">
-      <section name="name-of-page"></section>
-      <section name="name-of-page"></section>
-      ...
-    </form>
+    creates a modal, and loads the given form HTML
   */
   render: function(compiledTemplate) {
 
     //render the modal wrapper
     var data = {
-      id: this.options.id,
-      modalTitle: this.options.title,
+      // id: this.options.id,
+      // modalTitle: this.options.title,
+      doneButtonText: this.options.doneButtonText || "Done",
       draft: this.options.draft
     };
 
@@ -212,4 +225,4 @@ ModalWizard = BaseView.extend({
   },
 });
 
-module.exports = ModalWizard;
+module.exports = ModalView;
