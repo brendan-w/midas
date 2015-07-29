@@ -56,11 +56,11 @@ var BrowseRouter = Backbone.Router.extend({
   },
 
   cleanupChildren: function () {
-    if (this.browseListController) { this.browseListController.cleanup(); }
-    if (this.projectShowController) { this.projectShowController.cleanup(); }
-    if (this.profileShowController) { this.profileShowController.cleanup(); }
-    if (this.taskShowController) { this.taskShowController.cleanup(); }
-    if (this.homeController) { this.homeController.cleanup(); }
+    if (this.browseListController)  this.browseListController.cleanup();
+    if (this.projectShowController) this.projectShowController.cleanup();
+    if (this.profileShowController) this.profileShowController.cleanup();
+    if (this.taskShowController)    this.taskShowController.cleanup();
+    if (this.homeController)        this.homeController.cleanup();
     this.data = { saved: false };
   },
 
@@ -171,7 +171,12 @@ var BrowseRouter = Backbone.Router.extend({
         id = window.cache.currentUser.id;
       }
     }
-    this.profileShowController = new ProfileShowController({ id: id, action: action, data: this.data });
+
+    this.profileShowController = new ProfileShowController({
+      id: id,
+      action: action,
+      data: this.data
+    });
   },
 
   showAdmin: function (action) {
