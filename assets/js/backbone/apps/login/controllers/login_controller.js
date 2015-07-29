@@ -1,12 +1,12 @@
 
 var _ = require('underscore');
 var Backbone = require('backbone');
-var Bootstrap = require('bootstrap');
 var utils = require('../../../mixins/utilities');
 var BaseController = require('../../../base/base_controller');
 var LoginView = require('../views/login_view');
 var login = require('../../../config/login.json');
 var ModalComponent = require('../../../components/modal');
+var ModalWizardComponent = require('../../../components/modal_wizard');
 
 
 Login = BaseController.extend({

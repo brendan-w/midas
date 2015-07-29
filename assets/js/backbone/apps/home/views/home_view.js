@@ -164,13 +164,7 @@ var HomeView = Backbone.View.extend({
   },
 
   login: function (message) {
-    if (this.loginController) {
-      this.loginController.cleanup();
-    }
-    this.loginController = new LoginController({
-      el: '#login-wrapper',
-      message: message
-    });
+    window.cache.userEvents.trigger("user:request:login", message);
   },
 
   cleanup: function () {
