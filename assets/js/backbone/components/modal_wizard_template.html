@@ -1,10 +1,64 @@
+
+<style>
+  .modal-header ul {
+    list-style: none;
+    margin-bottom: 0px;
+  }
+
+  li.modal-step {
+    display:inline-block;
+    text-align: center;
+  }
+
+  li.modal-step .circle {
+    display:inline-block;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    font-weight: 600;
+  }
+
+  li.modal-step .name {
+    font-size: 7pt;
+    margin-top:5px;
+    text-transform: uppercase;
+  }
+
+  /* inactive modal step */
+
+  li.modal-step .circle {
+    line-height: 26px; /* correction for 2px border */
+    border:2px solid #CCC;
+    color: #CCC;
+  }
+
+  li.modal-step .name {
+    color: #CCC;
+  }
+
+  /* active modal step */
+
+  li.modal-step.active .circle {
+    line-height: 30px;
+    border:none;
+    color:white;
+    background-color: #1CABE2;
+  }
+
+  li.modal-step.active .name {
+    color:#1CABE2;
+  }
+</style>
+
 <div class="modal fade" id="<%- id %>" role="dialog" aria-hidden="true" tabindex="-1">
   <div class="modal-dialog">
     <div class="modal-content">
 
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title"><%- modalTitle %></h4>
+        <ul class="modal-steps">
+        </ul>
       </div>
 
       <div class="modal-body">

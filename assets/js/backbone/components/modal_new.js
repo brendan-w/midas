@@ -20,7 +20,8 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var utilities = require('../mixins/utilities');
 var BaseView = require('../base/base_view');
-var ModalWizardTemplate = require('./modal_wizard_template.html');
+var ModalTemplate     = require('./modal_wizard_template.html');
+var ModalStepTemplate = require('./modal_step_template.html');
 
 
 ModalWizard = BaseView.extend({
@@ -35,58 +36,119 @@ ModalWizard = BaseView.extend({
 
   /*
     @param {Object} options
-    @param {String} options.modalTitle
+    @param {String} options.title
 
   */
-  initialize: function (options) {
-    this.options   = options;
-    this.childView = options.childView;
+  initialize: function(options) {
+    this.options = options;
     // this.initializeListeners();
   },
 
-  initializeListeners: function () {
+  initializeListeners: function() {
     var self = this;
     if (this.model) {
-      this.listenTo(this.model, this.options.modelName + ':modal:hide', function () {
+      this.listenTo(this.model, this.options.modelName + ':modal:hide', function() {
         self.close();
       });
     }
   },
 
-  render: function () {
+  render: function(compiledTemplate) {
 
     //render the modal wrapper
     var data = {
       id: this.options.id,
-      modalTitle: this.options.modalTitle,
+      modalTitle: this.options.title,
       draft: this.options.draft
     };
 
-    var compiledTemplate = _.template(ModalWizardTemplate)(data);
-    this.$el.html(compiledTemplate);
+    //load the form wrapper HTML
+    this.$el.html(_.template(ModalTemplate)(data));
+    //make a few selections, so we don't waste time later
+    this.$body       = $(".modal-body");
+    this.$steps_list = $(".modal-steps");
 
-    //render the childView inside of the wrapper
-    this.childView.$el = $(".modal-body");
-    this.childView.render();
+    //load the child view's HTML
+    this.$body.html(compiledTemplate);
+    //find the form, and each of the pages
+    this.$form  = this.$body.find(">form");
+    this.$pages = this.$form.children();
 
-    //show it
+    //if there are multiple pages, load them as steps in the header
+    if(this.$pages.length > 2)
+    {
+      this.$steps_list.show();
+
+      //append a numbered step for each page in the form
+      for(var i = 0; i < this.$pages.length; i++)
+      {
+        this.$steps_list.append(_.template(ModalStepTemplate)({
+          i: i+1, // +1 for human readable numbers
+          name: this.$pages.eq(i).attr("name"),
+        }));
+      }
+    }
+    else
+    {
+      //single page, don't bother with the step markers
+      this.$steps_list.hide();
+    }
+
+    this.gotoPage(0); //load the initial page
+  },
+
+  gotoPage: function(i) {
+    if((i >= 0) && (i < this.$pages.length))
+    {
+      //select it, and save it
+      this.$current = this.$pages.eq(i);
+
+      //show ONLY the desired page
+      this.$pages.hide();
+      this.$current.show();
+
+      //highlight the currect step
+      this.$steps_list.find(".active").removeClass("active");
+      this.$steps_list.children().eq(i).addClass("active");
+    }
+    else
+    {
+      console.log("invalid page number for modal");
+    }
+  },
+
+  //returns the ID of the currently rendered form
+  getFormId: function() {
+    return this.$form.attr("id");
+  },
+
+  show: function(e) {
+    if(e && e.preventDefault) e.preventDefault();
     $(".modal").modal('show');
-
-    return this;
   },
 
   close: function(e) {
     if(e && e.preventDefault) e.preventDefault();
-    //hide it
     $(".modal").modal('hide');
   },
+
+  
+
+
+
+
+
+
+
+
+
 
   /**
    * Set the child of this view, so we can remove it
    * when the view is destroyed
    * @return this for chaining
    */
-  setChildView: function (view) {
+  setChildView: function(view) {
     this.childView = view;
     return this;
   },
@@ -96,7 +158,7 @@ ModalWizard = BaseView.extend({
    * Useful for callbacks
    * @return this for chaining
    */
-  setNext: function (fn) {
+  setNext: function(fn) {
     this.childNext = fn;
     return this;
   },
@@ -106,7 +168,7 @@ ModalWizard = BaseView.extend({
    * Useful for callbacks
    * @return this for chaining
    */
-  setSubmit: function (fn) {
+  setSubmit: function(fn) {
     this.childSubmit = fn;
     return this;
   },
@@ -116,7 +178,7 @@ ModalWizard = BaseView.extend({
   //
   // If you want to force disable one or more buttons on a step of the wizard,
   // add a data-disable-buttons attribute with a space-separated lst.
-  wizardButtons: function (e, step) {
+  wizardButtons: function(e, step) {
     if (_.isUndefined(step)) {
       step = $('.current');
     }
@@ -133,7 +195,7 @@ ModalWizard = BaseView.extend({
     $("#wizard-backward-button").prop('disabled', !prevAvailable);
     var disables = step.data('disable-buttons');
     if (disables) {
-      disables.split(" ").forEach(function (disable) {
+      disables.split(" ").forEach(function(disable) {
         $("#wizard-" + disable + "-button").prop('disabled', true);
       });
     }
@@ -142,7 +204,7 @@ ModalWizard = BaseView.extend({
   // In order for the ModalWizard to work it expects a section
   // by section layout inside the modal, with a 'current' class on
   // the first you want to always start on (re)render.
-  moveWizardForward: function (e) {
+  moveWizardForward: function(e) {
     if (e.preventDefault) e.preventDefault();
 
     // Store $(".current") in cache to reduce query times for DOM lookup
@@ -163,7 +225,7 @@ ModalWizard = BaseView.extend({
     next.show();
   },
 
-  moveWizardBackward: function (e) {
+  moveWizardBackward: function(e) {
     if (e.preventDefault) e.preventDefault();
 
     var current = $(".current");
@@ -180,30 +242,13 @@ ModalWizard = BaseView.extend({
 
   // Dumb submit.  Everything is expected via a promise from
   // from the instantiation of this modal wizard.
-  submit: function (e) {
+  submit: function(e) {
     if (e.preventDefault) e.preventDefault();
 
-    var d = this.options.data(this);
-    var abort = false;
-    var state = $(e.currentTarget).data('state');
-
-    // pass the data to the view
-    if (this.childSubmit) {
-      // if submit returns true, abort modal processing
-      abort = this.childSubmit(e, this.$(".current"));
-    }
-
-    if (abort === true) {
-      return;
-    }
-
-    this.close();
-    if (state) d.state = state;
-    this.collection.addAndSave(d);
   },
 
-  cleanup: function () {
-    if (this.childView) { this.childView.cleanup(); }
+  cleanup: function() {
+    this.hide();
     removeView(this);
   }
 });
