@@ -13,6 +13,7 @@ var ProjectsCollection = Backbone.Collection.extend({
     return response.projects;
   },
 
+  //TODO: neccessary? why not just call addAndSave() directly?
   initialize: function () {
     var self = this;
 

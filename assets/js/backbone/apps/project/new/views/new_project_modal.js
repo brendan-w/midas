@@ -4,9 +4,13 @@ var Backbone = require('backbone');
 var utils = require('../../../../mixins/utilities');
 
 var ModalView           = require('../../../../components/modal_new');
+var ProjectModel        = require('../../../../entities/projects/project_model');
 var MarkdownEditor      = require('../../../../components/markdown_editor');
 var ProjectFormTemplate = require('../templates/new_project_template.html');
 
+/*
+  Pass this modal a Project_Collection when creating
+*/
 
 var ProjectFormView = Backbone.View.extend({
 
@@ -58,27 +62,26 @@ var ProjectFormView = Backbone.View.extend({
   //called every time the modal wants to continue (or submit)
   //validate everything
   next: function($page) {
-    validateAll($page);
+    return !validateAll($page);
   },
 
   submit: function() {
     var self = this;
 
-    var data = {
-      title       : this.$(".project-title-form").val(),
-      description : this.$("#project-form-description").val()
-    };
-
-    //when the model save is successful, redirect to the newly created project
+    //when the collection add is successful, redirect to the newly created project
     this.listenTo(this.collection, "project:save:success", function (data) {
-      // hide the modal
-      $('#addProject').bind('hidden.bs.modal', function() {
+      // redirect when the modal is fully hidden
+      self.$el.bind('hidden.bs.modal', function() {
         Backbone.history.navigate('projects/' + data.attributes.id, { trigger: true });
       }).modal('hide');
+
       self.modal.hide();
     });
 
-    this.collection.trigger("project:save", data);
+    this.collection.addAndSave({
+      title       : this.$(".project-title-form").val(),
+      description : this.$("#project-form-description").val()
+    });
   },
 
   cleanup: function () {

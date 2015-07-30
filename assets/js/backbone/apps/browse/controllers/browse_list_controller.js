@@ -60,7 +60,7 @@ Browse.ListController = BaseController.extend({
   fireUpCollection: function () {
     var self = this;
     this.projectsCollection = new ProjectsCollection();
-    this.tasksCollection = new TasksCollection();
+    this.tasksCollection    = new TasksCollection();
     this.profilesCollection = new ProfilesCollection();
     if (this.target == 'projects') {
       this.collection = this.projectsCollection;
