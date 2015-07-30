@@ -3,16 +3,16 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var utils = require('../../../../mixins/utilities');
 
-var ModalView           = require('../../../../components/modal_new');
-var ProjectModel        = require('../../../../entities/projects/project_model');
-var MarkdownEditor      = require('../../../../components/markdown_editor');
-var ProjectFormTemplate = require('../templates/new_project_template.html');
+var ModalView          = require('../../../../components/modal_new');
+var ProjectModel       = require('../../../../entities/projects/project_model');
+var MarkdownEditor     = require('../../../../components/markdown_editor');
+var NewProjectTemplate = require('../templates/new_project_template.html');
 
 /*
   Pass this modal a Project_Collection when creating
 */
 
-var ProjectFormView = Backbone.View.extend({
+var NewProjectModal = Backbone.View.extend({
 
   events: {
     "blur #project-form-title"      : "v",
@@ -31,7 +31,7 @@ var ProjectFormView = Backbone.View.extend({
 
     //render our form inside the Modal wrapper
     this.modal.renderForm({
-      html: _.template(ProjectFormTemplate)({}),
+      html: _.template(NewProjectTemplate)({}),
       doneButtonText: 'Add ' + i18n.t('Project'),
     });
 
@@ -73,7 +73,7 @@ var ProjectFormView = Backbone.View.extend({
       // redirect when the modal is fully hidden
       self.$el.bind('hidden.bs.modal', function() {
         Backbone.history.navigate('projects/' + data.attributes.id, { trigger: true });
-      }).modal('hide');
+      });
 
       self.modal.hide();
     });
@@ -92,4 +92,4 @@ var ProjectFormView = Backbone.View.extend({
 
 });
 
-module.exports = ProjectFormView;
+module.exports = NewProjectModal;

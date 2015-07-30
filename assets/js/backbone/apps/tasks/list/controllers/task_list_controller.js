@@ -5,7 +5,9 @@ var Utilities = require('../../../../mixins/utilities');
 var Bootstrap = require('bootstrap');
 var TasksCollection = require('../../../../entities/tasks/tasks_collection');
 var TaskCollectionView = require('../views/task_collection_view');
-var TaskFormView = require('../../new/views/task_form_view');
+
+var NewTaskModal = require('../../../tasks/new/views/new_task_modal');
+
 var ModalWizardComponent = require('../../../../components/modal_wizard');
 var TaskModel = require('../../../../entities/tasks/task_model');
 
@@ -83,6 +85,14 @@ TaskList = Backbone.View.extend({
 
   add: function (e) {
     if (e.preventDefault) e.preventDefault();
+
+    if (this.newTaskModal) this.newTaskModal.cleanup();
+    this.newTaskModal = new NewTaskModal({
+      el: "#addTask-wrapper",
+      collection: this.collection,
+    }).render();
+
+    /*
     var self = this;
 
     if (this.taskFormView) this.taskFormView.cleanup();
@@ -130,7 +140,7 @@ TaskList = Backbone.View.extend({
         };
       });
     }
-
+    */
   },
 
   show: function (e) {
@@ -144,8 +154,7 @@ TaskList = Backbone.View.extend({
   },
 
   cleanup: function () {
-    if (this.taskFormView) this.taskFormView.cleanup();
-    if (this.modalWizardComponent) this.modalWizardComponent.cleanup();
+    if (this.newTaskModal) this.newTaskModal.cleanup();
     if (this.taskCollectionView) this.taskCollectionView.cleanup();
     removeView(this);
   }

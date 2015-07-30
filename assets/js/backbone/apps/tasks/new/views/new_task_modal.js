@@ -3,13 +3,14 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var async = require('async');
 var utilities = require('../../../../mixins/utilities');
-var MarkdownEditor = require('../../../../components/markdown_editor');
-var TasksCollection = require('../../../../entities/tasks/tasks_collection');
-var TaskFormTemplate = require('../templates/task_form_template.html');
-var TagFactory = require('../../../../components/tag_factory');
+
+var ModalView       = require('../../../../components/modal_new');
+var MarkdownEditor  = require('../../../../components/markdown_editor');
+var NewTaskTemplate = require('../templates/new_task_template.html');
+var TagFactory      = require('../../../../components/tag_factory');
 
 
-var TaskFormView = Backbone.View.extend({
+var NewTaskModal = Backbone.View.extend({
 
   el: "#task-list-wrapper",
 
@@ -75,14 +76,28 @@ var TaskFormView = Backbone.View.extend({
   },
 
   render: function () {
-    var template = _.template(TaskFormTemplate)({ tags: this.tagSources });
-    this.$el.html(template);
+    if(this.modal) this.modal.cleanup();
+
+    this.modal = new ModalView({
+      el: this.el,
+    }).render();
+
+    this.modal.onNext(this.next);
+    this.listenTo(this.modal, "submit", this.submit);
+
+    //render our form inside the Modal wrapper
+    this.modal.renderForm({
+      html: _.template(NewTaskTemplate)({ tags: this.tagSources }),
+      doneButtonText: 'Add ' + i18n.t('Opportunity'),
+    });
+
     this.initializeSelect2();
     this.initializeTextArea();
 
     // Important: Hide all non-currently opened sections of wizard.
     this.$("section:not(.current)").hide();
-    this.$el.i18n();
+
+    this.modal.show();
 
     // Return this for chaining.
     return this;
@@ -92,15 +107,8 @@ var TaskFormView = Backbone.View.extend({
     return validate(e);
   },
 
-  childNext: function (e, current) {
-    // find all the validation elements
-    var children = current.find('.validate');
-    var abort = false;
-    _.each(children, function (child) {
-      var iAbort = validate({ currentTarget: child });
-      abort = abort || iAbort;
-    });
-    return abort;
+  next: function ($page) {
+    return !validateAll($page);
   },
 
   initializeSelect2: function () {
@@ -168,11 +176,56 @@ var TaskFormView = Backbone.View.extend({
     }
   },
 
+  submit: function($form) {
+    var self = this;
+
+    //when the collection add is successful, redirect to the newly created task
+    this.listenTo(this.collection, "task:save:success", function (data) {
+      // redirect when the modal is fully hidden
+      self.$el.bind('hidden.bs.modal', function() {
+        Backbone.history.navigate('tasks/' + data.attributes.id, { trigger: true });
+      });
+
+      self.modal.hide();
+    });
+
+    //parse the tags from the select2 boxes
+
+    var raw_tags = [];
+    raw_tags.push.apply(raw_tags,this.$("#task_tag_topics").select2('data'));
+    raw_tags.push.apply(raw_tags,this.$("#task_tag_skills").select2('data'));
+    raw_tags.push.apply(raw_tags,this.$("#task_tag_location").select2('data'));
+    raw_tags.push.apply(raw_tags,[this.$("#skills-required").select2('data')]);
+    raw_tags.push.apply(raw_tags,[this.$("#people").select2('data')]);
+    raw_tags.push.apply(raw_tags,[this.$("#time-required").select2('data')]);
+    raw_tags.push.apply(raw_tags,[this.$("#time-estimate").select2('data')]);
+    raw_tags.push.apply(raw_tags,[this.$("#length").select2('data')]);
+    
+    var tags = _(raw_tags).map(function(tag) {
+      return (tag.id && tag.id !== tag.name) ? +tag.id : {
+        name: tag.name,
+        type: tag.tagType,
+        data: tag.data
+      };
+    });
+
+    this.collection.addAndSave({
+      title: parent.$("#task-title").val(),
+      description: parent.$("#task-description").val(),
+      // these tasks are orphaned
+      // TODO
+      projectId: null,
+      tags: tags,
+    })
+  },
+
+
   cleanup: function () {
-    if (this.md) { this.md.cleanup(); }
+    if(this.md) { this.md.cleanup(); }
+    if(this.modal) this.modal.cleanup();
     removeView(this);
   }
 
 });
 
-module.exports = TaskFormView;
+module.exports = NewTaskModal;

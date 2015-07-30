@@ -9,10 +9,11 @@ var ProjectsCollection = require('../../../entities/projects/projects_collection
 var TasksCollection = require('../../../entities/tasks/tasks_collection');
 var ProfilesCollection = require('../../../entities/profiles/profiles_collection');
 var TaskModel = require('../../../entities/tasks/task_model');
+
 var NewProjectModal = require('../../project/new/views/new_project_modal');
-var TaskFormView = require('../../tasks/new/views/task_form_view');
+var NewTaskModal    = require('../../tasks/new/views/new_task_modal');
+
 var ModalWizardComponent = require('../../../components/modal_wizard');
-var ModalComponent = require('../../../components/modal');
 
 
 Browse = {};
@@ -100,18 +101,29 @@ Browse.ListController = BaseController.extend({
   addProject: function (e) {
     if (e.preventDefault) e.preventDefault();
 
-    if (this.projectFormView) this.projectFormView.cleanup();
-    this.projectFormView = new NewProjectModal({
+    if (this.newProjectModal) this.newProjectModal.cleanup();
+    this.newProjectModal = new NewProjectModal({
       el: "#addProject-wrapper",
-      collection: this.projectsCollection
+      collection: this.projectsCollection,
     }).render();
   },
 
   addTask: function (e) {
-    /*
     if (e.preventDefault) e.preventDefault();
 
-    if (this.taskFormView) this.taskFormView.cleanup();
+    if (this.newTaskModal) this.newTaskModal.cleanup();
+
+    this.newTaskModal = new NewTaskModal({
+      el: "#addTask-wrapper",
+      collection: this.tasksCollection,
+    }).render();
+
+
+
+
+
+
+    /*
     if (this.modalWizardComponent) this.modalWizardComponent.cleanup();
 
     this.taskModel = new TaskModel();
@@ -132,34 +144,14 @@ Browse.ListController = BaseController.extend({
       }; }
     }).render();
 
-    this.taskFormView = new TaskFormView({
+    this.newTaskModal = new NewTaskModal({
       el: "#addTask .modal-body",
       projectId: null,
-      model: this.taskModel,
       tasks: this.tasksCollection
     }).render();
-    this.modalWizardComponent.setChildView(this.taskFormView);
-    this.modalWizardComponent.setNext(this.taskFormView.childNext);
-    this.modalWizardComponent.setSubmit(this.taskFormView.childNext);
-
-    function getTags() {
-      var tags = [];
-      tags.push.apply(tags,this.$("#task_tag_topics").select2('data'));
-      tags.push.apply(tags,this.$("#task_tag_skills").select2('data'));
-      tags.push.apply(tags,this.$("#task_tag_location").select2('data'));
-      tags.push.apply(tags,[this.$("#skills-required").select2('data')]);
-      tags.push.apply(tags,[this.$("#people").select2('data')]);
-      tags.push.apply(tags,[this.$("#time-required").select2('data')]);
-      tags.push.apply(tags,[this.$("#time-estimate").select2('data')]);
-      tags.push.apply(tags,[this.$("#length").select2('data')]);
-      return _(tags).map(function(tag) {
-        return (tag.id && tag.id !== tag.name) ? +tag.id : {
-          name: tag.name,
-          type: tag.tagType,
-          data: tag.data
-        };
-      });
-    }
+    this.modalWizardComponent.setChildView(this.newTaskModal);
+    this.modalWizardComponent.setNext(this.newTaskModal.childNext);
+    this.modalWizardComponent.setSubmit(this.newTaskModal.childNext);
     */
   },
 
@@ -167,10 +159,8 @@ Browse.ListController = BaseController.extend({
   //= UTILITY METHODS
   // ---------------------
   cleanup: function() {
-    if (this.taskFormView) { this.taskFormView.cleanup(); }
-    if (this.modalWizardComponent) { this.modalWizardComponent.cleanup(); }
-    if (this.projectFormView) { this.projectFormView.cleanup(); }
-    if (this.modalComponent) { this.modalComponent.cleanup(); }
+    if (this.newTaskModal) { this.newTaskModal.cleanup(); }
+    if (this.newProjectModal) { this.newProjectModal.cleanup(); }
     if (this.browseMainView) { this.browseMainView.cleanup(); }
     removeView(this);
   }
