@@ -147,11 +147,11 @@ ModalView = BaseView.extend({
       this.current_page = i;
 
       //select it, and save it
-      this.$current = this.$pages.eq(i);
+      this.$current_page = this.$pages.eq(i);
 
       //show ONLY the desired page
       this.$pages.hide();
-      this.$current.show();
+      this.$current_page.show();
 
       //highlight the currect step
       this.$steps_list.find(".active").removeClass("active");
@@ -207,7 +207,7 @@ ModalView = BaseView.extend({
     if(e && e.preventDefault) e.preventDefault();
 
     //check if we're allowed to continue
-    if(this.on_next_cb(this.$page))
+    if(this.on_next_cb(this.$current_page))
       this.gotoPage(this.current_page + 1);
   },
 
@@ -215,15 +215,16 @@ ModalView = BaseView.extend({
     if(e && e.preventDefault) e.preventDefault();
 
     //check if we're allowed to go backwards
-    if(this.on_next_cb(this.$page))
+    if(this.on_next_cb(this.$current_page))
       this.gotoPage(this.current_page - 1);        
   },
 
   submit: function(e) {
     if (e.preventDefault) e.preventDefault();
 
-    //call child view's submission
-    this.on_submit_cb(this.$form)
+    //check if this page is OK
+    if(this.on_next_cb(this.$current_page))
+      this.on_submit_cb(this.$form)
   },
 
   onNext: function(cb) {

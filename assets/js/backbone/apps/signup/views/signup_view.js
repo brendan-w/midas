@@ -88,7 +88,14 @@ var Signup = Backbone.View.extend({
   },
 
   next: function($page) {
-    return true;
+    // find all the validation elements
+    var children = $page.find('.validate');
+    var abort = false;
+    _.each(children, function (child) {
+      var iAbort = validate({ currentTarget: child });
+      abort = abort || iAbort;
+    });
+    return !abort;
   },
 
   submit: function($form) {
