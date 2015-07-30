@@ -17,8 +17,9 @@ var Signup = Backbone.View.extend({
 
   },
 
-  initialize: function (options) {
+  initialize: function () {
 
+    //make a persistent ModalView for the signup form
     this.modal = new ModalView({
       el: this.el,
       doneButtonText: "Sign Up",
@@ -27,19 +28,40 @@ var Signup = Backbone.View.extend({
     this.modal.onNext(this.next);
     this.modal.onSubmit(this.submit);
 
-    this.options = options;
+    //listen for signup requests
+    window.cache.userEvents.on("user:request:signup", this.signup);
+
+    this.signup("poster");
   },
 
-  render: function() {
-    var compiledTemplate = _.template(SignupPoster)({
-      //nothing yet...
-    });
-
-    //render the modal wrapper with our form inside
-    this.modal.render(compiledTemplate);
-
-    //render the password control
+  /*
+    the current `target`s are:
+      "applicant"
+      "poster"
+      "choose"    <-- default
+  */
+  signup: function(target) {
     if(this.coreAccount) this.coreAccount.cleanup();
+
+    target = target || "choose";
+
+    var template;
+    var template_data = {
+      //nothing yet...
+    };
+
+    //load the requested signup form
+    switch(target)
+    {
+      case "choose":    template = _.template(SignupChoose);    break;
+      case "applicant": template = _.template(SignupApplicant); break;
+      case "poster":    template = _.template(SignupPoster);    break;
+    }
+
+    //render our form inside the Modal wrapper
+    this.modal.render(template(template_data));
+
+    //render the core account info fields
     this.coreAccount = new CoreAccoutView({
       el: this.$(".core-account-info")
     }).render();

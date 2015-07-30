@@ -18,7 +18,7 @@ var ModalStepTemplate = require('./modal_step_template.html');
   The HTML should consist of:
 
 
-  <form id="name-of-form">
+  <form name="name-of-form">
     <section name="name-of-page"> ... </section>
     <section name="name-of-page"> ... </section>
     ...
@@ -30,9 +30,9 @@ var ModalStepTemplate = require('./modal_step_template.html');
   appear as a list of steps in the header. If the form only has one
   page, then the section name will be used as a title.
 
-  The form's ID attribute is not rendered anywhere, but can be used to
-  tell which form the modal is currently loaded with. Use ModalView.getFormId()
-  to find 
+  The form's name attribute is not rendered anywhere, but can be used to
+  tell which form is currently in the modal. Use ModalView.getFormName()
+  to find this.
 
   You can register 3 callbacks with the ModalView:
 
@@ -181,8 +181,8 @@ ModalView = BaseView.extend({
   },
 
   //returns the ID of the currently rendered form
-  getFormId: function() {
-    return this.$form.attr("id");
+  getFormName: function() {
+    return this.$form.attr("name");
   },
 
   show: function(e) {

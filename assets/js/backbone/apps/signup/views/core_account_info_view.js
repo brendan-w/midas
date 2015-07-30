@@ -11,10 +11,9 @@ var CoreAccountTemplate = require('../templates/core_account_info.html');
   This is a view for a single modal page that carries the bare minimum
   requirements for creating an account.
 
-  Name
-  Email
+  Real Name
+  Email (username)
   Password
-
 */
 
 var LoginPasswordView = Backbone.View.extend({
@@ -44,6 +43,13 @@ var LoginPasswordView = Backbone.View.extend({
     });
     this.$el.html(template);
     return this;
+  },
+
+  validate: function() {
+    this.checkName();
+    this.checkUsername();
+    this.checkPassword();
+    this.checkPasswordConfirm();
   },
 
   checkName: function (e) {
