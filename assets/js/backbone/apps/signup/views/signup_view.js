@@ -14,7 +14,9 @@ var SignupPoster    = require('../templates/signup_poster.html');
 var Signup = Backbone.View.extend({
 
   events: {
-
+    //for the "choose" target/form
+    "click #signup-as-applicant" : "gotoApplicantForm",
+    "click #signup-as-poster" :    "gotoPosterForm",
   },
 
   initialize: function() {
@@ -22,8 +24,7 @@ var Signup = Backbone.View.extend({
     //make a persistent ModalView for the signup form
     this.modal = new ModalView({
       el: this.el,
-      doneButtonText: "Sign Up",
-    });
+    }).render();
 
     this.modal.onNext(this.next);
     this.modal.onSubmit(this.submit);
@@ -31,7 +32,7 @@ var Signup = Backbone.View.extend({
     //listen for signup requests
     window.cache.userEvents.on("user:request:signup", this.signup);
 
-    this.signup("poster");
+    this.signup();
   },
 
   /*
@@ -59,9 +60,14 @@ var Signup = Backbone.View.extend({
     }
 
     //render our form inside the Modal wrapper
-    this.modal.render(template(template_data));
+    this.modal.renderForm({
+      html: template(template_data),
+      doneButtonText: "Sign Up",
+      hideButtons: (target == "choose"),
+    });
 
     //render the core account info fields
+    //this will quietly fail if we're on a form that doesn't have it
     this.coreAccount = new CoreAccoutView({
       el: this.$(".core-account-info")
     }).render();

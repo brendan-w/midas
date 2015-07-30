@@ -60,10 +60,6 @@ ModalView = BaseView.extend({
     "show.bs.modal"         : "wizardButtons"
   },
 
-  /*
-    @param {Object} options
-    @param {String} options.doneButtonText
-  */
   initialize: function(options) {
     this.options = options;
 
@@ -73,37 +69,49 @@ ModalView = BaseView.extend({
     this.on_submit_cb = function() {};
   },
 
-
   /*
-    creates a modal, and loads the given form HTML
+    creates a bare modal
   */
-  render: function(compiledTemplate) {
+  render: function() {
 
     //render the modal wrapper
-    var data = {
-      // id: this.options.id,
-      // modalTitle: this.options.title,
-      doneButtonText: this.options.doneButtonText || "Done",
-      draft: this.options.draft
-    };
+    this.$el.html(_.template(ModalTemplate)({
+      draft: this.options.draft || false,
+    }));
 
-    //load the form wrapper HTML
-    this.$el.html(_.template(ModalTemplate)(data));
     //make a few selections, so we don't waste time later
+    //the draft button isn't wired yet
     this.$body       = $(".modal-body");
     this.$steps_list = $(".modal-steps");
     this.$title      = $(".modal-title");
     this.$forward    = $("#wizard-forward-button");
     this.$backward   = $("#wizard-backward-button");
     this.$submit     = $("#wizard-create-button");
-    //the draft button isn't wired yet
 
+    return this;
+  },
+
+  /*
+    @param {Object}  options
+    @param {Boolean} options.hideButtons    
+    @param {String}  options.doneButtonText
+    @param {String}  options.html
+  */
+  renderForm: function(options) {
+    
     //load the child view's HTML
-    this.$body.html(compiledTemplate);
+    this.$body.html(options.html);
+    
     //find the form, and each of the pages
     this.$form     = this.$body.find(">form");
-    this.$pages    = this.$form.children();
+    this.$pages    = this.$form.children("section");
     this.num_pages = this.$pages.length;
+
+    //hide the footer buttons, if requested
+    $(".modal-footer").toggle(!options.hideButtons);
+
+    //set the "done" button text
+    this.$submit.text(options.doneButtonText);
 
     //if there are multiple pages, load them as steps in the header
     if(this.num_pages > 2)
