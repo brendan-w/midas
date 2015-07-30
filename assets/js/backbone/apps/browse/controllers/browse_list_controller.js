@@ -9,11 +9,8 @@ var ProjectsCollection = require('../../../entities/projects/projects_collection
 var TasksCollection = require('../../../entities/tasks/tasks_collection');
 var ProfilesCollection = require('../../../entities/profiles/profiles_collection');
 var TaskModel = require('../../../entities/tasks/task_model');
-
 var NewProjectModal = require('../../project/new/views/new_project_modal');
 var NewTaskModal    = require('../../tasks/new/views/new_task_modal');
-
-var ModalWizardComponent = require('../../../components/modal_wizard');
 
 
 Browse = {};
@@ -117,42 +114,6 @@ Browse.ListController = BaseController.extend({
       el: "#addTask-wrapper",
       collection: this.tasksCollection,
     }).render();
-
-
-
-
-
-
-    /*
-    if (this.modalWizardComponent) this.modalWizardComponent.cleanup();
-
-    this.taskModel = new TaskModel();
-    this.modalWizardComponent = new ModalWizardComponent({
-      el: ".wrapper-addTask",
-      id: "addTask",
-      draft: true,
-      modalTitle: 'New ' + i18n.t('Opportunity'),
-      model: this.taskModel,
-      collection: this.tasksCollection,
-      modelName: 'task',
-      data: function (parent) { return {
-        title: parent.$("#task-title").val(),
-        description: parent.$("#task-description").val(),
-        // these tasks are orphaned
-        projectId: null,
-        tags: getTags()
-      }; }
-    }).render();
-
-    this.newTaskModal = new NewTaskModal({
-      el: "#addTask .modal-body",
-      projectId: null,
-      tasks: this.tasksCollection
-    }).render();
-    this.modalWizardComponent.setChildView(this.newTaskModal);
-    this.modalWizardComponent.setNext(this.newTaskModal.childNext);
-    this.modalWizardComponent.setSubmit(this.newTaskModal.childNext);
-    */
   },
 
   // ---------------------
