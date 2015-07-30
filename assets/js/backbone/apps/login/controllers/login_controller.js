@@ -12,8 +12,6 @@ var ModalWizardComponent = require('../../../components/modal_wizard');
 Login = BaseController.extend({
 
   events: {
-    "click #register-cancel"   : "showLogin",
-    "click #login-register"    : "showRegister",
     "click #forgot-done-cancel": "showLogin",
     "click #forgot-cancel"     : "showLogin",
     "click #forgot-password"   : "showForgot"
@@ -38,7 +36,7 @@ Login = BaseController.extend({
     this.modalComponent = new ModalComponent({
       el: this.el,
       id: "login",
-      modalTitle: "Login or Register",
+      modalTitle: "Login",
       disableClose: disableClose
     }).render();
 
@@ -48,7 +46,6 @@ Login = BaseController.extend({
       login: login,
       message: this.options.message
     }).render();
-    this.$("#registration-view").hide();
     this.$("#forgot-view").hide();
     this.$("#forgot-done-view").hide();
     $("#login").modal('show');
@@ -73,18 +70,6 @@ Login = BaseController.extend({
       window.cache.userEvents.trigger("user:login:close");
       self.cleanup();
     });
-  },
-
-  showRegister: function (e) {
-    if (e.preventDefault) e.preventDefault();
-    this.$("#login-view").hide();
-    this.$("#login-footer").hide();
-    this.$("#registration-view").show();
-    this.$("#registration-footer").show();
-    this.$("#forgot-view").hide();
-    this.$("#forgot-footer").hide();
-    this.$("#forgot-done-view").hide();
-    this.$("#forgot-done-footer").hide();
   },
 
   showLogin: function (e) {

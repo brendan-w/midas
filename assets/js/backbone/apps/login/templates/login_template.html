@@ -43,12 +43,14 @@
       <div class="row">
         <div class="col-md-12">
           <button type="submit" class="btn btn-c2 pull-right">Sign in</button>
+          <!--
           <p class="pull-left login-register-label" id="login-register-label">
             Need an account?
             <a href="#login-register" id="login-register">
               <strong>Sign up now</strong>
             </a>
           </p>
+          -->
         </div>
       </div>
     </div>
@@ -57,68 +59,6 @@
   <% } %>
 </form>
 
-<form role="form" id="registration-form">
-  <div class="modal-body padding-bottom-none" id="registration-view">
-
-    <h2 style="margin-bottom:0px;">Create a New Account</h2>
-
-    <div class="row">
-      <div class="col-sm-12">
-        <div class="form-group">
-          <label for="rname" class="control-label" data-i18n="loginModal.name">Name</label>
-          <input type="text" class="form-control validate" id="rname" name="rname" placeholder="Full Name" data-validate="empty">
-          <span class="help-block error-empty" style="display:none;">Please enter your full name.</span>
-        </div>
-      </div>
-      <div class="col-sm-12">
-        <div class="form-group">
-          <label for="rusername" class="control-label" data-i18n="loginModal.emailAddress">Email Address</label>
-          <div class="input-group">
-            <input type="text" class="form-control validate" id="rusername" name="username" placeholder="Email Address" data-validate="button"/>
-            <span class="input-group-btn">
-              <a href="#" class="btn btn-danger" id="rusername-button" tabindex="-1">
-                <i id="rusername-check" class="fa fa-times"></i>
-              </a>
-            </span>
-          </div>
-          <span class="help-block error-button" style="display:none;">The email address is not valid or is already in use.</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="password-view"></div>
-
-    <div class="checkbox">
-      <label>
-        <% if (login.terms.enabled === true) { %>
-        <input type="checkbox" id="rterms" class="validate" data-validate="checked"> <span data-i18n="loginModal.tosCheckbox">Yes, I agree to the </span><a href="<%- login.terms.link %>"><%- login.terms.name %></a>.
-        <span class="help-block error-checked" style="display:none;">You must accept the <%- login.terms.name %> to register.</span>
-        <% } %>
-      </label>
-    </div>
-
-    <div class="form-group margin-bottom-none">
-      <div class="row">
-        <div class="col-sm-12">
-          <div class="alert alert-danger" id="registration-error" style="display:none;"></div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <div class="modal-footer modal-footer-grey" id="registration-footer" style="display:none;">
-    <div class="row">
-      <div class="col-sm-12">
-        <div class="pull-right">
-          <button type="button" id="register-cancel" class="btn btn-c0">Cancel</button>
-          <button type="submit" class="btn btn-c2">Register</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-</form>
 
 <form role="form" id="forgot-form">
   <div class="modal-body padding-bottom-none" id="forgot-view">
