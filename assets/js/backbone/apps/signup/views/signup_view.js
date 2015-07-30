@@ -3,8 +3,8 @@ var _        = require('underscore');
 var Backbone = require('backbone');
 var utils    = require('../../../mixins/utilities');
 
-var ModalView      = require('../../../components/modal_new');
-var CoreAccoutView = require('./core_account_info_view');
+var ModalView       = require('../../../components/modal_new');
+var CoreAccountView = require('./core_account_info_view');
 
 var SignupChoose    = require('../templates/signup_choose.html');
 var SignupApplicant = require('../templates/signup_applicant.html');
@@ -20,6 +20,7 @@ var Signup = Backbone.View.extend({
   },
 
   initialize: function() {
+    var self = this;
 
     //make a persistent ModalView for the signup form
     this.modal = new ModalView({
@@ -27,7 +28,7 @@ var Signup = Backbone.View.extend({
     }).render();
 
     this.modal.onNext(this.next);
-    this.modal.onSubmit(this.submit);
+    this.listenTo(this.modal, "submit", this.submit);
 
     //listen for signup requests
     window.cache.userEvents.on("user:request:signup", this.signup);
@@ -37,14 +38,14 @@ var Signup = Backbone.View.extend({
 
   /*
     the current `target`s are:
+      "choose"            <-- default
       "applicant"
-      "poster"
-      "choose"    <-- default
+      "poster:unapproved"
   */
   signup: function(target) {
     if(this.coreAccount) this.coreAccount.cleanup();
 
-    target = target || "choose";
+    this.target = target || "choose";
 
     var template;
     var template_data = {
@@ -52,23 +53,23 @@ var Signup = Backbone.View.extend({
     };
 
     //load the requested signup form
-    switch(target)
+    switch(this.target)
     {
-      case "choose":    template = _.template(SignupChoose);    break;
-      case "applicant": template = _.template(SignupApplicant); break;
-      case "poster":    template = _.template(SignupPoster);    break;
+      case "choose":            template = _.template(SignupChoose);    break;
+      case "applicant":         template = _.template(SignupApplicant); break;
+      case "poster:unapproved": template = _.template(SignupPoster);    break;
     }
 
     //render our form inside the Modal wrapper
     this.modal.renderForm({
       html: template(template_data),
       doneButtonText: "Sign Up",
-      hideButtons: (target == "choose"),
+      hideButtons: (this.target == "choose"),
     });
 
     //render the core account info fields
     //this will quietly fail if we're on a form that doesn't have it
-    this.coreAccount = new CoreAccoutView({
+    this.coreAccount = new CoreAccountView({
       el: this.$(".core-account-info")
     }).render();
 
@@ -84,26 +85,29 @@ var Signup = Backbone.View.extend({
 
   gotoPosterForm: function(e) {
     if(e && e.preventDefault) e.preventDefault();
-    this.signup("poster");
+    this.signup("poster:unapproved");
   },
 
   next: function($page) {
     // find all the validation elements
-    var children = $page.find('.validate');
     var abort = false;
-    _.each(children, function (child) {
-      var iAbort = validate({ currentTarget: child });
-      abort = abort || iAbort;
+    _.each($page.find('.validate'), function (child) {
+      abort = abort || validate({ currentTarget: child });
     });
     return !abort;
   },
 
   submit: function($form) {
-    //target should be either "applicant" or "poster"
-    var target = $form.attr("name");
+    var self = this;
 
-    //in either case, create the new user
-    console.log("submit");
+    //create the user
+    //target should be either "applicant" or "poster:unapproved"
+    this.coreAccount.submit(this.target, function() {
+      //update their profile according to the other form pages
+      console.log("submit");
+
+      self.modal.hide();
+    });
   },
 
   cleanup: function() {

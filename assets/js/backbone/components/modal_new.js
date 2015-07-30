@@ -42,12 +42,11 @@ var ModalStepTemplate = require('./modal_step_template.html');
     
     onPrev(callback)
       The callback will be given a jQuery element for the current page
-      Return True if it is safe to go back (useful for... no clue, but might need it someday)
+      Return True if it is safe to go back (useful for... no clue, who knows)
 
-    onSubmit(callback)
-      The callback will be given a jQuery element for the entire <form>
-      run your custom submission code here
-
+  When the user click the create button (which also fires the last
+  onNext() callback), the ModalView will emit a "submit" event. The
+  event will come with a jQuery element for your entire <form>
 */
 
 ModalView = BaseView.extend({
@@ -224,7 +223,7 @@ ModalView = BaseView.extend({
 
     //check if this page is OK
     if(this.on_next_cb(this.$current_page))
-      this.on_submit_cb(this.$form)
+      this.trigger("submit", this.$form);
   },
 
   onNext: function(cb) {
@@ -233,10 +232,6 @@ ModalView = BaseView.extend({
 
   onPrev: function(cb) {
     this.on_prev_cb = cb;
-  },
-
-  onSubmit: function(cb) {
-    this.on_submit_cb = cb;
   },
 
   cleanup: function() {

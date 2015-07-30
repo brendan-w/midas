@@ -31,11 +31,11 @@
 <!-- password -->
 <div class="password-view"></div>
 
+<% if (login.terms.enabled === true) { %>
 <div class="checkbox">
   <label>
-    <% if (login.terms.enabled === true) { %>
     <input type="checkbox" id="rterms" class="validate" data-validate="checked"> <span data-i18n="loginModal.tosCheckbox">Yes, I agree to the </span><a href="<%- login.terms.link %>"><%- login.terms.name %></a>.
     <span class="help-block error-checked" style="display:none;">You must accept the <%- login.terms.name %> to register.</span>
-    <% } %>
   </label>
 </div>
+<% } %>

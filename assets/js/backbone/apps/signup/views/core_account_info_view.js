@@ -17,20 +17,21 @@ var CoreAccountTemplate = require('../templates/core_account_info.html');
   Password
 */
 
-var LoginPasswordView = Backbone.View.extend({
+var CoreAccountView = Backbone.View.extend({
 
   events: {
-    'keyup #rname'             : 'checkName',
+    'keyup  #rname'            : 'checkName',
     'change #rname'            : 'checkName',
-    'blur #rname'              : 'checkName',
+    'blur   #rname'            : 'checkName',
 
-    'keyup #rusername'         : 'checkUsername',
+    'keyup  #rusername'        : 'checkUsername',
     'change #rusername'        : 'checkUsername',
-    'click #rusername-button'  : 'clickUsername',
+    'click  #rusername-button' : 'clickUsername',
   },
 
   initialize: function (options) {
     this.options = options;
+    this.account_type = options.type;
   },
 
   render: function () {
@@ -47,6 +48,42 @@ var LoginPasswordView = Backbone.View.extend({
     }).render();
 
     return this;
+  },
+
+  submit: function(type, cb) {
+    // Create a data object with the required fields
+    var data = {
+      name:     this.$("#rname").val(),
+      username: this.$("#rusername").val(),
+      password: this.$("#rpassword").val(),
+      type:     type,
+      json:     true
+    };
+
+    // Add in additional, optional fields
+    if(login.terms.enabled === true)
+      data['terms'] = (this.$("#rterms").val() == "on");
+
+    // Post the registration request to the server
+    $.ajax({
+      url: '/api/auth/local/register',
+      type: 'POST',
+      data: data
+    }).done(function (success) {
+      // Set the user object and trigger the user login event
+      window.cache.currentUser = success;
+      window.cache.userEvents.trigger("user:login", success);
+      cb(success);
+    }).fail(function (error) {
+      //TODO: handle these errors, if they aren't already handled
+      //      by the Global AJAX Error listener
+      /*
+      var d = JSON.parse(error.responseText);
+      self.$("#registration-error").html(d.message);
+      self.$("#registration-error").show();
+      $submitButton.prop('disabled', false);
+      */
+    });
   },
 
   checkName: function (e) {
@@ -91,5 +128,5 @@ var LoginPasswordView = Backbone.View.extend({
   },
 });
 
-module.exports = LoginPasswordView;
+module.exports = CoreAccountView;
 
