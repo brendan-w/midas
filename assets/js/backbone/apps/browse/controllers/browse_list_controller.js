@@ -9,7 +9,7 @@ var ProjectsCollection = require('../../../entities/projects/projects_collection
 var TasksCollection = require('../../../entities/tasks/tasks_collection');
 var ProfilesCollection = require('../../../entities/profiles/profiles_collection');
 var TaskModel = require('../../../entities/tasks/task_model');
-var ProjectFormView = require('../../project/new/views/project_new_form_view');
+var NewProjectModal = require('../../project/new/views/new_project_modal');
 var TaskFormView = require('../../tasks/new/views/task_form_view');
 var ModalWizardComponent = require('../../../components/modal_wizard');
 var ModalComponent = require('../../../components/modal');
@@ -36,14 +36,6 @@ Browse.ListController = BaseController.extend({
     this.initializeView();
 
     this.collection.trigger('browse:' + this.target + ":fetch");
-
-    this.listenTo(this.projectsCollection, "project:save:success", function (data) {
-      // hide the modal
-      $('#addProject').bind('hidden.bs.modal', function() {
-        Backbone.history.navigate('projects/' + data.attributes.id, { trigger: true });
-      }).modal('hide');
-      self.projectFormView.hide();
-    });
 
     this.listenTo(this.tasksCollection, "task:save:success", function (data) {
       // hide the modal
@@ -109,7 +101,7 @@ Browse.ListController = BaseController.extend({
     if (e.preventDefault) e.preventDefault();
 
     if (this.projectFormView) this.projectFormView.cleanup();
-    this.projectFormView = new ProjectFormView({
+    this.projectFormView = new NewProjectModal({
       el: "#addProject-wrapper",
       collection: this.projectsCollection
     }).render();

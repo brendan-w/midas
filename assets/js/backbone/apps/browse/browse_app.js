@@ -13,7 +13,7 @@ var TaskShowController = require('../tasks/show/controllers/task_show_controller
 var TaskEditFormView = require('../tasks/edit/views/task_edit_form_view');
 var AdminMainController = require('../admin/controllers/admin_main_controller');
 var HomeController = require('../home/controllers/home_controller');
-var RegisterModal = require('../register/views/register_view');
+var RegisterModal = require('../register/views/register_modal');
 
 
 var BrowseRouter = Backbone.Router.extend({

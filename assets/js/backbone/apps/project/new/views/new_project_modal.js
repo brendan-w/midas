@@ -5,7 +5,7 @@ var utils = require('../../../../mixins/utilities');
 
 var ModalView           = require('../../../../components/modal_new');
 var MarkdownEditor      = require('../../../../components/markdown_editor');
-var ProjectFormTemplate = require('../templates/project_new_form_template.html');
+var ProjectFormTemplate = require('../templates/new_project_template.html');
 
 
 var ProjectFormView = Backbone.View.extend({
@@ -22,7 +22,8 @@ var ProjectFormView = Backbone.View.extend({
       el: this.el,
     }).render();
 
-    this.listenTo(this.modal, "submit", this.post);
+    this.modal.onNext(this.next);
+    this.listenTo(this.modal, "submit", this.submit);
 
     //render our form inside the Modal wrapper
     this.modal.renderForm({
@@ -35,10 +36,6 @@ var ProjectFormView = Backbone.View.extend({
     this.modal.show();
 
     return this;
-  },
-
-  hide: function() {
-    this.modal.hide();
   },
 
   v: function (e) {
@@ -58,26 +55,28 @@ var ProjectFormView = Backbone.View.extend({
     }).render();
   },
 
-  post: function (e) {
-    if (e && e.preventDefault) e.preventDefault();
+  //called every time the modal wants to continue (or submit)
+  //validate everything
+  next: function($page) {
+    validateAll($page);
+  },
 
-    // validate input fields
-    var validateIds = ['#project-form-title', '#project-form-description'];
-    var abort = false;
-    for (i in validateIds) {
-      var iAbort = validate({ currentTarget: validateIds[i] });
-      abort = abort || iAbort;
-    }
-    if (abort === true) {
-      return;
-    }
+  submit: function() {
+    var self = this;
 
-    // process project form
-    var data;
-    data = {
+    var data = {
       title       : this.$(".project-title-form").val(),
       description : this.$("#project-form-description").val()
     };
+
+    //when the model save is successful, redirect to the newly created project
+    this.listenTo(this.collection, "project:save:success", function (data) {
+      // hide the modal
+      $('#addProject').bind('hidden.bs.modal', function() {
+        Backbone.history.navigate('projects/' + data.attributes.id, { trigger: true });
+      }).modal('hide');
+      self.modal.hide();
+    });
 
     this.collection.trigger("project:save", data);
   },

@@ -226,6 +226,18 @@ global.validate = function (e) {
   return result;
 };
 
+//wrapper function for validating all elements within
+//a form. Simply add the .validate class to your <input>
+global.validateAll = function ($form) {
+  // find all the validation elements
+  var abort = false;
+  _.each($form.find('.validate'), function (child) {
+    abort = abort || validate({ currentTarget: child });
+  });
+  return abort;
+};
+
+
 global.validatePassword = function (username, password) {
   var rules = {
     username: false,

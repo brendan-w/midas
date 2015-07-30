@@ -91,14 +91,7 @@ var Register = Backbone.View.extend({
   },
 
   next: function($page) {
-    console.log("next");
-
-    // find all the validation elements
-    var abort = false;
-    _.each($page.find('.validate'), function (child) {
-      abort = abort || validate({ currentTarget: child });
-    });
-    return !abort;
+    validateAll($page);
   },
 
   submit: function($form) {
