@@ -38,7 +38,7 @@ module.exports = {
     User.findOneByUsername(req.route.params.id, function (err, user) {
       if (err) { return res.send(400, { message:'Error looking up username.' }); }
       if (!user) { return res.send(false); }
-      if (req.user && req.user[0].id == user.id) { return res.send(false); }
+      if (req.user && req.user[0] && req.user[0].id == user.id) { return res.send(false); }
       return res.send(true);
     });
   },
