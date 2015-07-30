@@ -9,10 +9,10 @@ var ModalStepTemplate = require('./modal_step_template.html');
 /*
   Here's how it works:
 
-  Make your own view, using the modal-wrapper as it's element.
-
-  Inside your view, you instantiate one of these ModalView's, and
-  also set it's `el` to your modal-wrapper.
+  Make your own view, using the modal-wrapper as it's element. Inside
+  of your view, instantiate one of these ModalView's, and also set
+  it's `el` to your modal-wrapper (so that the two views have control
+  over the same element).
 
   When you call ModalView.render(), hand it your form HTML (post templating).
   The HTML should consist of:
@@ -27,7 +27,12 @@ var ModalStepTemplate = require('./modal_step_template.html');
 
   Each <section> will become a page of your form (requiring the user to
   click "next"). Pages (<section>s) should be given names, which will
-  appear as a list of steps in the header. 
+  appear as a list of steps in the header. If the form only has one
+  page, then the section name will be used as a title.
+
+  The form's ID attribute is not rendered anywhere, but can be used to
+  tell which form the modal is currently loaded with. Use ModalView.getFormId()
+  to find 
 
   You can register 3 callbacks with the ModalView:
 
@@ -87,6 +92,7 @@ ModalView = BaseView.extend({
     //make a few selections, so we don't waste time later
     this.$body       = $(".modal-body");
     this.$steps_list = $(".modal-steps");
+    this.$title      = $(".modal-title");
     this.$forward    = $("#wizard-forward-button");
     this.$backward   = $("#wizard-backward-button");
     this.$submit     = $("#wizard-create-button");
@@ -103,6 +109,7 @@ ModalView = BaseView.extend({
     if(this.num_pages > 2)
     {
       this.$steps_list.show();
+      this.$title.hide();
 
       //append a numbered step for each page in the form
       for(var i = 0; i < this.num_pages; i++)
@@ -117,6 +124,10 @@ ModalView = BaseView.extend({
     {
       //single page, don't bother with the step markers
       this.$steps_list.hide();
+      //show a single title instead
+      var title = this.$pages.eq(0).attr("name") || "&nbsp;";
+      this.$title.show();
+      this.$title.html(title);
     }
 
     this.gotoPage(0); //load the initial page
@@ -156,8 +167,8 @@ ModalView = BaseView.extend({
       this.$submit.toggle(is_last_page);
 
       //disable/enable the correct next/prev buttons
-      this.$forward.prop( 'disabled', is_last_page);
-      this.$backward.prop('disabled', is_first_page);
+      this.$forward.toggle(!is_last_page);
+      this.$backward.toggle(!is_first_page);
     }
     else
     {
@@ -179,7 +190,7 @@ ModalView = BaseView.extend({
     $(".modal").modal('show');
   },
 
-  close: function(e) {
+  hide: function(e) {
     if(e && e.preventDefault) e.preventDefault();
     $(".modal").modal('hide');
   },
@@ -220,7 +231,7 @@ ModalView = BaseView.extend({
   },
 
   cleanup: function() {
-    this.close();
+    this.hide();
     removeView(this);
   },
 });
