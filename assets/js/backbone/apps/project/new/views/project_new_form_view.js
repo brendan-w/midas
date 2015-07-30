@@ -2,8 +2,9 @@ var Bootstrap = require('bootstrap');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var utils = require('../../../../mixins/utilities');
-var MarkdownEditor = require('../../../../components/markdown_editor');
-var ProjectsCollection = require('../../../../entities/projects/projects_collection');
+
+var ModalView           = require('../../../../components/modal_new');
+var MarkdownEditor      = require('../../../../components/markdown_editor');
 var ProjectFormTemplate = require('../templates/project_new_form_template.html');
 
 
@@ -12,17 +13,32 @@ var ProjectFormView = Backbone.View.extend({
   events: {
     "blur #project-form-title"      : "v",
     "blur #project-form-description": "v",
-    "submit #project-form"          : "post"
   },
 
   render: function () {
-    var template = _.template(ProjectFormTemplate);
-    this.$el.html(template);
+    if(this.modal) this.modal.cleanup();
 
-    this.$el.i18n();
+    this.modal = new ModalView({
+      el: this.el,
+    }).render();
+
+    this.listenTo(this.modal, "submit", this.post);
+
+    //render our form inside the Modal wrapper
+    this.modal.renderForm({
+      html: _.template(ProjectFormTemplate)({}),
+      doneButtonText: 'Add ' + i18n.t('Project'),
+    });
+
     this.initializeTextArea();
-    this.$(".btn-add-project").val('Add ' + i18n.t('Project'));
+
+    this.modal.show();
+
     return this;
+  },
+
+  hide: function() {
+    this.modal.hide();
   },
 
   v: function (e) {
@@ -43,7 +59,7 @@ var ProjectFormView = Backbone.View.extend({
   },
 
   post: function (e) {
-    if (e.preventDefault) e.preventDefault();
+    if (e && e.preventDefault) e.preventDefault();
 
     // validate input fields
     var validateIds = ['#project-form-title', '#project-form-description'];
@@ -67,7 +83,8 @@ var ProjectFormView = Backbone.View.extend({
   },
 
   cleanup: function () {
-    if (this.md) { this.md.cleanup(); }
+    if(this.md)    this.md.cleanup();
+    if(this.modal) this.modal.cleanup();
     removeView(this);
   }
 

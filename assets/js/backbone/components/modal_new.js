@@ -72,7 +72,6 @@ ModalView = BaseView.extend({
     creates a bare modal
   */
   render: function() {
-
     //render the modal wrapper
     this.$el.html(_.template(ModalTemplate)({
       draft: this.options.draft || false,
@@ -80,12 +79,12 @@ ModalView = BaseView.extend({
 
     //make a few selections, so we don't waste time later
     //the draft button isn't wired yet
-    this.$body       = $(".modal-body");
-    this.$steps_list = $(".modal-steps");
-    this.$title      = $(".modal-title");
-    this.$forward    = $("#wizard-forward-button");
-    this.$backward   = $("#wizard-backward-button");
-    this.$submit     = $("#wizard-create-button");
+    this.$body       = this.$(".modal-body");
+    this.$steps_list = this.$(".modal-steps");
+    this.$title      = this.$(".modal-title");
+    this.$forward    = this.$("#wizard-forward-button");
+    this.$backward   = this.$("#wizard-backward-button");
+    this.$submit     = this.$("#wizard-create-button");
 
     return this;
   },
@@ -97,17 +96,18 @@ ModalView = BaseView.extend({
     @param {String}  options.html
   */
   renderForm: function(options) {
-    
+
     //load the child view's HTML
     this.$body.html(options.html);
-    
+    this.$body.i18n();
+
     //find the form, and each of the pages
     this.$form     = this.$body.find(">form");
     this.$pages    = this.$form.children("section");
     this.num_pages = this.$pages.length;
 
     //hide the footer buttons, if requested
-    $(".modal-footer").toggle(!options.hideButtons);
+    this.$(".modal-footer").toggle(!options.hideButtons);
 
     //set the "done" button text
     this.$submit.text(options.doneButtonText);
@@ -195,12 +195,12 @@ ModalView = BaseView.extend({
 
   show: function(e) {
     if(e && e.preventDefault) e.preventDefault();
-    $(".modal").modal('show');
+    this.$(".modal").modal('show');
   },
 
   hide: function(e) {
     if(e && e.preventDefault) e.preventDefault();
-    $(".modal").modal('hide');
+    this.$(".modal").modal('hide');
   },
 
   next: function(e) {

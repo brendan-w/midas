@@ -28,6 +28,8 @@ Browse.ListController = BaseController.extend({
   },
 
   initialize: function ( options ) {
+    var self = this;
+
     // this.options = options;
     this.target = options.target;
     this.fireUpCollection();
@@ -40,6 +42,7 @@ Browse.ListController = BaseController.extend({
       $('#addProject').bind('hidden.bs.modal', function() {
         Backbone.history.navigate('projects/' + data.attributes.id, { trigger: true });
       }).modal('hide');
+      self.projectFormView.hide();
     });
 
     this.listenTo(this.tasksCollection, "task:save:success", function (data) {
@@ -106,22 +109,14 @@ Browse.ListController = BaseController.extend({
     if (e.preventDefault) e.preventDefault();
 
     if (this.projectFormView) this.projectFormView.cleanup();
-    if (this.modalComponent) this.modalComponent.cleanup();
-
-    this.modalComponent = new ModalComponent({
-      el: ".wrapper-addProject",
-      id: "addProject",
-      modalTitle: "Add " + i18n.t("Project")
-    }).render();
-
     this.projectFormView = new ProjectFormView({
-      el: ".modal-template",
+      el: "#addProject-wrapper",
       collection: this.projectsCollection
     }).render();
-
   },
 
   addTask: function (e) {
+    /*
     if (e.preventDefault) e.preventDefault();
 
     if (this.taskFormView) this.taskFormView.cleanup();
@@ -173,7 +168,7 @@ Browse.ListController = BaseController.extend({
         };
       });
     }
-
+    */
   },
 
   // ---------------------

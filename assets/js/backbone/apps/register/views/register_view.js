@@ -45,7 +45,6 @@ var Register = Backbone.View.extend({
       "poster:unapproved"
   */
   register: function(target) {
-    console.log("asdddf");
     if(this.coreAccount) this.coreAccount.cleanup();
 
     this.target = target || "choose";
@@ -92,6 +91,8 @@ var Register = Backbone.View.extend({
   },
 
   next: function($page) {
+    console.log("next");
+
     // find all the validation elements
     var abort = false;
     _.each($page.find('.validate'), function (child) {
