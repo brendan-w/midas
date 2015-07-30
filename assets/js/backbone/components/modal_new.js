@@ -111,6 +111,7 @@ ModalView = BaseView.extend({
 
     //set the "done" button text
     this.$submit.text(options.doneButtonText);
+    this.$steps_list.empty(); //remove any step markers from before
 
     //if there are multiple pages, load them as steps in the header
     if(this.num_pages > 2)

@@ -27,13 +27,15 @@ var Signup = Backbone.View.extend({
       el: this.el,
     }).render();
 
+    //handle modal events
     this.modal.onNext(this.next);
     this.listenTo(this.modal, "submit", this.submit);
 
-    //listen for signup requests
-    window.cache.userEvents.on("user:request:signup", this.signup);
-
-    this.signup();
+    //listen for signup events
+    this.listenTo(window.cache.userEvents, "user:register:show", this.signup);
+    this.listenTo(window.cache.userEvents, "user:register:hide", function() {
+      self.modal.hide();
+    });
   },
 
   /*
@@ -43,6 +45,7 @@ var Signup = Backbone.View.extend({
       "poster:unapproved"
   */
   signup: function(target) {
+    console.log("asdddf");
     if(this.coreAccount) this.coreAccount.cleanup();
 
     this.target = target || "choose";
