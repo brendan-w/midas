@@ -123,6 +123,11 @@ module.exports = {
     });
   },
 
+  beforeValidate: function(values, done) {
+    values.username = values.username.toLowerCase();
+    done();
+  },
+
   afterCreate: function(model, done) {
     Notification.create({
       action: 'user.create.welcome',

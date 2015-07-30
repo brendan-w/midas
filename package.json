@@ -1,7 +1,7 @@
 {
   "name": "midas",
   "private": true,
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "Innovation platform providing collaboration and crowdsourcing tools",
   "dependencies": {
     "async": "^0.2.9",
@@ -31,7 +31,7 @@
     "jquery.caret": "ichord/Caret.js#v0.0.7",
     "json2csv": "2.2.1",
     "lodash": "~2.4.1",
-    "marked": "^0.3.3",
+    "marked": "^0.3.4",
     "mocha": "2.2.1",
     "moment": "2.5.0",
     "newrelic": "1.16.1",

@@ -35,7 +35,7 @@ module.exports = {
       return res.send(true);
     }
     // check if a user already has this email
-    User.findOneByUsername(req.route.params.id, function (err, user) {
+    User.findOneByUsername(req.route.params.id.toLowerCase(), function (err, user) {
       if (err) { return res.send(400, { message:'Error looking up username.' }); }
       if (!user) { return res.send(false); }
       if (req.user && req.user[0].id == user.id) { return res.send(false); }
@@ -70,8 +70,8 @@ module.exports = {
     sails.services.utils.user.getUser(userId, reqId, req.user, function (err, user) {
       // this will only be shown to logged in users.
       if (err) { return res.send(400, { message: err }); }
-      // non-script equality test because params are strings
-      if (userId != reqId) user.username = null;
+      // non-strict equality test because params are strings
+      if (userId != reqId && !req.user.isAdmin) user.username = null;
       sails.log.debug('User Get:', user);
       res.send(user);
     });
