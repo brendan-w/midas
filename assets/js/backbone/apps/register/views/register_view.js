@@ -6,23 +6,23 @@ var utils    = require('../../../mixins/utilities');
 var ModalView       = require('../../../components/modal_new');
 var CoreAccountView = require('./core_account_info_view');
 
-var SignupChoose    = require('../templates/signup_choose.html');
-var SignupApplicant = require('../templates/signup_applicant.html');
-var SignupPoster    = require('../templates/signup_poster.html');
+var RegisterChoose    = require('../templates/register_choose.html');
+var RegisterApplicant = require('../templates/register_applicant.html');
+var RegisterPoster    = require('../templates/register_poster.html');
 
 
-var Signup = Backbone.View.extend({
+var Register = Backbone.View.extend({
 
   events: {
     //for the "choose" target/form
-    "click #signup-as-applicant" : "gotoApplicantForm",
-    "click #signup-as-poster" :    "gotoPosterForm",
+    "click #register-as-applicant" : "gotoApplicantForm",
+    "click #register-as-poster" :    "gotoPosterForm",
   },
 
   initialize: function() {
     var self = this;
 
-    //make a persistent ModalView for the signup form
+    //make a persistent ModalView for the register form
     this.modal = new ModalView({
       el: this.el,
     }).render();
@@ -31,8 +31,8 @@ var Signup = Backbone.View.extend({
     this.modal.onNext(this.next);
     this.listenTo(this.modal, "submit", this.submit);
 
-    //listen for signup events
-    this.listenTo(window.cache.userEvents, "user:register:show", this.signup);
+    //listen for register events
+    this.listenTo(window.cache.userEvents, "user:register:show", this.register);
     this.listenTo(window.cache.userEvents, "user:register:hide", function() {
       self.modal.hide();
     });
@@ -44,7 +44,7 @@ var Signup = Backbone.View.extend({
       "applicant"
       "poster:unapproved"
   */
-  signup: function(target) {
+  register: function(target) {
     console.log("asdddf");
     if(this.coreAccount) this.coreAccount.cleanup();
 
@@ -55,12 +55,12 @@ var Signup = Backbone.View.extend({
       //nothing yet...
     };
 
-    //load the requested signup form
+    //load the requested register form
     switch(this.target)
     {
-      case "choose":            template = _.template(SignupChoose);    break;
-      case "applicant":         template = _.template(SignupApplicant); break;
-      case "poster:unapproved": template = _.template(SignupPoster);    break;
+      case "choose":            template = _.template(RegisterChoose);    break;
+      case "applicant":         template = _.template(RegisterApplicant); break;
+      case "poster:unapproved": template = _.template(RegisterPoster);    break;
     }
 
     //render our form inside the Modal wrapper
@@ -83,12 +83,12 @@ var Signup = Backbone.View.extend({
 
   gotoApplicantForm: function(e) {
     if(e && e.preventDefault) e.preventDefault();
-    this.signup("applicant");
+    this.register("applicant");
   },
 
   gotoPosterForm: function(e) {
     if(e && e.preventDefault) e.preventDefault();
-    this.signup("poster:unapproved");
+    this.register("poster:unapproved");
   },
 
   next: function($page) {
@@ -121,4 +121,4 @@ var Signup = Backbone.View.extend({
 
 });
 
-module.exports = Signup;
+module.exports = Register;
