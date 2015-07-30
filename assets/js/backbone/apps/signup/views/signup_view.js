@@ -17,7 +17,7 @@ var Signup = Backbone.View.extend({
 
   },
 
-  initialize: function () {
+  initialize: function() {
 
     //make a persistent ModalView for the signup form
     this.modal = new ModalView({
@@ -76,6 +76,10 @@ var Signup = Backbone.View.extend({
   },
 
   submit: function($form) {
+    //target should be either "applicant" or "poster"
+    var target = $form.attr("name");
+
+    //in either case, create the new user
     console.log("submit");
   },
 

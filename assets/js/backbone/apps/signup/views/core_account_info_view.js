@@ -4,6 +4,7 @@ var Backbone = require('backbone');
 var utils    = require('../../../mixins/utilities');
 var login    = require('../../../config/login.json');
 
+var PasswordControl     = require('./password_control');
 var CoreAccountTemplate = require('../templates/core_account_info.html');
 
 
@@ -26,11 +27,6 @@ var LoginPasswordView = Backbone.View.extend({
     'keyup #rusername'         : 'checkUsername',
     'change #rusername'        : 'checkUsername',
     'click #rusername-button'  : 'clickUsername',
-
-    'keyup #rpassword'         : 'checkPassword',
-    'blur #rpassword'          : 'checkPassword',
-    'keyup #rpassword-confirm' : 'checkPasswordConfirm',
-    'blur #rpassword-confirm'  : 'checkPasswordConfirm',
   },
 
   initialize: function (options) {
@@ -38,18 +34,19 @@ var LoginPasswordView = Backbone.View.extend({
   },
 
   render: function () {
-    var template = _.template(CoreAccountTemplate)({
-      login:login,
-    });
-    this.$el.html(template);
-    return this;
-  },
+    if(this.password) this.password.cleanup();
 
-  validate: function() {
-    this.checkName();
-    this.checkUsername();
-    this.checkPassword();
-    this.checkPasswordConfirm();
+    //load the main template
+    this.$el.html(_.template(CoreAccountTemplate)({
+      login:login,
+    }));
+
+    //load the password field
+    this.password = new PasswordControl({
+      el: ".password-view",
+    }).render();
+
+    return this;
   },
 
   checkName: function (e) {
@@ -63,6 +60,10 @@ var LoginPasswordView = Backbone.View.extend({
 
   checkUsername: function (e) {
     var username = $("#rusername").val();
+
+    //the password field will check that it does not contain the username
+    this.password.checkAgainstUsername(username);
+    
     $.ajax({
       url: '/api/user/username/' + username,
     }).done(function (data) {
@@ -84,42 +85,8 @@ var LoginPasswordView = Backbone.View.extend({
     });
   },
 
-  checkPassword: function (e) {
-    var rules = validatePassword(this.$("#rusername").val(), this.$("#rpassword").val());
-    var valuesArray = _.values(rules);
-    var validRules = _.every(valuesArray);
-    var success = true;
-    if (validRules === true) {
-      $("#rpassword").closest(".form-group").removeClass('has-error');
-      $("#rpassword").closest(".form-group").find(".help-block").hide();
-    }
-    _.each(rules, function (value, key) {
-      if (value === true) {
-        this.$(".password-rules .success.rule-" + key).show();
-        this.$(".password-rules .error.rule-" + key).hide();
-      } else {
-        this.$(".password-rules .success.rule-" + key).hide();
-        this.$(".password-rules .error.rule-" + key).show();
-      }
-      success = success && value;
-    });
-    return success;
-  },
-
-  checkPasswordConfirm: function (e) {
-    var success = true;
-    var password = this.$("#rpassword").val();
-    var confirm = this.$("#rpassword-confirm").val()
-    if (password === confirm) {
-      $("#rpassword-confirm").closest(".form-group").find(".help-block").hide();
-    } else {
-      $("#rpassword-confirm").closest(".form-group").find(".help-block").show();
-      success = false;
-    }
-    return success;
-  },
-
   cleanup: function () {
+    if(this.password) this.password.cleanup();
     removeView(this);
   },
 });
