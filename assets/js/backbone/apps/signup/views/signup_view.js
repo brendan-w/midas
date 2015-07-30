@@ -77,6 +77,16 @@ var Signup = Backbone.View.extend({
     return this;
   },
 
+  gotoApplicantForm: function(e) {
+    if(e && e.preventDefault) e.preventDefault();
+    this.signup("applicant");
+  },
+
+  gotoPosterForm: function(e) {
+    if(e && e.preventDefault) e.preventDefault();
+    this.signup("poster");
+  },
+
   next: function($page) {
     return true;
   },
