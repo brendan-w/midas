@@ -137,8 +137,6 @@ var LoginView = Backbone.View.extend({
 
       self.modal.hide();
 
-      // window.cache.userEvents.trigger("user:login", success);
-
     }).fail(function (error) {
       var d = JSON.parse(error.responseText);
       self.$("#login-error").html(d.message);

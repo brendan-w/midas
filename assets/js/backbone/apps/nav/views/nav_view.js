@@ -16,7 +16,7 @@ var NavTemplate = require('../templates/nav_template.html');
 var NavView = Backbone.View.extend({
 
   events: {
-    'click header a'        : linkBackbone,
+    'click #banner a'       : linkBackbone,
     'click .navbar-brand'   : linkBackbone,
     'click .nav-link'       : linkBackbone,
     'click .login'          : 'loginClick',

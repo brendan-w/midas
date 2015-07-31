@@ -42,7 +42,7 @@ var BrowseRouter = Backbone.Router.extend({
 
     //create site-wide components
     this.navView = new NavView({
-      el: 'nav.main'
+      el: 'header'
     }).render();
 
     this.footerView = new FooterView({

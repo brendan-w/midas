@@ -73,7 +73,7 @@ a.pretty:focus {
   outline: none;
 }
 
-header {
+header #banner {
   background-color: #fff;
 }
 
