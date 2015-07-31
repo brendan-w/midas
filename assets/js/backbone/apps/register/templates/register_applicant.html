@@ -1,4 +1,11 @@
 
+<style>
+  form section[name="Skills"] {
+    padding-bottom: 150px;
+  }
+
+</style>
+
 <form name="applicant">
   <section name="Create Account" class="core-account-info">
     <!--
@@ -11,21 +18,27 @@
   </section>
   <section name="Profile">
     <div class="form-group">
-      <label for"location">Your current Location</label>
+      <label for="location">Your current Location</label>
       <div id="location"></div> <!-- handled by select2 -->
     </div>
     <div class="form-group">
-      <label for"education">Highest education level completed</label>
+      <label for="education">Highest education level completed</label>
       <div id="education"></div> <!-- handled by select2 -->
     </div>
     <div class="form-group">
-      <label for"topics">Interested in which types of work?</label>
+      <label for="topics">Interested in which types of work?</label>
       <div id="topics"></div> <!-- handled by select2 -->
     </div>
 
   </section>
   <section name="Skills">
-    <h2>3</h2>
+    <div class="form-group">
+      <label for="skills">Please enter you skills</label>
+      <div id="skills"></div> <!-- handled by select2 -->
+    </div>
+    <p>
+      Your skills will show up on your profile, and will help match you appropriate jobs,
+    </p>
   </section>
   <section name="CV/Resume">
     <h2>4</h2>
