@@ -13,6 +13,7 @@ var ForgotDoneTemplate = require('../templates/forgot_done_template.html');
 var LoginView = Backbone.View.extend({
 
   events: {
+    "click #forgot-password": "gotoForgotForm",
   },
 
   initialize: function (options) {
@@ -34,7 +35,7 @@ var LoginView = Backbone.View.extend({
       if (window.cache.currentUser)
         Backbone.history.navigate(UIConfig.home.logged_in_path, { trigger: true });
       else
-        self.gotoLoginForm(message);
+        self.render("login", message)
     });
 
     // clean up no matter how the modal is closed
@@ -59,21 +60,27 @@ var LoginView = Backbone.View.extend({
       message: message
     };
 
+    var form = {};
+
     //load the requested register form
     switch(this.target)
     {
-      case "login":       template = _.template(LoginTemplate);      break;
-      case "forgot":      template = _.template(ForgotTemplate);     break;
-      case "forgot:done": template = _.template(ForgotDoneTemplate); break;
+      case "login":
+        form.html = _.template(LoginTemplate)(template_data);
+        form.doneButtonText = "Login";
+        break;
+      case "forgot":
+        form.html = _.template(ForgotTemplate)(template_data);
+        form.doneButtonText = "Reset Password";
+        break;
+      case "forgot:done":
+        form.html = _.template(ForgotDoneTemplate)(template_data);
+        form.doneButtonText = "Return to Login";
+        break;
     }
 
     //render our form inside the Modal wrapper
-    this.modal.renderForm({
-      html: template(template_data),
-      doneButtonText: "Login",
-      hideButtons: (this.target == "forgot:done"),
-    });
-
+    this.modal.renderForm(form);
     this.modal.show();
 
     setTimeout(function () {
@@ -83,28 +90,28 @@ var LoginView = Backbone.View.extend({
     return this;
   },
 
-  gotoLoginForm: function(message) {
+  gotoLoginForm: function(e, message) {
+    if (e && e.preventDefault) e.preventDefault();
     this.render("login", message);
   },
 
-  gotoForgotForm: function(message) {
+  gotoForgotForm: function(e, message) {
+    if (e && e.preventDefault) e.preventDefault();
     this.render("forgot", message);
   },
 
   submit: function() {
     switch(this.target)
     {
-      case "login":  this.submitLogin();  break;
-      case "forgot": this.submitForgot(); break;
+      case "login":       this.submitLogin();   break;
+      case "forgot":      this.submitForgot();  break;
+      case "forgot:done": this.gotoLoginForm(); break;
     }
   },
 
-
-
-
   submitLogin: function (e) {
-    var self = this;
     if (e && e.preventDefault) e.preventDefault();
+    var self = this;
     var data = {
       identifier: this.$("#username").val(),
       password: this.$("#password").val(),
@@ -150,7 +157,7 @@ var LoginView = Backbone.View.extend({
       type: 'POST',
       data: data
     }).done(function (success) {
-      self.gotoLoginForm();
+      self.render("forgot:done");
     }).fail(function (error) {
       //TODO: handle these errors
       var d = JSON.parse(error.responseText);
