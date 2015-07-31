@@ -41,14 +41,6 @@ var NavView = Backbone.View.extend({
       window.cache.userEvents.trigger("user:logout:success");
     });
 
-    // request that the user log in to see the page
-    /*
-    this.listenTo(window.cache.userEvents, "user:request:login", function (message) {
-      // trigger the login modal
-      self.login(message);
-    });
-    */
-
     // update the navbar when the profile changes
     this.listenTo(window.cache.userEvents, "user:profile:save", function (data) {
       // reset the currentUser object
@@ -64,22 +56,17 @@ var NavView = Backbone.View.extend({
   },
 
   render: function () {
-    console.log("nav render");
-    var self = this;
-    this.doRender({
-      user: window.cache.currentUser,
-      systemName: window.cache.system.name,
-    });
-    return this;
-  },
 
-  doRender: function (data) {
-    data.login = Login;
-    data.ui = UIConfig;
-    var template = _.template(NavTemplate)(data);
-    this.$el.html(template);
+    this.$el.html(_.template(NavTemplate)({
+      user:       window.cache.currentUser,
+      systemName: window.cache.system.name,
+      login:      Login,
+      ui:         UIConfig,
+    }));
+
     this.$el.i18n();
 
+    //highlight the current link
     var href = window.location.pathname;
     $('nav.main .nav-link')
       .closest('li')
@@ -87,6 +74,8 @@ var NavView = Backbone.View.extend({
     $('nav.main .nav-link[href="' + href + '"]')
       .closest('li')
       .addClass("active");
+
+    return this;
   },
 
   loginClick: function (e) {
