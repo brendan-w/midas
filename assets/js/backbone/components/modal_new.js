@@ -215,12 +215,12 @@ ModalView = BaseView.extend({
     if(e && e.preventDefault) e.preventDefault();
 
     //check if we're allowed to go backwards
-    if(this.on_next_cb(this.$current_page))
-      this.gotoPage(this.current_page - 1);        
+    if(this.on_prev_cb(this.$current_page))
+      this.gotoPage(this.current_page - 1);
   },
 
   submit: function(e) {
-    if (e.preventDefault) e.preventDefault();
+    if (e && e.preventDefault) e.preventDefault();
 
     //check if this page is OK
     if(this.on_next_cb(this.$current_page))

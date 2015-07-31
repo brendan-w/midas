@@ -22,6 +22,10 @@ TaskList = Backbone.View.extend({
     'click .wizard'   : 'wizard'
   },
 
+  /*
+    @param {Object}  settings
+    @param {Integer} settings.projectId
+  */
   initialize: function (settings) {
     this.options = _.extend(settings, this.defaults);
     var self = this;
@@ -90,6 +94,7 @@ TaskList = Backbone.View.extend({
     this.newTaskModal = new NewTaskModal({
       el: "#addTask-wrapper",
       collection: this.collection,
+      projectId: this.options.projectId,
     }).render();
   },
 

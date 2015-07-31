@@ -1,7 +1,7 @@
+var _         = require('underscore');
+var async     = require('async');
+var Backbone  = require('backbone');
 var Bootstrap = require('bootstrap');
-var _ = require('underscore');
-var Backbone = require('backbone');
-var async = require('async');
 var utilities = require('../../../../mixins/utilities');
 
 var ModalView       = require('../../../../components/modal_new');
@@ -12,28 +12,42 @@ var TagFactory      = require('../../../../components/tag_factory');
 
 var NewTaskModal = Backbone.View.extend({
 
-  el: "#task-list-wrapper",
-
   events: {
     "change .validate"        : "v",
     "change #task-location" : "locationChange"
   },
 
+  /*
+    @param {Object}  options
+    @param {Integer} options.projectId   -  optional Id of the parent project
+  */
   initialize: function (options) {
     this.options = _.extend(options, this.defaults);
-    this.tasks = this.options.tasks;
-    this.tagFactory = new TagFactory();
+
+    //ID of the parent project
+    //if no projectId is specified, then the tasks created will be orphaned
+    this.projectId = options.projectId || null;
+
     this.data = {};
     this.data.newTag = {};
     this.data.newItemTags = [];
     this.data.existingTags = [];
+
+    this.tagFactory = new TagFactory();
     this.initializeSelect2Data();
     this.initializeListeners();
   },
 
   initializeSelect2Data: function () {
     var self = this;
-    var types = ["task-skills-required", "task-time-required", "task-people", "task-length", "task-time-estimate"];
+
+    var types = [
+      "task-skills-required",
+      "task-time-required",
+      "task-people",
+      "task-length",
+      "task-time-estimate"
+    ];
 
     this.tagSources = {};
 
@@ -62,14 +76,14 @@ var NewTaskModal = Backbone.View.extend({
 
     // Gather tags for submission after the task is created
     tags = {
-      topic: this.$("#task_tag_topics").select2('data'),
-      skill: this.$("#task_tagskills").select2('data'),
-      location: this.$("#task_tag_location").select2('data'),
+      'topic':                  this.$("#task_tag_topics").select2('data'),
+      'skill':                  this.$("#task_tagskills").select2('data'),
+      'location':               this.$("#task_tag_location").select2('data'),
       'task-skills-required': [ this.$("#skills-required").select2('data') ],
-      'task-people': [ this.$("#people").select2('data') ],
-      'task-time-required': [ this.$("#time-required").select2('data') ],
-      'task-time-estimate': [ this.$("#time-estimate").select2('data') ],
-      'task-length': [ this.$("#length").select2('data') ]
+      'task-people':          [ this.$("#people").select2('data') ],
+      'task-time-required':   [ this.$("#time-required").select2('data') ],
+      'task-time-estimate':   [ this.$("#time-estimate").select2('data') ],
+      'task-length':          [ this.$("#length").select2('data') ]
     };
 
     return tags;
@@ -88,7 +102,7 @@ var NewTaskModal = Backbone.View.extend({
     //render our form inside the Modal wrapper
     this.modal.renderForm({
       html: _.template(NewTaskTemplate)({ tags: this.tagSources }),
-      doneButtonText: 'Add ' + i18n.t('Opportunity'),
+      doneButtonText: 'Post ' + i18n.t('Task'),
     });
 
     this.initializeSelect2();
@@ -114,9 +128,26 @@ var NewTaskModal = Backbone.View.extend({
   initializeSelect2: function () {
     var self = this;
 
-    self.tagFactory.createTagDropDown({type:"skill",selector:"#task_tag_skills",width: "100%",tokenSeparators: [","]});
-    self.tagFactory.createTagDropDown({type:"topic",selector:"#task_tag_topics",width: "100%",tokenSeparators: [","]});
-    self.tagFactory.createTagDropDown({type:"location",selector:"#task_tag_location",width: "100%",tokenSeparators: [","]});
+    self.tagFactory.createTagDropDown({
+      type:"skill",
+      selector:"#task_tag_skills",
+      width: "100%",
+      tokenSeparators: [","],
+    });
+
+    self.tagFactory.createTagDropDown({
+      type:"topic",
+      selector:"#task_tag_topics",
+      width: "100%",
+      tokenSeparators: [","],
+    });
+
+    self.tagFactory.createTagDropDown({
+      type:"location",
+      selector:"#task_tag_location",
+      width: "100%",
+      tokenSeparators: [","],
+    });
 
     self.$(".el-specific-location").hide();
 
@@ -181,8 +212,11 @@ var NewTaskModal = Backbone.View.extend({
 
     //when the collection add is successful, redirect to the newly created task
     this.listenTo(this.collection, "task:save:success", function (data) {
+      console.log("saved");
+
       // redirect when the modal is fully hidden
       self.$el.bind('hidden.bs.modal', function() {
+        console.log("hidden");
         Backbone.history.navigate('tasks/' + data.attributes.id, { trigger: true });
       });
 
@@ -210,12 +244,10 @@ var NewTaskModal = Backbone.View.extend({
     });
 
     this.collection.addAndSave({
-      title: parent.$("#task-title").val(),
-      description: parent.$("#task-description").val(),
-      // these tasks are orphaned
-      // TODO
-      projectId: null,
-      tags: tags,
+      title:       this.$("#task-title").val(),
+      description: this.$("#task-description").val(),
+      projectId:   this.projectId,
+      tags:        tags,
     })
   },
 
