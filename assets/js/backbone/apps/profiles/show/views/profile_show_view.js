@@ -264,7 +264,6 @@ var ProfileShowView = Backbone.View.extend({
   },
 
   initializeSelect2: function () {
-    var self = this;
     var modelJson = this.model.toJSON();
 
     /*

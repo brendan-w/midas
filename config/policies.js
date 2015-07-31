@@ -24,6 +24,10 @@ module.exports.policies = {
     '*': ['sspi']
   },
 
+  AcController : {
+    '*': true,
+  },
+
   // Only admins can access the AdminController API
   AdminController : {
     '*': ['passport', 'authenticated', 'admin']
@@ -137,8 +141,9 @@ module.exports.policies = {
   },
 
   TagEntityController : {
+    '*':       true,
+    'create':  ['passport', 'authenticated'],
     // Purely for administrative functions
-    '*':       ['passport', 'authenticated'],
     'update':  ['passport', 'authenticated', 'admin'],
     'destroy': ['passport', 'authenticated', 'admin']
   },

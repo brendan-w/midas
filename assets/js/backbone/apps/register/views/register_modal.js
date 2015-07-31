@@ -3,12 +3,14 @@ var _        = require('underscore');
 var Backbone = require('backbone');
 var utils    = require('../../../mixins/utilities');
 
+var TagFactory      = require('../../../components/tag_factory');
 var ModalView       = require('../../../components/modal_new');
 var CoreAccountView = require('./core_account_info_view');
 
 var RegisterChoose    = require('../templates/register_choose.html');
 var RegisterApplicant = require('../templates/register_applicant.html');
 var RegisterPoster    = require('../templates/register_poster.html');
+
 
 
 var Register = Backbone.View.extend({
@@ -31,8 +33,12 @@ var Register = Backbone.View.extend({
     this.modal.onNext(this.next);
     this.listenTo(this.modal, "submit", this.submit);
 
+    //we'll need one of these
+    this.tagFactory = new TagFactory();
+
+
     //listen for register events
-    this.listenTo(window.cache.userEvents, "user:register:show", this.register);
+    this.listenTo(window.cache.userEvents, "user:register:show", this.render);
     this.listenTo(window.cache.userEvents, "user:register:hide", function() {
       self.modal.hide();
     });
@@ -44,7 +50,7 @@ var Register = Backbone.View.extend({
       "applicant"
       "poster:unapproved"
   */
-  register: function(target) {
+  render: function(target) {
     if(this.coreAccount) this.coreAccount.cleanup();
 
     this.target = target || "choose";
@@ -75,22 +81,37 @@ var Register = Backbone.View.extend({
       el: this.$(".core-account-info")
     }).render();
 
+    this.initializeSelect2();
+
     this.modal.show();
 
     return this;
   },
 
+  initializeSelect2: function () {
+
+    this.tagFactory.createTagDropDown({
+      type:        "location",
+      selector:    "#location",
+      multiple:    false,
+      width:       "100%"
+    });
+
+  },
+
+
   gotoApplicantForm: function(e) {
     if(e && e.preventDefault) e.preventDefault();
-    this.register("applicant");
+    this.render("applicant");
   },
 
   gotoPosterForm: function(e) {
     if(e && e.preventDefault) e.preventDefault();
-    this.register("poster:unapproved");
+    this.render("poster:unapproved");
   },
 
   next: function($page) {
+    //TODO: put this back when your done, silly
     // return !validateAll($page);
     return true;
   },
