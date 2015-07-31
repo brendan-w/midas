@@ -8,7 +8,7 @@ module.exports = [
     { type: "education", name: "High School Diploma" },
     { type: "education", name: "Undergraduate-Level" },
     { type: "education", name: "Graduate-Level" },
-    { type: "education", name: "post-graduate" },
+    { type: "education", name: "Post-Graduate" },
     { type: "task-time-required", name: "Full-time (40 hours)" },
     { type: "task-time-required", name: "Part-time (10-20 hours)" },
     { type: "task-time-required", name: "Quick turnover" },

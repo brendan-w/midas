@@ -42,6 +42,9 @@ var Register = Backbone.View.extend({
     this.listenTo(window.cache.userEvents, "user:register:hide", function() {
       self.modal.hide();
     });
+
+    //TODO: remove this when done
+    this.render("applicant");
   },
 
   /*
@@ -85,10 +88,14 @@ var Register = Backbone.View.extend({
 
     this.modal.show();
 
+    //TODO: remove this when done
+    this.modal.gotoPage(1);
+
     return this;
   },
 
   initializeSelect2: function () {
+    var self = this;
 
     this.tagFactory.createTagDropDown({
       type:        "location",
@@ -97,6 +104,26 @@ var Register = Backbone.View.extend({
       width:       "100%"
     });
 
+    this.tagFactory.fetchAllTagsOfType("education", function(tags) {
+      self.tagFactory.createTagDropDown({
+        type:        "education",
+        selector:    "#education",
+        multiple:    true,
+        allowCreate: false,
+        width:       "100%",
+        fillWith:    tags,
+      });
+    });
+
+    this.tagFactory.fetchAllTagsOfType("topic", function(tags) {
+      self.tagFactory.createTagDropDown({
+        type:        "topic",
+        selector:    "#topics",
+        multiple:    true,
+        width:       "100%",
+        fillWith:    tags,
+      });
+    });
   },
 
 

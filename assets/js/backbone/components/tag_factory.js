@@ -65,6 +65,8 @@ TagFactory = BaseComponent.extend({
     @param {Boolean}  options.allowCreate=true   - Whether a `createSearchChoice` option will be given
     @param {String[]} options.tokenSeparators=[] - Array of valid tag delimeters
     @param {*}        options.data=undefined     - The initial data loaded into the select2 element
+    @param {Object[]} options.fillWith=undefined - Array of tagEntities that can be selected
+                                                   NOTE: when this option is set, AJAX auto-completion is removed
 
     @returns {jQuery element}                    - The initialized jQuery element selected by options.selector
   */
@@ -111,6 +113,13 @@ TagFactory = BaseComponent.extend({
       }
     };
 
+    if(options.fillWith)
+    {
+      settings.ajax = undefined;
+      settings.minimumInputLength = undefined;
+      settings.data = { results: options.fillWith, text:'value' };
+    }
+
     //if requested, give users the option to create new
     if(options.allowCreate) {
       settings.createSearchChoice = function (term, values) {
@@ -137,7 +146,7 @@ TagFactory = BaseComponent.extend({
 
 
     //init Select2
-    var $sel = self.$(options.selector).select2(settings);
+    var $sel = $(options.selector).select2(settings);
 
 
     //event handlers
@@ -215,6 +224,15 @@ TagFactory = BaseComponent.extend({
     }
 
     return $sel;
+  },
+
+  fetchAllTagsOfType: function(type, cb) {
+    $.ajax({
+      url: '/api/ac/tag?type=' + type + '&list',
+      type: 'GET',
+      async: false,
+      success: cb,
+    });
   },
 
 });
