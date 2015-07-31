@@ -7,7 +7,7 @@
 </style>
 
 <form name="applicant">
-  <section name="Create Account" class="core-account-info">
+  <section name="Account" class="core-account-info">
     <!--
       The core_account_info_view will populate this with:
 
@@ -16,31 +16,61 @@
       Password
     -->
   </section>
-  <section name="Profile">
-    <div class="form-group">
-      <label for="location">Your current Location</label>
-      <div id="location"></div> <!-- handled by select2 -->
-    </div>
-    <div class="form-group">
-      <label for="education">Highest education level completed</label>
-      <div id="education"></div> <!-- handled by select2 -->
-    </div>
-    <div class="form-group">
-      <label for="topics">Interested in which types of work?</label>
-      <div id="topics"></div> <!-- handled by select2 -->
-    </div>
 
-  </section>
-  <section name="Skills">
-    <div class="form-group">
-      <label for="skills">Please enter you skills</label>
-      <div id="skills"></div> <!-- handled by select2 -->
+  <section name="Profile">
+    <div class="row">
+      <div class="col-sm-12">
+
+        <div class="form-group">
+          <label for="location">Your current Location</label>
+          <div id="location"></div> <!-- handled by select2 -->
+        </div>
+        <div class="form-group">
+          <label for="education">Highest education level completed</label>
+          <div id="education"></div> <!-- handled by select2 -->
+        </div>
+        <div class="form-group">
+          <label for="topics">Interested in which types of work?</label>
+          <div id="topics"></div> <!-- handled by select2 -->
+        </div>
+
+      </div>
     </div>
-    <p>
-      Your skills will show up on your profile, and will help match you appropriate jobs,
-    </p>
   </section>
+
+  <section name="Skills">
+    <div class="row">
+      <div class="col-sm-12">
+
+        <div class="form-group">
+          <label for="skills">Please enter your skills</label>
+          <div id="skills"></div> <!-- handled by select2 -->
+        </div>
+
+        <p>
+          Your skills will be displayed on your profile, and will help us match you to appropriate jobs.
+        </p>
+
+      </div>
+    </div>
+  </section>
+
+  <section name="Languages">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="lang-select">
+          <!--
+            Populated with the Language view
+          -->
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section name="CV/Resume">
-    <h2>4</h2>
+    <div class="row">
+      <div class="col-sm-12">
+      </div>
+    </div>
   </section>
 </form>
