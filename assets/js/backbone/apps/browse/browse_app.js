@@ -38,6 +38,7 @@ var BrowseRouter = Backbone.Router.extend({
   data: { saved: false },
 
   initialize: function () {
+    var self = this;
 
     //create site-wide components
     this.navView = new NavView({
@@ -59,13 +60,7 @@ var BrowseRouter = Backbone.Router.extend({
 
     // set navigation state
     this.on('route', function(route, params) {
-      var href = window.location.pathname;
-      $('nav.main .nav-link')
-        .closest('li')
-        .removeClass('active');
-      $('nav.main .nav-link[href="' + href + '"]')
-        .closest('li')
-        .addClass("active");
+      self.navView.render(); //re-render the nave
     });
   },
 

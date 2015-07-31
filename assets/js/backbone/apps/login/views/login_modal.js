@@ -122,6 +122,7 @@ var LoginView = Backbone.View.extend({
       type: 'POST',
       data: data
     }).done(function (user) {
+
       // Set the user object and trigger the user login event
       window.cache.currentUser = user;
 

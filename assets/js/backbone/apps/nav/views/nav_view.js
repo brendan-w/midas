@@ -16,6 +16,7 @@ var NavTemplate = require('../templates/nav_template.html');
 var NavView = Backbone.View.extend({
 
   events: {
+    'click header a'        : linkBackbone,
     'click .navbar-brand'   : linkBackbone,
     'click .nav-link'       : linkBackbone,
     'click .login'          : 'loginClick',
@@ -27,7 +28,7 @@ var NavView = Backbone.View.extend({
     this.options = options;
 
     this.listenTo(window.cache.userEvents, "user:login:success", function (userData) {
-      self.doRender({ user: userData });
+      self.render();
     });
 
     this.listenTo(window.cache.userEvents, "user:login:close", function () {
@@ -35,7 +36,7 @@ var NavView = Backbone.View.extend({
     });
 
     this.listenTo(window.cache.userEvents, "user:logout", function () {
-      self.doRender({ user: null });
+      self.render();
       Backbone.history.loadUrl();
       window.cache.userEvents.trigger("user:logout:success");
     });
@@ -63,6 +64,7 @@ var NavView = Backbone.View.extend({
   },
 
   render: function () {
+    console.log("nav render");
     var self = this;
     this.doRender({
       user: window.cache.currentUser,
@@ -77,6 +79,14 @@ var NavView = Backbone.View.extend({
     var template = _.template(NavTemplate)(data);
     this.$el.html(template);
     this.$el.i18n();
+
+    var href = window.location.pathname;
+    $('nav.main .nav-link')
+      .closest('li')
+      .removeClass('active');
+    $('nav.main .nav-link[href="' + href + '"]')
+      .closest('li')
+      .addClass("active");
   },
 
   loginClick: function (e) {
