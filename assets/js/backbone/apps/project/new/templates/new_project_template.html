@@ -1,9 +1,10 @@
 <form action="" id="project-form">
-  <div class="modal-body">
+  <section name="Add Group">
+
     <fieldset>
       <div class="form-group">
         <label for="project-form-title"><span data-i18n="Project">Project</span> Title</label>
-        <input type="text" class="project-title-form form-control" id="project-form-title" name="project-form-title" placeholder="Title" data-validate="empty,count100">
+        <input type="text" class="project-title-form form-control validate" id="project-form-title" name="project-form-title" placeholder="Title" data-validate="empty,count100">
         <span class="help-block error-empty" style="display:none;">You must enter a title.</span>
         <span class="help-block error-count100" style="display:none;">The title must be less than 100 characters.</span>
       </div>
@@ -13,9 +14,6 @@
         <span class="help-block error-empty" style="display:none;">You must enter a description.</span>
       </div>
     </fieldset>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-c0" data-dismiss="modal">Cancel</button>
-    <input type="submit" class="btn btn-c2 btn-add-project" id="submit" value="Add Project"/>
-  </div>
+
+  </section>
 </form>

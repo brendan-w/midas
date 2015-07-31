@@ -4,7 +4,6 @@ var async = require('async');
 var utils = require('../../../mixins/utilities');
 var UIConfig = require('../../../config/ui.json');
 var Login = require('../../../config/login.json');
-var LoginController = require('../../login/controllers/login_controller');
 var HomeTemplate = require('../templates/home_view_template.html');
 var ModalPages = require('../../../components/modal_pages');
 var EmptyModalView = require('../views/empty_modal_view');
@@ -14,9 +13,12 @@ var HomeView = Backbone.View.extend({
   el: "#container",
 
   events: {
-    'click .login'          : 'loginClick',
-    'click .tos-checkbox'   : 'toggleButton',
-    'click .wizard-submit'  : 'updateUserSetting'
+    'click .tos-checkbox'  : 'toggleButton',
+    'click .wizard-submit' : 'updateUserSetting',
+
+    'click #home-login'    : 'triggerLogin',
+    'click #home-register' : 'triggerRegister',
+    'click #home-browse'   : 'triggerBrowse',
   },
 
   initialize: function (options) {
@@ -47,6 +49,26 @@ var HomeView = Backbone.View.extend({
     this.$el.i18n();
 
   return this;
+  },
+
+  triggerLogin: function(e) {
+    if (e && e.preventDefault) e.preventDefault();
+
+    // test if we're already logged in
+    if (window.cache.currentUser)
+      Backbone.history.navigate(UIConfig.home.logged_in_path, { trigger: true });
+    else
+      window.cache.userEvents.trigger("user:request:login");
+  },
+
+  triggerRegister: function(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    window.cache.userEvents.trigger("user:register:show");
+  },
+
+  triggerBrowse: function(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    // window.cache.userEvents.trigger("user:request:login");
   },
 
   toggleButton: function (e) {
@@ -151,26 +173,6 @@ var HomeView = Backbone.View.extend({
           value: options.newValue
         }
       });
-  },
-
-  loginClick: function (e) {
-    if (e.preventDefault) e.preventDefault();
-    if (window.cache.currentUser) {
-      // we're already logged in
-      Backbone.history.navigate(UIConfig.home.logged_in_path, { trigger: true });
-    } else {
-      this.login();
-    }
-  },
-
-  login: function (message) {
-    if (this.loginController) {
-      this.loginController.cleanup();
-    }
-    this.loginController = new LoginController({
-      el: '#login-wrapper',
-      message: message
-    });
   },
 
   cleanup: function () {

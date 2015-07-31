@@ -10,13 +10,13 @@ var Backbone = require('backbone');
 var utils = require('../../../mixins/utilities');
 var UIConfig = require('../../../config/ui.json');
 var Login = require('../../../config/login.json');
-var LoginController = require('../../login/controllers/login_controller');
 var NavTemplate = require('../templates/nav_template.html');
 
 
 var NavView = Backbone.View.extend({
 
   events: {
+    'click #banner a'       : linkBackbone,
     'click .navbar-brand'   : linkBackbone,
     'click .nav-link'       : linkBackbone,
     'click .login'          : 'loginClick',
@@ -28,7 +28,7 @@ var NavView = Backbone.View.extend({
     this.options = options;
 
     this.listenTo(window.cache.userEvents, "user:login:success", function (userData) {
-      self.doRender({ user: userData });
+      self.render();
     });
 
     this.listenTo(window.cache.userEvents, "user:login:close", function () {
@@ -36,15 +36,9 @@ var NavView = Backbone.View.extend({
     });
 
     this.listenTo(window.cache.userEvents, "user:logout", function () {
-      self.doRender({ user: null });
+      self.render();
       Backbone.history.loadUrl();
       window.cache.userEvents.trigger("user:logout:success");
-    });
-
-    // request that the user log in to see the page
-    this.listenTo(window.cache.userEvents, "user:request:login", function (message) {
-      // trigger the login modal
-      self.login(message);
     });
 
     // update the navbar when the profile changes
@@ -62,20 +56,26 @@ var NavView = Backbone.View.extend({
   },
 
   render: function () {
-    var self = this;
-    this.doRender({
-      user: window.cache.currentUser,
-      systemName: window.cache.system.name,
-    });
-    return this;
-  },
 
-  doRender: function (data) {
-    data.login = Login;
-    data.ui = UIConfig;
-    var template = _.template(NavTemplate)(data);
-    this.$el.html(template);
+    this.$el.html(_.template(NavTemplate)({
+      user:       window.cache.currentUser,
+      systemName: window.cache.system.name,
+      login:      Login,
+      ui:         UIConfig,
+    }));
+
     this.$el.i18n();
+
+    //highlight the current link
+    var href = window.location.pathname;
+    $('nav.main .nav-link')
+      .closest('li')
+      .removeClass('active');
+    $('nav.main .nav-link[href="' + href + '"]')
+      .closest('li')
+      .addClass("active");
+
+    return this;
   },
 
   loginClick: function (e) {
@@ -84,17 +84,7 @@ var NavView = Backbone.View.extend({
   },
 
   login: function (message) {
-    if (this.doingLogin) return;    // login modal already open, skip!
-    this.doingLogin = true;
-    if (this.loginController) {
-      this.loginController.cleanup();
-    }
-
-    this.loginController = new LoginController({
-      el: '#login-wrapper',
-      message: message,
-      navigate: ($(location).attr('pathname') === "/")
-    });
+    window.cache.userEvents.trigger("user:request:login");
   },
 
   logout: function (e) {
@@ -110,9 +100,6 @@ var NavView = Backbone.View.extend({
   },
 
   cleanup: function () {
-    if (this.loginController) {
-      this.loginController.cleanup();
-    }
     removeView(this);
   }
 });

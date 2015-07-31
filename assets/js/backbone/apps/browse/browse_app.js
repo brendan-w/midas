@@ -13,6 +13,8 @@ var TaskShowController = require('../tasks/show/controllers/task_show_controller
 var TaskEditFormView = require('../tasks/edit/views/task_edit_form_view');
 var AdminMainController = require('../admin/controllers/admin_main_controller');
 var HomeController = require('../home/controllers/home_controller');
+var LoginModal = require('../login/views/login_modal');
+var RegisterModal = require('../register/views/register_modal');
 
 
 var BrowseRouter = Backbone.Router.extend({
@@ -36,22 +38,29 @@ var BrowseRouter = Backbone.Router.extend({
   data: { saved: false },
 
   initialize: function () {
+    var self = this;
+
+    //create site-wide components
     this.navView = new NavView({
-      el: 'nav.main'
+      el: 'header'
     }).render();
+
     this.footerView = new FooterView({
       el: 'footer'
     }).render();
 
+    this.loginModal = new LoginModal({
+      el: '#login-wrapper',
+      navigate: ($(location).attr('pathname') === "/")
+    });
+
+    this.registerModal = new RegisterModal({
+      el: '#register-wrapper'
+    });
+
     // set navigation state
     this.on('route', function(route, params) {
-      var href = window.location.pathname;
-      $('nav.main .nav-link')
-        .closest('li')
-        .removeClass('active');
-      $('nav.main .nav-link[href="' + href + '"]')
-        .closest('li')
-        .addClass("active");
+      self.navView.render(); //re-render the nave
     });
   },
 

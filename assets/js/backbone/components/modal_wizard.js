@@ -29,33 +29,56 @@ ModalWizard = BaseView.extend({
     "click .wizard-forward" : "moveWizardForward",
     "click .wizard-backward": "moveWizardBackward",
     "click .wizard-submit"  : "submit",
-    "click .wizard-cancel"  : "cancel",
+    "click .wizard-cancel"  : "close",
     "show.bs.modal"         : "wizardButtons"
   },
 
+  /*
+    @param {Object} options
+    @param {String} options.modalTitle
+
+  */
   initialize: function (options) {
-    this.options = options;
-    this.initializeListeners();
+    this.options   = options;
+    this.childView = options.childView;
+    // this.initializeListeners();
   },
 
   initializeListeners: function () {
     var self = this;
     if (this.model) {
       this.listenTo(this.model, this.options.modelName + ':modal:hide', function () {
-        $('.modal.in').modal('hide');
+        self.close();
       });
     }
   },
 
   render: function () {
+
+    //render the modal wrapper
     var data = {
       id: this.options.id,
       modalTitle: this.options.modalTitle,
       draft: this.options.draft
     };
+
     var compiledTemplate = _.template(ModalWizardTemplate)(data);
     this.$el.html(compiledTemplate);
+
+    //render the childView inside of the wrapper
+    this.childView.$el = $(".modal-body");
+    this.childView.render();
+
+    //show it
+    $(".modal").modal('show');
+
     return this;
+  },
+
+  close: function(e) {
+    if(e && e.preventDefault) e.preventDefault();
+    //hide it
+    $(".modal").modal('hide');
   },
 
   /**
@@ -174,14 +197,9 @@ ModalWizard = BaseView.extend({
       return;
     }
 
-    $('.modal.in').modal('hide');
+    this.close();
     if (state) d.state = state;
     this.collection.addAndSave(d);
-  },
-
-  cancel: function (e) {
-    if (e.preventDefault) e.preventDefault();
-    $('.modal.in').modal('hide');
   },
 
   cleanup: function () {

@@ -19,7 +19,7 @@
     "useInfiniteScroll" : false
   },
   "states" : [{"value": "draft","label":"Draft"},{"value": "open","label":"Open"},{"value":"assigned","label":"Assigned"},{"value": "completed","label":"Completed"},{"value":"archived","label":"Archived"}],
-    "modalHome" : {
+  "modalHome" : {
     "show" : false
   }
 }

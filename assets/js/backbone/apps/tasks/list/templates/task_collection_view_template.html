@@ -1,11 +1,13 @@
 <!-- MODALS -->
-<div class="wrapper-addTask"></div>
+<div id="addTask-wrapper"></div>
 
 <div class="box-pad-lr border-bottom">
   <h3>
-    Available Opportunities
+    Available <span data-i18n="TaskPlural">Jobs</span>
     <% if (user) { %>
-    <a href="#addTask" class="btn btn-c0 btn-sm file-add add-task" data-toggle="modal" data-backdrop="static">Add Opportunity</a>
+      <a href="#addTask" class="btn btn-c0 btn-sm file-add add-task" data-toggle="modal" data-backdrop="static">
+        <i class="fa fa-plus">&nbsp;</i>Post A <span data-i18n="Task">Job</span>
+      </a>
     <% } %>
   </h3>
 </div>
@@ -14,7 +16,7 @@
   <% if (tasks.length == 0) { %>
   <div class="task border-left" data-id="null">
     <div class="task-title">
-      No current opportunities.
+      No <span data-i18n="taskPlural">jobs</span> found.
     </div>
   </div>
   <% } %>
@@ -27,7 +29,7 @@
       <a href="/tasks/<%- task.id %>" class="show-task" data-projectid="<%- task.projectId %>" data-id="<%- task.id %>"><%- task.title %></a>
     </div>
     <div class="task-description">
-      <% /* Escaped with marked() */ %>
+      <!-- Escaped with marked() -->
       <%= task.description %>
     </div>
     <div class="task-tags-row">
