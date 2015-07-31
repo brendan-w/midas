@@ -35,7 +35,6 @@ var NewTaskModal = Backbone.View.extend({
 
     this.tagFactory = new TagFactory();
     this.initializeSelect2Data();
-    this.initializeListeners();
   },
 
   initializeSelect2Data: function () {
@@ -65,11 +64,6 @@ var NewTaskModal = Backbone.View.extend({
     async.each(types, requestAllTagsByType, function (err) {
       self.render();
     });
-  },
-
-  initializeListeners: function() {
-    var self = this;
-    _.extend(this, Backbone.Events);
   },
 
   getTagsFromPage: function () {
@@ -212,11 +206,9 @@ var NewTaskModal = Backbone.View.extend({
 
     //when the collection add is successful, redirect to the newly created task
     this.listenTo(this.collection, "task:save:success", function (data) {
-      console.log("saved");
 
       // redirect when the modal is fully hidden
       self.$el.bind('hidden.bs.modal', function() {
-        console.log("hidden");
         Backbone.history.navigate('tasks/' + data.attributes.id, { trigger: true });
       });
 

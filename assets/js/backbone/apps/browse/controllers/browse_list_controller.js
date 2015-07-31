@@ -34,14 +34,6 @@ Browse.ListController = BaseController.extend({
     this.initializeView();
 
     this.collection.trigger('browse:' + this.target + ":fetch");
-
-    this.listenTo(this.tasksCollection, "task:save:success", function (data) {
-      // hide the modal
-      $('#addTask').bind('hidden.bs.modal', function() {
-        Backbone.history.navigate('tasks/' + data, { trigger: true });
-      }).modal('hide');
-    });
-
   },
 
   initializeView: function () {

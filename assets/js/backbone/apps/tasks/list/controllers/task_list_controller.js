@@ -1,15 +1,13 @@
 
-var _ = require('underscore');
-var Backbone = require('backbone');
+var _         = require('underscore');
+var Backbone  = require('backbone');
 var Utilities = require('../../../../mixins/utilities');
 var Bootstrap = require('bootstrap');
-var TasksCollection = require('../../../../entities/tasks/tasks_collection');
+
+var TasksCollection    = require('../../../../entities/tasks/tasks_collection');
 var TaskCollectionView = require('../views/task_collection_view');
+var NewTaskModal       = require('../../../tasks/new/views/new_task_modal');
 
-var NewTaskModal = require('../../../tasks/new/views/new_task_modal');
-
-var ModalWizardComponent = require('../../../../components/modal_wizard');
-var TaskModel = require('../../../../entities/tasks/task_model');
 
 TaskList = Backbone.View.extend({
 
@@ -31,25 +29,11 @@ TaskList = Backbone.View.extend({
     var self = this;
 
     this.initializeTaskCollectionInstance();
-    this.initializeTaskModelInstance();
-    this.initializeListeners();
     this.requestTasksCollectionData();
 
     this.collection.on("tasks:render", function () {
       self.requestTasksCollectionData()
     })
-  },
-
-  initializeListeners: function() {
-    var self = this;
-    this.listenTo(this.taskModel, 'task:tags:save:success', function () {
-      self.initializeTaskModelInstance();
-      self.requestTasksCollectionData();
-    });
-  },
-
-  initializeTaskModelInstance: function () {
-    this.taskModel = new TaskModel();
   },
 
   initializeTaskCollectionInstance: function () {
@@ -66,7 +50,7 @@ TaskList = Backbone.View.extend({
     this.collection.fetch({
       url: '/api/task/findAllByProjectId/' + parseInt(this.options.projectId),
       success: function (collection) {
-        self.tasks = collection;
+        self.collection = collection;
         self.renderTaskCollectionView()
       }
     });
@@ -75,15 +59,11 @@ TaskList = Backbone.View.extend({
   renderTaskCollectionView: function () {
     var self = this;
 
-    this.listenTo(this.collection, "task:save:success", function (model) {
-      self.requestTasksCollectionData();
-    });
-
     if (this.taskCollectionView) this.taskCollectionView.cleanup();
     this.taskCollectionView = new TaskCollectionView({
       el: "#task-list-wrapper",
       onRender: true,
-      collection: self.tasks
+      collection: self.collection
     });
   },
 

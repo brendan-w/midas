@@ -56,7 +56,6 @@ ModalView = BaseView.extend({
     "click .wizard-backward": "prev",
     "click .wizard-submit"  : "submit",
     "click .wizard-cancel"  : "close",
-    "show.bs.modal"         : "wizardButtons"
   },
 
   initialize: function(options) {
