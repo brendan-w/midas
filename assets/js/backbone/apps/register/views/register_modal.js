@@ -6,6 +6,7 @@ var utils    = require('../../../mixins/utilities');
 var TagFactory      = require('../../../components/tag_factory');
 var ModalView       = require('../../../components/modal_new');
 var CoreAccountView = require('./core_account_info_view');
+var LanguageView    = require('../../languages/views/language_view.js');
 
 var RegisterChoose    = require('../templates/register_choose.html');
 var RegisterApplicant = require('../templates/register_applicant.html');
@@ -84,12 +85,16 @@ var Register = Backbone.View.extend({
       el: this.$(".core-account-info")
     }).render();
 
+    this.langView = new LanguageView({
+      el: this.$(".lang-wrapper")
+    }).render();
+
     this.initializeSelect2();
 
     this.modal.show();
 
     //TODO: remove this when done
-    this.modal.gotoPage(1);
+    this.modal.gotoPage(3);
 
     return this;
   },
