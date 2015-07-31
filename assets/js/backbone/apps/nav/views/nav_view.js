@@ -10,7 +10,6 @@ var Backbone = require('backbone');
 var utils = require('../../../mixins/utilities');
 var UIConfig = require('../../../config/ui.json');
 var Login = require('../../../config/login.json');
-var LoginController = require('../../login/controllers/login_controller');
 var NavTemplate = require('../templates/nav_template.html');
 
 
@@ -42,10 +41,12 @@ var NavView = Backbone.View.extend({
     });
 
     // request that the user log in to see the page
+    /*
     this.listenTo(window.cache.userEvents, "user:request:login", function (message) {
       // trigger the login modal
       self.login(message);
     });
+    */
 
     // update the navbar when the profile changes
     this.listenTo(window.cache.userEvents, "user:profile:save", function (data) {
@@ -84,17 +85,7 @@ var NavView = Backbone.View.extend({
   },
 
   login: function (message) {
-    if (this.doingLogin) return;    // login modal already open, skip!
-    this.doingLogin = true;
-    if (this.loginController) {
-      this.loginController.cleanup();
-    }
-
-    this.loginController = new LoginController({
-      el: '#login-wrapper',
-      message: message,
-      navigate: ($(location).attr('pathname') === "/")
-    });
+    window.cache.userEvents.trigger("user:request:login");
   },
 
   logout: function (e) {
@@ -110,9 +101,6 @@ var NavView = Backbone.View.extend({
   },
 
   cleanup: function () {
-    if (this.loginController) {
-      this.loginController.cleanup();
-    }
     removeView(this);
   }
 });

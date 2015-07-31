@@ -4,7 +4,6 @@ var async = require('async');
 var utils = require('../../../mixins/utilities');
 var UIConfig = require('../../../config/ui.json');
 var Login = require('../../../config/login.json');
-var LoginController = require('../../login/controllers/login_controller');
 var HomeTemplate = require('../templates/home_view_template.html');
 var ModalPages = require('../../../components/modal_pages');
 var EmptyModalView = require('../views/empty_modal_view');

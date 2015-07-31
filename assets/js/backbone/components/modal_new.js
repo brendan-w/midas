@@ -59,12 +59,18 @@ ModalView = BaseView.extend({
   },
 
   initialize: function(options) {
+    var self = this;
     this.options = options;
 
     //default callbacks
     this.on_next_cb   = function() { return true; };
     this.on_prev_cb   = function() { return true; };
     this.on_submit_cb = function() {};
+
+    //global enter key listener
+    $(window).keypress(function(e) {
+      self.keypress.call(self, e);
+    });
   },
 
   /*
@@ -202,6 +208,10 @@ ModalView = BaseView.extend({
     this.$(".modal").modal('hide');
   },
 
+  isVisible: function() {
+    return this.$(".modal").is(":visible");
+  },
+
   next: function(e) {
     if(e && e.preventDefault) e.preventDefault();
 
@@ -232,6 +242,25 @@ ModalView = BaseView.extend({
 
   onPrev: function(cb) {
     this.on_prev_cb = cb;
+  },
+
+  keypress: function(e) {
+
+    //only watch for keys when this modal is shown
+    if(this.isVisible())
+    {
+      switch(e.keyCode)
+      {
+        //the enter key will either advance
+        //or submit the current form
+        case 13:
+          if(this.$forward.is(":visible"))
+            this.next();
+          else if(this.$submit.is(":visible"))
+            this.submit();
+          break;
+      }
+    }
   },
 
   cleanup: function() {

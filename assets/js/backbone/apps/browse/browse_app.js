@@ -13,6 +13,7 @@ var TaskShowController = require('../tasks/show/controllers/task_show_controller
 var TaskEditFormView = require('../tasks/edit/views/task_edit_form_view');
 var AdminMainController = require('../admin/controllers/admin_main_controller');
 var HomeController = require('../home/controllers/home_controller');
+var LoginModal = require('../login/views/login_modal');
 var RegisterModal = require('../register/views/register_modal');
 
 
@@ -47,8 +48,13 @@ var BrowseRouter = Backbone.Router.extend({
       el: 'footer'
     }).render();
 
-    this.signupModal = new RegisterModal({
-      el: '#signup-wrapper'
+    this.loginModal = new LoginModal({
+      el: '#login-wrapper',
+      navigate: ($(location).attr('pathname') === "/")
+    });
+
+    this.registerModal = new RegisterModal({
+      el: '#register-wrapper'
     });
 
     // set navigation state

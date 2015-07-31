@@ -6,7 +6,6 @@ var BaseController = require('../../../base/base_controller');
 var LoginView = require('../views/login_view');
 var login = require('../../../config/login.json');
 var ModalComponent = require('../../../components/modal');
-var ModalWizardComponent = require('../../../components/modal_wizard');
 
 
 Login = BaseController.extend({
@@ -33,43 +32,8 @@ Login = BaseController.extend({
     if (!_.isUndefined(this.options.message)) {
       var disableClose = this.options.message.disableClose || false;
     }
-    this.modalComponent = new ModalComponent({
-      el: this.el,
-      id: "login",
-      modalTitle: "Login",
-      disableClose: disableClose
-    }).render();
 
-    // put the login view inside the modal
-    this.loginView = new LoginView({
-      el: ".modal-template",
-      login: login,
-      message: this.options.message
-    }).render();
-    this.$("#forgot-view").hide();
-    this.$("#forgot-done-view").hide();
-    $("#login").modal('show');
 
-    self.listenTo(window.cache.userEvents, "user:login", function (user) {
-      // hide the modal
-      self.stopListening(window.cache.userEvents);
-      // window.cache.userEvents.stopListening();
-      $('#login').bind('hidden.bs.modal', function() {
-        // if successful, reload page
-        Backbone.history.loadUrl();
-        window.cache.userEvents.trigger("user:login:success", user);
-        if (self.options.navigate) {
-          window.cache.userEvents.trigger("user:login:success:navigate", user);
-        }
-      }).modal('hide');
-
-    });
-
-    // clean up no matter how the modal is closed
-    $('#login').bind('hidden.bs.modal', function () {
-      window.cache.userEvents.trigger("user:login:close");
-      self.cleanup();
-    });
   },
 
   showLogin: function (e) {
