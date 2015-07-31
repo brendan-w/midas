@@ -33,7 +33,18 @@ module.exports = {
     'username': 'hhttillykolvpcqgxgop@gsa.gov',
     'password': 'TestTest1234#'
   },
-
+  'LocationRequiredUser': {
+    'name': 'Location Required User',
+    'username': 'locationlocationlocation@gsa.gov',
+    'password': 'TestTest1234#',
+    'location': { 'id': 1 }
+  },
+  'AgencyRequiredUser': {
+    'name': 'Agency Required User',
+    'username': 'theplaceyouwork@gsa.gov',
+    'password': 'TestTest1234#',
+    'agency': { 'id': 2 }
+  },
   'url': 'http://localhost:1337/api',
   'sails': {
       log: {

@@ -19,6 +19,8 @@ before(function(done) {
       level: 'error'
     },
     validateDomains: false,
+    requireAgency: false,
+    requireLocation: false,
     emailProtocol: '',
     hooks: {
       grunt: false,

@@ -5,6 +5,8 @@ var assert = chai.assert;
 var casper_chai = require('casper-chai');
 chai.use(casper_chai);
 
+var buildSettings = require('../../assets/js/backbone/config/login.json');
+
 // access environment vars
 var system = require('system');
 
@@ -44,12 +46,17 @@ describe('Profile actions', function() {
 
     // Fill out the registration form
     casper.then(function() {
-      casper.fillSelectors('#registration-form', {
+      var registration = {
         '#rname': config.user.name,
         '#rusername': config.user.username,
         '#rpassword': config.user.password,
         '#rpassword-confirm': config.user.password
-      }, false);
+      };
+
+      // If the build settings enable agency or location include thos
+      if (buildSettings.agency.enabled) registration['#ragency'] = config.user.agency;
+      if (buildSettings.location.enabled) registration['#rlocation'] = config.user.location;
+      casper.fillSelectors('#registration-form', registration, false);
       casper.waitForSelector(submitButton);
     });
 

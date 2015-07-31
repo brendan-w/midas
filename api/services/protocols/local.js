@@ -29,7 +29,8 @@ exports.register = function (req, res, next) {
   var name     = req.param('name')
     , username = req.param('username')
     , password = req.param('password')
-    , type     = req.param('type');
+    , type     = req.param('type')
+    , tags     = req.param('tags');
 
   if (!username) {
     req.flash('error', 'Error.Passport.Username.Missing');
@@ -49,6 +50,7 @@ exports.register = function (req, res, next) {
     username : username,
     name: name,
     permissions: type,
+    tags: tags
   }).populate('permissions').exec(function (err, user) {
     if (err) {
       if (err.code === 'E_VALIDATION') {

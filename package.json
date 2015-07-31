@@ -1,7 +1,7 @@
 {
   "name": "midas",
   "private": true,
-  "version": "0.6.2",
+  "version": "0.6.3",
   "description": "Innovation platform providing collaboration and crowdsourcing tools",
   "dependencies": {
     "async": "^0.2.9",

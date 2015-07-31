@@ -4,7 +4,9 @@ module.exports = {
     "password": "TestTest123#",
     "name": "Test User",
     "bio": "A profile for a user to help run tests",
-    "title": "Testing Specialist"
+    "title": "Testing Specialist",
+    "agency": 12,
+    "location": 32
   },
   "task": {
     "title": "Testing Task",

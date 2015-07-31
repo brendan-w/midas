@@ -108,8 +108,130 @@ describe('user:', function() {
         var b = JSON.parse(body);
         assert.equal(b.username, conf.testUser.username);
         assert.equal(b.name, conf.testUser.name);
-        done();
+        request(conf.url + '/auth/logout', function (err, response, body) {
+          if (err) { return done(err); }
+          done();
+        });
       });
+    });
+  });
+  it('register with location required (success)', function (done) {
+    sails.config.requireLocation = true;
+
+    var registrationInfo = {
+      name: conf.LocationRequiredUser.name,
+      username: conf.LocationRequiredUser.username,
+      password: conf.LocationRequiredUser.password,
+      json: true
+    };
+
+    request.post({ url: conf.url + '/auth/local', form: registrationInfo },
+      function (err, response, body) {
+        if (err) return done(err);
+        assert.equal(response.statusCode, 403);
+        registrationInfo.location = conf.LocationRequiredUser.location;
+        //console.log('registrationInfo', registrationInfo);
+        request.post({ url: conf.url + '/auth/local/register', form: registrationInfo, json: true },
+          function (err, response, body) {
+            if (err) { return done(err); }
+            assert.equal(response.statusCode, 200);
+            assert.equal(body.username, conf.LocationRequiredUser.username);
+            assert.equal(body.name, conf.LocationRequiredUser.name);
+            // make sure to log out
+            request(conf.url + '/auth/logout', function (err, response, body) {
+              if (err) return done(err);
+              sails.config.requireLocation = false;
+              done();
+            });
+        });
+      }
+    );
+  });
+  it('register with location required (failure)', function (done) {
+    sails.config.requireLocation = true;
+
+    var registrationInfo = {
+      name: conf.LocationRequiredUser.name,
+      username: conf.LocationRequiredUser.username,
+      password: conf.LocationRequiredUser.password,
+      json: true
+    };
+
+    request.post({ url: conf.url + '/auth/local', form: registrationInfo },
+      function (err, response, body) {
+        if (err) return done(err);
+        assert.equal(response.statusCode, 403);
+        request.post({ url: conf.url + '/auth/local/register', form: registrationInfo },
+          function (err, response, body) {
+            if (err) { return done(err); }
+            assert.equal(response.statusCode, 403);
+
+            // make sure to log out
+            request(conf.url + '/auth/logout', function (err, response, body) {
+              if (err) return done(err);
+              sails.config.requireLocation = false;
+              done();
+            });
+        });
+    });
+  });
+  it('register with agency required (success)', function (done) {
+    sails.config.requireAgency = true;
+
+    var registrationInfo = {
+      name: conf.AgencyRequiredUser.name,
+      username: conf.AgencyRequiredUser.username,
+      password: conf.AgencyRequiredUser.password,
+      json: true
+    };
+
+    request.post({ url: conf.url + '/auth/local', form: registrationInfo },
+      function (err, response, body) {
+        if (err) return done(err);
+        assert.equal(response.statusCode, 403);
+        registrationInfo.agency = conf.AgencyRequiredUser.agency;
+        request.post({ url: conf.url + '/auth/local/register', form: registrationInfo, json: true },
+          function (err, response, body) {
+            if (err) { return done(err); }
+            assert.equal(response.statusCode, 200);
+            assert.equal(body.username, conf.AgencyRequiredUser.username);
+            assert.equal(body.name, conf.AgencyRequiredUser.name);
+            // make sure to log out
+            request(conf.url + '/auth/logout', function (err, response, body) {
+              if (err) return done(err);
+              sails.config.requireAgency = false;
+              done();
+            });
+        });
+      }
+    );
+  });
+  it('register with agency required (failure)', function (done) {
+    sails.config.requireAgency = true;
+
+    var registrationInfo = {
+      name: conf.AgencyRequiredUser.name,
+      username: conf.AgencyRequiredUser.username,
+      password: conf.AgencyRequiredUser.password,
+      json: true
+    };
+
+    request.post({ url: conf.url + '/auth/local', form: registrationInfo },
+      function (err, response, body) {
+        if (err) return done(err);
+        assert.equal(response.statusCode, 403);
+        request.post({ url: conf.url + '/auth/local/register', form: registrationInfo },
+          function (err, response, body) {
+            if (err) { return done(err); }
+            assert.equal(response.statusCode, 403);
+
+            // make sure to log out
+            request(conf.url + '/auth/logout', function (err, response, body) {
+              if (err) return done(err);
+              sails.config.requireAgency = false;
+              done();
+            });
+        });
     });
   });
   it('create duplicate user logged in', function (done) {
