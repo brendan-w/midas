@@ -24,6 +24,7 @@ var ProjectShowView = Backbone.View.extend({
     "click #project-save"    : "exit_edit_mode_and_save",
     "click #project-close"   : "close",
     "click #project-reopen"  : "reopen",
+    "click #project-vet"     : "vet",
 
     "blur #project-edit-title"       : "v",
     "blur #project-edit-description" : "v",
@@ -205,6 +206,26 @@ var ProjectShowView = Backbone.View.extend({
 
   v: function(e) {
     return validate(e);
+  },
+
+  vet: function(e) {
+    if (e.preventDefault) e.preventDefault();
+    var self = this;
+
+    $.ajax({
+      url: "/api/vet",
+      type: "POST",
+      data: JSON.stringify({ project: this.model.get('id') }),
+      dataType: 'json',
+      contentType: 'application/json',
+      success: function(r) {
+        self.$("#vet-none").hide();
+        self.$("#vet-pending").show();
+      },
+      error: function(e) {
+        //TODO: handle errors
+      }
+    });
   },
 
   cleanup: function () {

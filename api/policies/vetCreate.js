@@ -11,10 +11,10 @@ module.exports = function vetCreate (req, res, next) {
   if(req.user[0].permissions.apply)
   {
     console.log(req.body);
-    if(!req.body.projectId)
+    if(!req.body.project)
       return res.send(400, { message: "Please specify a projectId" });
 
-    var projectId = req.body.projectId;
+    var projectId = req.body.project;
 
     //lookup the project they are requesting to be vetted for
     Project.countById(projectId).exec(function(err, c) {
