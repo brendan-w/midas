@@ -62,7 +62,7 @@ else
 
     # Loop through and apply unmigrated versions
     for ((i=$((VERSION+1)); i<=$LATEST; i++)); do
-      $SCRIPTS/$i.sh
+      source $SCRIPTS/$i.sh
     done
   else
     echo "Schema is up to date."
