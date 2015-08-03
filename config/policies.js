@@ -171,5 +171,12 @@ module.exports.policies = {
 
   SearchController : {
     '*': true
-  }
+  },
+
+  VetController : {
+    '*':              ['passport', 'authenticated'],
+    'create':         ['passport', 'authenticated', 'addUserId'],
+    'update':         ['passport', 'authenticated', 'admin'],
+    'findAllPending': ['passport', 'authenticated', 'admin'],
+  },
 };

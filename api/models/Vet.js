@@ -12,12 +12,14 @@ module.exports = {
 
     //the ID of the user requesting to be vetted (populated)
     user: {
-      model: 'User'
+      model: 'User',
+      required: true,
     },
 
     //the project ID that this vet request pertains to (populated)
     project: {
-      model: 'Project'
+      model: 'Project',
+      required: true,
     },
 
     //whether this request is pending, accepted, or rejected
@@ -28,6 +30,15 @@ module.exports = {
       model: 'User'
     }
 
-  }
+  },
+
+  beforeCreate: function(model, done) {
+    //prevent multiple vets for the same person/project
+    Vet.count({ user: model.user, project: model.project }).exec(function(err, vetCount) {
+      if(vetCount != 0)
+        return done("User is already vetted for this group");
+      done();
+    });
+  },
 
 };
