@@ -82,11 +82,11 @@ LATO 400 not used for anything right now
   src: local('OpenSans ExtraBold'), local('OpenSans-ExtraBold'), url(../fonts/OpenSans-ExtraBold.ttf) format('ttf');
 }
 
-
 body {
   background-color: #e5e5e5;
   font-family: 'OpenSans', Helvetica, Arial, sans-serif;
   font-weight: 400;
+  min-height: 100%;
 }
 
 header #banner {
@@ -320,6 +320,8 @@ h1, h2, h3, h4, h5, h6 {
 ******************/
 
 footer {
+  position: relative;
+  bottom: 0px;
   padding-top: 30px;
   font-size: 11px;
 }
