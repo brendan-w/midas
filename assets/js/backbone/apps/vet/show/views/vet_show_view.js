@@ -27,13 +27,12 @@ var VetShowView = BaseView.extend({
     this.projectCollection.fetch({
       success: function(collection) {
 
-        var vets = self.model.vettedFor()
         var projects = [];
 
         self.projectCollection.open().forEach(function(project) {
           projects.push({
             title: project.get('title'),
-            vetted: _.contains(vets, project.get('id')),
+            vetted: self.model.isVettedFor(project.get('id')),
           });
         });
 

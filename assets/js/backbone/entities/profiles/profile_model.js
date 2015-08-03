@@ -19,16 +19,18 @@ var Backbone = require('backbone');
       return res;
     },
 
-    //return an array of project ID's that this user is vetted for
-    vettedFor: function() {
+    //return true/false for if a user is vetted for a group
+    isVettedFor: function(projectId) {
 
-      vets = _.filter(this.get('vets'), function(vet) {
-        return vet.state == 'accepted';         
-      });
+      var vets = this.get('vets');
+      for(var i = 0; i < vets.length; i++)
+      {
+        if(vets[i].state   === 'accepted' &&
+           vets[i].project === projectId)
+          return true;
+      }
 
-      return _.map(vets, function(vet) {
-        return vet.project;
-      });
+      return false;
     },
 
     initializeProfileGet: function () {
