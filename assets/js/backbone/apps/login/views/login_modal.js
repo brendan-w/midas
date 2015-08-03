@@ -11,7 +11,7 @@ var ForgotTemplate     = require('../templates/forgot_template.html');
 var ForgotDoneTemplate = require('../templates/forgot_done_template.html');
 
 
-var LoginView = Backbone.View.extend({
+var LoginModal = Backbone.View.extend({
 
   events: {
     "click #forgot-password": "gotoForgotForm",
@@ -172,4 +172,4 @@ var LoginView = Backbone.View.extend({
   },
 });
 
-module.exports = LoginView;
+module.exports = LoginModal;
