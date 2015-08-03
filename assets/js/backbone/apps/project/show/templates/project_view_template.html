@@ -7,6 +7,10 @@
     margin-bottom: 30px;
   }
 
+  #project p {
+    color:white;
+  }
+
   #project-title {
     display:inline-block;
     padding-top: 30px;
@@ -51,10 +55,17 @@
 
             <!-- If the user is allowed to apply to jobs, present them with the vet button -->
             <% if(user && user.permissions.apply) { %>
-              <div id="project-vet">
+              <div id="vet-none" style="display:none;">
                 <button id="vet" class="btn btn-c2">Get pre-approved for this group</button>
                 <div><a href="#">What does it mean to get vetted?</a></div>
               </div>
+              <div id="vet-pending" style="display:none;">
+                <p>Your request for pre-approval will be reviewed as soon as possible.</p>
+              </div>
+              <div id="vet-accepted" style="display:none;">
+                <p><i class="fa fa-check">&nbsp;</i>You are pre-approved for this group</p>
+              </div>
+
             <% } %>
 
             <% if(user && (user.isOwner || user.permissions.admin)) { %>

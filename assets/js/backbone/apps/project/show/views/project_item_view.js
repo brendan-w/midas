@@ -12,7 +12,7 @@ var        ShareTemplate = require('../templates/project_share_template.txt');
 var           ModalAlert = require('../../../../components/modal_alert');
 var       ModalComponent = require('../../../../components/modal');
 var ProjectownerShowView = require('../../../projectowner/show/views/projectowner_show_view');
-
+var         ProfileModel = require('../../../../entities/profiles/profile_model');
 
 var ProjectShowView = Backbone.View.extend({
 
@@ -44,6 +44,7 @@ var ProjectShowView = Backbone.View.extend({
   },
 
   render: function() {
+    var self = this;
 
     //convert the model to JSON, and translate the description
     //out of markdown, and into HTML
@@ -68,6 +69,16 @@ var ProjectShowView = Backbone.View.extend({
     this.taskListController = new TaskListController({
       projectId: this.model.id
     });
+
+    //TODO: make window.cache.currentUser a bonefied backbone model
+    //      so this doens't have to happen, and we can simply .fetch()
+    //      to get the latest data.
+    var user = new ProfileModel();
+    this.listenTo(user, "profile:fetch:success", function() {
+      var target = user.vetStateFor(self.model.get('id'));
+      this.$("#vet-" + target).show();
+    });
+    user.remoteGet(window.cache.currentUser.id);
 
     //if we're in edit mode, setup the edit controls
     if(this.edit) this.render_edit();
