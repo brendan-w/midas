@@ -308,6 +308,7 @@ var ProfileShowView = Backbone.View.extend({
     if(this.vetView) this.vetView.cleanup();
     this.vetView = new VetShowView({
       el: ".vet-wrapper",
+      model: this.model,
     }).render();
   },
 

@@ -19,6 +19,18 @@ var Backbone = require('backbone');
       return res;
     },
 
+    //return an array of project ID's that this user is vetted for
+    vettedFor: function() {
+
+      vets = _.filter(this.get('vets'), function(vet) {
+        return vet.state == 'accepted';         
+      });
+
+      return _.map(vets, function(vet) {
+        return vet.project;
+      });
+    },
+
     initializeProfileGet: function () {
       var self = this;
 
