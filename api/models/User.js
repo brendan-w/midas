@@ -49,6 +49,11 @@ module.exports = {
       defaultsTo: 0
     },
 
+    vets: {
+      collection: 'Vet',
+      via: 'user'
+    },
+
     // Tag association
     tags: {
       collection: 'tagEntity',

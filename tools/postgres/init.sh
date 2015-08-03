@@ -27,10 +27,13 @@ done
 # Sort file names
 SORTED=($(printf '%s\n' "${VERSIONS[@]}"|sort))
 
+
 # Get latest version
 LENGTH=${#SORTED[@]}
 LAST=$((LENGTH - 1))
 LATEST=${SORTED[${LAST}]}
+
+echo $LATEST
 
 # Has the default schema been loaded?
 PSQL=`psql -U $USER -d $DB -c "\dt"`
