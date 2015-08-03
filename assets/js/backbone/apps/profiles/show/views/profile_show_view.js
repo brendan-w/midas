@@ -14,6 +14,7 @@ var Login = require('../../../../config/login.json');
 var ModalComponent = require('../../../../components/modal');
 var PAView = require('./profile_activity_view');
 var TagFactory = require('../../../../components/tag_factory');
+var VetShowView = require('../../../vet/show/views/vet_show_view');
 
 
 var ProfileShowView = Backbone.View.extend({
@@ -85,6 +86,7 @@ var ProfileShowView = Backbone.View.extend({
     this.initializeTags();
     this.initializePAView();
     this.initializeTextArea();
+    this.initializeVet();
     this.updatePhoto();
     this.updateProfileEmail();
     return this;
@@ -302,6 +304,13 @@ var ProfileShowView = Backbone.View.extend({
     }).render();
   },
 
+  initializeVet: function() {
+    if(this.vetView) this.vetView.cleanup();
+    this.vetView = new VetShowView({
+      el: ".vet-wrapper",
+    }).render();
+  },
+
   fieldModified: function (e) {
 
     //check that the name isn't a null string
@@ -419,6 +428,7 @@ var ProfileShowView = Backbone.View.extend({
     if (this.projectView) { this.projectView.cleanup(); }
     if (this.taskView) { this.taskView.cleanup(); }
     if (this.volView) { this.volView.cleanup(); }
+    if (this.vetView) this.vetView.cleanup();
     removeView(this);
   }
 
