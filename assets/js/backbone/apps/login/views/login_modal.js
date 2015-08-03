@@ -1,8 +1,9 @@
 
-var _ = require('underscore');
+var _        = require('underscore');
 var Backbone = require('backbone');
-var utils = require('../../../mixins/utilities');
-var login = require('../../../config/login.json');
+var utils    = require('../../../mixins/utilities');
+var login    = require('../../../config/login.json');
+var UIConfig = require('../../../config/ui.json');
 
 
 var LoginTemplate      = require('../templates/login_template.html');
