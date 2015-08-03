@@ -174,8 +174,8 @@ module.exports.policies = {
   },
 
   VetController : {
-    '*':              ['passport', 'authenticated'],
-    'create':         ['passport', 'authenticated', 'addUserId'],
+    '*':                false,
+    'create':         ['passport', 'authenticated', 'vetCreate'],
     'update':         ['passport', 'authenticated', 'admin'],
     'findAllPending': ['passport', 'authenticated', 'admin'],
   },

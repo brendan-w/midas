@@ -1108,7 +1108,6 @@ CREATE TABLE vet (
     "user" integer,
     "project" integer,
     "state" text,
-    "decidingUser" integer,
     "createdAt" timestamp with time zone,
     "updatedAt" timestamp with time zone,
     "deletedAt" timestamp with time zone

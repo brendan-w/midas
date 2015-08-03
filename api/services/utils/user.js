@@ -133,6 +133,7 @@ module.exports = {
 
     User.findOne({ id: userId })
         .populate('tags')
+        .populate('vets')
         .populate('passports')
         .populate('permissions')
         .exec(function (err, user) {

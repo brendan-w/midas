@@ -23,12 +23,16 @@ module.exports = {
     },
 
     //whether this request is pending, accepted, or rejected
-    state: 'STRING',
-
-    //the user that made the vetting descision (populated)
-    decidingUser: {
-      model: 'User'
-    }
+    /*
+      states:
+        "pending"
+        "accepted"
+        "rejected"
+    */
+    state: {
+      type: 'STRING',
+      defaultsTo: 'pending',
+    },
 
   },
 
