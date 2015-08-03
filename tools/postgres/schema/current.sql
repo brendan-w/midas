@@ -1104,14 +1104,14 @@ ALTER SEQUENCE usersetting_id_seq OWNED BY usersetting.id;
 --
 
 CREATE TABLE vet (
-    \"id\" integer NOT NULL,
-    \"user\" integer,
-    \"project\" integer,
-    \"state\" text,
-    \"decidingUser\" integer,
-    \"createdAt\" timestamp with time zone,
-    \"updatedAt\" timestamp with time zone,
-    \"deletedAt\" timestamp with time zone
+    "id" integer NOT NULL,
+    "user" integer,
+    "project" integer,
+    "state" text,
+    "decidingUser" integer,
+    "createdAt" timestamp with time zone,
+    "updatedAt" timestamp with time zone,
+    "deletedAt" timestamp with time zone
 );
 
 
