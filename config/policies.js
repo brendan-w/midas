@@ -45,7 +45,7 @@ module.exports.policies = {
     'profile':       ['passport', 'authenticated'],
     'photo':         ['passport', 'authenticated', 'hasIdParam'],
     'info':          ['passport', 'authenticated', 'hasIdParam'],
-    'update':        ['passport', 'authenticated', 'hasIdParam', 'user', 'scrubPermissions'],
+    'update':        ['passport', 'authenticated', 'hasIdParam', 'user', 'userUpdate'],
     'username':      [],
     'find':          ['passport', 'authenticated'],
     'all':           ['passport', 'authenticated'],
