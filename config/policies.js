@@ -75,7 +75,7 @@ module.exports.policies = {
     'testupload': true,
 
     // everything else is protected
-    '*':          ['protectedFile']
+    '*':          ['passport', 'protectedFile']
   },
 
   ProjectController : {
