@@ -69,11 +69,11 @@ var CoreAccountView = Backbone.View.extend({
       url: '/api/auth/local/register',
       type: 'POST',
       data: data
-    }).done(function (success) {
+    }).done(function (user) {
       // Set the user object and trigger the user login event
-      window.cache.currentUser = success;
-      window.cache.userEvents.trigger("user:login", success);
-      cb(success);
+      window.cache.currentUser = user;
+      window.cache.userEvents.trigger("user:login", user);
+      cb(user);
     }).fail(function (error) {
       //TODO: handle these errors, if they aren't already handled
       //      by the Global AJAX Error listener

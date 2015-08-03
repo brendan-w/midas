@@ -45,7 +45,7 @@ var Register = Backbone.View.extend({
     });
 
     //TODO: remove this when done
-    // this.render("applicant");
+    this.render("applicant");
   },
 
   /*
@@ -161,11 +161,23 @@ var Register = Backbone.View.extend({
   submit: function($form) {
     var self = this;
 
+
     //create the user
     //target should be either "applicant" or "poster:unapproved"
-    this.coreAccount.submit(this.target, function() {
+    this.coreAccount.submit(this.target, function(user) {
+
       //update their profile according to the other form pages
-      console.log("submit");
+      console.log("submit: ", this.target);
+
+      //hide the modal
+
+      self.$el.bind('hidden.bs.modal', function() {
+        // if successful, reload page
+        Backbone.history.loadUrl();
+        window.cache.userEvents.trigger("user:login:success", user);
+        if (self.options.navigate)
+          window.cache.userEvents.trigger("user:login:success:navigate", user);
+      });
 
       self.modal.hide();
     });
