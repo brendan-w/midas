@@ -13,7 +13,6 @@ module.exports = {
     //the ID of the user
     user: {
       model: 'User',
-      required: true,
     },
 
     //the name of the language

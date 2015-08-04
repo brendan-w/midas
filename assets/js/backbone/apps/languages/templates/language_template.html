@@ -12,7 +12,6 @@
 
   ul.lang-list li {
     padding-top: 10px;
-    padding-bottom: 15px;
   }
 
   ul.lang-list li:first-of-type {
@@ -21,6 +20,11 @@
 
   ul.lang-list li:last-of-type {
     border-bottom: none;
+  }
+
+  /* normal form-groups were a little too big */
+  ul.lang-list li .row {
+    margin-bottom: 5px;
   }
 
 </style>
@@ -32,6 +36,5 @@
 <div class="row">
   <div class="col-sm-12">
     <button class="lang-add btn btn-c2"><i class="fa fa-plus">&nbsp;</i>Add Language</button>
-    <button class="lang-test btn btn-c2">test</button>
   </div>
 </div>

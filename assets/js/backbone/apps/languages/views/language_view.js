@@ -14,7 +14,6 @@ var Languages = Backbone.View.extend({
   events: {
     "click .lang .close" : "delete_lang", 
     "click .lang-add"    : "add_lang",
-    "click .lang-test"   : "data",
   },
 
   initialize: function() {
@@ -78,8 +77,7 @@ var Languages = Backbone.View.extend({
     return this;
   },
 
-  data: function(e) {
-    if(e && e.preventDefault) e.preventDefault();
+  data: function(user_id) {
 
     if(validateAll(this.$el))
       return false;
@@ -102,6 +100,7 @@ var Languages = Backbone.View.extend({
       else
       {
         langs.push({
+          user:               user_id,
           language:           language,
           writtenProficiency: written,
           spokenProficiency:  spoken,

@@ -343,6 +343,7 @@ var ProfileShowView = Backbone.View.extend({
 
   profileSubmit: function (e) {
     e.preventDefault();
+    var self = this;
 
     // If the name isn't valid, don't put the save through
     if (validate({ currentTarget: '#name' })) {
@@ -353,35 +354,39 @@ var ProfileShowView = Backbone.View.extend({
     setTimeout(function() { $("#profile-save, #submit").attr("disabled", "disabled"); }, 0);
 
     var newTags = [].concat(
-          $("#company").select2('data'),
-          $("#tag_topic").select2('data'),
-          $("#tag_skill").select2('data'),
-          $("#location").select2('data')
-        ),
-        modelTags = _(this.model.get('tags')).filter(function(tag) {
-          return (tag.type !== 'agency' && tag.type !== 'location');
-        }),
-        data = {
-          name:  $("#name").val(),
-          title: $("#title").val(),
-          bio: $("#bio").val(),
-          username: $("#profile-email").val()
-        },
-        email = this.model.get('username'),
-        self = this,
-        tags = _(modelTags.concat(newTags)).chain()
-          .filter(function(tag) {
-            return _(tag).isObject() && !tag.context;
-          })
-          .map(function(tag) {
-            return (tag.id && tag.id !== tag.name) ? +tag.id : {
-              name: tag.name,
-              type: tag.tagType,
-              data: tag.data
-            };
-          }).unique().value();
+      $("#company").select2('data'),
+      $("#tag_topic").select2('data'),
+      $("#tag_skill").select2('data'),
+      $("#location").select2('data')
+    );
 
-    data.tags = tags;
+    var modelTags = _(this.model.get('tags')).filter(function(tag) {
+          return (tag.type !== 'agency' && tag.type !== 'location');
+    });
+
+    var data = {
+      name:     $("#name").val(),
+      title:    $("#title").val(),
+      bio:      $("#bio").val(),
+      username: $("#profile-email").val()
+    };
+
+    //parse tags
+    data.tags = _(modelTags.concat(newTags)).chain()
+      .filter(function(tag) {
+        return _(tag).isObject() && !tag.context;
+      })
+      .map(function(tag) {
+        return (tag.id && tag.id !== tag.name) ? +tag.id : {
+          name: tag.name,
+          type: tag.tagType,
+          data: tag.data
+        };
+      }).unique().value();
+
+    data.languages = this.langView.data(this.model.get('id'));
+    if(!data.languages)
+      return; //failed validation
 
     this.model.trigger("profile:save", data);
   },
