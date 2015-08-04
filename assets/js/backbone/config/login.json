@@ -1,8 +1,7 @@
 {
   "signin": true,
   "oauth": [
-    "linkedin",
-    "myusa"
+    "linkedin"
   ],
   "config": {
     "linkedin": {
