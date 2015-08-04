@@ -48,6 +48,7 @@ var VetShowView = BaseView.extend({
       //TODO: handle errors
     });
 
+    return this;
   },
 
   cleanup: function() {

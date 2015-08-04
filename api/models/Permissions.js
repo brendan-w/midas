@@ -72,7 +72,7 @@ module.exports = {
       defaultsTo: false
     },
 
-    // permission to vet an applicant for a particular working group (project)
+    // permission to accept an applicant's vet request for a particular working group (project)
     vet: {
       type: 'BOOLEAN',
       defaultsTo: false

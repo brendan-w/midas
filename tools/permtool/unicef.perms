@@ -38,6 +38,6 @@ module.exports = [
     project_create:      true,
     task_create:         true,
     moderate:            true,
-    vet:                 false,
+    vet:                 true,
   },
 ];
