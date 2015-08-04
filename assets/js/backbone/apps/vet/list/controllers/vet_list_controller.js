@@ -18,6 +18,7 @@ var VetList = BaseController.extend({
   },
 
   initializeView:function() {
+    if (this.vetListView) this.vetListView.cleanup();
     this.vetListView = new VetListView({
       el: this.el,
       collection: this.collection,

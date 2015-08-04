@@ -5,7 +5,6 @@ var utils = require('../../../../mixins/utilities');
 var BaseView = require('../../../../base/base_view');
 
 var VetListTemplate = require('../templates/vet_list_template.html');
-var VetListItemTemplate = require('../templates/vet_list_item_template.html');
 
 
 /*
@@ -13,29 +12,40 @@ var VetListItemTemplate = require('../templates/vet_list_item_template.html');
 */
 var VetListView = BaseView.extend({
 
+  events: {
+    "click .vet-state" : "set_vet_state",
+    "click .vet-state" : "set_vet_state",
+  },
+
   initialize: function(options) {
     this.options = options;
 
   },
 
   render: function() {
-    var self = this;
+    console.log("render");
 
     //render the base template
-    self.$el.html(_.template(VetListTemplate)({
-      //nothing yet...
+    this.$el.html(_.template(VetListTemplate)({
+      vets: this.collection.toJSON(),
     }));
 
-    this.$list = this.$("#vet-list-pending");
-
-    this.collection.each(function(vet) {
-      self.$list.append(_.template(VetListItemTemplate)({
-        vet: vet.toJSON(),
-      }));
-    });
-
-    self.$el.i18n();
+    this.$el.i18n();
     return this;
+  },
+
+  set_vet_state: function(e) {
+    if (e && e.preventDefault) e.preventDefault();
+
+    //lookup the ID and requested state from the DOM
+    var id = $(e.target).parent().parent().data('id');
+    var state = $(e.target).data("state");
+
+    //lookup the corresponding Vet model
+    var vet = this.collection.findWhere({ id: id });
+    vet.set("state", state);
+    //save it
+    vet.save();
   },
 
   cleanup: function() {
