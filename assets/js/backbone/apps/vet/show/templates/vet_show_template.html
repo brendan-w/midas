@@ -1,0 +1,13 @@
+<ul class="vet-list">
+
+  <!-- simply add a .vetted class to each <li> that the user is vetted for -->
+  <% _.each(projects, function(project) { %>
+    
+    <li class="<% if(project.vetted) { %>vetted<% } %>">
+      <i class='fa fa-check'>&nbsp;</i>
+      <span><%= project.title %></span>
+    </li>
+
+  <%  }); %>
+
+</ul>

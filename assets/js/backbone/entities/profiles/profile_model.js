@@ -19,6 +19,29 @@ var Backbone = require('backbone');
       return res;
     },
 
+    vetStateFor: function(projectId) {
+      var vets = _.where(this.get('vets'), { project: projectId });
+
+      if(vets.length == 0)
+        return "none";
+      else
+        return vets[0].state;
+    },
+
+    //return true/false for if a user is vetted for a group
+    isVettedFor: function(projectId) {
+
+      var vets = this.get('vets');
+      for(var i = 0; i < vets.length; i++)
+      {
+        if(vets[i].state   === 'accepted' &&
+           vets[i].project === projectId)
+          return true;
+      }
+
+      return false;
+    },
+
     initializeProfileGet: function () {
       var self = this;
 

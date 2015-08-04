@@ -54,16 +54,28 @@
               </a>
               <ul class="dropdown-menu" role="menu" aria-labelledby="navbar-profile">
                 <li role="presentation"><a role="menuitem" class="nav-link" tabindex="-1" href="/profile">Profile</a></li>
+
+                <% if (user.permissions.vet === true) { %>
+                  <li role="presentation" class="divider"></li>
+                  <li role="presentation">
+                    <a role="menuitem" tabindex="-1" href="/vet" class="nav-link">Vetting Controls</a>
+                  </li>
+                <% } %>
+
                 <% if (user.permissions.admin === true) { %>
-                <li role="presentation" class="divider"></li>
-                <li role="presentation"><a role="menuitem"
-                   tabindex="-1" href="/admin" class="nav-link">Administration</a></li>
+                  <li role="presentation" class="divider"></li>
+                  <li role="presentation">
+                    <a role="menuitem" tabindex="-1" href="/admin" class="nav-link">Administration</a>
+                  </li>
                 <% } %>
+
                 <% if (login.local.logout) { %>
-                <li role="presentation" class="divider"></li>
-                <li role="presentation"><a role="menuitem"
-                   tabindex="-1" href="/auth/logout" class="logout">Logout</a></li>
+                  <li role="presentation" class="divider"></li>
+                  <li role="presentation">
+                    <a role="menuitem" tabindex="-1" href="/auth/logout" class="logout">Logout</a>
+                  </li>
                 <% } %>
+
               </ul>
             </li>
 

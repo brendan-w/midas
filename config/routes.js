@@ -88,6 +88,10 @@ module.exports.routes = {
     controller: 'main',
     action: 'index'
   },
+  '/vet': {
+    controller: 'main',
+    action: 'index'
+  },
 
   '/index.html': '/',
 

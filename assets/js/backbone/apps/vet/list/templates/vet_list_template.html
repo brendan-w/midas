@@ -1,0 +1,75 @@
+
+<style>
+
+  ul#vet-list-pending {
+    list-style: none;
+    padding-left: 0px;
+  }
+
+  li.vet button {
+    width:100%;
+
+    /* Although it is .disabled, it should stil be clickable */
+    cursor:pointer !important;
+  }
+
+</style>
+
+<section>
+  <div class="container">
+
+    <div class="row box-pad-b">
+      <div class="col-md-12 nopadding">
+        <div class="row border-bottom">
+          <div class="col-sm-4"><h4>Requesting User</h4></div>
+          <div class="col-sm-4"><h4><span data-i18n="Project">Project</span></h4></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <ul id="vet-list-pending">
+
+        <% _.each(vets, function(vet) { %>
+
+          <li class="vet row box" data-id="<%- vet.id %>">
+            <div class="col-sm-4"><h3><a href="/profile/<%- vet.user.id %>"><%- vet.user.name %></a></h3></div>
+            <div class="col-sm-4"><%- vet.project.title %></div>
+            <div class="col-sm-2"></div>            
+            <div class="col-sm-1">
+
+              <% if (vet.state == "accepted") { %>
+                <button class="btn btn-success" ><i class="fa fa-check"></i></button>
+              <% } else  { %>
+                <!-- The state string sent to the backend                                                               vvvvvvvv -->
+                <button class="btn btn-success vet-state <% if(vet.state != "pending") { %>disabled<% } %>" data-state="accepted">Accept</button>
+              <% } %>
+
+            </div>
+            <div class="col-sm-1">
+
+              <% if (vet.state == "rejected") { %>
+                <button class="btn btn-danger" ><i class="fa fa-check"></i></button>
+              <% } else  { %>
+                <!-- The state string sent to the backend                                                              vvvvvvvv -->
+                <button class="btn btn-danger vet-state <% if(vet.state != "pending") { %>disabled<% } %>" data-state="rejected">Reject</button>
+              <% } %>
+
+            </div>
+          </li>
+
+        <%  }); %>
+
+        <% if(vets.length == 0) { %>
+          <div class="row">
+            <div class="col-sm-12">
+              <p>No vet requests</p>
+            </div>
+          </div>
+        <%  } %>
+
+      </ul>
+    </div>
+
+  </div>
+</section>

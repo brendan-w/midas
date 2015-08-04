@@ -45,7 +45,7 @@ module.exports.policies = {
     'profile':       ['passport', 'authenticated'],
     'photo':         ['passport', 'authenticated', 'hasIdParam'],
     'info':          ['passport', 'authenticated', 'hasIdParam'],
-    'update':        ['passport', 'authenticated', 'hasIdParam', 'user', 'scrubPermissions'],
+    'update':        ['passport', 'authenticated', 'hasIdParam', 'user', 'userUpdate'],
     'username':      [],
     'find':          ['passport', 'authenticated'],
     'all':           ['passport', 'authenticated'],
@@ -75,7 +75,7 @@ module.exports.policies = {
     'testupload': true,
 
     // everything else is protected
-    '*':          ['protectedFile']
+    '*':          ['passport', 'protectedFile']
   },
 
   ProjectController : {
@@ -171,5 +171,14 @@ module.exports.policies = {
 
   SearchController : {
     '*': true
-  }
+  },
+
+  VetController : {
+    '*':              false,
+    'create':         ['passport', 'authenticated', 'vetCreate'],
+    'update':         ['passport', 'authenticated', 'canVet', 'vetUpdate'],
+    'destroy':        ['passport', 'authenticated', 'canVet'],
+    'findOne':        ['passport', 'authenticated', 'canVet'],
+    'findAllPending': ['passport', 'authenticated', 'canVet'],
+  },
 };

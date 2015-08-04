@@ -650,8 +650,9 @@ ul.vet-list {
 }
 
 ul.vet-list li {
-  display: inline;
+  display: inline-block;
   padding:2px 5px;
+  margin-right:5px;
   border:2px solid #BBB;
   color: #AAA;
 }

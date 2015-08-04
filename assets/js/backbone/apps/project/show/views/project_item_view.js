@@ -12,7 +12,7 @@ var        ShareTemplate = require('../templates/project_share_template.txt');
 var           ModalAlert = require('../../../../components/modal_alert');
 var       ModalComponent = require('../../../../components/modal');
 var ProjectownerShowView = require('../../../projectowner/show/views/projectowner_show_view');
-
+var         ProfileModel = require('../../../../entities/profiles/profile_model');
 
 var ProjectShowView = Backbone.View.extend({
 
@@ -24,6 +24,7 @@ var ProjectShowView = Backbone.View.extend({
     "click #project-save"    : "exit_edit_mode_and_save",
     "click #project-close"   : "close",
     "click #project-reopen"  : "reopen",
+    "click #project-vet"     : "vet",
 
     "blur #project-edit-title"       : "v",
     "blur #project-edit-description" : "v",
@@ -44,6 +45,7 @@ var ProjectShowView = Backbone.View.extend({
   },
 
   render: function() {
+    var self = this;
 
     //convert the model to JSON, and translate the description
     //out of markdown, and into HTML
@@ -68,6 +70,16 @@ var ProjectShowView = Backbone.View.extend({
     this.taskListController = new TaskListController({
       projectId: this.model.id
     });
+
+    //TODO: make window.cache.currentUser a bonefied backbone model
+    //      so this doens't have to happen, and we can simply .fetch()
+    //      to get the latest data.
+    var user = new ProfileModel();
+    this.listenTo(user, "profile:fetch:success", function() {
+      var target = user.vetStateFor(self.model.get('id'));
+      this.$("#vet-" + target).show();
+    });
+    user.remoteGet(window.cache.currentUser.id);
 
     //if we're in edit mode, setup the edit controls
     if(this.edit) this.render_edit();
@@ -194,6 +206,26 @@ var ProjectShowView = Backbone.View.extend({
 
   v: function(e) {
     return validate(e);
+  },
+
+  vet: function(e) {
+    if (e.preventDefault) e.preventDefault();
+    var self = this;
+
+    $.ajax({
+      url: "/api/vet",
+      type: "POST",
+      data: JSON.stringify({ project: this.model.get('id') }),
+      dataType: 'json',
+      contentType: 'application/json',
+      success: function(r) {
+        self.$("#vet-none").hide();
+        self.$("#vet-pending").show();
+      },
+      error: function(e) {
+        //TODO: handle errors
+      }
+    });
   },
 
   cleanup: function () {

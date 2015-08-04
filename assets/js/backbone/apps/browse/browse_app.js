@@ -12,6 +12,7 @@ var TaskModel = require('../../entities/tasks/task_model');
 var TaskShowController = require('../tasks/show/controllers/task_show_controller');
 var TaskEditFormView = require('../tasks/edit/views/task_edit_form_view');
 var AdminMainController = require('../admin/controllers/admin_main_controller');
+var VetListController = require('../vet/list/controllers/vet_list_controller');
 var HomeController = require('../home/controllers/home_controller');
 var LoginModal = require('../login/views/login_modal');
 var RegisterModal = require('../register/views/register_modal');
@@ -32,7 +33,8 @@ var BrowseRouter = Backbone.Router.extend({
     'profile/:id(/)'            : 'showProfile',
     'profile/:id(/)/:action'    : 'showProfile',
     'admin(/)'                  : 'showAdmin',
-    'admin(/):action(/)'        : 'showAdmin'
+    'admin(/):action(/)'        : 'showAdmin',
+    'vet(/)'                    : 'showVet',
   },
 
   data: { saved: false },
@@ -70,6 +72,8 @@ var BrowseRouter = Backbone.Router.extend({
     if (this.profileShowController) this.profileShowController.cleanup();
     if (this.taskShowController)    this.taskShowController.cleanup();
     if (this.homeController)        this.homeController.cleanup();
+    if (this.adminMainController)   this.adminMainController.cleanup();
+    if (this.vetListController)     this.vetListController.cleanup();
     this.data = { saved: false };
   },
 
@@ -194,7 +198,14 @@ var BrowseRouter = Backbone.Router.extend({
       el: "#container",
       action: action
     });
-  }
+  },
+
+  showVet: function() {
+    this.cleanupChildren();
+    this.vetListController = new VetListController({
+      el: "#container",
+    });
+  },
 
 });
 
