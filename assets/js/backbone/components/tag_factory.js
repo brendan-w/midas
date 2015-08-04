@@ -58,6 +58,8 @@ TagFactory = BaseComponent.extend({
     @param {Object}   options
     @param {String}   options.type               - The tag type this dropdown will operate with
     @param {String}   options.selector           - CSS selector of the new dropdown, element should be preexisting
+                            OR
+    @param {String}   options.$el                - The jQuery element for the new dropdown
 
     optional:
     @param {String}   options.width='500px'      - CSS width attribute for the dropdown
@@ -158,7 +160,9 @@ TagFactory = BaseComponent.extend({
 
 
     //init Select2
-    var $sel = $(options.selector).select2(settings);
+    var $sel;
+    if(options.$el) $sel = options.$el.select2(settings);
+    else            $sel = $(options.selector).select2(settings);
 
 
     //event handlers

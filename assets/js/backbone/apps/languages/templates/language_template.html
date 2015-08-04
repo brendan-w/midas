@@ -4,6 +4,10 @@
   ul.lang-list {
     list-style: none;
     padding-left: 0px;
+    max-height: 250px; /* roughly 2 li's of content */
+    overflow: scroll;
+    overflow-x: hidden;
+
   }
 
   ul.lang-list li {
@@ -23,12 +27,10 @@
 
 
 
-<ul class="lang-list">
-  
-</ul>
+<ul class="lang-list"></ul>
 
 <div class="row">
   <div class="col-sm-12">
-    <button class="btn btn-c2"><i class="fa fa-plus">&nbsp;</i>Add Language</button>
+    <button class="lang-add btn btn-c2"><i class="fa fa-plus">&nbsp;</i>Add Language</button>
   </div>
 </div>
