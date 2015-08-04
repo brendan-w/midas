@@ -54,6 +54,11 @@ module.exports = {
       via: 'user'
     },
 
+    languages: {
+      collection: 'Language',
+      via: 'user'
+    },
+
     // Tag association
     tags: {
       collection: 'tagEntity',
