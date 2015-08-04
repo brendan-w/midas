@@ -45,7 +45,7 @@ var Register = Backbone.View.extend({
     });
 
     //TODO: remove this when done
-    this.render("applicant");
+    // this.render("applicant");
   },
 
   /*
@@ -177,8 +177,8 @@ var Register = Backbone.View.extend({
         // if successful, reload page
         Backbone.history.loadUrl();
         window.cache.userEvents.trigger("user:login:success", user);
-        if (self.options.navigate)
-          window.cache.userEvents.trigger("user:login:success:navigate", user);
+        // if (self.options.navigate)
+          // window.cache.userEvents.trigger("user:login:success:navigate", user);
       });
 
       self.modal.hide();

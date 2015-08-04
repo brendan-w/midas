@@ -43,6 +43,9 @@ var Languages = Backbone.View.extend({
         var $written = $lang.find(".lang-written .lang-proficiency");
         var $spoken  = $lang.find(".lang-spoken  .lang-proficiency");
 
+        //fill in the language's name
+        $lang.find(".lang-name").val(lang.language);
+
         //make the dropdowns
         self.tagFactory.createTagDropDown({
           type:        "lang-proficiency",
@@ -52,7 +55,7 @@ var Languages = Backbone.View.extend({
           searchable:  false,
           width:       "100%",
           fillWith:    self.proficiencies,
-          data:        _.findWhere(this.proficiencies, { id : lang.written }),
+          data:        _.findWhere(self.proficiencies, { id : lang.writtenProficiency }),
         });
 
         self.tagFactory.createTagDropDown({
@@ -63,7 +66,7 @@ var Languages = Backbone.View.extend({
           searchable:  false,
           width:       "100%",
           fillWith:    self.proficiencies,
-          data:        _.findWhere(this.proficiencies, { id : lang.spoken }),
+          data:        _.findWhere(self.proficiencies, { id : lang.spokenProficiency }),
         });
 
       }); //initial_langs.forEach()

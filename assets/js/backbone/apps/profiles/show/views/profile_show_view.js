@@ -1,20 +1,22 @@
-var _ = require('underscore');
+var        _ = require('underscore');
 var Backbone = require('backbone');
-var utils = require('../../../../mixins/utilities');
-var UIConfig = require('../../../../config/ui.json');
-var async = require('async');
+var    async = require('async');
+var   marked = require('marked');
 var jqIframe = require('blueimp-file-upload/js/jquery.iframe-transport');
-var jqFU = require('blueimp-file-upload/js/jquery.fileupload.js');
-var MarkdownEditor = require('../../../../components/markdown_editor');
-var marked = require('marked');
-var TagShowView = require('../../../tag/show/views/tag_show_view');
+var     jqFU = require('blueimp-file-upload/js/jquery.fileupload.js');
+var    utils = require('../../../../mixins/utilities');
+var UIConfig = require('../../../../config/ui.json');
+var    Login = require('../../../../config/login.json');
+
+var  MarkdownEditor = require('../../../../components/markdown_editor');
+var     TagShowView = require('../../../tag/show/views/tag_show_view');
 var ProfileTemplate = require('../templates/profile_show_template.html');
-var ShareTemplate = require('../templates/profile_share_template.txt');
-var Login = require('../../../../config/login.json');
-var ModalComponent = require('../../../../components/modal');
-var PAView = require('./profile_activity_view');
-var TagFactory = require('../../../../components/tag_factory');
-var VetShowView = require('../../../vet/show/views/vet_show_view');
+var   ShareTemplate = require('../templates/profile_share_template.txt');
+var  ModalComponent = require('../../../../components/modal');
+var          PAView = require('./profile_activity_view');
+var      TagFactory = require('../../../../components/tag_factory');
+var     VetShowView = require('../../../vet/show/views/vet_show_view');
+var        LangView = require('../../../languages/views/language_view');
 
 
 var ProfileShowView = Backbone.View.extend({
@@ -84,6 +86,7 @@ var ProfileShowView = Backbone.View.extend({
     this.initializeSelect2();
     this.initializeLikes();
     this.initializeTags();
+    this.initializeLangs();
     this.initializePAView();
     this.initializeTextArea();
     this.initializeVet();
@@ -166,6 +169,13 @@ var ProfileShowView = Backbone.View.extend({
       edit: this.edit
     });
     this.tagView.render();
+  },
+
+  initializeLangs: function() {
+    if (this.langView) this.langView.cleanup();
+    this.langView = new LangView({
+      el: '.lang-wrapper',
+    }).render(this.model.get('languages'));
   },
 
   initializePAView: function () {
@@ -424,12 +434,13 @@ var ProfileShowView = Backbone.View.extend({
     }
   },
   cleanup: function () {
-    if (this.md) { this.md.cleanup(); }
-    if (this.tagView) { this.tagView.cleanup(); }
-    if (this.projectView) { this.projectView.cleanup(); }
-    if (this.taskView) { this.taskView.cleanup(); }
-    if (this.volView) { this.volView.cleanup(); }
-    if (this.vetView) this.vetView.cleanup();
+    if (this.md)          this.md.cleanup();
+    if (this.tagView)     this.tagView.cleanup();
+    if (this.langView)    this.langView.cleanup();
+    if (this.projectView) this.projectView.cleanup();
+    if (this.taskView)    this.taskView.cleanup();
+    if (this.volView)     this.volView.cleanup();
+    if (this.vetView)     this.vetView.cleanup();
     removeView(this);
   }
 
