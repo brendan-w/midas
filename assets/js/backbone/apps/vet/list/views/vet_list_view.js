@@ -38,7 +38,7 @@ var VetListView = BaseView.extend({
     if (e && e.preventDefault) e.preventDefault();
 
     //lookup the ID and requested state from the DOM
-    var id = $(e.target).parent().parent().data('id');
+    var id = $(e.target).closest("li.vet").data('id');
     var state = $(e.target).data("state");
 
     //lookup the corresponding Vet model

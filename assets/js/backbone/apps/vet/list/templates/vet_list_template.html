@@ -29,6 +29,7 @@
 
     <div class="row">
       <ul id="vet-list-pending">
+
         <% _.each(vets, function(vet) { %>
 
           <li class="vet row box" data-id="<%- vet.id %>">
@@ -58,6 +59,15 @@
           </li>
 
         <%  }); %>
+
+        <% if(vets.length == 0) { %>
+          <div class="row">
+            <div class="col-sm-12">
+              <p>No vet requests</p>
+            </div>
+          </div>
+        <%  } %>
+
       </ul>
     </div>
 
