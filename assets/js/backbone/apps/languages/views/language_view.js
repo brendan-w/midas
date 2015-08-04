@@ -28,6 +28,9 @@ var Languages = Backbone.View.extend({
     this.$(".lang-list").append(_.template(LanguageItemTemplate)({
       //nothing so far...
     }));
+    this.$(".lang-list").append(_.template(LanguageItemTemplate)({
+      //nothing so far...
+    }));
 
     this.tagFactory.fetchAllTagsOfType("lang-proficiency", function(tags) {
       self.tagFactory.createTagDropDown({
