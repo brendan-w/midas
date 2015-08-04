@@ -8,12 +8,15 @@ var TagFactory     = require('../../../components/tag_factory');
 var LanguageTemplate = require('../templates/language_template.html');
 var LanguageItemTemplate = require('../templates/language_item_template.html');
 
-
+/*
+  Give this view a model for the user it's editting
+*/
 var Languages = Backbone.View.extend({
 
   events: {
     "click .lang .close" : "delete_lang", 
     "click .lang-add"    : "add_lang",
+    "click .lang-test"   : "data",
   },
 
   initialize: function() {
@@ -32,20 +35,36 @@ var Languages = Backbone.View.extend({
     return this;
   },
 
+  data: function(e) {
+    if(e && e.preventDefault) e.preventDefault();
+    this.$(".lang").each(function(i, lang) {
+      var $lang = $(lang);
+
+      //fetch the proficiencies
+      var written = $lang.find(".lang-written .lang-proficiency").select2('data');
+      var spoken  = $lang.find(".lang-spoken  .lang-proficiency").select2('data');
+
+
+    });
+  },
+
   add_lang: function(e) {
     if(e && e.preventDefault) e.preventDefault();
     var self = this;
 
+    //add a new language item
     this.$(".lang-list").append(_.template(LanguageItemTemplate)({
-      //nothing so far...
+      id: "",
     }));
 
-    var $items = this.$(".lang-list").children().last(0).find(".lang-proficiency");
+    //select it
+    var $items = this.$(".lang-list").children().last().find(".lang-proficiency");
 
+    //instantiate the dropdowns
     this.tagFactory.fetchAllTagsOfType("lang-proficiency", function(tags) {
       self.tagFactory.createTagDropDown({
         type:        "lang-proficiency",
-        $el:         $items,
+        selector:    $items,
         placeholder: "Select a proficiency",
         multiple:    false,
         allowCreate: false,
