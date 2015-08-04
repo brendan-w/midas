@@ -31,6 +31,16 @@ module.exports = [
     vet:                 false,
   },
   {
+    name:                'vetter',
+    registration_option: false,
+    admin:               false,
+    apply:               false,
+    project_create:      false,
+    task_create:         false,
+    moderate:            false,
+    vet:                 true,
+  },
+  {
     name:                'admin',
     registration_option: false,
     admin:               true,
