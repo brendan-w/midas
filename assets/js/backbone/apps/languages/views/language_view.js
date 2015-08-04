@@ -2,6 +2,7 @@
 var _        = require('underscore');
 var Backbone = require('backbone');
 var utils    = require('../../../mixins/utilities');
+var ui       = require('../../../config/ui.json');
 
 var TagFactory     = require('../../../components/tag_factory');
 var LanguageTemplate = require('../templates/language_template.html');
@@ -13,6 +14,7 @@ var Languages = Backbone.View.extend({
 
   initialize: function() {
     var self = this;
+    this.tagFactory = new TagFactory();
   },
 
   render: function(target) {
@@ -20,6 +22,8 @@ var Languages = Backbone.View.extend({
     this.$el.html(_.template(LanguageTemplate)({
       //nothing so far...
     }));
+
+    
 
     this.$el.i18n();
 

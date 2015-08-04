@@ -110,6 +110,11 @@ module.exports.policies = {
     'update':  false
   },
 
+  LocationController : {
+    '*':       ['passport', 'authenticated'],
+    'suggest': true,
+  },
+
   VolunteerController : {
     '*': false,
     'create':  ['passport', 'authenticated', 'addUserId'],

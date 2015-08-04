@@ -19,6 +19,13 @@
     "useInfiniteScroll" : false
   },
   "states" : [{"value": "draft","label":"Draft"},{"value": "open","label":"Open"},{"value":"assigned","label":"Assigned"},{"value": "completed","label":"Completed"},{"value":"archived","label":"Archived"}],
+  "languageProficiencies" : [
+    "No Proficiency",
+    "Elementary Proficiency",
+    "Limited Working Proficiency",
+    "Professional Working Proficiency",
+    "Native Or Bilingual Proficiency"
+  ],
   "modalHome" : {
     "show" : false
   }
