@@ -8,34 +8,41 @@ var TagFactory     = require('../../../components/tag_factory');
 var LanguageTemplate = require('../templates/language_template.html');
 var LanguageItemTemplate = require('../templates/language_item_template.html');
 
-/*
-  Give this view a model for the user it's editting
-*/
+
 var Languages = Backbone.View.extend({
 
   events: {
     "click .lang .close" : "delete_lang", 
     "click .lang-add"    : "add_lang",
-    "click .lang-test"   : "data",
+    "click .lang-test"   : "load_into_user",
   },
 
   initialize: function() {
     this.tagFactory = new TagFactory();
   },
 
-  render: function(target) {
+  render: function(user) {
     var self = this;
 
     this.$el.html(_.template(LanguageTemplate)({
       //nothing so far...
     }));
 
+    //if a user model is provided, use it to fill the UI
+    if(user)
+    {
+      this.$(".lang-list").append(_.template(LanguageItemTemplate)({
+        id: "",
+      }));
+
+    }
+
     this.$el.i18n();
 
     return this;
   },
 
-  data: function(e) {
+  load_into_user: function(e) {
     if(e && e.preventDefault) e.preventDefault();
     this.$(".lang").each(function(i, lang) {
       var $lang = $(lang);
@@ -71,6 +78,7 @@ var Languages = Backbone.View.extend({
         searchable:  false,
         width:       "100%",
         fillWith:    tags,
+        data:        tags[0],
       });
     });
 
