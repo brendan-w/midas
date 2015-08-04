@@ -129,7 +129,7 @@ module.exports = {
   },
 
   beforeValidate: function(values, done) {
-    values.username = values.username.toLowerCase();
+    if(values.username) values.username = values.username.toLowerCase();
     done();
   },
 
