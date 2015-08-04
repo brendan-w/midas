@@ -63,7 +63,9 @@ TagFactory = BaseComponent.extend({
     @param {String}   options.width='500px'      - CSS width attribute for the dropdown
     @param {Boolean}  options.multiple=true      - Whether to allow multiple tags to be selected
     @param {Boolean}  options.allowCreate=true   - Whether a `createSearchChoice` option will be given
+    @param {String}   options.placeholder="..."  - Placeholder for the dropdown    
     @param {String[]} options.tokenSeparators=[] - Array of valid tag delimeters
+    @param {Boolean}  options.searchable=true    - whether the selections are searchable
     @param {*}        options.data=undefined     - The initial data loaded into the select2 element
     @param {Object[]} options.fillWith=undefined - Array of tagEntities that can be selected
                                                    NOTE: when this option is set, AJAX auto-completion is removed
@@ -78,16 +80,26 @@ TagFactory = BaseComponent.extend({
     //have to check these beforehand to allow False values to override the default True
     options.multiple    = (options.multiple    !== undefined ? options.multiple    : true);
     options.allowCreate = (options.allowCreate !== undefined ? options.allowCreate : true);
+    options.searchable  = (options.searchable  !== undefined ? options.searchable  : true);
+
+    //default placeholders
+    if(!options.placeholder)
+    {
+      if(options.searchable) options.placeholder = "Start typing to select a " + options.type;
+      else                   options.placeholder = "Select a " + options.type;
+    }
 
     //construct the settings for this tag type
     var settings = {
 
-      placeholder:        "Start typing to select a " + options.type,
-      minimumInputLength: (isLocation ? 1 : 2),
-      selectOnBlur:       false, //!isLocation,
-      width:              options.width || "500px",
-      tokenSeparators:    options.tokenSeparators || [],
-      multiple:           options.multiple,
+      placeholder:             options.placeholder,
+      minimumInputLength:      (isLocation ? 1 : 2),
+      selectOnBlur:            false, //!isLocation,
+      width:                   options.width || "500px",
+      tokenSeparators:         options.tokenSeparators || [],
+      multiple:                options.multiple,
+      minimumResultsForSearch: options.searchable ? 0 : Infinity,
+
 
       formatResult: function (obj, container, query) {
         //allow the createSearchChoice to contain HTML

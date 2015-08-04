@@ -113,8 +113,10 @@ var Register = Backbone.View.extend({
       self.tagFactory.createTagDropDown({
         type:        "education",
         selector:    "#education",
+        placeholder: "Select an education level",
         multiple:    false,
         allowCreate: false,
+        searchable:  false,
         width:       "100%",
         fillWith:    tags,
       });
