@@ -5,9 +5,9 @@
       <th>Name</th>
       <th>Email</th>
       <th>Created At</th>
-      <th><span data-i18n="ProjectPlural">Projects</span> (open / closed)</th>
-      <th><span data-i18n="TaskPlural">Tasks</span> (open / assigned / completed / archived)</th>
-      <th>Participant (open / assigned / completed / archived)</th>
+      <!-- <th><span data-i18n="ProjectPlural">Projects</span> (open / closed)</th> -->
+      <!-- <th><span data-i18n="TaskPlural">Tasks</span> (open / assigned / completed / archived)</th> -->
+      <!-- <th>Participant (open / assigned / completed / archived)</th> -->
       <th class="admin-user-checkbox">Enabled</th>
       <% if (login.local.enabled === true) { %>
       <th class="admin-user-checkbox">Password</th>
@@ -41,21 +41,27 @@
         <!-- time -->
         <%- created.toLocaleTimeString() %>
       </td>
+      <!--
       <td class="admin-table-projects">
       <% if (u.projectsCreatedOpen !== 0 || u.projectsCreatedClosed !== 0) { %>
         <a class="link-backbone" href="/profile/<%- u.id %>"><%- u.projectsCreatedOpen %> / <%- u.projectsCreatedClosed %></a>
       <% } %>
       </td>
+      -->
+      <!--
       <td class="admin-table-tasks">
       <% if (u.tasksCreatedOpen !== 0 || u.tasksCreatedAssigned !== 0 || u.tasksCreatedCompleted !== 0 || u.tasksCreatedArchived !== 0) { %>
         <a class="link-backbone" href="/profile/<%- u.id %>"><%- u.tasksCreatedOpen %> / <%- u.tasksCreatedAssigned %> / <%- u.tasksCreatedCompleted %> / <%- u.tasksCreatedArchived %></a>
       <% } %>
       </td>
+      -->
+      <!--
       <td class="admin-table-volunteer">
       <% if (u.volCountOpen !== 0 || u.volCountAssigned !== 0 || u.volCountCompleted !== 0 || u.volCountArchived !== 0) { %>
         <a class="link-backbone" href="/profile/<%- u.id %>"><%- u.volCountOpen %> / <%- u.volCountAssigned %> / <%- u.volCountCompleted %> / <%- u.volCountArchived %></a>
       <% } %>
       </td>
+      -->
       <td>
         <button type="button" class="btn btn-default btn-xs admin-user-enable" data-toggle="tooltip" data-placement="top" title="Enable" <% if (u.disabled !== true) { %>style="display:none;"<% } %>><i class="fa fa-remove-sign icon-red icon-center"></i></button>
         <button type="button" class="btn btn-default btn-xs admin-user-disable" data-toggle="tooltip" data-placement="top" title="Disable" <% if (u.disabled === true) { %>style="display:none;"<% } %>><i class="fa fa-check icon-green icon-center"></i></button>
