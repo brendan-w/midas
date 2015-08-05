@@ -88,7 +88,8 @@ var Backbone = require('backbone');
           username: form.username,
           title: form.title,
           bio: form.bio,
-          tags: form.tags
+          tags: form.tags,
+          languages: form.languages,
         };
         _this.save(data, {
           success: function (data) {

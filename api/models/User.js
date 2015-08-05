@@ -56,14 +56,14 @@ module.exports = {
 
     languages: {
       collection: 'Language',
-      via: 'user'
+      via: 'user',
     },
 
     // Tag association
     tags: {
       collection: 'tagEntity',
       via: 'users',
-      dominant: true
+      dominant: true,
     },
 
     toJSON: function() {

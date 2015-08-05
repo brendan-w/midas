@@ -108,8 +108,6 @@ var Languages = Backbone.View.extend({
       }
     });
 
-    console.log(langs);
-
     return langs;
   },
 
