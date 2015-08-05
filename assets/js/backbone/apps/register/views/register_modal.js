@@ -46,7 +46,7 @@ var Register = Backbone.View.extend({
     });
 
     //TODO: remove this when done
-    // this.render("applicant");
+    this.render("applicant");
   },
 
   /*
@@ -103,7 +103,7 @@ var Register = Backbone.View.extend({
     this.modal.show();
 
     //TODO: remove this when done
-    // this.modal.gotoPage(4);
+    this.modal.gotoPage(4);
 
     return this;
   },

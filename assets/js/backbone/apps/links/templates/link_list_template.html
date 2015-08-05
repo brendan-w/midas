@@ -1,17 +1,21 @@
 
 <style>
 
-  ul.link-list {
+  ul.link-list.edit {
     list-style: none;
     padding-left: 0px;
-    max-height: 150px; /* roughly 2 li's of content */
+    max-height: 115px;
     overflow-y: auto;
   }
 
-  ul.link-list input {
+  ul.link-list.edit input {
     overflow: hidden;
   }
 
+  ul.link-list.edit li.link {
+    /* normal form-groups were a little too big */
+    padding-bottom: 5px;
+  }
 
   li.link > div {
     overflow: hidden;
@@ -30,7 +34,7 @@
 </style>
 
 <!-- The main list -->
-<ul class="link-list"></ul>
+<ul class="link-list <% if(edit) { %>edit<% } %>"></ul>
 
 <% if(edit) { %>
   <div class="row">
