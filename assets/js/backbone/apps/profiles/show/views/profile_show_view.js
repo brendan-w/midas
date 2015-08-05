@@ -175,6 +175,7 @@ var ProfileShowView = Backbone.View.extend({
     if (this.langView) this.langView.cleanup();
     this.langView = new LangView({
       el: '.lang-wrapper',
+      edit: this.edit,
     }).render(this.model.get('languages'));
   },
 

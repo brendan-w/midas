@@ -1,35 +1,48 @@
 
-<li class="lang border-bottom" data-id="<%- id %>">
 
-  <div class="row">
-    <div class="col-sm-4">
-      <label class="control-label" data-i18n="loginModal.name">Language</label>
-    </div>
-    <div class="col-sm-7">
-      <input type="text" class="form-control validate lang-name" placeholder="Name of Language" data-validate="empty">
-      <span class="help-block error-empty" style="display:none;">Please enter a language.</span>
-    </div>
-    <div class="col-sm-1">
-      <button type="button" class="close">&times;</button>
-    </div>
-  </div>
+<li class="lang <% if(edit) { %>border-bottom<% } %>" data-id="<%- lang.id %>">
 
-  <div class="row lang-written">
-    <div class="col-sm-4">
-      <label class="control-label" data-i18n="loginModal.name">Written Proficiency</label>
-    </div>
-    <div class="col-sm-7">
-      <div class="lang-proficiency"></div>
-    </div>
-  </div>
+  <% if(edit) { %>
 
-  <div class="row lang-spoken">
-    <div class="col-sm-4">
-      <label class="control-label" data-i18n="loginModal.name">Spoken Proficiency</label>
+    <!-- EDIT MODE -->
+
+    <div class="row">
+      <div class="col-sm-4">
+        <label class="control-label" data-i18n="loginModal.name">Language</label>
+      </div>
+      <div class="col-sm-7">
+        <input type="text" class="form-control validate lang-name" placeholder="Name of Language" data-validate="empty">
+        <span class="help-block error-empty" style="display:none;">Please enter a language.</span>
+      </div>
+      <div class="col-sm-1">
+        <button type="button" class="close">&times;</button>
+      </div>
     </div>
-    <div class="col-sm-7">
-      <div class="lang-proficiency"></div>
+
+    <div class="row lang-written">
+      <div class="col-sm-4">
+        <label class="control-label" data-i18n="loginModal.name">Written Proficiency</label>
+      </div>
+      <div class="col-sm-7">
+        <div class="lang-proficiency"></div>
+      </div>
     </div>
-  </div>
+
+    <div class="row lang-spoken">
+      <div class="col-sm-4">
+        <label class="control-label" data-i18n="loginModal.name">Spoken Proficiency</label>
+      </div>
+      <div class="col-sm-7">
+        <div class="lang-proficiency"></div>
+      </div>
+    </div>
+
+  <% } else { %>
+
+    <!-- DISPLAY MODE -->
+
+    <h4><%- lang.language %></h4>
+
+  <% } %>
 
 </li>
