@@ -384,7 +384,7 @@ var ProfileShowView = Backbone.View.extend({
         };
       }).unique().value();
 
-    data.languages = this.langView.data(this.model.get('id'));
+    data.languages = this.langView.data();
     if(!data.languages)
       return; //failed validation
 

@@ -20,6 +20,8 @@ var Languages = Backbone.View.extend({
     this.tagFactory = new TagFactory();
   },
 
+  //optionally accepts an array of initial data
+  //from the `languages` property of the profile model.
   render: function(initial_langs) {
     var self = this;
     initial_langs = initial_langs || [];
@@ -77,7 +79,9 @@ var Languages = Backbone.View.extend({
     return this;
   },
 
-  data: function(user_id) {
+  //returns an array of data to be submitted in
+  //the `languages` field of the profile model.
+  data: function() {
 
     if(validateAll(this.$el))
       return false;
@@ -90,17 +94,18 @@ var Languages = Backbone.View.extend({
 
       //fetch the language name and the proficiencies
       var language = $lang.find(".lang-name").val();
-      var written = $lang.find(".lang-written .lang-proficiency").select2('data').id;
-      var spoken  = $lang.find(".lang-spoken  .lang-proficiency").select2('data').id;
+      var written  = $lang.find(".lang-written .lang-proficiency").select2('data').id;
+      var spoken   = $lang.find(".lang-spoken  .lang-proficiency").select2('data').id;
 
       if(id)
       {
+        //if it has an ID, then it's pre-existing, and Sails will recognize it by ID
         langs.push(id);
       }
       else
       {
+        //else, we have to create a new one
         langs.push({
-          user:               user_id,
           language:           language,
           writtenProficiency: written,
           spokenProficiency:  spoken,
