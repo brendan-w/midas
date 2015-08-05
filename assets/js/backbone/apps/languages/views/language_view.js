@@ -89,8 +89,8 @@ var Languages = Backbone.View.extend({
     this.add_lang({
       id: "",
       language: "",
-      writtenProficiency: 0,
-      spokenProficiency: 0,
+      writtenProficiency: this.proficiencies[0].id,
+      spokenProficiency:  this.proficiencies[0].id,
     });
   },
 
