@@ -1,0 +1,39 @@
+
+<style>
+
+  ul.link-list {
+    list-style: none;
+    padding-left: 0px;
+    max-height: 150px; /* roughly 2 li's of content */
+    overflow-y: auto;
+  }
+
+  ul.link-list input {
+    overflow: hidden;
+  }
+
+
+  li.link > div {
+    overflow: hidden;
+  }
+
+  /* The close buttons */
+  li.link button {
+    padding: 5px 10px;
+  }
+
+  /* The URL inputs */
+  li.link input {
+    width:100%;
+  }
+
+</style>
+
+<!-- The main list -->
+<ul class="link-list"></ul>
+
+<% if(edit) { %>
+  <div class="row">
+    <button class="link-add btn"><i class="fa fa-plus">&nbsp;</i>Add Link</button>
+  </div>
+<% } %>

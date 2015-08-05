@@ -7,6 +7,7 @@ var TagFactory      = require('../../../components/tag_factory');
 var ModalView       = require('../../../components/modal_new');
 var CoreAccountView = require('./core_account_info_view');
 var LanguageView    = require('../../languages/views/language_view.js');
+var LinkView        = require('../../links/views/link_view.js');
 
 var RegisterChoose    = require('../templates/register_choose.html');
 var RegisterApplicant = require('../templates/register_applicant.html');
@@ -45,7 +46,7 @@ var Register = Backbone.View.extend({
     });
 
     //TODO: remove this when done
-    // this.render("applicant");
+    this.render("applicant");
   },
 
   /*
@@ -56,6 +57,8 @@ var Register = Backbone.View.extend({
   */
   render: function(target) {
     if(this.coreAccount) this.coreAccount.cleanup();
+    if(this.langView) this.langView.cleanup();
+    if(this.linkView) this.linkView.cleanup();
 
     this.target = target || "choose";
 
@@ -90,12 +93,17 @@ var Register = Backbone.View.extend({
       edit: true,
     }).render();
 
+    this.linkView = new LinkView({
+      el: this.$(".link-wrapper"),
+      edit: true,
+    }).render();
+
     this.initializeSelect2();
 
     this.modal.show();
 
     //TODO: remove this when done
-    this.modal.gotoPage(3);
+    this.modal.gotoPage(4);
 
     return this;
   },
@@ -188,6 +196,8 @@ var Register = Backbone.View.extend({
 
   cleanup: function() {
     if(this.coreAccount) this.coreAccount.cleanup();
+    if(this.langView) this.langView.cleanup();
+    if(this.linkView) this.linkView.cleanup();
     if(this.modal) this.modal.cleanup();
     removeView(this);
   }
