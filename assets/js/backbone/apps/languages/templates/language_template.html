@@ -10,15 +10,17 @@
 
   }
 
-  ul.lang-list li {
+  ul.lang-list.edit li {
     padding-top: 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #BBB;
   }
 
-  ul.lang-list li:first-of-type {
+  ul.lang-list.edit li:first-of-type {
     padding-top: 0px;
   }
 
-  ul.lang-list li:last-of-type {
+  ul.lang-list.edit li:last-of-type {
     border-bottom: none;
   }
 
@@ -27,16 +29,29 @@
     margin-bottom: 5px;
   }
 
+  ul.lang-list li label {
+    /* the default bold was a little too much */
+    font-weight: normal;
+  }
+
 </style>
 
 
+<% if(!edit) { %>
+  <!-- the header -->
+  <div class="row border-bottom">
+    <div class="col-sm-2"><b>Languages</b></div>
+    <div class="col-sm-5"><b>Written Proficiency</b></div>
+    <div class="col-sm-5"><b>Spoken Proficiency</b></div>
+  </div>
+<% } %>
 
-<ul class="lang-list"></ul>
+<ul class="lang-list <% if(edit) { %>edit<% } %>"></ul>
 
 <% if(edit) { %>
   <div class="row">
     <div class="col-sm-12">
-      <button class="lang-add btn btn-c2"><i class="fa fa-plus">&nbsp;</i>Add Language</button>
+      <button class="lang-add btn"><i class="fa fa-plus">&nbsp;</i>Add Language</button>
     </div>
   </div>
 <% } %>

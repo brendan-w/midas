@@ -1,6 +1,6 @@
 
 
-<li class="lang <% if(edit) { %>border-bottom<% } %>" data-id="<%- lang.id %>">
+<li class="lang" data-id="<%- lang.id %>">
 
   <% if(edit) { %>
 
@@ -40,8 +40,11 @@
   <% } else { %>
 
     <!-- DISPLAY MODE -->
-
-    <h4><%- lang.language %></h4>
+    <div class="row">
+      <div class="col-sm-2"><%- lang.language %></div>
+      <div class="col-sm-5"><%- lang.writtenProficiency.name %></div>
+      <div class="col-sm-5"><%- lang.spokenProficiency.name %></div>
+    </div>
 
   <% } %>
 

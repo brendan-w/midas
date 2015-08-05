@@ -82,11 +82,12 @@ var Register = Backbone.View.extend({
     //render the core account info fields
     //this will quietly fail if we're on a form that doesn't have it
     this.coreAccount = new CoreAccountView({
-      el: this.$(".core-account-info")
+      el: this.$(".core-account-info"),
     }).render();
 
     this.langView = new LanguageView({
-      el: this.$(".lang-wrapper")
+      el: this.$(".lang-wrapper"),
+      edit: true,
     }).render();
 
     this.initializeSelect2();
