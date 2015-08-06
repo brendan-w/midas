@@ -26,7 +26,6 @@ var LinkView = Backbone.View.extend({
   //optionally accepts an array of initial data
   //from the `links` property of the profile model.
   render: function(initial_links) {
-    console.log(initial_links);
     var self = this;
     initial_links = initial_links || [];
 
@@ -48,6 +47,8 @@ var LinkView = Backbone.View.extend({
     return this;
   },
 
+  //returns an array of data to be submitted in
+  //the `links` field of the profile model.
   data: function() {
     if(validateAll(this.$el))
       return false;

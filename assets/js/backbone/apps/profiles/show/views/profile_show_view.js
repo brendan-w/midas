@@ -176,7 +176,7 @@ var ProfileShowView = Backbone.View.extend({
   initializeLangs: function() {
     if (this.langView) this.langView.cleanup();
     this.langView = new LangView({
-      el: '.lang-wrapper',
+      el: this.$('.lang-wrapper'),
       edit: this.edit,
     }).render(this.model.get('languages'));
   },
@@ -320,7 +320,7 @@ var ProfileShowView = Backbone.View.extend({
   initializeVet: function() {
     if(this.vetView) this.vetView.cleanup();
     this.vetView = new VetShowView({
-      el: ".vet-wrapper",
+      el: this.$(".vet-wrapper"),
       model: this.model,
     }).render();
   },
@@ -328,7 +328,7 @@ var ProfileShowView = Backbone.View.extend({
   initializeLinks: function() {
     if(this.linkView) this.linkView.cleanup();
     this.linkView = new LinkView({
-      el: ".links-wrapper",
+      el: this.$(".links-wrapper"),
       edit: this.edit,
     }).render(this.model.get('links'));
   },
