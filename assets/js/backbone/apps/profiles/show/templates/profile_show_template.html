@@ -120,7 +120,7 @@
             <hr>
 
             <div class="row">
-              <label for="profile-email" class="col-md-3 control-label">Email</label>
+              <label for="profile-email" class="control-label">Email</label>
 
               <% if(!edit) { %>
                 <div><% if(email) { %><%- email %><% } else { %>No email addresses<% } %></div>
@@ -175,8 +175,16 @@
               <% } %>
 
             </div>
-          </div>
-        </div>
+          </div> <!-- end row -->
+
+          <div class="box box-main">
+            <div class="row">
+              <label>Links</label>
+              <div class="links-wrapper"></div>
+            </div>
+          </div> <!-- end row -->
+
+        </div> <!-- end side bar column -->
 
       </div>
     </div>

@@ -1,11 +1,12 @@
 
 <style>
 
-  ul.link-list.edit {
+  ul.link-list {
     list-style: none;
     padding-left: 0px;
-    max-height: 115px;
+    margin-bottom: 0px;
     overflow-y: auto;
+    max-height: 115px;
   }
 
   ul.link-list.edit input {
@@ -31,13 +32,23 @@
     width:100%;
   }
 
+  .link-buttons {
+    margin-top: 10px;
+  }
+
 </style>
 
 <!-- The main list -->
-<ul class="link-list <% if(edit) { %>edit<% } %>"></ul>
+<div class="row">
+  <ul class="link-list <% if(edit) { %>edit<% } %>"></ul>
+</div>
+
+<div class="row">
+  <div class="link-list-empty" style="display:none">No links found</div>
+</div>
 
 <% if(edit) { %>
-  <div class="row">
+  <div class="row link-buttons">
     <button class="link-add btn"><i class="fa fa-plus">&nbsp;</i>Add Link</button>
   </div>
 <% } %>

@@ -1,6 +1,6 @@
 
 
-<li class="link">
+<li class="link" data-id="<%- link.id %>">
 
   <% if(edit) { %>
 
@@ -8,7 +8,7 @@
 
     <button type="button" class="close pull-right">&times;</button>
     <div>
-      <input type="text" class="form-control validate link-name" placeholder="URL" data-validate="empty" value="<%- link.url %>">
+      <input type="text" class="form-control validate link-url" placeholder="URL" data-validate="empty" value="<%- link.url %>">
       <span class="help-block error-empty" style="display:none;">Please enter a valid URL.</span>
     </div>
 
@@ -16,7 +16,7 @@
 
     <!-- SHOW MODE -->
 
-    <div><%- link.url %></div>
+    <div><a href="<%- link.url %>" target="_blank"><%- link.url %></a></div>
 
   <% } %>
 

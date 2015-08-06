@@ -17,6 +17,7 @@ var          PAView = require('./profile_activity_view');
 var      TagFactory = require('../../../../components/tag_factory');
 var     VetShowView = require('../../../vet/show/views/vet_show_view');
 var        LangView = require('../../../languages/views/language_view');
+var        LinkView = require('../../../links/views/link_view');
 
 
 var ProfileShowView = Backbone.View.extend({
@@ -90,6 +91,7 @@ var ProfileShowView = Backbone.View.extend({
     this.initializePAView();
     this.initializeTextArea();
     this.initializeVet();
+    this.initializeLinks();
     this.updatePhoto();
     this.updateProfileEmail();
     return this;
@@ -323,6 +325,14 @@ var ProfileShowView = Backbone.View.extend({
     }).render();
   },
 
+  initializeLinks: function() {
+    if(this.linkView) this.linkView.cleanup();
+    this.linkView = new LinkView({
+      el: ".links-wrapper",
+      edit: this.edit,
+    }).render(this.model.get('links'));
+  },
+
   fieldModified: function (e) {
 
     //check that the name isn't a null string
@@ -389,6 +399,10 @@ var ProfileShowView = Backbone.View.extend({
     if(!data.languages)
       return; //failed validation
 
+    data.links = this.linkView.data();
+    if(!data.links)
+      return; //failed validation
+
     this.model.trigger("profile:save", data);
   },
 
@@ -447,6 +461,7 @@ var ProfileShowView = Backbone.View.extend({
     if (this.taskView)    this.taskView.cleanup();
     if (this.volView)     this.volView.cleanup();
     if (this.vetView)     this.vetView.cleanup();
+    if (this.linkView)    this.linkView.cleanup();
     removeView(this);
   }
 

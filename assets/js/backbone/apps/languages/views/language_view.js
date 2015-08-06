@@ -21,7 +21,7 @@ var Languages = Backbone.View.extend({
   */
   initialize: function(options) {
     this.options = options;
-    this.edit    = options.edit;
+    this.edit    = options.edit || false;
     this.tagFactory = new TagFactory();
   },
 
@@ -59,8 +59,8 @@ var Languages = Backbone.View.extend({
 
     var langs = [];
 
-    this.$(".lang").each(function(i, lang) {
-      var $lang = $(lang);
+    this.$(".lang").each(function(i, l) {
+      var $lang = $(l);
       var id    = $lang.data('id');
 
       //fetch the language name and the proficiencies
@@ -68,13 +68,13 @@ var Languages = Backbone.View.extend({
       var written  = $lang.find(".lang-written .lang-proficiency").select2('data').id;
       var spoken   = $lang.find(".lang-spoken  .lang-proficiency").select2('data').id;
 
-      //if it has an ID, then it's pre-existing, and Sails will recognize it by ID
       var lang = {
         language:           language,
         writtenProficiency: written,
         spokenProficiency:  spoken,
       };
 
+      //if it has an ID, then it's pre-existing, and Sails will update it by ID
       if(id) lang.id = id;
 
       langs.push(lang);
