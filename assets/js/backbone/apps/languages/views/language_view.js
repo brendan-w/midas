@@ -44,6 +44,8 @@ var Languages = Backbone.View.extend({
         self.add_lang(lang); //populate the UI with the initial data
       });
 
+      self.update_empty();
+
       self.$el.i18n();
     });
 
@@ -149,11 +151,21 @@ var Languages = Backbone.View.extend({
         data:        lang.spokenProficiency,
       }); 
     }
+
+    this.update_empty();
   },
 
   delete_lang_button: function(e) {
     if(e && e.preventDefault) e.preventDefault();
     $(e.target).closest(".lang").remove();
+
+    this.update_empty();
+  },
+
+  update_empty: function() {
+    //show or hide the "Empty" text
+    var is_empty = (this.$(".lang-list").children().length == 0);
+    this.$(".lang-list-empty").toggle(is_empty);
   },
 
   cleanup: function() {

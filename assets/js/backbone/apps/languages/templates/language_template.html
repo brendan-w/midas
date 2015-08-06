@@ -4,6 +4,7 @@
   ul.lang-list {
     list-style: none;
     padding-left: 0px;
+    margin-bottom: 0px;
     max-height: 250px; /* roughly 2 li's of content */
     overflow-y: auto;
   }
@@ -32,6 +33,10 @@
     font-weight: normal;
   }
 
+  .lang-buttons {
+    margin-top: 10px;
+  }
+
 </style>
 
 
@@ -45,10 +50,16 @@
 <% } %>
 
 <!-- The main list -->
-<ul class="lang-list <% if(edit) { %>edit<% } %>"></ul>
+<div class="row">
+  <ul class="lang-list <% if(edit) { %>edit<% } %>"></ul>
+</div>
+
+<div class="row">
+  <div class="lang-list-empty" style="display:none">No languages found</div>
+</div>
 
 <% if(edit) { %>
-  <div class="row">
+  <div class="row lang-buttons">
     <button class="lang-add btn"><i class="fa fa-plus">&nbsp;</i>Add Language</button>
   </div>
 <% } %>
