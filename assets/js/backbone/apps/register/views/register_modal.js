@@ -179,8 +179,6 @@ var Register = Backbone.View.extend({
       user_data.links     = self.linkView.data();
     }
 
-    console.log("submit: ", user_data);
-
     //create the user
     //target should be either "applicant" or "poster:unapproved"
     this.coreAccount.submit(user_data, function(user) {

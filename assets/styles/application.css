@@ -305,6 +305,10 @@ input[type="submit"] {
   margin-top: 20px;
 }
 
+.alert-local {
+  margin:15px;
+}
+
 /*****************
 =  HEADERS
 ******************/

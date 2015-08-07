@@ -66,7 +66,7 @@ $(function () {
 
       //if a message was returned, show it
       if(jqXHR.responseJSON && jqXHR.responseJSON.message)
-        alert.html("<strong>" + errorText + "</strong>. " + jqXHR.responseJSON.message);
+        alert.html(jqXHR.responseJSON.message);
       else
         alert.html("<strong>An unknown error occurred</strong>. Please contact your system administrator.");
 
