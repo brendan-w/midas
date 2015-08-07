@@ -85,6 +85,9 @@ var LinkView = Backbone.View.extend({
       link: link,
     }));
 
+    var $link = this.$(".link-list").children().last();
+
+    this.scroll_to($link);
     this.update_empty();
   },
 
@@ -93,6 +96,11 @@ var LinkView = Backbone.View.extend({
     $(e.target).closest(".link").remove();
 
     this.update_empty();
+  },
+
+  scroll_to: function(element) {
+    var top = $(element).position().top;
+    $(".link-list").scrollTop(top);
   },
 
   update_empty: function() {

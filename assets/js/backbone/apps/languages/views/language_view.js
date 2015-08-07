@@ -115,11 +115,12 @@ var Languages = Backbone.View.extend({
       lang: lang,
     }));
 
+    //select it
+    var $lang = this.$(".lang-list").children().last();
+
     //if we're in edit mode, then there's extra work to setup each language item
     if(this.edit)
     {
-      //select it
-      var $lang    = this.$(".lang-list").children().last();
       var $written = $lang.find(".lang-written .lang-proficiency");
       var $spoken  = $lang.find(".lang-spoken  .lang-proficiency");
 
@@ -153,6 +154,7 @@ var Languages = Backbone.View.extend({
     }
 
     this.update_empty();
+    this.scroll_to($lang);
   },
 
   delete_lang_button: function(e) {
@@ -160,6 +162,11 @@ var Languages = Backbone.View.extend({
     $(e.target).closest(".lang").remove();
 
     this.update_empty();
+  },
+
+  scroll_to: function(element) {
+    var top = $(element).position().top;
+    $(".lang-list").scrollTop(top);
   },
 
   update_empty: function() {
