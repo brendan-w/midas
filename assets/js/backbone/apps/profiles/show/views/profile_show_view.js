@@ -361,9 +361,6 @@ var ProfileShowView = Backbone.View.extend({
       return;
     }
 
-    $("#profile-save, #submit").button('loading');
-    setTimeout(function() { $("#profile-save, #submit").attr("disabled", "disabled"); }, 0);
-
     var newTags = [].concat(
       $("#company").select2('data'),
       $("#tag_topic").select2('data'),
@@ -403,6 +400,8 @@ var ProfileShowView = Backbone.View.extend({
     if(!data.links)
       return; //failed validation
 
+    $("#profile-save, #submit").button('loading');
+    setTimeout(function() { $("#profile-save, #submit").attr("disabled", "disabled"); }, 0);
     this.model.trigger("profile:save", data);
   },
 
