@@ -16,6 +16,7 @@ var VetListController = require('../vet/list/controllers/vet_list_controller');
 var HomeController = require('../home/controllers/home_controller');
 var LoginModal = require('../login/views/login_modal');
 var RegisterModal = require('../register/views/register_modal');
+var FaqController = require('../faq/controllers/faq_controller');
 
 
 var BrowseRouter = Backbone.Router.extend({
@@ -35,6 +36,7 @@ var BrowseRouter = Backbone.Router.extend({
     'admin(/)'                  : 'showAdmin',
     'admin(/):action(/)'        : 'showAdmin',
     'vet(/)'                    : 'showVet',
+    'faq(/)'                    : 'showFaq',
   },
 
   data: { saved: false },
@@ -74,6 +76,7 @@ var BrowseRouter = Backbone.Router.extend({
     if (this.homeController)        this.homeController.cleanup();
     if (this.adminMainController)   this.adminMainController.cleanup();
     if (this.vetListController)     this.vetListController.cleanup();
+    if (this.faqController)         this.faqController.cleanup();
     this.data = { saved: false };
   },
 
@@ -84,6 +87,14 @@ var BrowseRouter = Backbone.Router.extend({
       el: '#container',
       router: this,
       data: this.data
+    });
+  },
+
+  showFaq: function () {
+    this.cleanupChildren();
+    this.faqController = new FaqController({
+      el: '#container',
+      router: this
     });
   },
 
