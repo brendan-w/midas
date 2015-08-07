@@ -3,6 +3,7 @@ var _        = require('underscore');
 var Backbone = require('backbone');
 var utils    = require('../../../mixins/utilities');
 
+var ProfileModel    = require('../../../entities/profiles/profile_model.js');
 var TagFactory      = require('../../../components/tag_factory');
 var ModalView       = require('../../../components/modal_new');
 var CoreAccountView = require('./core_account_info_view');
@@ -102,9 +103,6 @@ var Register = Backbone.View.extend({
 
     this.modal.show();
 
-    //TODO: remove this when done
-    this.modal.gotoPage(4);
-
     return this;
   },
 
@@ -164,24 +162,30 @@ var Register = Backbone.View.extend({
   },
 
   next: function($page) {
-    //TODO: put this back when your done, silly
-    // return !validateAll($page);
-    return true;
+    return !validateAll($page);
   },
 
   submit: function($form) {
     var self = this;
 
+    var user_data = {
+      type: this.target,
+    };
+
+    //update their profile according to the other form pages
+    if(self.target = "applicant")
+    {
+      user_data.languages = self.langView.data();
+      user_data.links     = self.linkView.data();
+    }
+
+    console.log("submit: ", user_data);
 
     //create the user
     //target should be either "applicant" or "poster:unapproved"
-    this.coreAccount.submit(this.target, function(user) {
+    this.coreAccount.submit(user_data, function(user) {
 
-      //update their profile according to the other form pages
-      console.log("submit: ", this.target);
-
-      //hide the modal
-
+      //when the modal is hidden
       self.$el.bind('hidden.bs.modal', function() {
         // if successful, reload page
         Backbone.history.loadUrl();

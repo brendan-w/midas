@@ -102,13 +102,13 @@ var AuthController = {
       sails.log.verbose('Authentication Error:', err, flashError);
 
       var message = (err === 'locked') ?
-            'Your account has been locked, please reset your password.' :
-            (err === 'invalid domain') ?
-            'You need to have a .gov or .mil email address.' :
-            'Invalid email address or password.';
+                    'Your account has been locked, please reset your password.' :
+                    (err === 'invalid domain') ?
+                    'You need to have a .gov or .mil email address.' :
+                    'Invalid email address or password.';
 
       if (req.param('json')) {
-        return res.send(403, { message: message });
+        return res.send(400, { message: message });
       } else {
         req.flash('message', message);
         return res.redirect('/');

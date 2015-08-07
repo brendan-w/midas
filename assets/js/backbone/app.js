@@ -59,7 +59,10 @@ $(function () {
       });
     } else {
 
-      var alert = $('.alert-global');
+      //look for a local alert, and fall back on the global
+      var alert = $(".alert-local");
+      if(alert.length == 0)
+        alert = $('.alert-global');
 
       //if a message was returned, show it
       if(jqXHR.responseJSON && jqXHR.responseJSON.message)
