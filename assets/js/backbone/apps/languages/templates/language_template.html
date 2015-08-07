@@ -9,6 +9,10 @@
     overflow-y: auto;
   }
 
+  ul.lang-list.edit {
+    height: 225px; /* roughly 2 li's of content */
+  }
+
   ul.lang-list.edit li {
     padding-top: 10px;
     padding-bottom: 5px;
@@ -49,13 +53,13 @@
   </div>
 <% } %>
 
+<div class="row">
+  <div class="lang-list-empty" style="display:none">No languages found</div>
+</div>
+
 <!-- The main list -->
 <div class="row">
   <ul class="lang-list <% if(edit) { %>edit<% } %>"></ul>
-</div>
-
-<div class="row">
-  <div class="lang-list-empty" style="display:none">No languages found</div>
 </div>
 
 <% if(edit) { %>

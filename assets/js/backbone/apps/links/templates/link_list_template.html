@@ -9,6 +9,10 @@
     max-height: 115px;
   }
 
+  ul.link-list.edit {
+    height: 115px;
+  }
+
   ul.link-list.edit input {
     overflow: hidden;
   }
@@ -38,13 +42,13 @@
 
 </style>
 
+<div class="row">
+  <div class="link-list-empty" style="display:none">No links found</div>
+</div>
+
 <!-- The main list -->
 <div class="row">
   <ul class="link-list <% if(edit) { %>edit<% } %>"></ul>
-</div>
-
-<div class="row">
-  <div class="link-list-empty" style="display:none">No links found</div>
 </div>
 
 <% if(edit) { %>
