@@ -59,8 +59,10 @@ $(function () {
       });
     } else {
 
-      //look for a local alert, and fall back on the global
-      var alert = $(".alert-local");
+      //looks for local alerts whos parents are visible.
+      //If none are found, this falls back on the global alert
+      //(prevents global forms like login and register from stealing errors)
+      var alert = $("*:visible > .alert-local");
       if(alert.length == 0)
         alert = $('.alert-global');
 
