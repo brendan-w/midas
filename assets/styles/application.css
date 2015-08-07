@@ -306,7 +306,7 @@ input[type="submit"] {
 }
 
 .alert-local {
-  margin:15px;
+  margin:15px 15px 0px 15px;
 }
 
 /*****************
