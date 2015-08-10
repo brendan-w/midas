@@ -13,7 +13,6 @@ var Faq = BaseController.extend({
 
   },
 
-  // The initialize method is mainly used for event bindings (for efficiency)
   initialize: function (options) {
     var self = this;
     this.faqView = new FaqView({
@@ -21,9 +20,6 @@ var Faq = BaseController.extend({
     }).render();
   },
 
-  // ---------------------
-  //= Utility Methods
-  // ---------------------
   cleanup: function() {
     if (this.faqView) this.faqView.cleanup();
     removeView(this);
