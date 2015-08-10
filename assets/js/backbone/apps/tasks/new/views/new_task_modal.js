@@ -66,23 +66,6 @@ var NewTaskModal = Backbone.View.extend({
     });
   },
 
-  getTagsFromPage: function () {
-
-    // Gather tags for submission after the task is created
-    tags = {
-      'topic':                  this.$("#task_tag_topics").select2('data'),
-      'skill':                  this.$("#task_tagskills").select2('data'),
-      'location':               this.$("#task_tag_location").select2('data'),
-      'task-skills-required': [ this.$("#skills-required").select2('data') ],
-      'task-people':          [ this.$("#people").select2('data') ],
-      'task-time-required':   [ this.$("#time-required").select2('data') ],
-      'task-time-estimate':   [ this.$("#time-estimate").select2('data') ],
-      'task-length':          [ this.$("#length").select2('data') ]
-    };
-
-    return tags;
-  },
-
   render: function () {
     if(this.modal) this.modal.cleanup();
 

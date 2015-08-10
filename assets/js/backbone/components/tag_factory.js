@@ -60,7 +60,7 @@ TagFactory = BaseComponent.extend({
     @param {String}   options.selector           - CSS selector or jQuery element of the new dropdown, element should be preexisting
 
     optional:
-    @param {String}   options.width='500px'      - CSS width attribute for the dropdown
+    @param {String}   options.width='100%'       - CSS width attribute for the dropdown
     @param {Boolean}  options.multiple=true      - Whether to allow multiple tags to be selected
     @param {Boolean}  options.allowCreate=true   - Whether a `createSearchChoice` option will be given
     @param {String}   options.placeholder="..."  - Placeholder for the dropdown    
@@ -95,7 +95,7 @@ TagFactory = BaseComponent.extend({
       placeholder:             options.placeholder,
       minimumInputLength:      (isLocation ? 1 : 2),
       selectOnBlur:            false, //!isLocation,
-      width:                   options.width || "500px",
+      width:                   options.width || "100%", //"500px",
       tokenSeparators:         options.tokenSeparators || [],
       multiple:                options.multiple,
       minimumResultsForSearch: options.searchable ? 0 : Infinity,
@@ -244,6 +244,36 @@ TagFactory = BaseComponent.extend({
       async: false,
       success: cb,
     });
+  },
+
+  getTagsFrom: function($els) {
+
+    var raw_tags = [];
+
+    $els.each(function(i, e) {
+      var data = $(e).select2("data");
+      if(data) //strains out null values (from where multiple = false)
+      {
+        //works with lone objects (multiple = false)
+        //as well as arrays (multiple = true)
+        raw_tags = raw_tags.concat(data);
+      }
+    });
+
+    var tags = _(raw_tags).map(function(tag) {
+      if(tag.id && tag.id !== tag.name)
+        //if the tag object has an ID, then reference it by ID
+        return tag.id;
+      else
+        //else, create a new tag object
+        return {
+          name: tag.name,
+          type: tag.tagType,
+          data: tag.data
+        }
+    });
+
+    return tags;
   },
 
 });

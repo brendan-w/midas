@@ -113,7 +113,6 @@ var Register = Backbone.View.extend({
       type:        "location",
       selector:    "#location",
       multiple:    false,
-      width:       "100%"
     });
 
     this.tagFactory.fetchAllTagsOfType("education", function(tags) {
@@ -124,7 +123,6 @@ var Register = Backbone.View.extend({
         multiple:    false,
         allowCreate: false,
         searchable:  false,
-        width:       "100%",
         fillWith:    tags,
       });
     });
@@ -135,8 +133,44 @@ var Register = Backbone.View.extend({
         selector:    "#topics",
         multiple:    true,
         allowCreate: true,
-        width:       "100%",
         fillWith:    tags,
+      });
+    });
+
+    this.tagFactory.fetchAllTagsOfType("task-type", function(tags) {
+      self.tagFactory.createTagDropDown({
+        type:        "task-type",
+        selector:    "#task-type",
+        placeholder: "Click to select work types",
+        multiple:    true,
+        allowCreate: false,
+        fillWith:    tags,
+      });
+    });
+
+    this.tagFactory.fetchAllTagsOfType("work-location", function(tags) {
+      self.tagFactory.createTagDropDown({
+        type:        "work-location",
+        selector:    "#work-location",
+        placeholder: "Select a work location preference",
+        multiple:    false,
+        allowCreate: false,
+        searchable:  false,
+        fillWith:    tags,
+        width:       "250px",
+      });
+    });
+
+    this.tagFactory.fetchAllTagsOfType("relocate", function(tags) {
+      self.tagFactory.createTagDropDown({
+        type:        "relocate",
+        selector:    "#relocate",
+        placeholder: "Select relocation preference",
+        multiple:    false,
+        allowCreate: false,
+        searchable:  false,
+        fillWith:    tags,
+        width:       "250px",
       });
     });
 
@@ -145,7 +179,6 @@ var Register = Backbone.View.extend({
       selector:    "#skills",
       multiple:    true,
       allowCreate: true,
-      width:       "100%",
     });
 
   },
@@ -175,10 +208,11 @@ var Register = Backbone.View.extend({
     };
 
     //update their profile according to the other form pages
-    if(self.target = "applicant")
+    if(this.target = "applicant")
     {
-      user_data.languages = self.langView.data();
-      user_data.links     = self.linkView.data();
+      user_data.languages = this.langView.data();
+      user_data.links     = this.linkView.data();
+      user_data.tags      = this.tagFactory.getTagsFrom(this.$("#location, #education, #topics, #skills"));
     }
 
     //create the user

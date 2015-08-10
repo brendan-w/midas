@@ -17,10 +17,10 @@ module.exports = [
     { type: "lang-proficiency", name: "Professional Working Proficiency", },
     { type: "lang-proficiency", name: "Native Or Bilingual Proficiency" },
 
-    { type: "task-time-required", name: "Full-time (40 hours)" },
-    { type: "task-time-required", name: "Part-time (10-20 hours)" },
-    { type: "task-time-required", name: "Quick turnover" },
-    { type: "task-time-required", name: "Volunteer/Pro bono" },
+    { type: "task-type", name: "Full-time (40 hours)" },
+    { type: "task-type", name: "Part-time (10-20 hours)" },
+    { type: "task-type", name: "Quick turnover" },
+    { type: "task-type", name: "Volunteer/Pro bono" },
 
     { type: "work-location", name: "Onsite" },
     { type: "work-location", name: "Remote" },
