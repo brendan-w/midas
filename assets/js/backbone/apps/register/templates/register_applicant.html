@@ -1,7 +1,9 @@
 
 <style>
-  form section[name="Skills"] {
-    padding-bottom: 150px;
+
+  form section[name="Skills"] p {
+    margin-top: 10px;
+    margin-bottom: 30px;
   }
 
 </style>
@@ -22,28 +24,24 @@
       <div class="col-sm-12">
 
         <div class="form-group">
-          <label for="location">Your current Location</label>
-          <div id="location"></div> <!-- handled by select2 -->
+          <label for="tag_location">Your current Location</label>
+          <div id="tag_location"></div> <!-- handled by select2 -->
         </div>
         <div class="form-group">
-          <label for="education">Highest education level completed</label>
-          <div id="education"></div> <!-- handled by select2 -->
+          <label for="tag_task_type">Interested in which types of work?</label>
+          <div id="tag_task_type"></div> <!-- handled by select2 -->
         </div>
         <div class="form-group">
-          <label for="topics">Interested in which types of work?</label>
-          <div id="topics"></div> <!-- handled by select2 -->
+          <label for="tag_education">Highest education level completed</label>
+          <div id="tag_education" class="pull-right"></div> <!-- handled by select2 -->
         </div>
         <div class="form-group">
-          <label for="task-type">Interested in which types of work?</label>
-          <div id="task-type"></div> <!-- handled by select2 -->
+          <label for="tag_work_location">Work Location Preference</label>
+          <div id="tag_work_location" class="pull-right"></div> <!-- handled by select2 -->
         </div>
         <div class="form-group">
-          <label for="work-location">Work Location Preference</label>
-          <div id="work-location" class="pull-right"></div> <!-- handled by select2 -->
-        </div>
-        <div class="form-group">
-          <label for="relocate">Are you willing to relocate for work?</label>
-          <div id="relocate" class="pull-right"></div> <!-- handled by select2 -->
+          <label for="tag_relocate">Are you willing to relocate for work?</label>
+          <div id="tag_relocate" class="pull-right"></div> <!-- handled by select2 -->
         </div>
 
 
@@ -56,13 +54,21 @@
       <div class="col-sm-12">
 
         <div class="form-group">
-          <label for="skills">Please enter your skills</label>
-          <div id="skills"></div> <!-- handled by select2 -->
+          <label for="tag_skills">Please enter your skills</label>
+          <div id="tag_skills"></div> <!-- handled by select2 -->
+          <p>
+            Your skills will be displayed on your profile, and will help us match you to appropriate jobs.
+          </p>
         </div>
 
-        <p>
-          Your skills will be displayed on your profile, and will help us match you to appropriate jobs.
-        </p>
+
+        <div class="form-group">
+          <label for="tag_topics">Interested in which types of work?</label>
+          <div id="tag_topics"></div> <!-- handled by select2 -->
+          <p>
+            For instance: Design, Development, Translation
+          </p>
+        </div>
 
       </div>
     </div>

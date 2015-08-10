@@ -13,15 +13,3 @@
   </ul>
 </div>
 <% } %>
-
-<% if (data.userId) { %>
-<div class="tag-title">
-  <h2><i class="fa fa-child "></i> <span class="box-icon-text">Progress</span></h2>
-  <ul class="tags">
-    <li class="tag-empty" id="task-length-empty" style="display: none;">None</li>
-    <li>Published: <%- data.publishedAt ? moment(data.publishedAt).format('ddd, MMM D, YYYY') : '--' %></li><br>
-    <li>Assigned: <%- data.assignedAt ? moment(data.assignedAt).format('ddd, MMM D, YYYY') : '--' %></li><br>
-    <li>Completed: <%- data.completedAt ? moment(data.completedAt).format('ddd, MMM D, YYYY') : '--' %></li>
-  </ul>
-</div>
-<% } %>

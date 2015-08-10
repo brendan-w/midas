@@ -61,44 +61,33 @@
           <hr> <!-- //////////////////////////////////////////////////// -->
 
           <div class="form-group profile-location">
-            <label for="location">Current location</label>
-
-            <% if(!edit) { %>
-              <div><% if (data.location) { %><%- data.location.name %><% } else { %>Not specified<% } %></div>
-            <% } else { %>
-              <input type="hidden" id="location" name="location" style="width: 100%"/>
-            <% } %>
-
+            <label for="tag_location">Current location</label>
+            <div id="tag_location"></div> <!-- handled by TagShowView.js -->
           </div>
 
           <div class="form-group profile-education">
-            <label>Highest education level completed</label>
-            <div><% if (data.education) { %><%- data.education %><% } else { %>Not specified<% } %></div>
+            <label for="tag_education">Highest education level completed</label>
+            <div id="tag_education"></div> <!-- handled by TagShowView.js -->
           </div>
 
           <div class="form-group profile-experience">
-            <label>Years of professional experience</label>
-            <div><% if (data.experience) { %><%- data.experience %><% } else { %>Not specified<% } %></div>
-          </div>
-
-          <div class="form-group profile-topic">
-            <label>Interested in what types of work?</label>
-            <div>topic tags...</div><!-- TODO -->
+            <label for="tag_experience">Years of professional experience</label>
+            <div id="tag_experience"></div> <!-- handled by TagShowView.js -->
           </div>
 
           <div class="form-group profile-location-pref">
-            <label>Work location preferences</label>
-            <div><% if (data.location_pref) { %><%- data.location_pref %><% } else { %>Not specified<% } %></div>
+            <label for="tag_work_location">Work location preferences</label>
+            <div id="tag_work_location"></div> <!-- handled by TagShowView.js -->
           </div>
 
           <div class="form-group profile-seeking">
-            <label>Type of work opportunities in which I am insterested</label>
-            <div><% if (data.seeking) { %><%- data.seeking %><% } else { %>Not specified<% } %></div>
+            <label for="tag_task_type">Type of work opportunities in which I am insterested</label>
+            <div id="tag_task_type"></div> <!-- handled by TagShowView.js -->
           </div>
 
           <div class="form-group profile-fellowship">
-            <label>Would you like to be considered for possible fellowship opportunities</label>
-            <div><% if (data.fellowship) { %><%- data.fellowship %><% } else { %>Not specified<% } %></div>
+            <label for="tag_fellowship">Would you like to be considered for possible fellowship opportunities</label>
+            <div id="tag_fellowship"></div> <!-- handled by TagShowView.js -->
           </div>
 
           <div class="form-group profile-language">
@@ -114,7 +103,17 @@
           <div class="box box-main">
 
             <div class="row">
-              <div class="tag-wrapper"></div>
+              <div class="form-group profile-skills">
+                <label for="tag_skills">Skills</label>
+                <div id="tag_skills"></div> <!-- handled by TagShowView.js -->
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="form-group profile-topics">
+                <label for="tag_topics">Topics</label>
+                <div id="tag_topics"></div> <!-- handled by TagShowView.js -->
+              </div>
             </div>
 
             <hr>

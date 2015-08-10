@@ -9,6 +9,7 @@ var ModalView       = require('../../../components/modal_new');
 var CoreAccountView = require('./core_account_info_view');
 var LanguageView    = require('../../languages/views/language_view.js');
 var LinkView        = require('../../links/views/link_view.js');
+var TagView         = require('../../tag/show/views/tag_show_view.js');
 
 var RegisterChoose    = require('../templates/register_choose.html');
 var RegisterApplicant = require('../templates/register_applicant.html');
@@ -84,11 +85,11 @@ var Register = Backbone.View.extend({
     });
 
     //render the core account info fields
-    //this will quietly fail if we're on a form that doesn't have it
     this.coreAccount = new CoreAccountView({
       el: this.$(".core-account-info"),
     }).render();
 
+    //these will quietly fail if we're on a form that doesn't have them
     this.langView = new LanguageView({
       el: this.$(".lang-wrapper"),
       edit: true,
@@ -99,90 +100,15 @@ var Register = Backbone.View.extend({
       edit: true,
     }).render();
 
-    this.initializeSelect2();
+    this.tagView = new TagView({
+      el: this.$el,
+      edit: true,
+    }).render();
 
     this.modal.show();
 
     return this;
   },
-
-  initializeSelect2: function () {
-    var self = this;
-
-    this.tagFactory.createTagDropDown({
-      type:        "location",
-      selector:    "#location",
-      multiple:    false,
-    });
-
-    this.tagFactory.fetchAllTagsOfType("education", function(tags) {
-      self.tagFactory.createTagDropDown({
-        type:        "education",
-        selector:    "#education",
-        placeholder: "Select an education level",
-        multiple:    false,
-        allowCreate: false,
-        searchable:  false,
-        fillWith:    tags,
-      });
-    });
-
-    this.tagFactory.fetchAllTagsOfType("topic", function(tags) {
-      self.tagFactory.createTagDropDown({
-        type:        "topic",
-        selector:    "#topics",
-        multiple:    true,
-        allowCreate: true,
-        fillWith:    tags,
-      });
-    });
-
-    this.tagFactory.fetchAllTagsOfType("task-type", function(tags) {
-      self.tagFactory.createTagDropDown({
-        type:        "task-type",
-        selector:    "#task-type",
-        placeholder: "Click to select work types",
-        multiple:    true,
-        allowCreate: false,
-        fillWith:    tags,
-      });
-    });
-
-    this.tagFactory.fetchAllTagsOfType("work-location", function(tags) {
-      self.tagFactory.createTagDropDown({
-        type:        "work-location",
-        selector:    "#work-location",
-        placeholder: "Select a work location preference",
-        multiple:    false,
-        allowCreate: false,
-        searchable:  false,
-        fillWith:    tags,
-        width:       "250px",
-      });
-    });
-
-    this.tagFactory.fetchAllTagsOfType("relocate", function(tags) {
-      self.tagFactory.createTagDropDown({
-        type:        "relocate",
-        selector:    "#relocate",
-        placeholder: "Select relocation preference",
-        multiple:    false,
-        allowCreate: false,
-        searchable:  false,
-        fillWith:    tags,
-        width:       "250px",
-      });
-    });
-
-    self.tagFactory.createTagDropDown({
-      type:        "skill",
-      selector:    "#skills",
-      multiple:    true,
-      allowCreate: true,
-    });
-
-  },
-
 
   gotoApplicantForm: function(e) {
     if(e && e.preventDefault) e.preventDefault();
@@ -212,7 +138,7 @@ var Register = Backbone.View.extend({
     {
       user_data.languages = this.langView.data();
       user_data.links     = this.linkView.data();
-      user_data.tags      = this.tagFactory.getTagsFrom(this.$("#location, #education, #topics, #skills"));
+      user_data.tags      = this.tagFactory.getTagsFrom(this.$("#location, #education, #topics, #task-type, #work-location, #relocate, #skills"));
     }
 
     //create the user

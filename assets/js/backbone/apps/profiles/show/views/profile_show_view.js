@@ -9,15 +9,14 @@ var UIConfig = require('../../../../config/ui.json');
 var    Login = require('../../../../config/login.json');
 
 var  MarkdownEditor = require('../../../../components/markdown_editor');
-var     TagShowView = require('../../../tag/show/views/tag_show_view');
 var ProfileTemplate = require('../templates/profile_show_template.html');
 var   ShareTemplate = require('../templates/profile_share_template.txt');
 var  ModalComponent = require('../../../../components/modal');
 var          PAView = require('./profile_activity_view');
-var      TagFactory = require('../../../../components/tag_factory');
 var     VetShowView = require('../../../vet/show/views/vet_show_view');
 var        LangView = require('../../../languages/views/language_view');
 var        LinkView = require('../../../links/views/link_view');
+var         TagView = require('../../../tag/show/views/tag_show_view');
 
 
 var ProfileShowView = Backbone.View.extend({
@@ -38,7 +37,6 @@ var ProfileShowView = Backbone.View.extend({
     var self = this;
     this.options = options;
     this.data = options.data;
-    this.tagFactory = new TagFactory();
     this.data.newItemTags = [];
     this.edit = false;
     if (this.options.action == 'edit') {
@@ -84,7 +82,6 @@ var ProfileShowView = Backbone.View.extend({
     // initialize sub components
     this.initializeFileUpload();
     this.initializeForm();
-    this.initializeSelect2();
     this.initializeLikes();
     this.initializeTags();
     this.initializeLangs();
@@ -163,14 +160,11 @@ var ProfileShowView = Backbone.View.extend({
 
   initializeTags: function() {
     if (this.tagView) { this.tagView.cleanup(); }
-    this.tagView = new TagShowView({
-      model: this.model,
-      el: '.tag-wrapper',
+    this.tagView = new TagView({
+      el: this.$el,
       target: 'profile',
-      targetId: 'userId',
-      edit: this.edit
-    });
-    this.tagView.render();
+      edit: this.edit,
+    }).render();
   },
 
   initializeLangs: function() {
@@ -276,33 +270,6 @@ var ProfileShowView = Backbone.View.extend({
       $("#like-button-icon").removeClass('fa fa-star-o');
       $("#like-button-icon").addClass('fa fa-star');
     }
-  },
-
-  initializeSelect2: function () {
-    var modelJson = this.model.toJSON();
-
-    /*
-      The location and company selectors differ from the
-      defaults in tag_show_view, so they are explicitly
-      created here (with different HTML IDs than normal,
-      to avoid conflicts).
-    */
-    this.tagFactory.createTagDropDown({
-      type:        "location",
-      selector:    "#location",
-      multiple:    false,
-      data:        modelJson.location,
-      width:       "100%"
-    });
-
-    this.tagFactory.createTagDropDown({
-      type:        "agency",
-      selector:    "#company",
-      multiple:    false,
-      allowCreate: false,
-      data:        modelJson.agency,
-      width:       "100%",
-    });
   },
 
   initializeTextArea: function () {
