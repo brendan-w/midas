@@ -20,7 +20,6 @@
           <div class="box box-main">
 
             <!-- edit buttons -->
-
             <div class="pull-right">
 
               <% if(!edit) { %>
@@ -44,9 +43,23 @@
 
             <!-- main profile information -->
 
-            <h2><% if (data.name) { %><%- data.name %><% } else { %><%- data.username %><% } %></h2>
+            <div class="form-group">
+              <% if(!edit) { %>
+                <h2><% if (data.name) { %><%- data.name %><% } else { %><%- data.username %><% } %></h2>
+              <% } else { %>
+                <div class="row">
+                  <div class="col-sm-4 nopadding">
+                    <label>Name</label>
+                    <input type="text" class="form-control" id="profile-first-name" placeholder="First Name" value="<%- data.name %>">
+                    <input type="text" class="form-control" id="profile-last-name"  placeholder="Last Name">
+                  </div>
+                </div>
+              <% } %>
+            </div>
 
-            <div class="vet-wrapper"></div> <!-- populated by vet_show_view.js -->
+            <% if(!edit) { %>
+              <div class="vet-wrapper"></div> <!-- populated by vet_show_view.js -->
+            <% } %>
 
             <div class="form-group profile-bio">
               <% if(!edit) { %>

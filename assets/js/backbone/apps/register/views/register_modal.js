@@ -41,9 +41,6 @@ var Register = Backbone.View.extend({
     this.listenTo(window.cache.userEvents, "user:register:hide", function() {
       self.modal.hide();
     });
-
-    //TODO: remove this when done
-    this.render("applicant");
   },
 
   /*

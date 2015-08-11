@@ -330,9 +330,8 @@ var ProfileShowView = Backbone.View.extend({
     }
 
     var data = {
-      name:      $("#name").val(),
-      title:     $("#title").val(),
-      bio:       $("#bio").val(),
+      name:      $("#profile-first-name").val(),
+      bio:       $(".profile-bio textarea").val(),
       username:  $("#profile-email").val(),
       tags:      this.tagView.data(),
       languages: this.langView.data(),
