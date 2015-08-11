@@ -81,6 +81,7 @@ TagFactory = BaseComponent.extend({
     options.multiple    = (options.multiple    !== undefined ? options.multiple    : true);
     options.allowCreate = (options.allowCreate !== undefined ? options.allowCreate : true);
     options.searchable  = (options.searchable  !== undefined ? options.searchable  : true);
+    options.data        = options.data || [];
 
     //default placeholders
     if(!options.placeholder)
@@ -122,14 +123,26 @@ TagFactory = BaseComponent.extend({
         results: function (data) {
           return { results: data };
         }
-      }
+      },
+
+      initSelection: function(element, callback) {
+        var selection = options.data;
+        //add the `text` property for select2
+        if(Object.prototype.toString.call(selection) === '[object Array]')
+          selection.forEach(function(t) { t.text = t.name; });
+        else
+          selection.text = selection.name;
+
+        callback(selection);
+      },
+
     };
 
     if(options.fillWith)
     {
       settings.ajax = undefined;
       settings.minimumInputLength = undefined;
-      settings.data = { results: options.fillWith, text:'value' };
+      settings.data = { results: options.fillWith, text:'name' };
     }
 
     //if requested, give users the option to create new
@@ -231,7 +244,8 @@ TagFactory = BaseComponent.extend({
 
     //load initial data, if provided
     if(options.data) {
-      $sel.select2('data', options.data);
+      // $sel.select2('data', options.data);
+      $sel.select2('val', options.data);
     }
 
     return $sel;
@@ -272,6 +286,8 @@ TagFactory = BaseComponent.extend({
           data: tag.data
         }
     });
+
+    tags = _(tags).unique();
 
     return tags;
   },

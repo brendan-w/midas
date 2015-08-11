@@ -162,8 +162,9 @@ var ProfileShowView = Backbone.View.extend({
     if (this.tagView) { this.tagView.cleanup(); }
     this.tagView = new TagView({
       el: this.$el,
-      target: 'profile',
+      tags: this.model.get("tags"),
       edit: this.edit,
+      target: 'profile',
     }).render();
   },
 

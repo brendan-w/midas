@@ -182,7 +182,7 @@ var TagShowView = Backbone.View.extend({
   },
 
   tagsFor: function(tag_type) {
-    var tags = _.where(self.tags, { type : tag_type });
+    var tags = _.where(this.tags, { type : tag_type });
     if(tags.length > 0)
       return tags;
     else
@@ -190,7 +190,7 @@ var TagShowView = Backbone.View.extend({
   },
 
   tagStringFor: function(tag_type) {
-    var str = _.where(this.tags, { type : tag_type }).join(", ");
+    var str = _(this.tags).chain().where({ type : tag_type }).pluck("name").value().join(", ");
     return (str.length === 0) ? "Not specified" : str;
   },
 
