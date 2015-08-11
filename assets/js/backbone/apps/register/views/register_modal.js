@@ -116,9 +116,7 @@ var Register = Backbone.View.extend({
   },
 
   next: function($page) {
-    //TODO: reset this
-    // return !validateAll($page);
-    return true;
+    return !validateAll($page);
   },
 
   submit: function($form) {
