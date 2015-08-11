@@ -22,6 +22,25 @@ var TagShowView = Backbone.View.extend({
     @param {Array[Object]} options.tags     - array of currently selected tags
     @param {Boolean}       options.edit     - whether or not to display the tag editor
     @param {String}        options.target   - key for looking up tag-type sets from the TagConfig (profile|task|project)
+
+    This view is simply for initializing select2 tag dropdowns.
+    It looks for the following element IDs:
+
+      #tag_location
+      #tag_task_type
+      #tag_education
+      #tag_experience
+      #tag_work_location
+      #tag_relocate
+      #tag_fellowship
+      #tag_skills
+      #tag_topics
+
+    If it finds any of these, it will instantiate select2 with
+    the corresponding settings for that tag dropdown. Initial tag
+    data can be provided in bulk using `options.tags`. Inversley,
+    the tag data can be retrived in bulk using this view's `data`
+    function.
   */
   initialize: function (options) {
     this.options = options;
@@ -30,7 +49,7 @@ var TagShowView = Backbone.View.extend({
     this.target  = options.target;
     this.tagFactory = new TagFactory();
 
-    //pre-select all of the needed elements
+    //pre-select all possible elements
     this.$location      = this.$("#tag_location");
     this.$task_type     = this.$("#tag_task_type");
     this.$education     = this.$("#tag_education");
@@ -47,7 +66,7 @@ var TagShowView = Backbone.View.extend({
       this.initializeSelect2();
     else
       this.initializeDisplay();
-    // this.initializeTags();
+
     return this;
   },
 
