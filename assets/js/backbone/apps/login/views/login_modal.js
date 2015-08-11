@@ -139,9 +139,10 @@ var LoginModal = Backbone.View.extend({
       self.modal.hide();
 
     }).fail(function (error) {
-      var d = JSON.parse(error.responseText);
-      self.$("#login-error").html(d.message);
-      self.$("#login-error").show();
+      // handled by the Global AJAX error listener
+      // var d = JSON.parse(error.responseText);
+      // self.$("#login-error").html(d.message);
+      // self.$("#login-error").show();
     });
   },
 
@@ -159,10 +160,10 @@ var LoginModal = Backbone.View.extend({
     }).done(function (success) {
       self.render("forgot:done");
     }).fail(function (error) {
-      //TODO: handle these errors
-      var d = JSON.parse(error.responseText);
-      self.$("#forgot-error").html(d.message);
-      self.$("#forgot-error").show();
+      // handled by the Global AJAX error listener
+      // var d = JSON.parse(error.responseText);
+      // self.$("#forgot-error").html(d.message);
+      // self.$("#forgot-error").show();
     });
   },
 

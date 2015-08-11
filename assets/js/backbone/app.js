@@ -50,6 +50,8 @@ Backbone.$ = jQuery;
 $(function () {
   $(document).ajaxError(function (e, jqXHR, settings, errorText) {
     $('.spinner').hide();
+
+    //if it's an auth error, open a login modal
     if (jqXHR.status === 401 || jqXHR.status === 403) {
       if (!window.cache || !window.cache.userEvents
         || !('trigger' in window.cache.userEvents)) return;
@@ -57,18 +59,23 @@ $(function () {
         disableClose: false,
         message: jqXHR.responseJSON.message || ""
       });
-    } else {
-
-      var alert = $('.alert-global');
-
-      //if a message was returned, show it
-      if(jqXHR.responseJSON && jqXHR.responseJSON.message)
-        alert.html("<strong>" + errorText + "</strong>. " + jqXHR.responseJSON.message);
-      else
-        alert.html("<strong>An unknown error occurred</strong>. Please contact your system administrator.");
-
-      alert.show();
     }
+
+    //looks for local alerts whos parents are visible.
+    //If none are found, this falls back on the global alert
+    //(prevents global forms like login and register from stealing errors)
+    var alert = $("*:visible > .alert-local");
+    if(alert.length == 0)
+      alert = $('.alert-global');
+
+    //if a message was returned, show it
+    if(jqXHR.responseJSON && jqXHR.responseJSON.message)
+      alert.html(jqXHR.responseJSON.message);
+    else
+      alert.html("<strong>An unknown error occurred</strong>. Please contact your system administrator.");
+
+    alert.show();
+
   });
 });
 

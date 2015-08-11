@@ -272,6 +272,11 @@ input[type="submit"] {
   border-top-color: #c0c0c0;
   border-radius: 0 0 3px 3px;
 }
+
+.select2-container {
+  display:block;
+}
+
 .select2-container-multi .select2-choices .select2-search-field {
   width: 100%;
 }
@@ -303,6 +308,10 @@ input[type="submit"] {
 .container > .server-alert {
   margin-left: -20px;
   margin-top: 20px;
+}
+
+.alert-local {
+  margin:15px 15px 0px 15px;
 }
 
 /*****************

@@ -50,15 +50,20 @@ var CoreAccountView = Backbone.View.extend({
     return this;
   },
 
-  submit: function(type, cb) {
+  submit: function(user_data, cb) {
+    if(!user_data.type)
+      return console.log("Must pass a user type string to submit()");
+
     // Create a data object with the required fields
     var data = {
+      json:     true,
       name:     this.$("#rname").val(),
       username: this.$("#rusername").val(),
       password: this.$("#rpassword").val(),
-      type:     type,
-      json:     true
     };
+
+    //load any additional values (including the `type`)
+    _.extend(data, user_data);
 
     // Add in additional, optional fields
     if(login.terms.enabled === true)
@@ -72,7 +77,6 @@ var CoreAccountView = Backbone.View.extend({
     }).done(function (user) {
       // Set the user object and trigger the user login event
       window.cache.currentUser = user;
-      window.cache.userEvents.trigger("user:login", user);
       cb(user);
     }).fail(function (error) {
       //TODO: handle these errors, if they aren't already handled

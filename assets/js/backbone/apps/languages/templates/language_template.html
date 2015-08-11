@@ -1,64 +1,62 @@
 
 <style>
-  .lang-list {
+
+  ul.lang-list {
     list-style: none;
     padding-left: 0px;
-  }  
+    margin-bottom: 0px;
+    max-height: 242px; /* roughly 2 li's of content */
+    overflow-y: auto;
+  }
+
+  ul.lang-list.edit li {
+    padding-top: 10px;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+    background-color: #F4F4F4;
+  }
+
+  ul.lang-list.edit li:last-of-type {
+    margin-bottom: 0px;    
+  }
+
+  /* normal form-groups were a little too big */
+  ul.lang-list .form-group {
+    margin-bottom: 5px;
+  }
+
+  ul.lang-list li label {
+    /* the default bold was a little too much */
+    font-weight: normal;
+  }
+
+  .lang-buttons {
+    margin-top: 10px;
+  }
+
 </style>
 
 
-
-<ul class="lang-list">
-  <li>
-    <div class="row">
-      <div class="col-sm-12">
-        <div class="form-group">
-          <label class="control-label" data-i18n="loginModal.name">Language</label>
-          <input type="text" class="form-control validate language" placeholder="Name of Language" data-validate="empty">
-          <span class="help-block error-empty" style="display:none;">Please enter a language.</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="form-group">
-        <div class="col-sm-6">
-          <label class="control-label" data-i18n="loginModal.name">Written Proficiency</label>
-        </div>
-        <div class="col-sm-6">
-          <select>
-            <option>No Proficiency</option>
-            <option>Elementary Proficiency</option>
-            <option>Limited Working Proficiency</option>
-            <option>Professional Working Proficiency</option>
-            <option>Native Or Bilingual Proficiency</option>
-          </select>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="form-group">
-        <div class="col-sm-6">
-          <label class="control-label" data-i18n="loginModal.name">Spoken Proficiency</label>
-        </div>
-        <div class="col-sm-6">
-          <select>
-            <option>No Proficiency</option>
-            <option>Elementary Proficiency</option>
-            <option>Limited Working Proficiency</option>
-            <option>Professional Working Proficiency</option>
-            <option>Native Or Bilingual Proficiency</option>
-          </select>
-        </div>
-      </div>
-    </div>
-
-  </li>
-</ul>
+<% if(!edit) { %>
+  <!-- the header -->
+  <div class="row border-bottom">
+    <div class="col-sm-2 padding-left-none"><b>Languages</b></div>
+    <div class="col-sm-5"><b>Written Proficiency</b></div>
+    <div class="col-sm-5 padding-right-none"><b>Spoken Proficiency</b></div>
+  </div>
+<% } %>
 
 <div class="row">
-  <div class="col-sm-12">
-    <button><i class="fa fa-plus">&nbsp;</i>Add Language</button>
-  </div>
+  <div class="lang-list-empty" style="display:none">No languages found</div>
 </div>
+
+<!-- The main list -->
+<div class="row">
+  <ul class="lang-list <% if(edit) { %>edit<% } %>"></ul>
+</div>
+
+<% if(edit) { %>
+  <div class="row lang-buttons">
+    <button class="lang-add btn btn-c0"><i class="fa fa-plus">&nbsp;</i>Add Language</button>
+  </div>
+<% } %>

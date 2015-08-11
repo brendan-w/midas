@@ -26,11 +26,13 @@ var crypto    = require('crypto');
  * @param {Function} next
  */
 exports.register = function (req, res, next) {
-  var name     = req.param('name')
-    , username = req.param('username')
-    , password = req.param('password')
-    , type     = req.param('type')
-    , tags     = req.param('tags');
+  var name      = req.param('name')
+    , username  = req.param('username')
+    , password  = req.param('password')
+    , type      = req.param('type')
+    , tags      = req.param('tags')
+    , languages = req.param('languages')
+    , links     = req.param('links');
 
   if (!username) {
     req.flash('error', 'Error.Passport.Username.Missing');
@@ -47,10 +49,12 @@ exports.register = function (req, res, next) {
   }
 
   User.create({
-    username : username,
-    name: name,
+    username :   username,
+    name:        name,
     permissions: type,
-    tags: tags
+    tags:        tags,
+    languages:   languages,
+    links:       links,
   }).populate('permissions').exec(function (err, user) {
     if (err) {
       if (err.code === 'E_VALIDATION') {

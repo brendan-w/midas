@@ -274,8 +274,47 @@ ALTER SEQUENCE file_id_seq OWNED BY file.id;
 
 
 --
+-- Name: language; Type: TABLE; Schema: public; Owner: midas; Tablespace:
+--
+
+CREATE TABLE language (
+    id integer NOT NULL,
+    "user" integer,
+    "language" text,
+    "writtenProficiency" integer,
+    "spokenProficiency" integer,
+    "createdAt" timestamp with time zone,
+    "updatedAt" timestamp with time zone,
+    "deletedAt" timestamp with time zone
+);
+
+
+ALTER TABLE language OWNER TO midas;
+
+--
+-- Name: language_id_seq; Type: SEQUENCE; Schema: public; Owner: midas
+--
+
+CREATE SEQUENCE language_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE language_id_seq OWNER TO midas;
+
+--
+-- Name: language_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: midas
+--
+
+ALTER SEQUENCE language_id_seq OWNED BY language.id;
+
+--
 -- Name: like; Type: TABLE; Schema: public; Owner: midas; Tablespace:
 --
+
 
 CREATE TABLE "like" (
     "projectId" integer,
@@ -310,6 +349,45 @@ ALTER TABLE like_id_seq OWNER TO midas;
 --
 
 ALTER SEQUENCE like_id_seq OWNED BY "like".id;
+
+
+--
+-- Name: link; Type: TABLE; Schema: public; Owner: midas; Tablespace:
+--
+
+CREATE TABLE link (
+    id integer NOT NULL,
+    "user" integer,
+    "project" integer,
+    "task" integer,
+    "url" text,
+    "createdAt" timestamp with time zone,
+    "updatedAt" timestamp with time zone,
+    "deletedAt" timestamp with time zone
+);
+
+
+ALTER TABLE link OWNER TO midas;
+
+--
+-- Name: link_id_seq; Type: SEQUENCE; Schema: public; Owner: midas
+--
+
+CREATE SEQUENCE link_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE link_id_seq OWNER TO midas;
+
+--
+-- Name: link_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: midas
+--
+
+ALTER SEQUENCE link_id_seq OWNED BY link.id;
 
 
 --
@@ -1215,12 +1293,24 @@ ALTER TABLE ONLY eventrsvp ALTER COLUMN id SET DEFAULT nextval('eventrsvp_id_seq
 
 ALTER TABLE ONLY file ALTER COLUMN id SET DEFAULT nextval('file_id_seq'::regclass);
 
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: midas
+--
+
+ALTER TABLE ONLY language ALTER COLUMN id SET DEFAULT nextval('language_id_seq'::regclass);
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: midas
 --
 
 ALTER TABLE ONLY "like" ALTER COLUMN id SET DEFAULT nextval('like_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: midas
+--
+
+ALTER TABLE ONLY link ALTER COLUMN id SET DEFAULT nextval('link_id_seq'::regclass);
 
 
 --
@@ -1419,11 +1509,27 @@ ALTER TABLE ONLY file
 
 
 --
+-- Name: language_pkey; Type: CONSTRAINT; Schema: public; Owner: midas; Tablespace:
+--
+
+ALTER TABLE ONLY language
+    ADD CONSTRAINT language_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: like_pkey; Type: CONSTRAINT; Schema: public; Owner: midas; Tablespace:
 --
 
 ALTER TABLE ONLY "like"
     ADD CONSTRAINT like_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: link_pkey; Type: CONSTRAINT; Schema: public; Owner: midas; Tablespace:
+--
+
+ALTER TABLE ONLY link
+    ADD CONSTRAINT link_pkey PRIMARY KEY (id);
 
 
 --

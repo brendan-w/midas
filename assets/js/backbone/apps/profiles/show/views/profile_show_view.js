@@ -1,20 +1,22 @@
-var _ = require('underscore');
+var        _ = require('underscore');
 var Backbone = require('backbone');
-var utils = require('../../../../mixins/utilities');
-var UIConfig = require('../../../../config/ui.json');
-var async = require('async');
+var    async = require('async');
+var   marked = require('marked');
 var jqIframe = require('blueimp-file-upload/js/jquery.iframe-transport');
-var jqFU = require('blueimp-file-upload/js/jquery.fileupload.js');
-var MarkdownEditor = require('../../../../components/markdown_editor');
-var marked = require('marked');
-var TagShowView = require('../../../tag/show/views/tag_show_view');
+var     jqFU = require('blueimp-file-upload/js/jquery.fileupload.js');
+var    utils = require('../../../../mixins/utilities');
+var UIConfig = require('../../../../config/ui.json');
+var    Login = require('../../../../config/login.json');
+
+var  MarkdownEditor = require('../../../../components/markdown_editor');
 var ProfileTemplate = require('../templates/profile_show_template.html');
-var ShareTemplate = require('../templates/profile_share_template.txt');
-var Login = require('../../../../config/login.json');
-var ModalComponent = require('../../../../components/modal');
-var PAView = require('./profile_activity_view');
-var TagFactory = require('../../../../components/tag_factory');
-var VetShowView = require('../../../vet/show/views/vet_show_view');
+var   ShareTemplate = require('../templates/profile_share_template.txt');
+var  ModalComponent = require('../../../../components/modal');
+var          PAView = require('./profile_activity_view');
+var     VetShowView = require('../../../vet/show/views/vet_show_view');
+var        LangView = require('../../../languages/views/language_view');
+var        LinkView = require('../../../links/views/link_view');
+var         TagView = require('../../../tag/show/views/tag_show_view');
 
 
 var ProfileShowView = Backbone.View.extend({
@@ -35,7 +37,6 @@ var ProfileShowView = Backbone.View.extend({
     var self = this;
     this.options = options;
     this.data = options.data;
-    this.tagFactory = new TagFactory();
     this.data.newItemTags = [];
     this.edit = false;
     if (this.options.action == 'edit') {
@@ -81,12 +82,13 @@ var ProfileShowView = Backbone.View.extend({
     // initialize sub components
     this.initializeFileUpload();
     this.initializeForm();
-    this.initializeSelect2();
     this.initializeLikes();
     this.initializeTags();
+    this.initializeLangs();
     this.initializePAView();
     this.initializeTextArea();
     this.initializeVet();
+    this.initializeLinks();
     this.updatePhoto();
     this.updateProfileEmail();
     return this;
@@ -158,14 +160,20 @@ var ProfileShowView = Backbone.View.extend({
 
   initializeTags: function() {
     if (this.tagView) { this.tagView.cleanup(); }
-    this.tagView = new TagShowView({
-      model: this.model,
-      el: '.tag-wrapper',
+    this.tagView = new TagView({
+      el: this.$el,
+      tags: this.model.get("tags"),
+      edit: this.edit,
       target: 'profile',
-      targetId: 'userId',
-      edit: this.edit
-    });
-    this.tagView.render();
+    }).render();
+  },
+
+  initializeLangs: function() {
+    if (this.langView) this.langView.cleanup();
+    this.langView = new LangView({
+      el: this.$('.lang-wrapper'),
+      edit: this.edit,
+    }).render(this.model.get('languages'));
   },
 
   initializePAView: function () {
@@ -244,12 +252,12 @@ var ProfileShowView = Backbone.View.extend({
     this.listenTo(self.model, "profile:removeAuth:success", function (data, id) {
       self.render();
     });
-    this.listenTo(self.model, "profile:input:changed", function (e) {
+    // this.listenTo(self.model, "profile:input:changed", function (e) {
+    // });
       $("#profile-save, #submit").button('reset');
       $("#profile-save, #submit").removeAttr("disabled");
       $("#profile-save, #submit").removeClass("btn-success");
       $("#profile-save, #submit").addClass("btn-c2");
-    });
   },
 
   initializeLikes: function() {
@@ -263,33 +271,6 @@ var ProfileShowView = Backbone.View.extend({
       $("#like-button-icon").removeClass('fa fa-star-o');
       $("#like-button-icon").addClass('fa fa-star');
     }
-  },
-
-  initializeSelect2: function () {
-    var modelJson = this.model.toJSON();
-
-    /*
-      The location and company selectors differ from the
-      defaults in tag_show_view, so they are explicitly
-      created here (with different HTML IDs than normal,
-      to avoid conflicts).
-    */
-    this.tagFactory.createTagDropDown({
-      type:        "location",
-      selector:    "#location",
-      multiple:    false,
-      data:        modelJson.location,
-      width:       "100%"
-    });
-
-    this.tagFactory.createTagDropDown({
-      type:        "agency",
-      selector:    "#company",
-      multiple:    false,
-      allowCreate: false,
-      data:        modelJson.agency,
-      width:       "100%",
-    });
   },
 
   initializeTextArea: function () {
@@ -307,9 +288,17 @@ var ProfileShowView = Backbone.View.extend({
   initializeVet: function() {
     if(this.vetView) this.vetView.cleanup();
     this.vetView = new VetShowView({
-      el: ".vet-wrapper",
+      el: this.$(".vet-wrapper"),
       model: this.model,
     }).render();
+  },
+
+  initializeLinks: function() {
+    if(this.linkView) this.linkView.cleanup();
+    this.linkView = new LinkView({
+      el: this.$(".links-wrapper"),
+      edit: this.edit,
+    }).render(this.model.get('links'));
   },
 
   fieldModified: function (e) {
@@ -333,46 +322,27 @@ var ProfileShowView = Backbone.View.extend({
 
   profileSubmit: function (e) {
     e.preventDefault();
+    var self = this;
 
     // If the name isn't valid, don't put the save through
     if (validate({ currentTarget: '#name' })) {
       return;
     }
 
+    var data = {
+      name:      $("#profile-first-name").val(),
+      bio:       $(".profile-bio textarea").val(),
+      username:  $("#profile-email").val(),
+      tags:      this.tagView.data(),
+      languages: this.langView.data(),
+      links:     this.linkView.data(),
+    };
+
+    if(!data.languages) return; //failed validation
+    if(!data.links)     return; //failed validation
+
     $("#profile-save, #submit").button('loading');
     setTimeout(function() { $("#profile-save, #submit").attr("disabled", "disabled"); }, 0);
-
-    var newTags = [].concat(
-          $("#company").select2('data'),
-          $("#tag_topic").select2('data'),
-          $("#tag_skill").select2('data'),
-          $("#location").select2('data')
-        ),
-        modelTags = _(this.model.get('tags')).filter(function(tag) {
-          return (tag.type !== 'agency' && tag.type !== 'location');
-        }),
-        data = {
-          name:  $("#name").val(),
-          title: $("#title").val(),
-          bio: $("#bio").val(),
-          username: $("#profile-email").val()
-        },
-        email = this.model.get('username'),
-        self = this,
-        tags = _(modelTags.concat(newTags)).chain()
-          .filter(function(tag) {
-            return _(tag).isObject() && !tag.context;
-          })
-          .map(function(tag) {
-            return (tag.id && tag.id !== tag.name) ? +tag.id : {
-              name: tag.name,
-              type: tag.tagType,
-              data: tag.data
-            };
-          }).unique().value();
-
-    data.tags = tags;
-
     this.model.trigger("profile:save", data);
   },
 
@@ -424,12 +394,14 @@ var ProfileShowView = Backbone.View.extend({
     }
   },
   cleanup: function () {
-    if (this.md) { this.md.cleanup(); }
-    if (this.tagView) { this.tagView.cleanup(); }
-    if (this.projectView) { this.projectView.cleanup(); }
-    if (this.taskView) { this.taskView.cleanup(); }
-    if (this.volView) { this.volView.cleanup(); }
-    if (this.vetView) this.vetView.cleanup();
+    if (this.md)          this.md.cleanup();
+    if (this.tagView)     this.tagView.cleanup();
+    if (this.langView)    this.langView.cleanup();
+    if (this.projectView) this.projectView.cleanup();
+    if (this.taskView)    this.taskView.cleanup();
+    if (this.volView)     this.volView.cleanup();
+    if (this.vetView)     this.vetView.cleanup();
+    if (this.linkView)    this.linkView.cleanup();
     removeView(this);
   }
 

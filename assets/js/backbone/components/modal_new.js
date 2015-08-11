@@ -102,6 +102,9 @@ ModalView = BaseView.extend({
   */
   renderForm: function(options) {
 
+    //hide any pre-existing alerts
+    this.$(".alert-local").hide();
+
     //load the child view's HTML
     this.$body.html(options.html);
     this.$body.i18n();

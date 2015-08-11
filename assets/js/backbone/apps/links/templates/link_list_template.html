@@ -1,0 +1,60 @@
+
+<style>
+
+  ul.link-list {
+    list-style: none;
+    padding-left: 0px;
+    margin-bottom: 0px;
+    overflow-y: auto;
+    max-height: 115px;
+  }
+
+  /*
+  ul.link-list.edit {
+    height: 115px;
+  }
+  */
+
+  ul.link-list.edit input {
+    overflow: hidden;
+  }
+
+  ul.link-list.edit .form-group {
+    /* normal form-groups were a little too big */
+    margin-bottom: 5px;
+  }
+
+  li.link > div {
+    overflow: hidden;
+  }
+
+  /* The close buttons */
+  li.link button {
+    padding: 5px 10px;
+  }
+
+  /* The URL inputs */
+  li.link input {
+    width:100%;
+  }
+
+  .link-buttons {
+    margin-top: 10px;
+  }
+
+</style>
+
+<div class="row">
+  <div class="link-list-empty" style="display:none">No links found</div>
+</div>
+
+<!-- The main list -->
+<div class="row">
+  <ul class="link-list <% if(edit) { %>edit<% } %>"></ul>
+</div>
+
+<% if(edit) { %>
+  <div class="row link-buttons">
+    <button class="link-add btn btn-c0"><i class="fa fa-plus">&nbsp;</i>Add Link</button>
+  </div>
+<% } %>

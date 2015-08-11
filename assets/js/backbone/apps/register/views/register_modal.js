@@ -3,10 +3,12 @@ var _        = require('underscore');
 var Backbone = require('backbone');
 var utils    = require('../../../mixins/utilities');
 
-var TagFactory      = require('../../../components/tag_factory');
+var ProfileModel    = require('../../../entities/profiles/profile_model.js');
 var ModalView       = require('../../../components/modal_new');
 var CoreAccountView = require('./core_account_info_view');
 var LanguageView    = require('../../languages/views/language_view.js');
+var LinkView        = require('../../links/views/link_view.js');
+var TagView         = require('../../tag/show/views/tag_show_view.js');
 
 var RegisterChoose    = require('../templates/register_choose.html');
 var RegisterApplicant = require('../templates/register_applicant.html');
@@ -34,18 +36,11 @@ var Register = Backbone.View.extend({
     this.modal.onNext(this.next);
     this.listenTo(this.modal, "submit", this.submit);
 
-    //we'll need one of these
-    this.tagFactory = new TagFactory();
-
-
     //listen for register events
     this.listenTo(window.cache.userEvents, "user:register:show", this.render);
     this.listenTo(window.cache.userEvents, "user:register:hide", function() {
       self.modal.hide();
     });
-
-    //TODO: remove this when done
-    // this.render("applicant");
   },
 
   /*
@@ -56,6 +51,8 @@ var Register = Backbone.View.extend({
   */
   render: function(target) {
     if(this.coreAccount) this.coreAccount.cleanup();
+    if(this.langView) this.langView.cleanup();
+    if(this.linkView) this.linkView.cleanup();
 
     this.target = target || "choose";
 
@@ -80,67 +77,30 @@ var Register = Backbone.View.extend({
     });
 
     //render the core account info fields
-    //this will quietly fail if we're on a form that doesn't have it
     this.coreAccount = new CoreAccountView({
-      el: this.$(".core-account-info")
+      el: this.$(".core-account-info"),
     }).render();
 
+    //these will quietly fail if we're on a form that doesn't have them
     this.langView = new LanguageView({
-      el: this.$(".lang-wrapper")
+      el: this.$(".lang-wrapper"),
+      edit: true,
     }).render();
 
-    this.initializeSelect2();
+    this.linkView = new LinkView({
+      el: this.$(".link-wrapper"),
+      edit: true,
+    }).render();
+
+    this.tagView = new TagView({
+      el: this.$el,
+      edit: true,
+    }).render();
 
     this.modal.show();
 
-    //TODO: remove this when done
-    this.modal.gotoPage(3);
-
     return this;
   },
-
-  initializeSelect2: function () {
-    var self = this;
-
-    this.tagFactory.createTagDropDown({
-      type:        "location",
-      selector:    "#location",
-      multiple:    false,
-      width:       "100%"
-    });
-
-    this.tagFactory.fetchAllTagsOfType("education", function(tags) {
-      self.tagFactory.createTagDropDown({
-        type:        "education",
-        selector:    "#education",
-        multiple:    false,
-        allowCreate: false,
-        width:       "100%",
-        fillWith:    tags,
-      });
-    });
-
-    this.tagFactory.fetchAllTagsOfType("topic", function(tags) {
-      self.tagFactory.createTagDropDown({
-        type:        "topic",
-        selector:    "#topics",
-        multiple:    true,
-        allowCreate: true,
-        width:       "100%",
-        fillWith:    tags,
-      });
-    });
-
-    self.tagFactory.createTagDropDown({
-      type:        "skill",
-      selector:    "#skills",
-      multiple:    true,
-      allowCreate: true,
-      width:       "100%",
-    });
-
-  },
-
 
   gotoApplicantForm: function(e) {
     if(e && e.preventDefault) e.preventDefault();
@@ -153,30 +113,35 @@ var Register = Backbone.View.extend({
   },
 
   next: function($page) {
-    //TODO: put this back when your done, silly
-    // return !validateAll($page);
-    return true;
+    return !validateAll($page);
   },
 
   submit: function($form) {
     var self = this;
 
+    var user_data = {
+      type: this.target,
+    };
+
+    //update their profile according to the other form pages
+    if(this.target = "applicant")
+    {
+      user_data.languages = this.langView.data();
+      user_data.links     = this.linkView.data();
+      user_data.tags      = this.tagView.data();
+    }
 
     //create the user
     //target should be either "applicant" or "poster:unapproved"
-    this.coreAccount.submit(this.target, function(user) {
+    this.coreAccount.submit(user_data, function(user) {
 
-      //update their profile according to the other form pages
-      console.log("submit: ", this.target);
-
-      //hide the modal
-
+      //when the modal is hidden
       self.$el.bind('hidden.bs.modal', function() {
         // if successful, reload page
         Backbone.history.loadUrl();
         window.cache.userEvents.trigger("user:login:success", user);
-        if (self.options.navigate)
-          window.cache.userEvents.trigger("user:login:success:navigate", user);
+        // if (self.options.navigate)
+          // window.cache.userEvents.trigger("user:login:success:navigate", user);
       });
 
       self.modal.hide();
@@ -185,6 +150,8 @@ var Register = Backbone.View.extend({
 
   cleanup: function() {
     if(this.coreAccount) this.coreAccount.cleanup();
+    if(this.langView) this.langView.cleanup();
+    if(this.linkView) this.linkView.cleanup();
     if(this.modal) this.modal.cleanup();
     removeView(this);
   }

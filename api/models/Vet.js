@@ -23,15 +23,10 @@ module.exports = {
     },
 
     //whether this request is pending, accepted, or rejected
-    /*
-      states:
-        "pending"
-        "accepted"
-        "rejected"
-    */
     state: {
       type: 'STRING',
       defaultsTo: 'pending',
+      enum: ["pending", "accepted", "rejected"],
     },
 
   },

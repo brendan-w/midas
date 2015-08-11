@@ -49,16 +49,29 @@ module.exports = {
       defaultsTo: 0
     },
 
+    //many-to-many Tag association
+    tags: {
+      collection: 'tagEntity',
+      via: 'users',
+      dominant: true,
+    },
+
+    //one-to-many vetting association
     vets: {
       collection: 'Vet',
       via: 'user'
     },
 
-    // Tag association
-    tags: {
-      collection: 'tagEntity',
-      via: 'users',
-      dominant: true
+    //one-to-many language association
+    languages: {
+      collection: 'Language',
+      via: 'user',
+    },
+
+    //one-to-many link association
+    links: {
+      collection: 'Link',
+      via: 'user',
     },
 
     toJSON: function() {
@@ -129,7 +142,7 @@ module.exports = {
   },
 
   beforeValidate: function(values, done) {
-    values.username = values.username.toLowerCase();
+    if(values.username) values.username = values.username.toLowerCase();
     done();
   },
 

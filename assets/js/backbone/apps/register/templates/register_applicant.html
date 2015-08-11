@@ -1,7 +1,9 @@
 
 <style>
-  form section[name="Skills"] {
-    padding-bottom: 150px;
+
+  form section[name="Skills"] p {
+    margin-top: 10px;
+    margin-bottom: 30px;
   }
 
 </style>
@@ -22,16 +24,32 @@
       <div class="col-sm-12">
 
         <div class="form-group">
-          <label for="location">Your current Location</label>
-          <div id="location"></div> <!-- handled by select2 -->
+          <label for="tag_location">Your current Location</label>
+          <div id="tag_location"></div> <!-- handled by TagShowView.js -->
         </div>
         <div class="form-group">
-          <label for="education">Highest education level completed</label>
-          <div id="education"></div> <!-- handled by select2 -->
+          <label for="tag_task_type">Interested in which types of work?</label>
+          <div id="tag_task_type"></div> <!-- handled by TagShowView.js -->
         </div>
         <div class="form-group">
-          <label for="topics">Interested in which types of work?</label>
-          <div id="topics"></div> <!-- handled by select2 -->
+          <label for="tag_education">Highest education level completed</label>
+          <div id="tag_education" class="pull-right"></div> <!-- handled by TagShowView.js -->
+        </div>
+        <div class="form-group">
+          <label for="tag_experience">Years of professional experience</label>
+          <div id="tag_experience" class="pull-right"></div> <!-- handled by TagShowView.js -->
+        </div>
+        <div class="form-group">
+          <label for="tag_work_location">Work Location Preference</label>
+          <div id="tag_work_location" class="pull-right"></div> <!-- handled by TagShowView.js -->
+        </div>
+        <div class="form-group">
+          <label for="tag_relocate">Are you willing to relocate for work?</label>
+          <div id="tag_relocate" class="pull-right"></div> <!-- handled by TagShowView.js -->
+        </div>
+        <div class="form-group">
+          <label for="tag_fellowship">Would you like to be considered for possible fellowship opportunities?</label>
+          <div id="tag_fellowship" class="pull-right"></div> <!-- handled by TagShowView.js -->
         </div>
 
       </div>
@@ -43,13 +61,21 @@
       <div class="col-sm-12">
 
         <div class="form-group">
-          <label for="skills">Please enter your skills</label>
-          <div id="skills"></div> <!-- handled by select2 -->
+          <label for="tag_skills">Please enter your skills</label>
+          <div id="tag_skills"></div> <!-- handled by TagShowView.js -->
+          <p>
+            Your skills will be displayed on your profile, and will help us match you to appropriate jobs.
+          </p>
         </div>
 
-        <p>
-          Your skills will be displayed on your profile, and will help us match you to appropriate jobs.
-        </p>
+
+        <div class="form-group">
+          <label for="tag_topics">Interested in which types of work?</label>
+          <div id="tag_topics"></div> <!-- handled by TagShowView.js -->
+          <p>
+            For instance: Design, Development, Translation
+          </p>
+        </div>
 
       </div>
     </div>
@@ -58,11 +84,17 @@
   <section name="Languages">
     <div class="row">
       <div class="col-sm-12">
+
+        <div class="form-group">
+          <label>Please indicate what languages you speak, and at what level of proficiency</label>
+        </div>
+
         <div class="lang-wrapper">
           <!--
-            Populated with the Language view
+            Populated by the Language view
           -->
         </div>
+
       </div>
     </div>
   </section>
@@ -70,6 +102,17 @@
   <section name="CV/Resume">
     <div class="row">
       <div class="col-sm-12">
+
+        <div class="form-group">
+          <label>Please provide a link to your portfolio and/or website</label>
+        </div>
+
+        <div class="link-wrapper">
+          <!--
+            Populated by the Link view
+          -->
+        </div>
+
       </div>
     </div>
   </section>

@@ -57,13 +57,15 @@ TagFactory = BaseComponent.extend({
     required:
     @param {Object}   options
     @param {String}   options.type               - The tag type this dropdown will operate with
-    @param {String}   options.selector           - CSS selector of the new dropdown, element should be preexisting
+    @param {String}   options.selector           - CSS selector or jQuery element of the new dropdown, element should be preexisting
 
     optional:
-    @param {String}   options.width='500px'      - CSS width attribute for the dropdown
+    @param {String}   options.width='100%'       - CSS width attribute for the dropdown
     @param {Boolean}  options.multiple=true      - Whether to allow multiple tags to be selected
     @param {Boolean}  options.allowCreate=true   - Whether a `createSearchChoice` option will be given
+    @param {String}   options.placeholder="..."  - Placeholder for the dropdown    
     @param {String[]} options.tokenSeparators=[] - Array of valid tag delimeters
+    @param {Boolean}  options.searchable=true    - whether the selections are searchable
     @param {*}        options.data=undefined     - The initial data loaded into the select2 element
     @param {Object[]} options.fillWith=undefined - Array of tagEntities that can be selected
                                                    NOTE: when this option is set, AJAX auto-completion is removed
@@ -78,16 +80,27 @@ TagFactory = BaseComponent.extend({
     //have to check these beforehand to allow False values to override the default True
     options.multiple    = (options.multiple    !== undefined ? options.multiple    : true);
     options.allowCreate = (options.allowCreate !== undefined ? options.allowCreate : true);
+    options.searchable  = (options.searchable  !== undefined ? options.searchable  : true);
+    options.data        = options.data || [];
+
+    //default placeholders
+    if(!options.placeholder)
+    {
+      if(options.searchable) options.placeholder = "Start typing to select a " + options.type;
+      else                   options.placeholder = "Select a " + options.type;
+    }
 
     //construct the settings for this tag type
     var settings = {
 
-      placeholder:        "Start typing to select a " + options.type,
-      minimumInputLength: (isLocation ? 1 : 2),
-      selectOnBlur:       false, //!isLocation,
-      width:              options.width || "500px",
-      tokenSeparators:    options.tokenSeparators || [],
-      multiple:           options.multiple,
+      placeholder:             options.placeholder,
+      minimumInputLength:      (isLocation ? 1 : 2),
+      selectOnBlur:            false, //!isLocation,
+      width:                   options.width || "100%", //"500px",
+      tokenSeparators:         options.tokenSeparators || [],
+      multiple:                options.multiple,
+      minimumResultsForSearch: options.searchable ? 0 : Infinity,
+
 
       formatResult: function (obj, container, query) {
         //allow the createSearchChoice to contain HTML
@@ -110,14 +123,39 @@ TagFactory = BaseComponent.extend({
         results: function (data) {
           return { results: data };
         }
-      }
+      },
+
+      initSelection: function(element, callback) {
+        var selection = options.data;
+
+        //handle both arrays, and lone objects as initial values
+        if(options.multiple)
+        {
+          if(Object.prototype.toString.call(selection) !== '[object Array]')
+            selection = [selection];
+        }
+        else
+        {
+          if(Object.prototype.toString.call(selection) === '[object Array]')
+            selection = selection[0];
+        }
+
+        //add the `text` property for select2
+        if(options.multiple)
+          selection.forEach(function(t) { t.text = t.name; });
+        else if(selection) //in case it's a null selection
+          selection.text = selection.name;
+
+        callback(selection);
+      },
+
     };
 
     if(options.fillWith)
     {
       settings.ajax = undefined;
       settings.minimumInputLength = undefined;
-      settings.data = { results: options.fillWith, text:'value' };
+      settings.data = { results: options.fillWith, text:'name' };
     }
 
     //if requested, give users the option to create new
@@ -147,7 +185,6 @@ TagFactory = BaseComponent.extend({
 
     //init Select2
     var $sel = $(options.selector).select2(settings);
-
 
     //event handlers
     $sel.on("select2-selecting", function (e) {
@@ -219,8 +256,22 @@ TagFactory = BaseComponent.extend({
     });
 
     //load initial data, if provided
-    if(options.data) {
-      $sel.select2('data', options.data);
+    //TODO: see if we can clean up this logic
+    if(options.data)
+    {
+      if(Object.prototype.toString.call(options.data) === '[object Array]')
+      {
+        //if it's an array, make sure it has something in it
+        if(options.data.length > 0)
+        {
+          $sel.select2('val', options.data);
+        }
+      }
+      else
+      {
+        //else, this is a lone object, for a multiple=false dropdown
+        $sel.select2('val', options.data);
+      }
     }
 
     return $sel;
@@ -233,6 +284,42 @@ TagFactory = BaseComponent.extend({
       async: false,
       success: cb,
     });
+  },
+
+  getTagsFrom: function($els) {
+
+    var tags = [];
+
+    $els.each(function(i, e) {
+      var data = $(e).select2("data");
+      if(data) //strains out null values (from where multiple = false)
+      {
+        //works with lone objects (multiple = false)
+        //as well as arrays (multiple = true)
+        tags = tags.concat(data);
+      }
+    });
+
+    tags = _(tags).chain()
+                  .filter(function(tag) {
+                    return _(tag).isObject() && !tag.context;
+                  })
+                  .map(function(tag) {
+                    if(tag.id && tag.id !== tag.name)
+                      //if the tag object has an ID, then reference it by ID
+                      return tag.id;
+                    else
+                      //else, create a new tag object
+                      return {
+                        name: tag.name,
+                        type: tag.tagType,
+                        data: tag.data
+                      };
+                  })
+                  .unique()
+                  .value();
+
+    return tags;
   },
 
 });
