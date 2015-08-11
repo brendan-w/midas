@@ -92,6 +92,18 @@ module.exports.routes = {
     controller: 'main',
     action: 'index'
   },
+  '/about': {
+  controller: 'main',
+  action: 'index'
+  },
+  '/faq': {
+  controller: 'main',
+  action: 'index'
+  },
+  '/talent': {
+  controller: 'main',
+  action: 'index'
+  },
 
   '/index.html': '/',
 
