@@ -244,7 +244,6 @@ TagFactory = BaseComponent.extend({
 
     //load initial data, if provided
     if(options.data) {
-      // $sel.select2('data', options.data);
       $sel.select2('val', options.data);
     }
 
@@ -262,7 +261,7 @@ TagFactory = BaseComponent.extend({
 
   getTagsFrom: function($els) {
 
-    var raw_tags = [];
+    var tags = [];
 
     $els.each(function(i, e) {
       var data = $(e).select2("data");
@@ -270,24 +269,28 @@ TagFactory = BaseComponent.extend({
       {
         //works with lone objects (multiple = false)
         //as well as arrays (multiple = true)
-        raw_tags = raw_tags.concat(data);
+        tags = tags.concat(data);
       }
     });
 
-    var tags = _(raw_tags).map(function(tag) {
-      if(tag.id && tag.id !== tag.name)
-        //if the tag object has an ID, then reference it by ID
-        return tag.id;
-      else
-        //else, create a new tag object
-        return {
-          name: tag.name,
-          type: tag.tagType,
-          data: tag.data
-        }
-    });
-
-    tags = _(tags).unique();
+    tags = _(tags).chain()
+                  .filter(function(tag) {
+                    return _(tag).isObject() && !tag.context;
+                  })
+                  .map(function(tag) {
+                    if(tag.id && tag.id !== tag.name)
+                      //if the tag object has an ID, then reference it by ID
+                      return tag.id;
+                    else
+                      //else, create a new tag object
+                      return {
+                        name: tag.name,
+                        type: tag.tagType,
+                        data: tag.data
+                      };
+                  })
+                  .unique()
+                  .value();
 
     return tags;
   },

@@ -252,12 +252,12 @@ var ProfileShowView = Backbone.View.extend({
     this.listenTo(self.model, "profile:removeAuth:success", function (data, id) {
       self.render();
     });
-    this.listenTo(self.model, "profile:input:changed", function (e) {
+    // this.listenTo(self.model, "profile:input:changed", function (e) {
+    // });
       $("#profile-save, #submit").button('reset');
       $("#profile-save, #submit").removeAttr("disabled");
       $("#profile-save, #submit").removeClass("btn-success");
       $("#profile-save, #submit").addClass("btn-c2");
-    });
   },
 
   initializeLikes: function() {
@@ -329,44 +329,18 @@ var ProfileShowView = Backbone.View.extend({
       return;
     }
 
-    var newTags = [].concat(
-      $("#company").select2('data'),
-      $("#tag_topic").select2('data'),
-      $("#tag_skill").select2('data'),
-      $("#location").select2('data')
-    );
-
-    var modelTags = _(this.model.get('tags')).filter(function(tag) {
-          return (tag.type !== 'agency' && tag.type !== 'location');
-    });
-
     var data = {
-      name:     $("#name").val(),
-      title:    $("#title").val(),
-      bio:      $("#bio").val(),
-      username: $("#profile-email").val()
+      name:      $("#name").val(),
+      title:     $("#title").val(),
+      bio:       $("#bio").val(),
+      username:  $("#profile-email").val(),
+      tags:      this.tagView.data(),
+      languages: this.langView.data(),
+      links:     this.linkView.data(),
     };
 
-    //parse tags
-    data.tags = _(modelTags.concat(newTags)).chain()
-      .filter(function(tag) {
-        return _(tag).isObject() && !tag.context;
-      })
-      .map(function(tag) {
-        return (tag.id && tag.id !== tag.name) ? +tag.id : {
-          name: tag.name,
-          type: tag.tagType,
-          data: tag.data
-        };
-      }).unique().value();
-
-    data.languages = this.langView.data();
-    if(!data.languages)
-      return; //failed validation
-
-    data.links = this.linkView.data();
-    if(!data.links)
-      return; //failed validation
+    if(!data.languages) return; //failed validation
+    if(!data.links)     return; //failed validation
 
     $("#profile-save, #submit").button('loading');
     setTimeout(function() { $("#profile-save, #submit").attr("disabled", "disabled"); }, 0);
