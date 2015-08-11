@@ -137,13 +137,13 @@ TagFactory = BaseComponent.extend({
         else
         {
           if(Object.prototype.toString.call(selection) === '[object Array]')
-            selection = selection[0] || {};
+            selection = selection[0];
         }
 
         //add the `text` property for select2
         if(options.multiple)
           selection.forEach(function(t) { t.text = t.name; });
-        else
+        else if(selection) //in case it's a null selection
           selection.text = selection.name;
 
         callback(selection);
@@ -256,8 +256,22 @@ TagFactory = BaseComponent.extend({
     });
 
     //load initial data, if provided
-    if(options.data) {
-      $sel.select2('val', options.data);
+    //TODO: see if we can clean up this logic
+    if(options.data)
+    {
+      if(Object.prototype.toString.call(options.data) === '[object Array]')
+      {
+        //if it's an array, make sure it has something in it
+        if(options.data.length > 0)
+        {
+          $sel.select2('val', options.data);
+        }
+      }
+      else
+      {
+        //else, this is a lone object, for a multiple=false dropdown
+        $sel.select2('val', options.data);
+      }
     }
 
     return $sel;
