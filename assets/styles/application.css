@@ -1991,3 +1991,27 @@ ul.task-tags > li {
   -moz-border-radius: 5px;
   border-radius: 5px;
 }
+
+/* FAQ Styles */
+.faq-row {
+  width: 90%;
+  margin: 0% 5%;
+}
+.faq-question {
+  padding: 20px 50px;
+  margin-bottom: 10px;
+  background-color: #fff;
+}
+.top-faq {
+  margin-top: 10px
+}
+.faq-question p{
+  margin-bottom: 5px;
+}
+
+
+
+
+
+
+
