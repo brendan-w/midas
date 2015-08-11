@@ -4,7 +4,6 @@ var Backbone = require('backbone');
 var utils    = require('../../../mixins/utilities');
 
 var ProfileModel    = require('../../../entities/profiles/profile_model.js');
-var TagFactory      = require('../../../components/tag_factory');
 var ModalView       = require('../../../components/modal_new');
 var CoreAccountView = require('./core_account_info_view');
 var LanguageView    = require('../../languages/views/language_view.js');
@@ -36,10 +35,6 @@ var Register = Backbone.View.extend({
     //handle modal events
     this.modal.onNext(this.next);
     this.listenTo(this.modal, "submit", this.submit);
-
-    //we'll need one of these
-    this.tagFactory = new TagFactory();
-
 
     //listen for register events
     this.listenTo(window.cache.userEvents, "user:register:show", this.render);
@@ -138,7 +133,7 @@ var Register = Backbone.View.extend({
     {
       user_data.languages = this.langView.data();
       user_data.links     = this.linkView.data();
-      user_data.tags      = this.tagFactory.getTagsFrom(this.$("#location, #education, #topics, #task-type, #work-location, #relocate, #skills"));
+      user_data.tags      = this.tagView.data();
     }
 
     //create the user
