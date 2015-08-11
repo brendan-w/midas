@@ -24,14 +24,8 @@ var AttachmentShowView = Backbone.View.extend({
 
   initialize: function (options) {
     this.options = options;
-    this.data = options.data;
-    this.action = options.action;
-    this.edit = false;
-    if (this.options.action) {
-      if (this.options.action == 'edit') {
-        this.edit = true;
-      }
-    }
+    this.target  = options.target;
+    this.edit    = (this.options.action == 'edit');
   },
 
   initializeFiles: function () {
@@ -51,9 +45,9 @@ var AttachmentShowView = Backbone.View.extend({
     });
   },
 
+
   initializeFileUpload: function () {
     var self = this;
-
 
     $('#attachment-fileupload').fileupload({
       url: "/api/file/create",
@@ -112,7 +106,7 @@ var AttachmentShowView = Backbone.View.extend({
 
   render: function () {
     data = {
-      user: window.cache.currentUser
+      user: window.cache.currentUser,
     };
     var template = _.template(ASTemplate)(data);
     this.$el.html(template);

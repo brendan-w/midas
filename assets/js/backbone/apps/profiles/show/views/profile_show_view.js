@@ -13,6 +13,7 @@ var ProfileTemplate = require('../templates/profile_show_template.html');
 var   ShareTemplate = require('../templates/profile_share_template.txt');
 var  ModalComponent = require('../../../../components/modal');
 var          PAView = require('./profile_activity_view');
+var  AttachmentView = require('../../../attachment/views/attachment_show_view.js');
 var     VetShowView = require('../../../vet/show/views/vet_show_view');
 var        LangView = require('../../../languages/views/language_view');
 var        LinkView = require('../../../links/views/link_view');
@@ -38,10 +39,8 @@ var ProfileShowView = Backbone.View.extend({
     this.options = options;
     this.data = options.data;
     this.data.newItemTags = [];
-    this.edit = false;
-    if (this.options.action == 'edit') {
-      this.edit = true;
-    }
+    this.edit = (this.options.action == 'edit');
+
     if (this.data.saved) {
       this.saved = true;
       this.data.saved = false;
@@ -82,11 +81,12 @@ var ProfileShowView = Backbone.View.extend({
     // initialize sub components
     this.initializeFileUpload();
     this.initializeForm();
-    this.initializeLikes();
+    // this.initializeLikes();
+    this.initializeAttachments();
     this.initializeTags();
     this.initializeLangs();
-    this.initializePAView();
-    this.initializeTextArea();
+    // this.initializePAView();
+    this.initializeMarkdown();
     this.initializeVet();
     this.initializeLinks();
     this.updatePhoto();
@@ -158,6 +158,14 @@ var ProfileShowView = Backbone.View.extend({
     this.$('#email').attr('href', link);
   },
 
+  initializeAttachments: function() {
+    this.attachmentView = new AttachmentView({
+      el: this.$(".attachment-wrapper"),
+      action: this.action,
+      target: "User",
+    }).render();
+  },
+
   initializeTags: function() {
     if (this.tagView) { this.tagView.cleanup(); }
     this.tagView = new TagView({
@@ -176,6 +184,7 @@ var ProfileShowView = Backbone.View.extend({
     }).render(this.model.get('languages'));
   },
 
+  /*
   initializePAView: function () {
     if (this.projectView) { this.projectView.cleanup(); }
     if (this.taskView) { this.taskView.cleanup(); }
@@ -208,6 +217,7 @@ var ProfileShowView = Backbone.View.extend({
 
     });
   },
+  */
 
   updatePhoto: function () {
     var self = this;
@@ -260,6 +270,7 @@ var ProfileShowView = Backbone.View.extend({
       $("#profile-save, #submit").addClass("btn-c2");
   },
 
+  /*
   initializeLikes: function() {
     $("#like-number").text(this.model.attributes.likeCount);
     if (parseInt(this.model.attributes.likeCount) === 1) {
@@ -272,8 +283,9 @@ var ProfileShowView = Backbone.View.extend({
       $("#like-button-icon").addClass('fa fa-star');
     }
   },
+  */
 
-  initializeTextArea: function () {
+  initializeMarkdown: function () {
     if (this.md) { this.md.cleanup(); }
     this.md = new MarkdownEditor({
       data: this.model.toJSON().bio,

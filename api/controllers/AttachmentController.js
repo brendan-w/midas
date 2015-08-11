@@ -39,6 +39,10 @@ module.exports = {
 
   findAllByTaskId: function (req, res) {
     return findAll('taskId', req, res);
-  }
+  },
+
+  findAllByUserId: function (req, res) {
+    return findAll('userId', req, res);
+  },
 
 };
