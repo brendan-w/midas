@@ -20,6 +20,7 @@ module.exports = {
     title: 'STRING',
     // description of the task
     description: 'STRING',
+    completedBy: 'datetime',
 
     publishedAt: 'datetime',
     assignedAt: 'datetime',

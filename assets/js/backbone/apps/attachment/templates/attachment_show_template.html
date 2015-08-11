@@ -1,7 +1,7 @@
 <div class="box-pad-lr border-bottom">
   <h3>
     Attachments
-    <div class="btn btn-c0 btn-sm file-add attachment-filebtn fileinput-button" style="<% if (!user) { %>display:none;<% } %>">
+    <div class="btn btn-c0 btn-sm file-add attachment-filebtn fileinput-button" style="<% if (!canAdd) { %>display:none;<% } %>">
       Add File
       <input id="attachment-fileupload" type="file" name="files[]" title="Attach Files">
     </div>

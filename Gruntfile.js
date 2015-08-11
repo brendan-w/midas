@@ -82,7 +82,8 @@ module.exports = function (grunt) {
         ext: '.min.css',
         extDot: 'last',
         options: {
-          report: 'min'
+          report: 'min',
+          sourceMap: process.env.NODE_ENV !== 'production'
         }
       }
     },

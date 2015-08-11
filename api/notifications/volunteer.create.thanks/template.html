@@ -1,6 +1,6 @@
 <p>Dear <%- user.name %>,</p>
 
-<p>We just received your request to claim <%- task.title %>! Thanks for your interest in this opportunity – we’re glad you’d like to help out.</p>
+<p>We just received your request to claim <a href="<%- globals.urlPrefix %>/tasks/<%- task.id %>"><%- task.title %></a>! Thanks for your interest in this opportunity – we’re glad you’d like to help out.</p>
 
 <p><%- owner.name %> (CCd on this email) is the creator of this task and will contact you directly in the next few days.</p>
 

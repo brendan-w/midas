@@ -27,7 +27,6 @@ done
 # Sort file names
 SORTED=($(printf '%s\n' "${VERSIONS[@]}"|sort -g))
 
-
 # Get latest version
 LENGTH=${#SORTED[@]}
 LAST=$((LENGTH - 1))

@@ -7,8 +7,8 @@ var out;
 
 // Filter by date range
 out = _.filter(pulls, function(pull) {
-  return new Date(pull.created_at) >= new Date('2015-05-01') &&
-         new Date(pull.created_at) < new Date('2015-07-01');
+  return new Date(pull.created_at) >= new Date('2015-07-01') &&
+         new Date(pull.created_at) < new Date('2015-08-01');
 });
 
 // Just required fields

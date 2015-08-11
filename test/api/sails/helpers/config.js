@@ -11,6 +11,12 @@ module.exports = {
     'username': 'testuser@midascrowd.com',
     'password': 'MidasTestM4$'
   },
+  // for the attachment suite
+  'attachmentUser': {
+    'name': 'Attachment User',
+    'username': 'attachmentuser@midascrowd.com',
+    'password': 'MidasTestM4$'
+  },
   // for the admin test suite
   'adminUser': {
     'name': 'Admin User',

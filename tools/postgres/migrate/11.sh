@@ -4,28 +4,27 @@
 psql -U $POSTGRESQL_USERNAME -d $POSTGRESQL_DATABASE -c "
 
 --
--- Name: language; Type: TABLE; Schema: public; Owner: midas; Tablespace:
+-- Name: vet; Type: TABLE; Schema: public; Owner: midas; Tablespace:
 --
 
-CREATE TABLE language (
+CREATE TABLE vet (
     \"id\" integer NOT NULL,
     \"user\" integer,
-    \"language\" text,
-    \"writtenProficiency\" integer,
-    \"spokenProficiency\" integer,
+    \"project\" integer,
+    \"state\" text,
     \"createdAt\" timestamp with time zone,
     \"updatedAt\" timestamp with time zone,
     \"deletedAt\" timestamp with time zone
 );
 
 
-ALTER TABLE language OWNER TO midas;
+ALTER TABLE vet OWNER TO midas;
 
 --
--- Name: language_id_seq; Type: SEQUENCE; Schema: public; Owner: midas
+-- Name: vet_id_seq; Type: SEQUENCE; Schema: public; Owner: midas
 --
 
-CREATE SEQUENCE language_id_seq
+CREATE SEQUENCE vet_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -33,13 +32,13 @@ CREATE SEQUENCE language_id_seq
     CACHE 1;
 
 
-ALTER TABLE language_id_seq OWNER TO midas;
+ALTER TABLE vet_id_seq OWNER TO midas;
 
 --
--- Name: language_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: midas
+-- Name: vet_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: midas
 --
 
-ALTER SEQUENCE language_id_seq OWNED BY language.id;
+ALTER SEQUENCE vet_id_seq OWNED BY vet.id;
 
 
 
@@ -48,14 +47,14 @@ ALTER SEQUENCE language_id_seq OWNED BY language.id;
 -- Name: id; Type: DEFAULT; Schema: public; Owner: midas
 --
 
-ALTER TABLE ONLY language ALTER COLUMN id SET DEFAULT nextval('language_id_seq'::regclass);
+ALTER TABLE ONLY vet ALTER COLUMN id SET DEFAULT nextval('vet_id_seq'::regclass);
 
 --
--- Name: language_pkey; Type: CONSTRAINT; Schema: public; Owner: midas; Tablespace:
+-- Name: vet_pkey; Type: CONSTRAINT; Schema: public; Owner: midas; Tablespace:
 --
 
-ALTER TABLE ONLY language
-    ADD CONSTRAINT language_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY vet
+    ADD CONSTRAINT vet_pkey PRIMARY KEY (id);
 
 "
 

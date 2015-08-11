@@ -123,7 +123,9 @@ var TaskShowController = BaseView.extend({
         self.attachmentView = new AttachmentView({
           target: 'task',
           id: this.model.attributes.id,
+          state: this.model.attributes.state,
           owner: this.model.attributes.isOwner,
+          volunteer: this.model.attributes.volunteer,
           el: '.attachment-wrapper'
         }).render();
       }

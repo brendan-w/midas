@@ -10,7 +10,6 @@ var ProjectShowController = require('../project/show/controllers/project_show_co
 var ProfileShowController = require('../profiles/show/controllers/profile_show_controller');
 var TaskModel = require('../../entities/tasks/task_model');
 var TaskShowController = require('../tasks/show/controllers/task_show_controller');
-var TaskEditFormView = require('../tasks/edit/views/task_edit_form_view');
 var AdminMainController = require('../admin/controllers/admin_main_controller');
 var VetListController = require('../vet/list/controllers/vet_list_controller');
 var HomeController = require('../home/controllers/home_controller');

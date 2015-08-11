@@ -87,5 +87,9 @@
     "url": "https://github.com/18F/midas.git"
   },
   "bugs": "https://github.com/18F/midas/issues",
-  "license": "MIT"
+  "license": "MIT",
+  "engines": {
+    "node" : "0.10.x",
+    "npm": "2.1.x"
+  }
 }

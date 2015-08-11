@@ -80,7 +80,7 @@ describe('Profile actions', function() {
 
     // Click view profile
     casper.then(function() {
-      casper.click('.nav-link[href="/profile"]');
+      casper.click('.nav-link[id="profileLink"]');
       casper.waitForSelector('.link-backbone');
     });
 

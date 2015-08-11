@@ -143,6 +143,35 @@ footer a {
 }
 
 /**
+ * FORMS
+ */
+fieldset + fieldset {
+  margin-top:2em;
+}
+
+fieldset aside {
+  background-color: #39B7EA;
+  line-height: 1.2;
+  padding: 1em;
+}
+/* provide space between <aside> and input fields
+   on smaller resolutions
+*/
+@media (max-width: 992px) {
+  aside {
+    margin-top: 15px;
+  }
+}
+aside h4 {
+  color: black;
+}
+
+/* including #task-form to test for adverse effects */
+#task-form label {
+  display: block;
+}
+
+/**
  * BUTTONS
  */
 .btn {

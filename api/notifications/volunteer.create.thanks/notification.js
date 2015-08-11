@@ -1,6 +1,6 @@
 module.exports = {
 
-  subject: 'Thanks for your interest in <%- task.title %>',
+  subject: 'Thanks for your interest in <%= task.title %>',
 
   to: '<%- user.username %>',
 

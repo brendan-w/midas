@@ -80,10 +80,10 @@ describe('tasks:', function () {
     it('copy', function (done) {
       request.post({
         url: conf.url + '/task/copy',
-        body: JSON.stringify({taskId: 1})
+        body: JSON.stringify({taskId: 2})
       }, function (err, response, body) {
         body = JSON.parse(body);
-        assert.equal(body.taskId, 3);
+        assert.equal(body.taskId, 4);
         assert.equal(body.title, conf.tasks[0].title);
         done(err);
       });
