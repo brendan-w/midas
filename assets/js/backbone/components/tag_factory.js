@@ -127,8 +127,21 @@ TagFactory = BaseComponent.extend({
 
       initSelection: function(element, callback) {
         var selection = options.data;
+
+        //handle both arrays, and lone objects as initial values
+        if(options.multiple)
+        {
+          if(Object.prototype.toString.call(selection) !== '[object Array]')
+            selection = [selection];
+        }
+        else
+        {
+          if(Object.prototype.toString.call(selection) === '[object Array]')
+            selection = selection[0] || {};
+        }
+
         //add the `text` property for select2
-        if(Object.prototype.toString.call(selection) === '[object Array]')
+        if(options.multiple)
           selection.forEach(function(t) { t.text = t.name; });
         else
           selection.text = selection.name;

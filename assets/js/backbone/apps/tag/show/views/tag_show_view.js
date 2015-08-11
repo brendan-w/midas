@@ -49,6 +49,7 @@ var TagShowView = Backbone.View.extend({
     this.target  = options.target;
     this.tagFactory = new TagFactory();
 
+
     //pre-select all possible elements
     this.$location      = this.$("#tag_location");
     this.$task_type     = this.$("#tag_task_type");
