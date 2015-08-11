@@ -690,6 +690,11 @@ ul.vet-list li.vetted .fa {
   color: #c12e2a;
 }
 
+.profile-bio {
+    padding-top: 30px;
+    padding-bottom: 15px;
+}
+
 /*****************
 =  PROJECTS
 ******************/
@@ -2007,6 +2012,96 @@ ul.task-tags > li {
 }
 .faq-question p{
   margin-bottom: 5px;
+}
+
+/* Banner Styles */
+.banner-title {
+  display:inline-block;
+  padding-top: 30px;
+  padding-bottom: 40px;
+  border-bottom:1px solid white;
+  color:white;
+}
+#banner-desc {
+  color:white;
+}
+#grey-banner > *
+{
+  margin-bottom: 30px;
+}
+
+#grey-banner p {
+  color:white;
+}
+
+/* Language Form */
+.lang-list {
+    list-style: none;
+    padding-left: 0px;  
+}
+
+/* Vetting */
+ul#vet-list-pending {
+  list-style: none;
+  padding-left: 0px;
+}
+
+li.vet button {
+  width:100%;
+
+  /* Although it is .disabled, it should stil be clickable */
+  cursor:pointer !important;
+}
+
+/* Modal Styles */
+.modal-header ul {
+  list-style: none;
+  margin-bottom: 0px;
+  padding-left:0px;
+  text-align: center;
+}
+
+li.modal-step {
+  display:inline-block;
+  text-align: center;
+  width:80px;
+}
+
+li.modal-step .circle {
+  display:inline-block;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  font-weight: 600;
+}
+
+li.modal-step .name {
+  font-size: 7pt;
+  margin-top:5px;
+  text-transform: uppercase;
+}
+
+/* inactive modal step */
+li.modal-step .circle {
+  line-height: 26px; /* correction for 2px border */
+  border:2px solid #CCC;
+  color: #CCC;
+}
+
+li.modal-step .name {
+  color: #CCC;
+}
+
+/* active modal step */
+li.modal-step.active .circle {
+  line-height: 30px;
+  border:none;
+  color:white;
+  background-color: #1CABE2;
+}
+
+li.modal-step.active .name {
+  color:#1CABE2;
 }
 
 
