@@ -24,6 +24,7 @@ var AttachmentShowView = Backbone.View.extend({
 
   initialize: function (options) {
     this.options = options;
+    this.id      = options.id;
     this.target  = options.target;
     this.edit    = (this.options.action == 'edit');
   },
@@ -31,7 +32,7 @@ var AttachmentShowView = Backbone.View.extend({
   initializeFiles: function () {
     var self = this;
     $.ajax({
-      url: '/api/attachment/findAllBy' + this.options.target + 'Id/' + this.options.id
+      url: '/api/attachment/findAllBy' + this.target + 'Id/' + this.id
     }).done(function (data) {
       if (data && (data.length > 0)) {
         $(".attachment-none").hide();
