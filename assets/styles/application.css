@@ -1785,13 +1785,6 @@ ul.task-tags > li {
 
 }
 
-.splash-wrap {
-  position: relative;
-  height: 400px;
-  padding: 5px;
-  border: 1px solid black;
-}
-
 .home-long-description {
   display: table-cell;
   vertical-align: middle;
@@ -1846,24 +1839,23 @@ ul.task-tags > li {
 }
 
 #home .start-button {
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 20px;
   margin: 5px 30px;
-  width: 150px;
-  height: 40px;
-  color: white;
+  width: 200px;
+  height: 60px;
+  color: black;
   padding: 10px 20px;
+  border: 1px solid black;
   -webkit-border-radius: 4px;
 }
 
 #home .btn-midas {
-  background: #dd361a;
-  color: white;
-  padding: 10px 20px;
+  background: white;
+  color: black;
   margin-bottom: 20px;
   text-transform: uppercase;
-  font-size: 16px;
-  font-weight: 900;
+  font-size: 18px;
+  font-weight: 600;
   -webkit-transition: all 300ms linear;
   -moz-transition: all 300ms linear;
   -o-transition: all 300ms linear;
@@ -1909,11 +1901,6 @@ ul.task-tags > li {
     padding-top: 80px;
     padding-bottom: 80px;
   }
-}
-
-.two-column-holder {
-  text-align: center;
-  padding: 40px 0px;
 }
 
 #home .value-prop {
@@ -2014,6 +2001,22 @@ ul.task-tags > li {
   margin-bottom: 5px;
 }
 
+/* Home Styles */
+.home-banner {
+  padding-top: 80px;
+  padding-bottom: 60px;
+  color:white;
+}
+.splash-wrap {
+  height: 400px;
+  width: 70%;
+  margin-left: 15%;  
+}
+.two-column-padding {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
 /* Banner Styles */
 .banner-title {
   display:inline-block;
@@ -2031,7 +2034,6 @@ ul.task-tags > li {
 {
   margin-bottom: 30px;
 }
-
 #grey-banner p {
   color:white;
 }
@@ -2047,10 +2049,8 @@ ul#vet-list-pending {
   list-style: none;
   padding-left: 0px;
 }
-
 li.vet button {
   width:100%;
-
   /* Although it is .disabled, it should stil be clickable */
   cursor:pointer !important;
 }
