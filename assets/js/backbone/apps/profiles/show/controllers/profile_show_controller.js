@@ -1,31 +1,25 @@
 
-var _ = require('underscore');
-var Backbone = require('backbone');
+var              _ = require('underscore');
+var       Backbone = require('backbone');
+var          Login = require('../../../../config/login.json');
 var BaseController = require('../../../../base/base_controller');
-var ProfileModel = require('../../../../entities/profiles/profile_model');
-var ProfileView = require('../views/profile_show_view');
+var   ProfileModel = require('../../../../entities/profiles/profile_model');
+
+var         ProfileView = require('../views/profile_show_view');
 var ProfileSettingsView = require('../views/profile_settings_view');
-var ProfileResetView = require('../views/profile_reset_view');
-var Login = require('../../../../config/login.json');
-var AlertTemplate = require('../../../../components/alert_template.html');
+var    ProfileResetView = require('../views/profile_reset_view');
+var       AlertTemplate = require('../../../../components/alert_template.html');
 
-Profile = BaseController.extend({
 
-  // Here we are defining wether or not this is a full-region object
-  // or a sub-region of another region.
-  region: true,
-  subRegion: false,
+var Profile = BaseController.extend({
 
   el: "#container",
-
-  events: {
-  },
 
   initialize: function (options) {
     this.options = options;
     this.routeId = options.id;
-    this.action = options.action;
-    this.data = options.data;
+    this.action  = options.action;
+    this.data    = options.data;
     this.initializeController();
   },
 

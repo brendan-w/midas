@@ -63,6 +63,17 @@
               <% } %>
             </div>
 
+            <div class="form-group">
+              <% if(!edit) { %>
+                <p>
+                  <!-- Escaped with marked() -->
+                  <% if (model.description) { %><%= model.descriptionHtml %><% } else { %>This job doesn't have a description yet.<% } %>
+                </p>
+              <% } else { %>
+                <label>Job Description</label>
+                <div class="markdown-edit"></div>
+              <% } %>
+            </div>
 
 
 
