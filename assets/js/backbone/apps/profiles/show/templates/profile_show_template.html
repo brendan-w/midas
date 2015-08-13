@@ -1,8 +1,11 @@
 
 <style>
 
-  .profile-bio {
+  .profile-title {
     padding-top: 30px;
+  }
+
+  .profile-bio {
     padding-bottom: 15px;
   }
 
@@ -71,12 +74,24 @@
               <div class="vet-wrapper"></div> <!-- populated by vet_show_view.js -->
             <% } %>
 
-            <div class="form-group profile-bio">
+            <div class="form-group profile-title">
               <% if(!edit) { %>
                 <h4>
                   <!-- Escaped with marked() -->
-                  <% if (data.bioHtml) { %><%= data.bioHtml %><% } else { %>This person doesn't have a bio yet.<% } %>
+                  <% if (data.title) { %><%= data.title %><% } else { %>This person doesn't have a title yet.<% } %>
                 </h4>
+              <% } else { %>
+                <label>Title</label>
+                <input id="profile-title" class="form-control" type="text" value="<% if (data.title) { %><%= data.title %><% } %>">
+              <% } %>
+            </div>
+
+            <div class="form-group profile-bio">
+              <% if(!edit) { %>
+                <p>
+                  <!-- Escaped with marked() -->
+                  <% if (data.bioHtml) { %><%= data.bioHtml %><% } else { %>This person doesn't have a bio yet.<% } %>
+                </p>
               <% } else { %>
                 <label>A brief public biography</label>
                 <div class="markdown-edit"></div>

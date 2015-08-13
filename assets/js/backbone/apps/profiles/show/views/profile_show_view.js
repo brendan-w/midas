@@ -343,14 +343,14 @@ var ProfileShowView = Backbone.View.extend({
     if (validate({ currentTarget: '#profile-last-name' }))  return;
 
     var data = {
-      firstname: $("#profile-first-name").val(),
-      lastname:  $("#profile-last-name").val(),
-      bio:       $(".profile-bio textarea").val(),
-      username:  $("#profile-email").val(),
+      firstname: this.$("#profile-first-name").val(),
+      lastname:  this.$("#profile-last-name").val(),
+      title:     this.$("#profile-title").val(),
+      bio:       this.$(".profile-bio textarea").val(),
+      username:  this.$("#profile-email").val(),
       tags:      this.tagView.data(),
       languages: this.langView.data(),
       links:     this.linkView.data(),
-      // title: ,
     };
 
     if(!data.languages) return; //failed validation
