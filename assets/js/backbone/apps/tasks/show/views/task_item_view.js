@@ -15,7 +15,10 @@ var TaskItemView = BaseView.extend({
 
   initialize: function (options) {
     var self = this;
+
     this.options = options;
+    this.edit    = (options.action == 'edit');
+
     this.model.trigger("task:model:fetch", options.id);
     this.listenTo(this.model, "task:model:fetch:success", function (model) {
       self.model = model;
@@ -27,14 +30,14 @@ var TaskItemView = BaseView.extend({
       self.$el.html(template);
     });
 
-
   },
 
   render: function (self) {
     self.data = {
       user: window.cache.currentUser,
       model: self.model.toJSON(),
-      tags: self.model.toJSON().tags
+      tags: self.model.toJSON().tags,
+      edit: self.edit,
     };
 
     self.data['madlibTags'] = organizeTags(self.data.tags);

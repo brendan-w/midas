@@ -2,6 +2,125 @@
 <div class="alert alert-danger" id="alert-closed" style="<% if (model.state != 'closed') { %>display: none;<% } %>">This <span data-i18n="task">opportunity</span> is <strong>closed</strong>.  It is no longer active, and no more modifications may be made.</div>
 
 
+
+
+
+<style>
+
+  .profile-title {
+    padding-top: 30px;
+  }
+
+  .profile-bio {
+    padding-bottom: 15px;
+  }
+
+</style>
+
+
+<section>
+  <!-- everything is wrapped in a giant form, which is used for update submission -->
+  <form id="profile-form">
+    <div class="container">
+      <div class="row">
+
+        <!-- main column -->
+        <div class="col-sm-8 nopadding">
+          <div class="box box-main">
+
+            <!-- edit buttons -->
+            <div class="pull-right">
+
+              <% if(!edit) { %>
+
+                <% if(model.isOwner || user.permissions.admin) { %>
+                  <a href="/task/<%- model.id %>/edit" class="btn btn-c2 link-backbone">Edit Job</a>
+                <% } %>
+
+              <% } else { %>
+
+                <a href="#" class="btn btn-c0" id="profile-cancel">Discard Changes</a>
+                <button id="profile-save" type="submit" class="btn btn-c2" disabled="disabled" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Saving..." data-success-text="Saved!" data-fail-text="Save Failed.">Save Job</button>
+
+              <% } %>
+
+            </div>
+
+            <!-- main job information -->
+
+            <div class="form-group">
+              <% if(!edit) { %>
+                <h2><%- model.title %></h2>
+              <% } else { %>
+                <div class="row" style="margin-top:50px;"> <!-- TODO: don't use inline CSS -->
+                  <div class="col-sm-4 nopadding">
+                    <div class="form-group">
+                      <label>Job Title</label>
+                      <input type="text" class="form-control" id="profile-first-name" placeholder="First Name" value="<%- data.firstname %>">
+                    </div>
+                  </div>
+                </div>
+              <% } %>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- ================================= The old code ================================= -->
+
+
+
+
 <section>
   <div class="container">  
     <div class="row">

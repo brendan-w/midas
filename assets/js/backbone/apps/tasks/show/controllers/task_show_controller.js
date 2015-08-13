@@ -1,22 +1,25 @@
+
+var         _ = require('underscore');
 var Bootstrap = require('bootstrap');
-var _ = require('underscore');
-var Backbone = require('backbone');
-var Popovers = require('../../../../mixins/popovers');
-var utils = require('../../../../mixins/utilities');
+var  Backbone = require('backbone');
+var     utils = require('../../../../mixins/utilities');
+var  UIConfig = require('../../../../config/ui.json');
+
 var BaseView = require('../../../../base/base_view');
-var CommentListController = require('../../../comments/list/controllers/comment_list_controller');
-var AttachmentView = require('../../../attachment/views/attachment_show_view');
-var TaskItemView = require('../views/task_item_view');
-var TagShowView = require('../../../tag/show/views/tag_show_view');
-var ModalComponent = require('../../../../components/modal');
-var ModalAlert = require('../../../../components/modal_alert');
-var TaskEditFormView = require('../../edit/views/task_edit_form_view');
-var UIConfig = require('../../../../config/ui.json');
-var VolunteerSupervisorNotifyTemplate = require('../templates/volunteer_supervisor_notify_template.html');
+
+// var CommentListController = require('../../../comments/list/controllers/comment_list_controller');
+// var VolunteerSupervisorNotifyTemplate = require('../templates/volunteer_supervisor_notify_template.html');
+var              Popovers = require('../../../../mixins/popovers');
+var        AttachmentView = require('../../../attachment/views/attachment_show_view');
+var          TaskItemView = require('../views/task_item_view');
+var           TagShowView = require('../../../tag/show/views/tag_show_view');
+var        ModalComponent = require('../../../../components/modal');
+var            ModalAlert = require('../../../../components/modal_alert');
+var      TaskEditFormView = require('../../edit/views/task_edit_form_view');
 var VolunteerTextTemplate = require('../templates/volunteer_text_template.html');
-var ChangeStateTemplate = require('../templates/change_state_template.html');
-var UpdateNameTemplate = require('../templates/update_name_template.html');
-var CopyTaskTemplate = require('../templates/copy_task_template.html');
+var   ChangeStateTemplate = require('../templates/change_state_template.html');
+var    UpdateNameTemplate = require('../templates/update_name_template.html');
+var      CopyTaskTemplate = require('../templates/copy_task_template.html');
 
 
 var popovers = new Popovers();
@@ -44,13 +47,13 @@ var TaskShowController = BaseView.extend({
 
   initialize: function (options) {
     this.options = options;
+    this.action  = options.action;
 
     this.initializeTaskItemView();
     this.initializeChildren();
 
     //load user settings so they are available as needed
-    this.getUserSettings(window.cache.currentUser);
-
+    // this.getUserSettings(window.cache.currentUser);
   },
 
   initializeEdit: function () {
@@ -103,7 +106,7 @@ var TaskShowController = BaseView.extend({
 
     this.listenTo(this.model, 'task:show:render:done', function () {
       self.initializeHandlers();
-      self.initializeLikes();
+      // self.initializeLikes();
 
       if (window.cache.currentUser) {
         self.initializeVolunteers();
@@ -114,11 +117,15 @@ var TaskShowController = BaseView.extend({
         popovers.popoverPeopleInit(".project-people-show-div");
       } else {
         popovers.popoverPeopleInit(".project-people-show-div");
+
+        /*
         if (self.commentListController) self.commentListController.cleanup();
         self.commentListController = new CommentListController({
           target: 'task',
           id: self.model.attributes.id
         });
+        */
+
         if (self.attachmentView) self.attachmentView.cleanup();
         self.attachmentView = new AttachmentView({
           target: 'task',
@@ -142,6 +149,7 @@ var TaskShowController = BaseView.extend({
     });
   },
 
+  /*
   initializeLikes: function () {
     $("#like-number").text(this.model.attributes.likeCount);
     if (parseInt(this.model.attributes.likeCount) === 1) {
@@ -154,6 +162,7 @@ var TaskShowController = BaseView.extend({
       $("#like-button-icon").addClass('fa fa-star');
     }
   },
+  */
 
   initializeVolunteers: function () {
     if (this.model.attributes.volunteer) {
@@ -191,6 +200,7 @@ var TaskShowController = BaseView.extend({
     if (this.taskItemView) this.taskItemView.cleanup();
     this.taskItemView = new TaskItemView({
       model: this.options.model,
+      action: this.action,
       router: this.options.router,
       id: this.options.id,
       el: this.el
@@ -213,6 +223,7 @@ var TaskShowController = BaseView.extend({
     Backbone.history.navigate('tasks/' + this.model.id, { trigger: true });
   },
 
+  /*
   like: function (e) {
     if (e.preventDefault) e.preventDefault();
     var self = this;
@@ -254,6 +265,9 @@ var TaskShowController = BaseView.extend({
       });
     }
   },
+  */
+
+  /*
   getUserSettings: function (userId) {
     //does this belong somewhere else?
     if ( _.isNull(userId) ){ return null; }
@@ -271,7 +285,9 @@ var TaskShowController = BaseView.extend({
       });
     });
   },
+  */
 
+  /*
   deleteUserSettingByKey: function(settingKey) {
     //this function expects the entire row from usersetting in the form
     //     window.cache.currentUser[settingKey] = {}
@@ -289,7 +305,9 @@ var TaskShowController = BaseView.extend({
     }
 
   },
+  */
 
+  /*
   saveUserSettingByKey: function(userId, options) {
     //this function expects the entire row from usersetting in the form
     //     window.cache.currentUser[settingKey] = {}
@@ -315,6 +333,7 @@ var TaskShowController = BaseView.extend({
         }
       });
   },
+  */
 
   volunteer: function (e) {
     if (e.preventDefault) e.preventDefault();
@@ -368,17 +387,17 @@ var TaskShowController = BaseView.extend({
         modalTitle: i18n.t("volunteerModal.title")
       }).render();
 
-      if ( UIConfig.supervisorEmail.useSupervisorEmail ) {
-        //not assigning as null because null injected into the modalContent var shows as a literal value
-        //    when what we want is nothing if value is null
-        var supervisorEmail = ( window.cache.currentUser.supervisorEmail ) ? window.cache.currentUser.supervisorEmail.value  : "";
-        var supervisorName = ( window.cache.currentUser.supervisorName ) ? window.cache.currentUser.supervisorName.value : "";
-        var validateBeforeSubmit = true;
-        var modalContent = _.template(VolunteerSupervisorNotifyTemplate)({supervisorEmail: supervisorEmail,supervisorName: supervisorName});
-      } else {
+      // if ( UIConfig.supervisorEmail.useSupervisorEmail ) {
+      //   //not assigning as null because null injected into the modalContent var shows as a literal value
+      //   //    when what we want is nothing if value is null
+      //   var supervisorEmail = ( window.cache.currentUser.supervisorEmail ) ? window.cache.currentUser.supervisorEmail.value  : "";
+      //   var supervisorName = ( window.cache.currentUser.supervisorName ) ? window.cache.currentUser.supervisorName.value : "";
+      //   var validateBeforeSubmit = true;
+      //   var modalContent = _.template(VolunteerSupervisorNotifyTemplate)({supervisorEmail: supervisorEmail,supervisorName: supervisorName});
+      // } else {
         validateBeforeSubmit = false;
         var modalContent = _.template(VolunteerTextTemplate)({});
-      }
+      // }
 
       this.modalAlert = new ModalAlert({
         el: "#check-volunteer .modal-template",
@@ -388,10 +407,13 @@ var TaskShowController = BaseView.extend({
         submit: i18n.t('volunteerModal.ok'),
         validateBeforeSubmit: validateBeforeSubmit,
         callback: function (e) {
+          /*
           if ( UIConfig.supervisorEmail.useSupervisorEmail ) {
             self.saveUserSettingByKey(window.cache.currentUser.id,{settingKey:"supervisorEmail",newValue: $('#userSuperVisorEmail').val(),oldValue: supervisorEmail});
             self.saveUserSettingByKey(window.cache.currentUser.id,{settingKey:"supervisorName",newValue: $('#userSuperVisorName').val(),oldValue: supervisorName});
           }
+          */
+
           // user clicked the submit button
           $.ajax({
             url: '/api/volunteer/',
@@ -536,7 +558,7 @@ var TaskShowController = BaseView.extend({
     if (this.taskEditFormView) this.taskEditFormView.cleanup();
     if (this.tagView) { this.tagView.cleanup(); }
     if (this.attachmentView) { this.attachmentView.cleanup(); }
-    if (this.commentListController) { this.commentListController.cleanup(); }
+    // if (this.commentListController) { this.commentListController.cleanup(); }
     if (this.taskItemView) { this.taskItemView.cleanup(); }
     removeView(this);
   }
