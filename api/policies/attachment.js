@@ -1,7 +1,7 @@
 module.exports = function(req, res, next) {
 
   // Admins can do anything
-  if (req.user.isAdmin) return next();
+  if (req.user.permissions.admin) return next();
 
   // Attachments require a task or project
   if (req.param('taskId')) {
@@ -39,8 +39,15 @@ module.exports = function(req, res, next) {
       return res.forbidden();
     });
 
+  } else if (req.param('userId')) {
+    //Check that the user owns this profile
+    if(req.param('userId') == req.user.id)
+      return next();
+    else
+      return res.forbidden('You are only allowed to edit attachments on your own profile.');
+
   } else {
-    return res.forbidden('Files must be attached to a task or project.');
+    return res.forbidden('Files must be attached to a task, project, or user.');
   }
 
 
