@@ -34,12 +34,12 @@
               <% if(!edit) { %>
 
                 <% if(model.isOwner || user.permissions.admin) { %>
-                  <a href="/task/<%- model.id %>/edit" class="btn btn-c2 link-backbone">Edit Job</a>
+                  <a href="/tasks/<%- model.id %>/edit" class="btn btn-c2 link-backbone">Edit Job</a>
                 <% } %>
 
               <% } else { %>
 
-                <a href="#" class="btn btn-c0" id="profile-cancel">Discard Changes</a>
+                <a href="/tasks/<%- model.id %>" class="btn btn-c0 link-backbone" id="profile-cancel">Discard Changes</a>
                 <button id="profile-save" type="submit" class="btn btn-c2" disabled="disabled" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Saving..." data-success-text="Saved!" data-fail-text="Save Failed.">Save Job</button>
 
               <% } %>
@@ -56,7 +56,7 @@
                   <div class="col-sm-4 nopadding">
                     <div class="form-group">
                       <label>Job Title</label>
-                      <input type="text" class="form-control" id="profile-first-name" placeholder="First Name" value="<%- data.firstname %>">
+                      <input type="text" class="form-control" id="profile-first-name" placeholder="First Name" value="<%- model.title %>">
                     </div>
                   </div>
                 </div>

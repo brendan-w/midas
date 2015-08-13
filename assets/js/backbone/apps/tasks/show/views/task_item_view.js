@@ -47,10 +47,10 @@ var TaskItemView = BaseView.extend({
     "click #task-close"                   : "stateChange",
     "click #task-reopen"                  : "stateReopen",
     "click #task-copy"                    : "copy",
-    "click .link-backbone"                : linkBackbone,
     "click .delete-volunteer"             : 'removeVolunteer',
     "mouseenter .project-people-show-div" : popovers.popoverPeopleOn,
-    "click .project-people-show-div"      : popovers.popoverClick
+    "click .project-people-show-div"      : popovers.popoverClick,
+    "click .link-backbone"                : linkBackbone,
   },
 
 
@@ -67,12 +67,10 @@ var TaskItemView = BaseView.extend({
 
   render: function() {
 
-    console.log("render");
-
     var data = {
+      edit:  this.edit,
       user:  window.cache.currentUser,
       model: this.model.toJSON(),
-      edit:  this.edit,
       ui:    UIConfig,
       vol:   ((!window.cache.currentUser || window.cache.currentUser.id !== this.model.get('userId')) &&
                this.model.get('state') !== 'draft'),

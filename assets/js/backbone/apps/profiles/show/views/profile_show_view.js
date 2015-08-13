@@ -25,13 +25,12 @@ var ProfileShowView = Backbone.View.extend({
   events: {
     "submit #profile-form"       : "profileSubmit",
     "click #profile-save"        : "profileSave",
-    "click .link-backbone"       : linkBackbone,
-    "click #profile-cancel"      : "profileCancel",
     "click #like-button"         : "like",
     "keyup"                      : "fieldModified",
     "change"                     : "fieldModified",
     "blur"                       : "fieldModified",
-    "click .removeAuth"          : "removeAuth"
+    "click .removeAuth"          : "removeAuth",
+    "click .link-backbone"       : linkBackbone,
   },
 
   initialize: function (options) {
@@ -322,11 +321,6 @@ var ProfileShowView = Backbone.View.extend({
     $help.toggle( this.$("#profile-first-name").val() === "" );
 
     this.model.trigger("profile:input:changed", e);
-  },
-
-  profileCancel: function (e) {
-    e.preventDefault();
-    Backbone.history.navigate('profile/' + this.model.toJSON().id, { trigger: true });
   },
 
   profileSave: function (e) {
