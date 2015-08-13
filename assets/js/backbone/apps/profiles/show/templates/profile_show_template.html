@@ -50,11 +50,18 @@
                   <% if (data.lastname) { %><%- data.lastname %><% } %>
                 </h2>
               <% } else { %>
-                <div class="row">
-                  <div class="col-sm-4 nopadding">
-                    <label>Name</label>
-                    <input type="text" class="form-control" id="profile-first-name" placeholder="First Name" value="<%- data.firstname %>">
-                    <input type="text" class="form-control" id="profile-last-name"  placeholder="Last Name" value="<%- data.lastname %>">
+                <div class="row" style="margin-top:50px;"> <!-- TODO: don't use inline CSS -->
+                  <div class="col-sm-4 padding-left-none">
+                    <div class="form-group">
+                      <label>First Name</label>
+                      <input type="text" class="form-control" id="profile-first-name" placeholder="First Name" value="<%- data.firstname %>">
+                    </div>
+                  </div>
+                  <div class="col-sm-4 padding-left-none">
+                    <div class="form-group">
+                      <label>Last Name</label>
+                      <input type="text" class="form-control" id="profile-last-name"  placeholder="Last Name" value="<%- data.lastname %>">
+                    </div>
                   </div>
                 </div>
               <% } %>
