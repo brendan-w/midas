@@ -52,14 +52,16 @@ $(function () {
     $('.spinner').hide();
 
     //if it's an auth error, open a login modal
+    /*
     if (jqXHR.status === 401 || jqXHR.status === 403) {
       if (!window.cache || !window.cache.userEvents
         || !('trigger' in window.cache.userEvents)) return;
       window.cache.userEvents.trigger("user:request:login", {
         disableClose: false,
-        message: jqXHR.responseJSON.message || ""
+        message: ((jqXHR.responseJSON) ? jqXHR.responseJSON.message : "") || ""
       });
     }
+    */
 
     //looks for local alerts whos parents are visible.
     //If none are found, this falls back on the global alert

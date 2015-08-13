@@ -62,6 +62,7 @@ var BrowseRouter = Backbone.Router.extend({
     // set navigation state
     this.on('route', function(route, params) {
       self.navView.render(); //re-render the nave
+      $(".alert-global").hide();
     });
   },
 

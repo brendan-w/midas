@@ -162,7 +162,8 @@ var ProfileShowView = Backbone.View.extend({
     this.attachmentView = new AttachmentView({
       el: this.$(".attachment-wrapper"),
       action: this.action,
-      target: "User",
+      target: "user",
+      owner: this.model.get("isOwner"),
       id: this.model.get("id"),
     }).render();
   },
