@@ -122,7 +122,7 @@ var TaskItemView = BaseView.extend({
     if (this.tagView) this.tagView.cleanup();
     this.tagView = new TagView({
       el: this.el,
-      edit: false,
+      edit: this.edit,
       target: 'task',
     }).render();
   },

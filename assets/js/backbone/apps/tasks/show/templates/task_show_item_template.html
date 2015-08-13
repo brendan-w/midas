@@ -11,61 +11,140 @@
 
 
 <section>
-  <!-- everything is wrapped in a giant form, which is used for update submission -->
-  <form id="task-form">
-    <div class="container">
-      <div class="row">
+  <div class="container">
+    <div class="row">
 
-        <!-- main column -->
-        <div class="col-sm-8 nopadding">
-          <div class="box box-main">
+      <!-- main column -->
+      <div class="col-sm-8 nopadding">
+        <div class="box box-main">
 
-            <!-- edit buttons -->
-            <div class="pull-right">
+          <!-- edit buttons -->
+          <div class="pull-right">
 
-              <% if(!edit) { %>
+            <% if(!edit) { %>
 
-                <% if(model.isOwner || user.permissions.admin) { %>
-                  <a href="/tasks/<%- model.id %>/edit" class="btn btn-c2 link-backbone">Edit Job</a>
-                <% } %>
-
-              <% } else { %>
-
-                <a href="/tasks/<%- model.id %>" class="btn btn-c0 link-backbone" id="task-cancel">Discard Changes</a>
-                <button id="task-save" type="submit" class="btn btn-c2" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Saving..." data-success-text="Saved!" data-fail-text="Save Failed.">Save Job</button>
-
+              <% if(model.isOwner || user.permissions.admin) { %>
+                <a href="/tasks/<%- model.id %>/edit" class="btn btn-c2 link-backbone">Edit Job</a>
               <% } %>
 
-            </div>
+            <% } else { %>
 
-            <!-- main job information -->
+              <a href="/tasks/<%- model.id %>" class="btn btn-c0 link-backbone" id="task-cancel">Discard Changes</a>
+              <button id="task-save" type="submit" class="btn btn-c2" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Saving..." data-success-text="Saved!" data-fail-text="Save Failed.">Save Job</button>
 
-            <div class="form-group">
-              <% if(!edit) { %>
-                <h2><%- model.title %></h2>
-              <% } else { %>
-                <div class="row">
-                  <div class="col-sm-4 nopadding">
-                    <div class="form-group">
-                      <label>Job Title</label>
-                      <input type="text" class="form-control" id="task-first-name" placeholder="First Name" value="<%- model.firstname %>">
-                    </div>
+            <% } %>
+
+          </div>
+
+          <!-- main job information -->
+
+          <div class="form-group">
+            <% if(!edit) { %>
+              <h2><%- model.title %></h2>
+            <% } else { %>
+              <div class="row">
+                <div class="col-sm-4 nopadding">
+                  <div class="form-group">
+                    <label>Job Title</label>
+                    <input type="text" class="form-control" id="task-title" placeholder="Job Title" value="<%- model.title %>">
                   </div>
                 </div>
-              <% } %>
-            </div>
+              </div>
+            <% } %>
+          </div>
 
-            <div class="form-group">
-              <% if(!edit) { %>
-                <p>
-                  <!-- Escaped with marked() -->
-                  <% if (model.description) { %><%= model.descriptionHtml %><% } else { %>This job doesn't have a description yet.<% } %>
-                </p>
-              <% } else { %>
-                <label>Job Description</label>
-                <div class="markdown-edit"></div>
-              <% } %>
+          <hr> <!-- //////////////////////////////////////////////////// -->
+
+          <div class="form-group">
+            <% if(!edit) { %>
+              <p>
+                <!-- Escaped with marked() -->
+                <% if (model.description) { %><%= model.descriptionHtml %><% } else { %>This job doesn't have a description yet.<% } %>
+              </p>
+            <% } else { %>
+              <label>Job Description</label>
+              <div class="markdown-edit"></div>
+            <% } %>
+          </div>
+
+        </div>
+      </div> <!-- end main column -->
+
+      <!-- side bar -->
+      <div class="col-sm-4 padding-right-none">
+
+
+        <div class="box box-main">
+
+          <div class="form-group task-location">
+            <label for="tag_location">Current location</label>
+            <div id="tag_location"></div> <!-- handled by TagShowView.js -->
+          </div>
+
+          <div class="form-group task-education">
+            <label for="tag_education">Highest education level completed</label>
+            <div id="tag_education"></div> <!-- handled by TagShowView.js -->
+          </div>
+
+          <div class="form-group task-experience">
+            <label for="tag_experience">Years of professional experience</label>
+            <div id="tag_experience"></div> <!-- handled by TagShowView.js -->
+          </div>
+
+          <div class="form-group task-location-pref">
+            <label for="tag_work_location">Work location preferences</label>
+            <div id="tag_work_location"></div> <!-- handled by TagShowView.js -->
+          </div>
+
+          <div class="form-group task-seeking">
+            <label for="tag_task_type">Type of work opportunities in which I am insterested</label>
+            <div id="tag_task_type"></div> <!-- handled by TagShowView.js -->
+          </div>
+
+          <div class="form-group task-fellowship">
+            <label for="tag_fellowship">Would you like to be considered for possible fellowship opportunities?</label>
+            <div id="tag_fellowship"></div> <!-- handled by TagShowView.js -->
+          </div>
+
+          <div class="form-group task-language">
+            <% if(edit) { %>
+              <label>Languages</label>
+            <% } %>
+            <div class="lang-wrapper"></div> <!-- populated by language_view.js -->
+          </div>
+
+        </div> <!-- end box -->
+
+
+        <div class="box box-main">
+
+          <div class="row">
+            <div class="form-group task-skills">
+              <label for="tag_skills">Skills</label>
+              <div id="tag_skills"></div> <!-- handled by TagShowView.js -->
             </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group task-topics">
+              <label for="tag_topics">Topics</label>
+              <div id="tag_topics"></div> <!-- handled by TagShowView.js -->
+            </div>
+          </div>
+
+        </div> <!-- end box -->
+
+      </div> <!-- end side bar column -->
+
+    </div>
+  </div>
+</section>
+
+
+
+
+
+
 
 
 
