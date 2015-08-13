@@ -32,10 +32,10 @@ var TaskShowController = BaseView.extend({
     if (this.taskItemView) this.taskItemView.cleanup();
     this.taskItemView = new TaskItemView({
       el:     this.el,
-      model:  this.options.model,
+      model:  this.model,
       action: this.options.action,
       // router: this.options.router,
-    });
+    }).render();
   },
 
   cleanup: function () {

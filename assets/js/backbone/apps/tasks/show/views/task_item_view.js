@@ -66,6 +66,37 @@ var TaskItemView = BaseView.extend({
 
 
   render: function() {
+
+    console.log("render");
+
+    var data = {
+      user:  window.cache.currentUser,
+      model: this.model.toJSON(),
+      edit:  this.edit,
+      ui:    UIConfig,
+      vol:   ((!window.cache.currentUser || window.cache.currentUser.id !== this.model.get('userId')) &&
+               this.model.get('state') !== 'draft'),
+    };
+
+    // convert description from markdown to html
+    data.model.descriptionHtml = marked(data.model.description);
+
+    this.$el.html(_.template(TaskShowTemplate)(data));
+    this.$el.i18n();
+    
+    $("time.timeago").timeago();
+    
+    // this.updateTaskEmail();
+    
+    if (window.location.search === '?volunteer' &&
+        !this.model.attributes.volunteer) {
+      $('#volunteer').click();
+      Backbone.history.navigate(window.location.pathname, {
+        trigger: false,
+        replace: true
+      });
+    }
+
     this.initializeChildren();
   },
 
@@ -89,7 +120,7 @@ var TaskItemView = BaseView.extend({
   initializeChildren: function () {
     var self = this;
 
-    self.initializeHandlers();
+    self.initializeStateButtons();
     // self.initializeLikes();
 
     if (window.cache.currentUser) {
@@ -98,7 +129,7 @@ var TaskItemView = BaseView.extend({
 
     if (this.edit)
     {
-      self.initializeEdit();
+      // self.initializeEdit();
       popovers.popoverPeopleInit(".project-people-show-div");
     }
     else
@@ -109,7 +140,7 @@ var TaskItemView = BaseView.extend({
       if (self.commentListController) self.commentListController.cleanup();
       self.commentListController = new CommentListController({
         target: 'task',
-        id: self.model.attributes.id
+        id: self.model.get('id'),
       });
       */
 
@@ -159,7 +190,7 @@ var TaskItemView = BaseView.extend({
     }
   },
 
-  initializeHandlers: function() {
+  initializeStateButtons: function() {
     this.listenTo(this.model, "task:update:state:success", function (data) {
       if (data.attributes.state == 'closed') {
         $("#li-task-close").hide();
