@@ -396,7 +396,8 @@ ALTER SEQUENCE link_id_seq OWNED BY link.id;
 
 CREATE TABLE midas_user (
     username text,
-    name text,
+    firstname text,
+    lastname text,
     title text,
     bio text,
     "photoId" integer,

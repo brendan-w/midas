@@ -84,7 +84,8 @@ var Backbone = require('backbone');
 
       this.listenTo(this, "profile:save", function (form) {
         var data = {
-          name:      form.name,
+          firstname: form.firstname,
+          lastname:  form.lastname,
           username:  form.username,
           title:     form.title,
           bio:       form.bio,

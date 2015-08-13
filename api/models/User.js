@@ -17,7 +17,8 @@ module.exports = {
     passports : { collection: 'Passport', via: 'user' },
 
     // Core attributes about a user
-    name: 'STRING',
+    firstname: 'STRING',
+    lastname:  'STRING',
 
     // Professional Title
     title: 'STRING',

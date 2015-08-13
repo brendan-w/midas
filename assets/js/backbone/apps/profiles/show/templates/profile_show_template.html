@@ -45,13 +45,16 @@
 
             <div class="form-group">
               <% if(!edit) { %>
-                <h2><% if (data.name) { %><%- data.name %><% } else { %><%- data.username %><% } %></h2>
+                <h2>
+                  <% if (data.firstname) { %><%- data.firstname %><% } else { %><%- data.username %><% } %>
+                  <% if (data.lastname) { %><%- data.lastname %><% } %>
+                </h2>
               <% } else { %>
                 <div class="row">
                   <div class="col-sm-4 nopadding">
                     <label>Name</label>
-                    <input type="text" class="form-control" id="profile-first-name" placeholder="First Name" value="<%- data.name %>">
-                    <input type="text" class="form-control" id="profile-last-name"  placeholder="Last Name">
+                    <input type="text" class="form-control" id="profile-first-name" placeholder="First Name" value="<%- data.firstname %>">
+                    <input type="text" class="form-control" id="profile-last-name"  placeholder="Last Name" value="<%- data.lastname %>">
                   </div>
                 </div>
               <% } %>

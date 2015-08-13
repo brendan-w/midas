@@ -317,8 +317,8 @@ var ProfileShowView = Backbone.View.extend({
   fieldModified: function (e) {
 
     //check that the name isn't a null string
-    var $help = this.$("#name").closest(".form-group").find(".help-block");
-    $help.toggle( this.$("#name").val() === "" );
+    var $help = this.$("#profile-first-name").closest(".form-group").find(".help-block");
+    $help.toggle( this.$("#profile-first-name").val() === "" );
 
     this.model.trigger("profile:input:changed", e);
   },
@@ -338,17 +338,18 @@ var ProfileShowView = Backbone.View.extend({
     var self = this;
 
     // If the name isn't valid, don't put the save through
-    if (validate({ currentTarget: '#name' })) {
-      return;
-    }
+    if (validate({ currentTarget: '#profile-first-name' })) return;
+    if (validate({ currentTarget: '#profile-last-name' }))  return;
 
     var data = {
-      name:      $("#profile-first-name").val(),
+      firstname: $("#profile-first-name").val(),
+      lastname:  $("#profile-last-name").val(),
       bio:       $(".profile-bio textarea").val(),
       username:  $("#profile-email").val(),
       tags:      this.tagView.data(),
       languages: this.langView.data(),
       links:     this.linkView.data(),
+      // title: ,
     };
 
     if(!data.languages) return; //failed validation

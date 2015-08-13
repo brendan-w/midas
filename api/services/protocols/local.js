@@ -26,7 +26,8 @@ var crypto    = require('crypto');
  * @param {Function} next
  */
 exports.register = function (req, res, next) {
-  var name      = req.param('name')
+  var firstname = req.param('firstname')
+    , lastname  = req.param('lastname')
     , username  = req.param('username')
     , password  = req.param('password')
     , type      = req.param('type')
@@ -50,7 +51,8 @@ exports.register = function (req, res, next) {
 
   User.create({
     username :   username,
-    name:        name,
+    firstname:   firstname,
+    lastname:    lastname,
     permissions: type,
     tags:        tags,
     languages:   languages,

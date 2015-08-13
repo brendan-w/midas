@@ -56,10 +56,11 @@ var CoreAccountView = Backbone.View.extend({
 
     // Create a data object with the required fields
     var data = {
-      json:     true,
-      name:     this.$("#rname").val(),
-      username: this.$("#rusername").val(),
-      password: this.$("#rpassword").val(),
+      json:      true,
+      firstname: this.$("#firstname").val(),
+      lastname:  this.$("#lastname").val(),
+      username:  this.$("#rusername").val(),
+      password:  this.$("#rpassword").val(),
     };
 
     //load any additional values (including the `type`)
