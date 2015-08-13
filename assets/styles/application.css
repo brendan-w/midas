@@ -1230,7 +1230,6 @@ button.like-button:hover {
 }
 
 .file-add {
-  float: right;
   margin-right: 10px;
   margin-top: -3px;
   text-transform: none;

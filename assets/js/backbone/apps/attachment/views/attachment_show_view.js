@@ -139,6 +139,7 @@ var AttachmentShowView = Backbone.View.extend({
   renderAttachment: function (attachment) {
     var data = {
       a: attachment,
+      target: this.target,
       user: window.cache.currentUser,
       owner: this.options.owner
     };

@@ -12,9 +12,11 @@
       <time class="timeago" datetime="<%- a.createdAt %>"><%- a.createdAt %></time>
     </a>
   </td>
-  <td class="file-person">
-    <div class="project-people-div" data-userid="<%- a.userId %>">
-      <img src="/api/user/photo/<%- a.userId %>" class="project-people" />
-    </div>
-  </td>
+  <% if(target !== "user") { %>
+    <td class="file-person">
+      <div class="project-people-div" data-userid="<%- a.userId %>">
+        <img src="/api/user/photo/<%- a.userId %>" class="project-people" />
+      </div>
+    </td>
+  <% } %>
 </tr>
