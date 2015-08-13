@@ -7,20 +7,12 @@
 
 <style>
 
-  .profile-title {
-    padding-top: 30px;
-  }
-
-  .profile-bio {
-    padding-bottom: 15px;
-  }
-
 </style>
 
 
 <section>
   <!-- everything is wrapped in a giant form, which is used for update submission -->
-  <form id="profile-form">
+  <form id="task-form">
     <div class="container">
       <div class="row">
 
@@ -39,8 +31,8 @@
 
               <% } else { %>
 
-                <a href="/tasks/<%- model.id %>" class="btn btn-c0 link-backbone" id="profile-cancel">Discard Changes</a>
-                <button id="profile-save" type="submit" class="btn btn-c2" disabled="disabled" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Saving..." data-success-text="Saved!" data-fail-text="Save Failed.">Save Job</button>
+                <a href="/tasks/<%- model.id %>" class="btn btn-c0 link-backbone" id="task-cancel">Discard Changes</a>
+                <button id="task-save" type="submit" class="btn btn-c2" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Saving..." data-success-text="Saved!" data-fail-text="Save Failed.">Save Job</button>
 
               <% } %>
 
@@ -52,11 +44,11 @@
               <% if(!edit) { %>
                 <h2><%- model.title %></h2>
               <% } else { %>
-                <div class="row" style="margin-top:50px;"> <!-- TODO: don't use inline CSS -->
+                <div class="row">
                   <div class="col-sm-4 nopadding">
                     <div class="form-group">
                       <label>Job Title</label>
-                      <input type="text" class="form-control" id="profile-first-name" placeholder="First Name" value="<%- model.title %>">
+                      <input type="text" class="form-control" id="task-first-name" placeholder="First Name" value="<%- model.firstname %>">
                     </div>
                   </div>
                 </div>

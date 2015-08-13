@@ -77,7 +77,7 @@ var TagShowView = Backbone.View.extend({
     this.tagFactory.createTagDropDown({
       type:        "location",
       selector:    self.$location,
-      multiple:    false,
+      multiple:    (self.target === 'task'), //tasks should be the only place where multiple locations are accepted
       data:        self.tagsFor("location"),
     });
 

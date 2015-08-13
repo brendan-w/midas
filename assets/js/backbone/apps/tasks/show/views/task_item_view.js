@@ -40,6 +40,7 @@ var TaskItemView = BaseView.extend({
   events: {
     'change .validate'                    : 'v',
     'keyup .validate'                     : 'v',
+    'click #task-save'                    : 'submit',
     'click #task-view'                    : 'view',
     "click #like-button"                  : 'like',
     'click #volunteer'                    : 'volunteer',
@@ -60,7 +61,6 @@ var TaskItemView = BaseView.extend({
     this.options = options;
     this.action  = options.action;
     this.edit    = (options.action == 'edit');
-
   },
 
 
@@ -84,8 +84,7 @@ var TaskItemView = BaseView.extend({
     
     $("time.timeago").timeago();
     
-    // this.updateTaskEmail();
-    
+    /*
     if (window.location.search === '?volunteer' &&
         !this.model.attributes.volunteer) {
       $('#volunteer').click();
@@ -94,74 +93,49 @@ var TaskItemView = BaseView.extend({
         replace: true
       });
     }
+    */
 
-    this.initializeChildren();
+    popovers.popoverPeopleInit(".project-people-show-div");
+
+    // this.updateTaskEmail();
+    this.initializeStateButtons();
+    this.initializeVolunteers();
+    this.initializeAttachment();
+    this.initializeTags();
+    this.initializeMD();
+
   },
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  initializeChildren: function () {
-    var self = this;
-
-    self.initializeStateButtons();
-    // self.initializeLikes();
-
-    if (window.cache.currentUser) {
-      self.initializeVolunteers();
-    }
-
-    if (this.edit)
-    {
-      // self.initializeEdit();
-      popovers.popoverPeopleInit(".project-people-show-div");
-    }
-    else
-    {
-      popovers.popoverPeopleInit(".project-people-show-div");
-
-      /*
-      if (self.commentListController) self.commentListController.cleanup();
-      self.commentListController = new CommentListController({
-        target: 'task',
-        id: self.model.get('id'),
-      });
-      */
-
-      if (self.attachmentView) self.attachmentView.cleanup();
-      self.attachmentView = new AttachmentView({
-        target: 'task',
-        id: this.model.attributes.id,
-        state: this.model.attributes.state,
-        owner: this.model.attributes.isOwner,
-        volunteer: this.model.attributes.volunteer,
-        el: '.attachment-wrapper'
-      }).render();
-    }
-
-    if (self.tagView) self.tagView.cleanup();
-    self.tagView = new TagView({
-      model: self.model,
-      el: '.tag-wrapper',
+  initializeAttachment: function() {
+    if (this.attachmentView) this.attachmentView.cleanup();
+    this.attachmentView = new AttachmentView({
       target: 'task',
-      targetId: 'taskId',
-      edit: false
+      id: this.model.attributes.id,
+      state: this.model.attributes.state,
+      owner: this.model.attributes.isOwner,
+      volunteer: this.model.attributes.volunteer,
+      el: '.attachment-wrapper'
     }).render();
   },
+
+  initializeTags: function() {
+    if (this.tagView) this.tagView.cleanup();
+    this.tagView = new TagView({
+      el: this.el,
+      edit: false,
+      target: 'task',
+    }).render();
+  },
+
+  /*
+  initializeComments: function() {
+    if (self.commentListController) self.commentListController.cleanup();
+    self.commentListController = new CommentListController({
+      target: 'task',
+      id: self.model.get('id'),
+    });
+  },
+  */
 
   /*
   initializeLikes: function () {
@@ -180,24 +154,24 @@ var TaskItemView = BaseView.extend({
 
   initializeVolunteers: function () {
     if (this.model.attributes.volunteer) {
-      $('.volunteer-true').show();
-      $('.volunteer-false').hide();
+      this.$('.volunteer-true').show();
+      this.$('.volunteer-false').hide();
     } else {
-      $('.volunteer-true').hide();
-      $('.volunteer-false').show();
+      this.$('.volunteer-true').hide();
+      this.$('.volunteer-false').show();
     }
   },
 
   initializeStateButtons: function() {
     this.listenTo(this.model, "task:update:state:success", function (data) {
       if (data.attributes.state == 'closed') {
-        $("#li-task-close").hide();
-        $("#li-task-reopen").show();
-        $("#alert-closed").show();
+        this.$("#li-task-close").hide();
+        this.$("#li-task-reopen").show();
+        this.$("#alert-closed").show();
       } else {
-        $("#li-task-close").show();
-        $("#li-task-reopen").hide();
-        $("#alert-closed").hide();
+        this.$("#li-task-close").show();
+        this.$("#li-task-reopen").hide();
+        this.$("#alert-closed").hide();
       }
     });
   },
@@ -216,6 +190,11 @@ var TaskItemView = BaseView.extend({
 
   v: function (e) {
     return validate(e);
+  },
+
+  submit: function(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    console.log("submit");
   },
 
   edit: function (e) {
