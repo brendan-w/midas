@@ -198,32 +198,12 @@ var NewTaskModal = Backbone.View.extend({
       self.modal.hide();
     });
 
-    //parse the tags from the select2 boxes
-
-    var raw_tags = [];
-    raw_tags.push.apply(raw_tags,this.$("#task_tag_topics").select2('data'));
-    raw_tags.push.apply(raw_tags,this.$("#task_tag_skills").select2('data'));
-    raw_tags.push.apply(raw_tags,this.$("#task_tag_location").select2('data'));
-    raw_tags.push.apply(raw_tags,[this.$("#skills-required").select2('data')]);
-    raw_tags.push.apply(raw_tags,[this.$("#people").select2('data')]);
-    raw_tags.push.apply(raw_tags,[this.$("#time-required").select2('data')]);
-    raw_tags.push.apply(raw_tags,[this.$("#time-estimate").select2('data')]);
-    raw_tags.push.apply(raw_tags,[this.$("#length").select2('data')]);
-    
-    var tags = _(raw_tags).map(function(tag) {
-      return (tag.id && tag.id !== tag.name) ? +tag.id : {
-        name: tag.name,
-        type: tag.tagType,
-        data: tag.data
-      };
-    });
-
     this.collection.addAndSave({
       title:       this.$("#task-title").val(),
       description: this.$("#task-description").val(),
       projectId:   this.projectId,
-      tags:        tags,
-    })
+      tags:        this.tagFactory.getTagsFrom(this.$("#task_tag_topics, #task_tag_skills, #task_tag_location, #skills-required, #people, #time-required, #time-estimate, #length")),
+    });
   },
 
 
