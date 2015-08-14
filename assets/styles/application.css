@@ -1950,25 +1950,23 @@ ul.task-tags > li {
 }
 
 /* Banner Styles */
+
+.banner {
+  background:#555;
+  color:white;
+  padding: 30px 0px;
+}
+
+.banner-title, .banner-desc {
+  color:white;
+}
+
 .banner-title {
   display:inline-block;
   padding-top: 30px;
   padding-bottom: 40px;
+  margin-bottom: 40px;
   border-bottom:1px solid white;
-  color:white;
-}
-
-.banner-desc {
-  color:white;
-}
-
-#grey-banner > *
-{
-  margin-bottom: 30px;
-}
-
-#grey-banner p {
-  color:white;
 }
 
 /* Language Form */
