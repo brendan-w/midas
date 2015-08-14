@@ -98,6 +98,11 @@ header #banner {
   padding-top: 30px;
 }
 
+ul.de-uglify {
+  list-style: none;
+  padding-left: 0px;
+}
+
 .clear {
   clear: both;
 }
@@ -692,6 +697,11 @@ ul.vet-list li.vetted .fa {
 
 .profile-reset.error {
   color: #c12e2a;
+}
+
+.profile-bio {
+    padding-top: 30px;
+    padding-bottom: 15px;
 }
 
 /*****************
@@ -1707,9 +1717,19 @@ ul.task-tags > li {
 
 }
 
-.splash-wrap {
+.home-long-description {
+  display: table-cell;
+  vertical-align: middle;
   position: relative;
-  height: 400px;
+  height: 200px;
+  border: 1px solid black;
+  padding: 5px;
+}
+
+.home-long-description p {
+  margin: auto;
+  width: 80%;
+  text-align: center;
 }
 
 #home {
@@ -1718,6 +1738,7 @@ ul.task-tags > li {
 
 #home .splash-center {
   position: absolute;
+  width: 70%;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -1729,48 +1750,44 @@ ul.task-tags > li {
   padding: 10px 20px;
   -webkit-border-radius: 4px;
   border-radius: 4px;
+  font-size: 20px;
+}
+
+#home .splash-center p{
+  margin: 20px 10px;
 }
 
 #home .button-holder {
-  position: absolute;
-  top: 50%;
-  width: 200px;
-  height: 140px;
-  background-color: white;
+  text-align: center;
+  display: inline;
   transform: translate(-50%, -50%);
   -webkit-transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
-  border-radius: 4px;
 }
 
-#home .left {
-  left: 20%;
-}
-
-#home .right {
-  left: 80%;
-}
-
-#home .center {
-  left: 50%;
+#home ul.de-uglify {
+  padding-left: 40px;
+  text-align: left;
 }
 
 #home .start-button {
+  font-size: 20px;
+  margin: 5px 30px;
   width: 200px;
-  height: 80px;
-  color: white;
+  height: 60px;
+  color: black;
   padding: 10px 20px;
+  border: 1px solid black;
   -webkit-border-radius: 4px;
 }
 
 #home .btn-midas {
-  background: #1CABE2;
-  color: white;
-  padding: 10px 20px;
-  margin-bottom: 10px;
+  background: white;
+  color: black;
+  margin-bottom: 20px;
   text-transform: uppercase;
-  font-size: 24px;
-  font-weight: 900;
+  font-size: 18px;
+  font-weight: 600;
   -webkit-transition: all 300ms linear;
   -moz-transition: all 300ms linear;
   -o-transition: all 300ms linear;
@@ -1818,6 +1835,18 @@ ul.task-tags > li {
   }
 }
 
+#home .value-prop {
+  color: black;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  margin: 0 auto;
+  width: 40%;
+  border: 1px solid black;
+}
+
 .value-prop {
   text-align: center;
   color: #428bca;
@@ -1826,7 +1855,7 @@ ul.task-tags > li {
   padding-top: 20px;
   padding-bottom: 20px;
   margin: 0 auto;
-  width: 25%;
+  width: 40%;
 }
 
 .value-prop .text {
@@ -1886,3 +1915,132 @@ ul.task-tags > li {
   -moz-border-radius: 5px;
   border-radius: 5px;
 }
+
+/* FAQ Styles */
+.faq-row {
+  width: 90%;
+  margin: 0% 5%;
+}
+.faq-question {
+  padding: 20px 50px;
+  margin-bottom: 10px;
+  background-color: #fff;
+}
+.top-faq {
+  margin-top: 10px
+}
+.faq-question p{
+  margin-bottom: 5px;
+}
+
+/* Home Styles */
+.home-banner {
+  padding-top: 80px;
+  padding-bottom: 60px;
+  color:white;
+}
+.splash-wrap {
+  height: 400px;
+  width: 70%;
+  margin-left: 15%;  
+}
+.two-column-padding {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+/* Banner Styles */
+.banner-title {
+  display:inline-block;
+  padding-top: 30px;
+  padding-bottom: 40px;
+  border-bottom:1px solid white;
+  color:white;
+}
+.banner-desc {
+  color:white;
+  margin-top: 10px;
+  padding-bottom: 60px;
+}
+#grey-banner > *
+{
+  margin-bottom: 30px;
+}
+#grey-banner p {
+  color:white;
+}
+
+/* Language Form */
+.lang-list {
+    list-style: none;
+    padding-left: 0px;  
+}
+
+/* Vetting */
+ul#vet-list-pending {
+  list-style: none;
+  padding-left: 0px;
+}
+li.vet button {
+  width:100%;
+  /* Although it is .disabled, it should stil be clickable */
+  cursor:pointer !important;
+}
+
+/* Modal Styles */
+.modal-header ul {
+  list-style: none;
+  margin-bottom: 0px;
+  padding-left:0px;
+  text-align: center;
+}
+
+li.modal-step {
+  display:inline-block;
+  text-align: center;
+  width:80px;
+}
+
+li.modal-step .circle {
+  display:inline-block;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  font-weight: 600;
+}
+
+li.modal-step .name {
+  font-size: 7pt;
+  margin-top:5px;
+  text-transform: uppercase;
+}
+
+/* inactive modal step */
+li.modal-step .circle {
+  line-height: 26px; /* correction for 2px border */
+  border:2px solid #CCC;
+  color: #CCC;
+}
+
+li.modal-step .name {
+  color: #CCC;
+}
+
+/* active modal step */
+li.modal-step.active .circle {
+  line-height: 30px;
+  border:none;
+  color:white;
+  background-color: #1CABE2;
+}
+
+li.modal-step.active .name {
+  color:#1CABE2;
+}
+
+
+
+
+
+
+

@@ -19,13 +19,6 @@
 
   "SaveTask"  : "Save Job",
 
-  "Profile": "Person",
-  "ProfilePlural": "People",
-  "ProfileIndefinite" : "Someone",
-  "ProfilePluralIndefinite": "Some people",
-  "profile" : "person",
-  "profilePlural" : "people",
-
   "like" : "like",
   "likePlural" : "likes",
 
@@ -57,8 +50,8 @@
     "subhead" : "Work with other federal employees on projects you are passionate about.",
     "callToAction" : "Get Started Today",
     "callToLogin" : "Login",
-    "callToRegister" : "Sign Up",
-    "callToBrowse" : "Browse Jobs"
+    "callToRegister" : "Register",
+    "callToBrowse" : "Browse"
   },
 
   "commonAPI" : {
