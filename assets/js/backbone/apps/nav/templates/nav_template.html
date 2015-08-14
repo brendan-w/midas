@@ -55,14 +55,14 @@
               <ul class="dropdown-menu" role="menu" aria-labelledby="navbar-profile">
                 <li role="presentation"><a role="menuitem" class="nav-link" tabindex="-1" href="/profile">Profile</a></li>
 
-                <% if (user.permissions.vet === true) { %>
+                <% if (user.permissions.vet) { %>
                   <li role="presentation" class="divider"></li>
                   <li role="presentation">
                     <a role="menuitem" tabindex="-1" href="/vet" class="nav-link">Vetting Controls</a>
                   </li>
                 <% } %>
 
-                <% if (user.permissions.admin === true) { %>
+                <% if (user.permissions.admin) { %>
                   <li role="presentation" class="divider"></li>
                   <li role="presentation">
                     <a role="menuitem" tabindex="-1" href="/admin" class="nav-link">Administration</a>

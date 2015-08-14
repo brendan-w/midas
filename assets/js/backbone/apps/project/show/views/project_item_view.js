@@ -56,7 +56,7 @@ var ProjectShowView = Backbone.View.extend({
     var t = _.template(ProjectShowTemplate)({
       project:  project,
       edit:     this.edit,
-      user:     window.cache.currentUser || {},
+      user:     window.cache.currentUser,
       hostname: window.location.hostname,
     });
 
@@ -74,12 +74,19 @@ var ProjectShowView = Backbone.View.extend({
     //TODO: make window.cache.currentUser a bonefied backbone model
     //      so this doens't have to happen, and we can simply .fetch()
     //      to get the latest data.
-    var user = new ProfileModel();
-    this.listenTo(user, "profile:fetch:success", function() {
-      var target = user.vetStateFor(self.model.get('id'));
-      this.$("#vet-" + target).show();
-    });
-    user.remoteGet(window.cache.currentUser.id);
+    if(window.cache.currentUser)
+    {
+      var user = new ProfileModel();
+      this.listenTo(user, "profile:fetch:success", function() {
+        var target = user.vetStateFor(self.model.get('id'));
+        this.$("#vet-" + target).show();
+      });
+      user.remoteGet(window.cache.currentUser.id);
+    }
+    else
+    {
+      this.$("#project-vet, #vet-pending, #vet-accepted").hide();
+    }
 
     //if we're in edit mode, setup the edit controls
     if(this.edit) this.render_edit();
