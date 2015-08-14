@@ -248,8 +248,6 @@ var TaskItemView = BaseView.extend({
         Backbone.history.navigate('tasks/' + self.model.toJSON().id, { trigger: true });
       },
     });
-
-    console.log("submit");
   },
 
 

@@ -23,13 +23,13 @@
             <% if(!edit) { %>
 
               <% if(model.isOwner || (user && user.permissions.admin)) { %>
-                <a href="/tasks/<%- model.id %>/edit" class="btn btn-c2 link-backbone">Edit Job</a>
+                <a href="/tasks/<%- model.id %>/edit" class="btn btn-c2 link-backbone"><i class="fa fa-pencil">&nbsp;</i>Edit <span data-i18n="Task">Job</span></a>
               <% } %>
 
             <% } else { %>
 
               <a href="/tasks/<%- model.id %>" class="btn btn-c0 link-backbone" id="task-cancel">Discard Changes</a>
-              <button id="task-save" class="btn btn-c2" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Saving..." data-success-text="Saved!" data-fail-text="Save Failed.">Save Job</button>
+              <button id="task-save" class="btn btn-c2" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Saving..." data-success-text="Saved!" data-fail-text="Save Failed.">Save <span data-i18n="Task">Job</span></button>
 
             <% } %>
           </div>
@@ -113,34 +113,22 @@
         <div class="box box-main">
 
           <div class="form-group task-location">
-            <label for="tag_location">Current location</label>
+            <label for="tag_location">Location</label>
             <div id="tag_location"></div> <!-- handled by TagShowView.js -->
           </div>
 
-          <div class="form-group task-education">
-            <label for="tag_education">Highest education level completed</label>
-            <div id="tag_education"></div> <!-- handled by TagShowView.js -->
-          </div>
-
-          <div class="form-group task-experience">
-            <label for="tag_experience">Years of professional experience</label>
-            <div id="tag_experience"></div> <!-- handled by TagShowView.js -->
-          </div>
-
-          <div class="form-group task-location-pref">
-            <label for="tag_work_location">Work location preferences</label>
-            <div id="tag_work_location"></div> <!-- handled by TagShowView.js -->
-          </div>
-
-          <div class="form-group task-seeking">
-            <label for="tag_task_type">Type of work opportunities in which I am insterested</label>
+          <div class="form-group task-type">
+            <label for="tag_task_type">Type of work opportunities</label>
             <div id="tag_task_type"></div> <!-- handled by TagShowView.js -->
           </div>
 
-          <div class="form-group task-fellowship">
-            <label for="tag_fellowship">Would you like to be considered for possible fellowship opportunities?</label>
-            <div id="tag_fellowship"></div> <!-- handled by TagShowView.js -->
+          <!--
+          <div class="form-group task-location-pref">
+            <label for="tag_work_location">Work location preferences</label>
+            <div id="tag_work_location"></div>
           </div>
+          -->
+
 
           <div class="form-group task-language">
             <% if(edit) { %>

@@ -15,9 +15,9 @@
 
                 <% if(data.isOwner || user.permissions.admin) { %>
                   <% if(login.profile.edit === true) { %>
-                    <a href="/profile/<%- data.id %>/edit" class="btn btn-c2 link-backbone">Edit Profile</a>
+                    <a href="/profile/<%- data.id %>/edit" class="btn btn-c2 link-backbone"><i class="fa fa-pencil">&nbsp;</i>Edit Profile</a>
                   <% } else if(login.profile.editUrl) { %>
-                    <a href="<%- login.profile.editUrl %>" class="btn btn-c2" target="_blank">Edit Profile</a>
+                    <a href="<%- login.profile.editUrl %>" class="btn btn-c2" target="_blank"><i class="fa fa-pencil">&nbsp;</i>Edit Profile</a>
                   <% } %>
                 <% } %>
 
