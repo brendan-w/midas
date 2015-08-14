@@ -7,12 +7,14 @@ var   marked = require('marked');
 var  TimeAgo = require('../../../../../vendor/jquery.timeago');
 var BaseView = require('../../../../base/base_view');
 
+var ProjectCollection = require('../../../../entities/projects/projects_collection');
 
 // var CommentListController = require('../../../comments/list/controllers/comment_list_controller');
 // var VolunteerSupervisorNotifyTemplate = require('../templates/volunteer_supervisor_notify_template.html');
 // var      TaskEditFormView = require('../../edit/views/task_edit_form_view');
 var        AttachmentView = require('../../../attachment/views/attachment_show_view');
 var               TagView = require('../../../tag/show/views/tag_show_view');
+var            TagFactory = require('../../../../components/tag_factory');
 var        ModalComponent = require('../../../../components/modal');
 var            ModalAlert = require('../../../../components/modal_alert');
 var        MarkdownEditor = require('../../../../components/markdown_editor');
@@ -29,9 +31,6 @@ var TaskShowTemplate = require('../templates/task_show_item_template.html');
 
 
 
-var Popovers = require('../../../../mixins/popovers');
-var popovers = new Popovers();
-
 
 
 
@@ -41,16 +40,14 @@ var TaskItemView = BaseView.extend({
     'change .validate'                    : 'v',
     'keyup .validate'                     : 'v',
     'click #task-save'                    : 'submit',
-    'click #task-view'                    : 'view',
-    "click #like-button"                  : 'like',
+    // 'click #task-view'                    : 'view',
+    // "click #like-button"                  : 'like',
     'click #volunteer'                    : 'volunteer',
     'click #volunteered'                  : 'volunteered',
     "click #task-close"                   : "stateChange",
     "click #task-reopen"                  : "stateReopen",
-    "click #task-copy"                    : "copy",
-    "click .delete-volunteer"             : 'removeVolunteer',
-    "mouseenter .project-people-show-div" : popovers.popoverPeopleOn,
-    "click .project-people-show-div"      : popovers.popoverClick,
+    // "click #task-copy"                    : "copy",
+    // "click .delete-volunteer"             : 'removeVolunteer',
     "click .link-backbone"                : linkBackbone,
   },
 
@@ -61,6 +58,8 @@ var TaskItemView = BaseView.extend({
     this.options = options;
     this.action  = options.action;
     this.edit    = (options.action == 'edit');
+
+    this.tagFactory = new TagFactory();
   },
 
 
@@ -95,14 +94,48 @@ var TaskItemView = BaseView.extend({
     }
     */
 
-    popovers.popoverPeopleInit(".project-people-show-div");
-
     // this.updateTaskEmail();
     this.initializeStateButtons();
     this.initializeVolunteers();
     this.initializeAttachment();
     this.initializeTags();
     this.initializeMD();
+
+    if(this.edit)
+      this.renderEdit();
+
+  },
+
+  renderEdit: function() {
+    var self = this;
+
+    //load the "associated project" dropdown
+    var projectCollection = new ProjectCollection();
+    this.listenTo(projectCollection, "sync", function() {
+
+      var formatResult = function (model, container, query) {
+        var formatted = '<div class="select2-result-title">' + _.escape(model.get('title')) + '</div>';
+        formatted    += '<div class="select2-result-description">' + marked(model.get('description')) + '</div>';
+        return formatted;
+      };
+
+      self.$("#projectId").select2({
+        placeholder:             "Select a project to associate",
+        width:                   "250px",
+        multiple:                false,
+        formatResult:            formatResult,
+        formatSelection:         formatResult,
+        allowClear:              true,
+        minimumResultsForSearch: Infinity, //not text searchable
+        data:                    projectCollection.models, // the list of projects to choose from
+      });
+
+      var current_project = self.model.get('project');
+      if(current_project) self.$("#projectId").select2('val', current_project);
+
+    });
+    projectCollection.fetch(); //will trigger the "sync" above
+
 
   },
 
@@ -195,18 +228,6 @@ var TaskItemView = BaseView.extend({
   submit: function(e) {
     if (e && e.preventDefault) e.preventDefault();
     console.log("submit");
-  },
-
-  edit: function (e) {
-    if (e.preventDefault) e.preventDefault();
-    this.initializeEdit();
-    popovers.popoverPeopleInit(".project-people-div");
-    Backbone.history.navigate('tasks/' + this.model.id + '/edit');
-  },
-
-  view: function (e) {
-    if (e.preventDefault) e.preventDefault();
-    Backbone.history.navigate('tasks/' + this.model.id, { trigger: true });
   },
 
   /*
@@ -416,7 +437,6 @@ var TaskItemView = BaseView.extend({
             }
             html += '</div>';
             $('#task-volunteers').append(html);
-            popovers.popoverPeopleInit(".project-people-div");
           });
         }
       }).render();
@@ -432,7 +452,6 @@ var TaskItemView = BaseView.extend({
     if (e.stopPropagation()) e.stopPropagation();
     if (e.preventDefault) e.preventDefault();
     $(e.currentTarget).off("mouseenter");
-    $('.popover').remove();
 
     var vId = $(e.currentTarget).data('vid');
     var uId = $(e.currentTarget).data('uid');

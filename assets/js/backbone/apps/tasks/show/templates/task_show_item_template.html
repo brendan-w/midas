@@ -20,7 +20,6 @@
 
           <!-- edit buttons -->
           <div class="pull-right">
-
             <% if(!edit) { %>
 
               <% if(model.isOwner || (user && user.permissions.admin)) { %>
@@ -33,15 +32,18 @@
               <button id="task-save" type="submit" class="btn btn-c2" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Saving..." data-success-text="Saved!" data-fail-text="Save Failed.">Save Job</button>
 
             <% } %>
-
           </div>
 
           <!-- main job information -->
 
+          <!-- Title -->
           <div class="form-group">
             <% if(!edit) { %>
+
               <h2><%- model.title %></h2>
+
             <% } else { %>
+
               <div class="row">
                 <div class="col-sm-4 nopadding">
                   <div class="form-group">
@@ -50,11 +52,34 @@
                   </div>
                 </div>
               </div>
+
+            <% } %>
+          </div>
+
+          <!-- Working Group -->
+          <div class="form-group">
+            <% if(!edit) { %>
+
+              <% if (!_.isUndefined(model.project) && ui.project.show) { %>
+                <div class="task-project">
+                  <a href="/projects/<%- model.projectId %>" class="link-backbone">
+                    <i class="fa fa-folder-o"></i>
+                    <%- model.project.title %>
+                  </a>
+                </div>
+              <% } %>
+
+            <% } else { %>
+
+              <label>Associated <span data-i18n="project">project</span></label>
+              <input type="hidden" id="projectId" />
+
             <% } %>
           </div>
 
           <hr> <!-- //////////////////////////////////////////////////// -->
 
+          <!-- Description -->
           <div class="form-group">
             <% if(!edit) { %>
               <p>
@@ -69,6 +94,7 @@
 
           <hr> <!-- //////////////////////////////////////////////////// -->
 
+          <!-- Timestamps -->
           <div class="form-group task-show-creation">
             <span data-i18n="Task">Opportunity</span> created <time class="timeago" datetime="<%- model.createdAt %>"><%- model.createdAt %></time>
             <% if (model.createdAt != model.updatedAt) { %>
@@ -228,48 +254,10 @@
 
       <div class="col-md-push-4 col-sm-push-4 col-sm-8 col-md-8 md-nopadding-right">
         <div class="row">
-          <div class="col-md-9 sm-nopadding md-nopadding">
-            <div class="box box-main">
 
-              <div class="main-section">
-                <div class="edit-task-section">
-
-                  <h2><%- model.title %></h2>
-                  <% if (!_.isUndefined(model.project) && ui.project.show) { %>
-                  <div class="task-project">
-                    <a href="/projects/<%- model.projectId %>" class="link-backbone">
-                      <i class="fa fa-folder-o"></i>
-                      <%- model.project.title %>
-                    </a>
-                  </div>
-                  <% } %>
-
-                  <div class="task-show-description">
-                    <% /* Escaped with marked() */ %>
-                    <%= model.descriptionHtml %>
-                  </div>
-
-                </div>
-              </div>
-            </div>
-          </div>
           <div class="col-md-3 padding-left-none sm-nopadding md-nopadding">
             <div class="box padding-none">
-              <div class="navbar-side like-row border-bottom">
-                <% if (user) { %>
-                <button id="like-button" class="btn btn-link like-button" title="Click to Like or Unlike">
-                <% } else { %>
-                <span class="like-button">
-                <% } %>
-                  <i id="like-button-icon" class="fa fa-star-o fa-lg gold"></i>
-                <% if (user) { %>
-                </button>
-                <% } else { %>
-                </span>
-                <% } %>
-                <span class="like-number" id="like-number"><%- model.likeCount %></span>
-                <span class="like-plural" id="like-text" data-plural="likes" data-singular="like">likes</span>
-              </div>
+
               <div class="navbar-side border-bottom">
                 <div id="modal-copy"></div>
                 <ul class="nav nav-pills nav-stacked">
@@ -327,18 +315,11 @@
           </div>
         </div>
 
-        <div class="row">
-          <div class="col-md-12 sm-nopadding md-nopadding">
-            <div class="box box-main task-view">
-            </div>
-          </div>
-        </div>
-
       </div>
 
+      <!--
       <div class="col-md-pull-8 col-sm-pull-8 col-sm-4 col-md-4 project-sidebar md-nopadding-right">
 
-        <!--
         <div class="row">
           <div class="col-md-12 box sm-nopadding">
             <div class="box task-both">
@@ -364,9 +345,9 @@
             </div>
           </div>
         </div>
-        -->
 
       </div>
+      -->
     </div>
   </div>
 </section>
