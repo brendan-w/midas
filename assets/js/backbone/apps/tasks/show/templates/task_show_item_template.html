@@ -23,7 +23,7 @@
 
             <% if(!edit) { %>
 
-              <% if(model.isOwner || user.permissions.admin) { %>
+              <% if(model.isOwner || (user && user.permissions.admin)) { %>
                 <a href="/tasks/<%- model.id %>/edit" class="btn btn-c2 link-backbone">Edit Job</a>
               <% } %>
 
@@ -332,6 +332,7 @@
           </div>
         </div>
 
+        <!--
         <div class="row">
           <div class="col-md-12 box sm-nopadding">
             <div class="box task-both">
@@ -357,6 +358,7 @@
             </div>
           </div>
         </div>
+        -->
 
         <div class="row">
           <div class="col-md-12 box task-view sm-nopadding">

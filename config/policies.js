@@ -167,8 +167,8 @@ module.exports.policies = {
   AttachmentController: {
     'find':               ['passport', 'authenticated', 'hasIdParam'],
     'findOne':            ['passport', 'authenticated', 'hasIdParam'],
-    'findAllByProjectId': ['passport', 'authenticated', 'hasIdParam', 'project'],
-    'findAllByTaskId':    ['passport', 'authenticated', 'hasIdParam', 'task'],
+    'findAllByProjectId': [                             'hasIdParam', 'project'],
+    'findAllByTaskId':    [                             'hasIdParam', 'task'],
     'findAllByUserId':    ['passport', 'authenticated', 'hasIdParam'],
     'create':             ['passport', 'authenticated', 'addUserId', 'attachment'],
     'update':             false,

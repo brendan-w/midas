@@ -99,7 +99,7 @@ var TaskItemView = BaseView.extend({
 
     // this.updateTaskEmail();
     this.initializeStateButtons();
-    this.initializeVolunteers();
+    // this.initializeVolunteers();
     this.initializeAttachment();
     this.initializeTags();
     this.initializeMD();

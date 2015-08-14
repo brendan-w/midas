@@ -20,7 +20,7 @@
     <div class="project-people-show-div" data-userid="<%- data.owners[i].userId %>">
       <img src="/api/user/photo/<%- data.owners[i].userId %>" alt="<%- data.owners[i].name %>"/>
       <label class="project-people-show-label"><%- data.owners[i].name %></label>
-      <% if ((data.isOwner || user.permissions.admin) && (data.owners[i].userId != cache.currentUser.id) && data.edit) { %>
+      <% if ((data.isOwner || (user && user.permissions.admin)) && (data.owners[i].userId != cache.currentUser.id) && data.edit) { %>
       <a href="#" class="delete-projectowner project-owner-delete fa fa-times"  id="delete-projectowner-<%- data.owners[i].id %>" data-uid="<%- data.owners[i].userId %>" data-poid="<%- data.owners[i].id %>">
       </a>
       <% } %>

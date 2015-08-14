@@ -37,12 +37,8 @@ var ProjectownerShowView = Backbone.View.extend({
     this.options = options;
     this.data = options.data;
     this.action = options.action;
-    this.user = window.cache.currentUser || {};
-    if (this.options.action) {
-      if (this.options.action == 'edit') {
-        this.edit = true;
-      }
-    }
+    this.user = window.cache.currentUser;
+    this.edit = (this.options.action == 'edit');
 
     this.model.on("projectowner:show:rendered", function () {
       self.initializeOwnerSelect2();
@@ -77,11 +73,11 @@ var ProjectownerShowView = Backbone.View.extend({
 
   initializeOwnerSelect2: function () {
     var self = this;
-    if ((this.model.attributes.isOwner || this.user.permissions.admin) && this.edit){
+    if ((this.model.get('isOwner') || (this.user && this.user.permissions.admin)) && this.edit){
       var formatResult = function (object, container, query) {
         return object.name;
       };
-      var oldOwners = this.model.attributes.owners || [];
+      var oldOwners = this.model.get('owners') || [];
       var oldOwnerIds = _.map(oldOwners, function(owner){ return owner.userId }) || [];
 
       self.$("#owners").select2({
@@ -120,18 +116,18 @@ var ProjectownerShowView = Backbone.View.extend({
   },
 
   toggleOwners : function(e){
-    if (!(this.model.attributes.isOwner || this.user.permissions.admin) && this.edit) return false;
+    if (!(this.model.get('isOwner') || (this.user && this.user.permissions.admin)) && this.edit) return false;
     $('.owner-form-toggle').toggle(400);
   },
 
   saveOwners : function(e){
     if (e.preventDefault) e.preventDefault();
-    if (!(this.model.attributes.isOwner || this.user.permissions.admin) && this.edit) return false;
+    if (!(this.model.get('isOwner') || (this.user && this.user.permissions.admin)) && this.edit) return false;
     var self = this;
 
     var pId = self.model.attributes.id;
 
-    var oldOwners = this.model.attributes.owners || [];
+    var oldOwners = this.model.get('owners') || [];
     var s2data = $("#owners").select2("data")  || [];
     var s2OwnerIds = _.map(s2data, function(owner){ return owner.id }) || [];
 
@@ -180,7 +176,7 @@ var ProjectownerShowView = Backbone.View.extend({
       });
     }
 
-    var oldOwners = this.model.attributes.owners || [];
+    var oldOwners = this.model.get('owners') || [];
     var unchangedOwners = _.filter(oldOwners, function(owner){ return ( owner.id !== pOId ); } , this)  || [];
     self.model.trigger("projectowner:show:changed", unchangedOwners);
   },
