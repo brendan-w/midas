@@ -118,7 +118,7 @@ var TaskItemView = BaseView.extend({
         return formatted;
       };
 
-      self.$("#projectId").select2({
+      self.$("#task-project").select2({
         placeholder:             "Select a project to associate",
         width:                   "250px",
         multiple:                false,
@@ -129,8 +129,12 @@ var TaskItemView = BaseView.extend({
         data:                    projectCollection.models, // the list of projects to choose from
       });
 
-      var current_project = self.model.get('project');
-      if(current_project) self.$("#projectId").select2('val', current_project);
+      //if this task is attached to a project, load it into the dropdown
+      if(self.model.get("projectId"))
+      {
+        var current_project = projectCollection.findWhere({id: self.model.get("projectId")});
+        if(current_project) self.$("#task-project").select2('data', current_project);
+      }
 
     });
     projectCollection.fetch(); //will trigger the "sync" above
@@ -226,15 +230,17 @@ var TaskItemView = BaseView.extend({
   },
 
   submit: function(e) {
-    // if (e && e.preventDefault) e.preventDefault();
+    if (e && e.preventDefault) e.preventDefault();
     var self = this;
+
+    var project = this.$("#task-project").select2('data');
 
     this.model.set({
       title:       this.$("#task-title").val(),
       description: this.$("#task-description textarea").val(),
       tags:        this.tagView.data(),
+      projectId:   project ? project.get("id") : null,
     });
-
 
     this.$("#task-save").attr("disabled", "disabled");
     this.model.save({}, {
