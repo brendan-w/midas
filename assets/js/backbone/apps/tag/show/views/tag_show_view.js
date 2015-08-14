@@ -190,7 +190,7 @@ var TagShowView = Backbone.View.extend({
   },
 
   initializeDisplay: function() {
-    this.$location.html(      this.tagStringFor("location",      "\n") );
+    this.$location.html(      this.tagStringFor("location",      "<br>") );
     this.$task_type.html(     this.tagStringFor("task-type",     ", ") );
     this.$education.html(     this.tagStringFor("education",     ", ") );
     this.$experience.html(    this.tagStringFor("experience",    ", ") );

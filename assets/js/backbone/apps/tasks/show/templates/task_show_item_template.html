@@ -23,7 +23,18 @@
             <% if(!edit) { %>
 
               <% if(model.isOwner || (user && user.permissions.admin)) { %>
-                <a href="/tasks/<%- model.id %>/edit" class="btn btn-c2 link-backbone"><i class="fa fa-pencil">&nbsp;</i>Edit <span data-i18n="Task">Job</span></a>
+
+                <!-- Edit -->
+                <a href="/tasks/<%- model.id %>/edit" class="btn btn-c2 link-backbone">
+                  <i class="fa fa-pencil">&nbsp;</i>Edit <span data-i18n="Task">Job</span>
+                </a>
+
+                <!-- Change Job State -->
+                <a href="#" id="task-close" class="btn btn-c2 link-backbone">
+                  <i class="fa fa-times-circle">&nbsp;</i>
+                  Change <span data-i18n="Task">Opportunity</span> State
+                </a>
+
               <% } %>
 
             <% } else { %>
@@ -76,6 +87,13 @@
 
             <% } %>
           </div>
+
+          <!-- Apply button -->
+          <% if(!edit) { %>
+            <div class="form-group">
+              <button id="task-apply" class="btn btn-midas">Apply</button>
+            </div>
+          <% } %>
 
           <hr> <!-- //////////////////////////////////////////////////// -->
 
@@ -263,12 +281,7 @@
               <div class="navbar-side <% if (user) { %>border-bottom<% } %>">
                 <div id="modal-close"></div>
                 <ul class="nav nav-pills nav-stacked">
-                  <li class="li-task-edit">
-                    <a href="#" id="task-edit"><i class="fa fa-pencil"></i> <span class="box-icon-text">Edit <span data-i18n="Task">Opportunity</span></span></a>
-                  </li>
-                  <li class="li-task-view" style="display: none;">
-                    <a href="#" id="task-view"><i class="fa fa-pencil"></i> <span class="box-icon-text">View <span data-i18n="Task">Opportunity</span></span></a>
-                  </li>
+                  <!--
                   <% if (!draftAdminOnly || model.state !== 'draft' || (user && user.permissions.admin)) { %>
                   <li id="li-task-close" style="<% if (model.state == 'closed') { %>display: none;<% } %>">
                     <a href="#" id="task-close"><i class="fa fa-times-circle"></i> <span class="box-icon-text">Change <span data-i18n="Task">Opportunity</span> State</span></a>
@@ -276,6 +289,7 @@
                   <% } else {%>
                     <li><span class="no-link">This draft <span data-i18n="task">opportunity</span> is awaiting approval from an administrator.</span></li>
                   <% } %>
+                  -->
                   <li id="li-task-reopen" style="<% if (model.state != 'closed') { %>display: none;<% } %>">
                     <a href="#" id="task-reopen"><i class="fa fa-share"></i> <span class="box-icon-text">Reopen</span></a>
                   </li>
