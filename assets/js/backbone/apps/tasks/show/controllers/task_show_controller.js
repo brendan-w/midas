@@ -17,14 +17,12 @@ var TaskShowController = BaseView.extend({
     var self = this;
     this.options = options;
 
-    this.listenTo(this.model, "sync", this.render);
-
     //TODO: handle these errors, if they aren't already handled by the Global AJAX Error Listener
-    // this.listenTo(this.model, "error", function() {
-    // });
-
-    this.model.fetch();
-
+    this.model.fetch({
+      success: function() {
+        self.render();
+      },
+    });
   },
 
   render: function() {

@@ -29,7 +29,7 @@
             <% } else { %>
 
               <a href="/tasks/<%- model.id %>" class="btn btn-c0 link-backbone" id="task-cancel">Discard Changes</a>
-              <button id="task-save" type="submit" class="btn btn-c2" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Saving..." data-success-text="Saved!" data-fail-text="Save Failed.">Save Job</button>
+              <button id="task-save" class="btn btn-c2" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Saving..." data-success-text="Saved!" data-fail-text="Save Failed.">Save Job</button>
 
             <% } %>
           </div>
@@ -88,7 +88,7 @@
               </p>
             <% } else { %>
               <label>Job Description</label>
-              <div class="markdown-edit"></div>
+              <div id="task-description" class="markdown-edit"></div>
             <% } %>
           </div>
 

@@ -62,6 +62,7 @@ global.getCurrentModelFromFormAttributes = function (collection, attr) {
  */
 global.removeView = function (view) {
   view.undelegateEvents();
+  view.stopListening();
   view.$el.html("");
 }
 

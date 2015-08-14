@@ -32,8 +32,6 @@ var TaskShowTemplate = require('../templates/task_show_item_template.html');
 
 
 
-
-
 var TaskItemView = BaseView.extend({
 
   events: {
@@ -85,7 +83,7 @@ var TaskItemView = BaseView.extend({
     
     /*
     if (window.location.search === '?volunteer' &&
-        !this.model.attributes.volunteer) {
+        !this.model.get("volunteer")) {
       $('#volunteer').click();
       Backbone.history.navigate(window.location.pathname, {
         trigger: false,
@@ -104,6 +102,7 @@ var TaskItemView = BaseView.extend({
     if(this.edit)
       this.renderEdit();
 
+    return this;
   },
 
   renderEdit: function() {
@@ -143,10 +142,10 @@ var TaskItemView = BaseView.extend({
     if (this.attachmentView) this.attachmentView.cleanup();
     this.attachmentView = new AttachmentView({
       target: 'task',
-      id: this.model.attributes.id,
-      state: this.model.attributes.state,
-      owner: this.model.attributes.isOwner,
-      volunteer: this.model.attributes.volunteer,
+      id: this.model.get("id"),
+      state: this.model.get("state"),
+      owner: this.model.get("isOwner"),
+      volunteer: this.model.get("volunteer"),
       el: '.attachment-wrapper'
     }).render();
   },
@@ -154,39 +153,15 @@ var TaskItemView = BaseView.extend({
   initializeTags: function() {
     if (this.tagView) this.tagView.cleanup();
     this.tagView = new TagView({
-      el: this.el,
-      edit: this.edit,
+      el:     this.el,
+      edit:   this.edit,
       target: 'task',
+      tags:   this.model.get("tags"),
     }).render();
   },
 
-  /*
-  initializeComments: function() {
-    if (self.commentListController) self.commentListController.cleanup();
-    self.commentListController = new CommentListController({
-      target: 'task',
-      id: self.model.get('id'),
-    });
-  },
-  */
-
-  /*
-  initializeLikes: function () {
-    $("#like-number").text(this.model.attributes.likeCount);
-    if (parseInt(this.model.attributes.likeCount) === 1) {
-      $("#like-text").text($("#like-text").data('singular'));
-    } else {
-      $("#like-text").text($("#like-text").data('plural'));
-    }
-    if (this.model.attributes.like) {
-      $("#like-button-icon").removeClass('fa fa-star-o');
-      $("#like-button-icon").addClass('fa fa-star');
-    }
-  },
-  */
-
   initializeVolunteers: function () {
-    if (this.model.attributes.volunteer) {
+    if (this.model.get("volunteer")) {
       this.$('.volunteer-true').show();
       this.$('.volunteer-false').hide();
     } else {
@@ -209,6 +184,31 @@ var TaskItemView = BaseView.extend({
     });
   },
 
+  /*
+  initializeComments: function() {
+    if (self.commentListController) self.commentListController.cleanup();
+    self.commentListController = new CommentListController({
+      target: 'task',
+      id: self.model.get('id'),
+    });
+  },
+  */
+
+  /*
+  initializeLikes: function () {
+    $("#like-number").text(this.model.get("likeCount"));
+    if (parseInt(this.model.get("likeCount")) === 1) {
+      $("#like-text").text($("#like-text").data('singular'));
+    } else {
+      $("#like-text").text($("#like-text").data('plural'));
+    }
+    if (this.model.get("like")) {
+      $("#like-button-icon").removeClass('fa fa-star-o');
+      $("#like-button-icon").addClass('fa fa-star');
+    }
+  },
+  */
+
   initializeMD: function() {
     if (this.md) { this.md.cleanup(); }
     this.md = new MarkdownEditor({
@@ -226,53 +226,26 @@ var TaskItemView = BaseView.extend({
   },
 
   submit: function(e) {
-    if (e && e.preventDefault) e.preventDefault();
+    // if (e && e.preventDefault) e.preventDefault();
+    var self = this;
+
+    this.model.set({
+      title:       this.$("#task-title").val(),
+      description: this.$("#task-description textarea").val(),
+      tags:        this.tagView.data(),
+    });
+
+
+    this.$("#task-save").attr("disabled", "disabled");
+    this.model.save({}, {
+      success: function() {
+        Backbone.history.navigate('tasks/' + self.model.toJSON().id, { trigger: true });
+      },
+    });
+
     console.log("submit");
   },
 
-  /*
-  like: function (e) {
-    if (e.preventDefault) e.preventDefault();
-    var self = this;
-    var child = $(e.currentTarget).children("#like-button-icon");
-    var likenumber = $("#like-number");
-    // Not yet liked, initiate like
-    if (child.hasClass('fa-star-o')) {
-      child.removeClass('fa-star-o');
-      child.addClass('fa-star');
-      likenumber.text(parseInt(likenumber.text()) + 1);
-      if (parseInt(likenumber.text()) === 1) {
-        $("#like-text").text($("#like-text").data('singular'));
-      } else {
-        $("#like-text").text($("#like-text").data('plural'));
-      }
-      $.ajax({
-        url: '/api/like/liket/' + this.model.attributes.id
-      }).done( function (data) {
-        // liked!
-        // response should be the like object
-        // console.log(data.id);
-      });
-    }
-    // Liked, initiate unlike
-    else {
-      child.removeClass('fa-star');
-      child.addClass('fa-star-o');
-      likenumber.text(parseInt(likenumber.text()) - 1);
-      if (parseInt(likenumber.text()) === 1) {
-        $("#like-text").text($("#like-text").data('singular'));
-      } else {
-        $("#like-text").text($("#like-text").data('plural'));
-      }
-      $.ajax({
-        url: '/api/like/unliket/' + this.model.attributes.id
-      }).done( function (data) {
-        // un-liked!
-        // response should be null (empty)
-      });
-    }
-  },
-  */
 
   /*
   getUserSettings: function (userId) {
@@ -426,7 +399,7 @@ var TaskItemView = BaseView.extend({
             url: '/api/volunteer/',
             type: 'POST',
             data: {
-              taskId: self.model.attributes.id
+              taskId: self.model.get("id")
             }
           }).done( function (data) {
             $('.volunteer-true').show();
@@ -464,16 +437,16 @@ var TaskItemView = BaseView.extend({
         type: 'DELETE',
         data: {
           taskId: this.model.attributes,
-          vId: vId
+          vId: vId,
         },
       }).done(function (data) {
           // done();
       });
     }
 
-    var oldVols = this.model.attributes.volunteers || [];
+    var oldVols = this.model.get("volunteers") || [];
     var unchangedVols = _.filter(oldVols, function(vol){ return ( vol.id !== vId ); } , this)  || [];
-    this.model.attributes.volunteers = unchangedVols;
+    this.model.set("volunteers", unchangedVols);
     $('[data-voluserid="' + uId + '"]').remove();
     if (window.cache.currentUser.id === uId) {
       $('.volunteer-false').show();
@@ -546,7 +519,7 @@ var TaskItemView = BaseView.extend({
           url: '/api/task/copy',
           method: 'POST',
           data: {
-            taskId: self.model.attributes.id,
+            taskId: self.model.get("id"),
             title: $('#task-copy-title').val()
           }
         }).done(function(data) {
@@ -556,85 +529,11 @@ var TaskItemView = BaseView.extend({
       }
     }).render();
 
-    $('#task-copy-title').val('COPY ' + self.model.attributes.title);
+    $('#task-copy-title').val('COPY ' + self.model.get("title"));
   },
 
-
-  cleanup: function () {
-    if (this.md)               this.md.cleanup();
-    if (this.tagView)          this.tagView.cleanup();
-    if (this.attachmentView)   this.attachmentView.cleanup();
-    if (this.taskItemView)     this.taskItemView.cleanup();
-    // if (this.taskEditFormView) this.taskEditFormView.cleanup();
-    // if (this.commentListController) { this.commentListController.cleanup(); }
-    removeView(this);
-  }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  //this is the orginal task view code
 
   /*
-  render: function (self) {
-    self.data = {
-      user: window.cache.currentUser,
-      model: self.model.toJSON(),
-      tags: self.model.toJSON().tags,
-      edit: self.edit,
-    };
-
-    self.data['madlibTags'] = organizeTags(self.data.tags);
-    // convert description from markdown to html
-    self.data.model.descriptionHtml = marked(self.data.model.description);
-    self.model.trigger('task:tag:data', self.tags, self.data['madlibTags']);
-
-    var d = self.data,
-        vol = ((!d.user || d.user.id !== d.model.userId) && d.model.state !== 'draft');
-    self.data.ui = UIConfig;
-    self.data.vol = vol;
-    var compiledTemplate = _.template(TaskShowTemplate)(self.data);
-    self.$el.html(compiledTemplate);
-    self.$el.i18n();
-    $("time.timeago").timeago();
-    self.updateTaskEmail();
-    self.model.trigger('task:show:render:done');
-    if (window.location.search === '?volunteer' &&
-        !self.model.attributes.volunteer) {
-      $('#volunteer').click();
-      Backbone.history.navigate(window.location.pathname, {
-        trigger: false,
-        replace: true
-      });
-    }
-  },
-
   updateTaskEmail: function() {
     var subject = 'Take A Look At This Opportunity',
         data = {
@@ -652,37 +551,17 @@ var TaskItemView = BaseView.extend({
 
     this.$('#email').attr('href', link);
   },
+  */
 
-  initializeTags: function (self) {
-    var types = ["task-skills-required", "task-time-required", "task-people", "task-length", "task-time-estimate"];
-
-    self.tagSources = {};
-
-    var requestAllTagsByType = function (type, cb) {
-      $.ajax({
-        url: '/api/ac/tag?type=' + type + '&list',
-        type: 'GET',
-        async: false,
-        success: function (data) {
-          // Dynamically create an associative
-          // array based on that for the pointer to the list itself to be iterated through
-          // on the front-end.
-          self.tagSources[type] = data;
-          return cb();
-        }
-      });
-    }
-
-    async.each(types, requestAllTagsByType, function (err) {
-      self.model.trigger('task:tag:types', self.tagSources);
-      self.render(self);
-    });
+  cleanup: function () {
+    if (this.md)               this.md.cleanup();
+    if (this.tagView)          this.tagView.cleanup();
+    if (this.attachmentView)   this.attachmentView.cleanup();
+    if (this.taskItemView)     this.taskItemView.cleanup();
+    // if (this.commentListController) { this.commentListController.cleanup(); }
+    removeView(this);
   },
 
-  cleanup: function() {
-    removeView(this);
-  }
-  */
 });
 
 module.exports = TaskItemView;

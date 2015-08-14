@@ -190,15 +190,15 @@ var TagShowView = Backbone.View.extend({
   },
 
   initializeDisplay: function() {
-    this.$location.html(      this.tagStringFor("location")      );
-    this.$task_type.html(     this.tagStringFor("task-type")     );
-    this.$education.html(     this.tagStringFor("education")     );
-    this.$experience.html(    this.tagStringFor("experience")    );
-    this.$work_location.html( this.tagStringFor("work-location") );
-    this.$relocate.html(      this.tagStringFor("relocate")      );
-    this.$fellowship.html(    this.tagStringFor("fellowship")    );
-    this.$skills.html(        this.tagStringFor("skill")         );
-    this.$topics.html(        this.tagStringFor("topic")         );
+    this.$location.html(      this.tagStringFor("location",      "\n") );
+    this.$task_type.html(     this.tagStringFor("task-type",     ", ") );
+    this.$education.html(     this.tagStringFor("education",     ", ") );
+    this.$experience.html(    this.tagStringFor("experience",    ", ") );
+    this.$work_location.html( this.tagStringFor("work-location", ", ") );
+    this.$relocate.html(      this.tagStringFor("relocate",      ", ") );
+    this.$fellowship.html(    this.tagStringFor("fellowship",    ", ") );
+    this.$skills.html(        this.tagStringFor("skill",         ", ") );
+    this.$topics.html(        this.tagStringFor("topic",         ", ") );
   },
 
   tagsFor: function(tag_type) {
@@ -209,8 +209,8 @@ var TagShowView = Backbone.View.extend({
       return undefined;
   },
 
-  tagStringFor: function(tag_type) {
-    var str = _(this.tags).chain().where({ type : tag_type }).pluck("name").value().join(", ");
+  tagStringFor: function(tag_type, seperator) {
+    var str = _(this.tags).chain().where({ type : tag_type }).pluck("name").value().join(seperator);
     return (str.length === 0) ? "Not specified" : str;
   },
 
