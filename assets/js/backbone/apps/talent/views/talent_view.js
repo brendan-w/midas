@@ -18,7 +18,6 @@ var TalentView = Backbone.View.extend({
   render: function () {
     this.$el.html(_.template(TalentTemplate)({
     }));
-    console.log("STUFF");
     return this;
   },
 
