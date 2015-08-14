@@ -17,7 +17,7 @@
         <% _.each(vets, function(vet) { %>
 
           <li class="vet row box" data-id="<%- vet.id %>">
-            <div class="col-sm-4"><h3><a href="/profile/<%- vet.user.id %>"><%- vet.user.name %></a></h3></div>
+            <div class="col-sm-4"><h3><a href="/profile/<%- vet.user.id %>"><%- vet.user.firstname + " " + vet.user.lastname %></a></h3></div>
             <div class="col-sm-4"><%- vet.project.title %></div>
             <div class="col-sm-2"></div>            
             <div class="col-sm-1">

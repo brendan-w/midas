@@ -23,8 +23,6 @@ var VetListView = BaseView.extend({
   },
 
   render: function() {
-    console.log("render");
-
     //render the base template
     this.$el.html(_.template(VetListTemplate)({
       vets: this.collection.toJSON(),

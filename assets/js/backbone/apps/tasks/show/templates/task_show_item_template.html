@@ -60,7 +60,7 @@
           <div class="form-group">
             <% if(!edit) { %>
 
-              <% if (!_.isUndefined(model.project) && ui.project.show) { %>
+              <% if (model.projectId && ui.project.show) { %>
                 <div class="task-project">
                   <a href="/projects/<%- model.projectId %>" class="link-backbone">
                     <i class="fa fa-folder-o"></i>
