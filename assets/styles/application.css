@@ -1957,15 +1957,16 @@ ul.task-tags > li {
   border-bottom:1px solid white;
   color:white;
 }
+
 .banner-desc {
   color:white;
-  margin-top: 10px;
-  padding-bottom: 60px;
 }
+
 #grey-banner > *
 {
   margin-bottom: 30px;
 }
+
 #grey-banner p {
   color:white;
 }
