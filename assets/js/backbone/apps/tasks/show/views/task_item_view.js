@@ -99,7 +99,7 @@ var TaskItemView = BaseView.extend({
 
     // this.updateTaskEmail();
     this.initializeStateButtons();
-    // this.initializeVolunteers();
+    this.initializeVolunteers();
     this.initializeAttachment();
     this.initializeTags();
     this.initializeMD();
@@ -179,12 +179,12 @@ var TaskItemView = BaseView.extend({
   initializeMD: function() {
     if (this.md) { this.md.cleanup(); }
     this.md = new MarkdownEditor({
-      data: this.model.toJSON().bio,
+      data: this.model.get("description"),
       el: ".markdown-edit",
       id: 'description',
       placeholder: 'Job description',
       title: 'Job description',
-      rows: 4
+      rows: 4,
     }).render();
   },
 

@@ -67,6 +67,16 @@
             <% } %>
           </div>
 
+          <hr> <!-- //////////////////////////////////////////////////// -->
+
+          <div class="form-group task-show-creation">
+            <span data-i18n="Task">Opportunity</span> created <time class="timeago" datetime="<%- model.createdAt %>"><%- model.createdAt %></time>
+            <% if (model.createdAt != model.updatedAt) { %>
+            and updated <time class="timeago" datetime="<%- model.updatedAt %>"><%- model.updatedAt %></time>
+            <% } %>
+          </div>
+
+
         </div>
       </div> <!-- end main column -->
 
@@ -133,6 +143,15 @@
           </div>
 
         </div> <!-- end box -->
+
+        <div class="box box-main">
+          <div class="row">
+            <label>Files</label>
+            <div class="attachment-wrapper"></div>
+          </div>
+        </div> <!-- end box -->
+
+
 
       </div> <!-- end side bar column -->
 
@@ -230,12 +249,6 @@
                     <%= model.descriptionHtml %>
                   </div>
 
-                  <div class="task-show-creation">
-                    <span data-i18n="Task">Opportunity</span> created <time class="timeago" datetime="<%- model.createdAt %>"><%- model.createdAt %></time>
-                    <% if (model.createdAt != model.updatedAt) { %>
-                    and updated <time class="timeago" datetime="<%- model.updatedAt %>"><%- model.updatedAt %></time>
-                    <% } %>
-                  </div>
                 </div>
               </div>
             </div>
@@ -324,13 +337,6 @@
       </div>
 
       <div class="col-md-pull-8 col-sm-pull-8 col-sm-4 col-md-4 project-sidebar md-nopadding-right">
-        <!-- LEFT SIDEBAR -->
-        <div class="row">
-          <div class="col-md-12 box sm-nopadding">
-            <div class="box-main tag-wrapper">
-            </div>
-          </div>
-        </div>
 
         <!--
         <div class="row">
@@ -360,12 +366,6 @@
         </div>
         -->
 
-        <div class="row">
-          <div class="col-md-12 box task-view sm-nopadding">
-            <div class="attachment-wrapper">
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </div>
