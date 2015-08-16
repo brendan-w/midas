@@ -150,9 +150,9 @@ var Register = Backbone.View.extend({
 
   cleanup: function() {
     if(this.coreAccount) this.coreAccount.cleanup();
-    if(this.langView) this.langView.cleanup();
-    if(this.linkView) this.linkView.cleanup();
-    if(this.modal) this.modal.cleanup();
+    if(this.langView)    this.langView.cleanup();
+    if(this.linkView)    this.linkView.cleanup();
+    if(this.modal)       this.modal.cleanup();
     removeView(this);
   }
 

@@ -22,8 +22,8 @@ module.exports = [
     { type: "task-type", name: "Quick turnover" },
     { type: "task-type", name: "Volunteer/Pro bono" },
 
-    { type: "work-location", name: "Onsite" },
-    { type: "work-location", name: "Remote" },
+    { type: "remote", name: "Yes" },
+    { type: "remote", name: "No" },
 
     { type: "relocate", name: "Yes" },
     { type: "relocate", name: "No" },

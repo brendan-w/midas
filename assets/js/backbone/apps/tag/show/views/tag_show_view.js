@@ -55,7 +55,7 @@ var TagShowView = Backbone.View.extend({
     this.$task_type     = this.$("#tag_task_type");
     this.$education     = this.$("#tag_education");
     this.$experience    = this.$("#tag_experience");
-    this.$work_location = this.$("#tag_work_location");
+    this.$remote        = this.$("#tag_remote");
     this.$relocate      = this.$("#tag_relocate");
     this.$fellowship    = this.$("#tag_fellowship");
     this.$skills        = this.$("#tag_skills");
@@ -121,17 +121,17 @@ var TagShowView = Backbone.View.extend({
       });
     });
 
-    this.tagFactory.fetchAllTagsOfType("work-location", function(tags) {
+    this.tagFactory.fetchAllTagsOfType("remote", function(tags) {
       self.tagFactory.createTagDropDown({
-        type:        "work-location",
-        selector:    self.$work_location,
+        type:        "remote",
+        selector:    self.$remote,
         placeholder: "Select a work location preference",
         multiple:    false,
         allowCreate: false,
         searchable:  false,
         fillWith:    tags,
         width:       "250px",
-        data:        self.tagsFor("work-location"),
+        data:        self.tagsFor("remote"),
       });
     });
 
@@ -190,15 +190,15 @@ var TagShowView = Backbone.View.extend({
   },
 
   initializeDisplay: function() {
-    this.$location.html(      this.tagStringFor("location",      "<br>") );
-    this.$task_type.html(     this.tagStringFor("task-type",     ", ") );
-    this.$education.html(     this.tagStringFor("education",     ", ") );
-    this.$experience.html(    this.tagStringFor("experience",    ", ") );
-    this.$work_location.html( this.tagStringFor("work-location", ", ") );
-    this.$relocate.html(      this.tagStringFor("relocate",      ", ") );
-    this.$fellowship.html(    this.tagStringFor("fellowship",    ", ") );
-    this.$skills.html(        this.tagStringFor("skill",         ", ") );
-    this.$topics.html(        this.tagStringFor("topic",         ", ") );
+    this.$location.html(   this.tagStringFor("location",   "<br>") );
+    this.$task_type.html(  this.tagStringFor("task-type",  ", ") );
+    this.$education.html(  this.tagStringFor("education",  ", ") );
+    this.$experience.html( this.tagStringFor("experience", ", ") );
+    this.$remote.html(     this.tagStringFor("remote",     ", ") );
+    this.$relocate.html(   this.tagStringFor("relocate",   ", ") );
+    this.$fellowship.html( this.tagStringFor("fellowship", ", ") );
+    this.$skills.html(     this.tagStringFor("skill",      ", ") );
+    this.$topics.html(     this.tagStringFor("topic",      ", ") );
   },
 
   tagsFor: function(tag_type) {
@@ -220,7 +220,7 @@ var TagShowView = Backbone.View.extend({
       this.$task_type,
       this.$education,
       this.$experience,
-      this.$work_location,
+      this.$remote,
       this.$relocate,
       this.$fellowship,
       this.$skills,
