@@ -7,19 +7,19 @@ var TimeAgo = require('../../../../vendor/jquery.timeago');
 var Backbone = require('backbone');
 var utils = require('../../../mixins/utilities');
 var async = require('async');
-var Popovers = require('../../../mixins/popovers');
+// var Popovers = require('../../../mixins/popovers');
 var AITemplate = require('../templates/attachment_item_template.html');
 var ASTemplate = require('../templates/attachment_show_template.html');
 
 
-var popovers = new Popovers();
+// var popovers = new Popovers();
 
 var AttachmentShowView = Backbone.View.extend({
 
   events: {
     'click .file-delete'                : 'deleteAttachment',
-    "mouseenter .project-people-div"    : popovers.popoverPeopleOn,
-    "click .project-people-div"         : popovers.popoverClick,
+    // "mouseenter .project-people-div"    : popovers.popoverPeopleOn,
+    // "click .project-people-div"         : popovers.popoverClick,
   },
 
   initialize: function (options) {
@@ -42,7 +42,7 @@ var AttachmentShowView = Backbone.View.extend({
         $(".attachment-tbody").append(template);
       });
       $("time.timeago").timeago();
-      popovers.popoverPeopleInit(".project-people-div");
+      // popovers.popoverPeopleInit(".project-people-div");
     });
   },
 
@@ -79,7 +79,7 @@ var AttachmentShowView = Backbone.View.extend({
         var aData = {
           fileId: result[0].id
         };
-        aData[self.options.target + 'Id'] = self.options.id;
+        aData[self.target + 'Id'] = self.id;
         $.ajax({
           url: '/api/attachment',
           type: 'POST',
@@ -154,7 +154,7 @@ var AttachmentShowView = Backbone.View.extend({
     // put new at the top of the list rather than the bottom
     $(".attachment-tbody").prepend(templ);
     $("time.timeago").timeago();
-    popovers.popoverPeopleInit(".project-people-div");
+    // popovers.popoverPeopleInit(".project-people-div");
   },
 
   deleteAttachment: function (e) {

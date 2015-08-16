@@ -226,7 +226,7 @@ var TaskItemView = BaseView.extend({
       id: 'description',
       placeholder: 'Job description',
       title: 'Job description',
-      rows: 4,
+      rows: 12,
     }).render();
   },
 

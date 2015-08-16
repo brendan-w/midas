@@ -170,7 +170,7 @@ module.exports.policies = {
     'findAllByProjectId': [                             'hasIdParam', 'project'],
     'findAllByTaskId':    [                             'hasIdParam', 'task'],
     'findAllByUserId':    ['passport', 'authenticated', 'hasIdParam'],
-    'create':             ['passport', 'authenticated', 'addUserId', 'attachment'],
+    'create':             ['passport', 'authenticated', 'attachment'],
     'update':             false,
     'destroy':            ['passport', 'authenticated']
   },
