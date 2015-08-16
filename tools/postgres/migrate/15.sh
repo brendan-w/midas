@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Add a column for the application deadline
+psql -U $POSTGRESQL_USERNAME -d $POSTGRESQL_DATABASE -c "ALTER TABLE task ADD COLUMN \"applyBy\" timestamp with time zone;"
+
 # Add a column for the start time
 psql -U $POSTGRESQL_USERNAME -d $POSTGRESQL_DATABASE -c "ALTER TABLE task ADD COLUMN \"startedBy\" timestamp with time zone;"
 

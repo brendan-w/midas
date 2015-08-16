@@ -913,6 +913,7 @@ CREATE TABLE task (
     "projectId" integer,
     title text,
     description text,
+    "applyBy" timestamp with time zone,
     "startedBy" timestamp with time zone,
     "completedBy" timestamp with time zone,
     "publishedAt" timestamp with time zone,

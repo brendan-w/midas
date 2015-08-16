@@ -128,6 +128,18 @@
       <div class="col-sm-4 padding-right-none">
 
         <div class="box box-main">
+          <h3>Deadline to Apply</h3>
+          <% if(!edit) { %>
+            <div>
+              <!-- convert the ISO date code into a more human readable format -->
+              <% if (model.applyBy) { %><%- (new Date(model.applyBy)).toDateString() %><% } else { %>Not specified<% } %>
+            </div>
+          <% } else { %>
+            <input id="applyBy" class="form-control timepicker" type="text" placeholder="Click to select a deadline">
+          <% } %>
+        </div>
+
+        <div class="box box-main">
 
           <div class="form-group task-location">
             <label for="tag_location">Location</label>
@@ -200,169 +212,6 @@
 
       </div> <!-- end side bar column -->
 
-    </div>
-  </div>
-</section>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- ================================= The old code ================================= -->
-
-
-
-
-<section>
-  <div class="container">  
-    <div class="row">
-
-      <div class="col-md-push-4 col-sm-push-4 col-sm-8 col-md-8 md-nopadding-right">
-        <div class="row">
-
-          <div class="col-md-3 padding-left-none sm-nopadding md-nopadding">
-            <div class="box padding-none">
-
-              <div class="navbar-side border-bottom">
-                <div id="modal-copy"></div>
-                <ul class="nav nav-pills nav-stacked">
-                  <li>
-                    <a href="#" id="email"><i class="fa fa-envelope-o"></i> <span class="box-icon-text">Share</span></a>
-                  </li>
-                  <% if (user) { %>
-                  <li class="li-task-copy">
-                    <a href="#" id="task-copy"><i class="fa fa-files-o"></i><span class="box-icon-text">Copy Opportunity</span></a>
-                  </li>
-                  <% } %>
-                </ul>
-              </div>
-              <% if (model.isOwner || (user && user.permissions.admin)) { %>
-              <div class="navbar-side <% if (user) { %>border-bottom<% } %>">
-                <div id="modal-close"></div>
-                <ul class="nav nav-pills nav-stacked">
-                  <!--
-                  <% if (!draftAdminOnly || model.state !== 'draft' || (user && user.permissions.admin)) { %>
-                  <li id="li-task-close" style="<% if (model.state == 'closed') { %>display: none;<% } %>">
-                    <a href="#" id="task-close"><i class="fa fa-times-circle"></i> <span class="box-icon-text">Change <span data-i18n="Task">Opportunity</span> State</span></a>
-                  </li>
-                  <% } else {%>
-                    <li><span class="no-link">This draft <span data-i18n="task">opportunity</span> is awaiting approval from an administrator.</span></li>
-                  <% } %>
-                  -->
-                  <li id="li-task-reopen" style="<% if (model.state != 'closed') { %>display: none;<% } %>">
-                    <a href="#" id="task-reopen"><i class="fa fa-share"></i> <span class="box-icon-text">Reopen</span></a>
-                  </li>
-                  <!--
-                  <li>
-                    <a href="#" id="task-delete"><i class="fa fa-trash-o"></i> <span class="box-icon-text">Delete <span data-i18n="Task">Opportunity</span></span></a>
-                  </li>
-                  -->
-                </ul>
-              </div>
-              <% } %>
-              <div class="navbar-side border-bottom" <% if (!vol) {%>style="display: none;"<%}%>>
-                <div id="modal-volunteer"></div>
-                <ul class="nav nav-pills nav-stacked">
-                  <li class="volunteer-true" style="display: none;">
-                    <a href="#" id="volunteered" class="btn btn-c1"><i class="fa fa-thumbs-up"></i> <span class="box-icon-text" data-i18n="taskPage.volunteeredButton">Participated</span></a>
-
-                  </li>
-                  <li class="volunteer-false">
-                    <a href="#" id="volunteer" class="btn btn-c2"><i class="fa fa-thumbs-o-up"></i> <span class="box-icon-text" data-i18n="taskPage.volunteerButton">Participate</span></a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-      <!--
-      <div class="col-md-pull-8 col-sm-pull-8 col-sm-4 col-md-4 project-sidebar md-nopadding-right">
-
-        <div class="row">
-          <div class="col-md-12 box sm-nopadding">
-            <div class="box task-both">
-              <div class="box-pad-lr border-bottom">
-                <h3>Requestor and Participants</h3>
-              </div>
-              <div class="box-main" id="task-volunteers">
-                <div class="project-people-show-div" data-userid="<%- model.userId %>">
-                  <img src="/api/user/photo/<%- model.userId %>" alt="<%- model.owner.name %>"/>
-                  <label class="project-people-show-label"><%- model.owner.name %></label>
-                </div>
-                <div class="project-people-space">
-                  <div class="bar">
-                  </div>
-                </div>
-                <% _.each(model.volunteers, function (v) { %>
-                <div class="project-people-show-div" data-userid="<%- v.userId %>" data-voluserid="<%- v.userId %>">
-                  <img src="/api/user/photo/<%- v.userId %>" alt="<%- v.name %>"/>
-                  <label class="project-people-show-label"><%- v.name %></label>
-                </div>
-                <% }); %>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-      -->
     </div>
   </div>
 </section>

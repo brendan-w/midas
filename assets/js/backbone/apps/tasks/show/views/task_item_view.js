@@ -137,6 +137,10 @@ var TaskItemView = BaseView.extend({
     projectCollection.fetch(); //will trigger the "sync" above
 
     //load time data
+    this.$('#applyBy').datetimepicker({
+      defaultDate: this.model.get("applyBy"),
+    });
+
     this.$('#startedBy').datetimepicker({
       defaultDate: this.model.get("startedBy"),
     });
@@ -245,6 +249,7 @@ var TaskItemView = BaseView.extend({
       description: this.$("#task-description textarea").val(),
       tags:        this.tagView.data(),
       projectId:   project ? project.get("id") : null,
+      applyBy:     this.$("#applyBy").val()     || undefined,
       startedBy:   this.$("#startedBy").val()   || undefined,
       completedBy: this.$("#completedBy").val() || undefined,
     });

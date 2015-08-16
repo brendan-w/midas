@@ -21,8 +21,14 @@ module.exports = {
     title: 'STRING',
     // description of the task
     description: 'STRING',
+
+    // application deadline
+    applyBy: 'datetime',
+    // start time
     startedBy: 'datetime',
+    // end time
     completedBy: 'datetime',
+
 
     publishedAt: 'datetime',
     assignedAt: 'datetime',
