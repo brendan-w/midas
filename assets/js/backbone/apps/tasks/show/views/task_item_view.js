@@ -38,8 +38,8 @@ var TaskItemView = BaseView.extend({
     'change .validate'                    : 'v',
     'keyup .validate'                     : 'v',
     'click #task-save'                    : 'submit',
-    "click #task-close"                   : "stateChange",
-    "click #task-reopen"                  : "stateReopen",
+    "click #task-close"                   : "close",
+    "click #task-reopen"                  : "reopen",
     "click .link-backbone"                : linkBackbone,
     // 'click #task-view'                    : 'view',
     // "click #like-button"                  : 'like',
@@ -262,7 +262,6 @@ var TaskItemView = BaseView.extend({
     });
   },
 
-
   volunteer: function (e) {
     if (e.preventDefault) e.preventDefault();
     if (!window.cache.currentUser) {
@@ -402,10 +401,11 @@ var TaskItemView = BaseView.extend({
     }
   },
 
-  stateChange: function (e) {
+  close: function (e) {
     if (e.preventDefault) e.preventDefault();
     var self = this;
 
+    /*
     if (this.modalAlert) { this.modalAlert.cleanup(); }
     if (this.modalComponent) { this.modalComponent.cleanup(); }
     var states = UIConfig.states;
@@ -433,9 +433,10 @@ var TaskItemView = BaseView.extend({
         self.model.trigger("task:update:state", $('input[name=opportunityState]:checked').val());
       }
     }).render();
+    */
   },
 
-  stateReopen: function (e) {
+  reopen: function (e) {
     if (e.preventDefault) e.preventDefault();
     this.model.trigger("task:update:state", 'open');
   },

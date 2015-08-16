@@ -33,6 +33,11 @@ module.exports.policies = {
     '*': ['passport', 'authenticated', 'admin']
   },
 
+  ApplicationController: {
+    '*':        false,
+    'create':   ['passport', 'authenticated', 'hasIdParam'],
+  },
+
   // Auth controller can be accessed by anyone
   AuthController : {
     '*': true,
@@ -182,9 +187,10 @@ module.exports.policies = {
     'findAllPending': ['passport', 'authenticated', 'canVet'],
   },
 
+  //not used
   VolunteerController : {
     '*': false,
-    'create':  ['passport', 'authenticated', 'addUserId'],
-    'destroy': ['passport', 'authenticated', 'hasIdParam', 'volunteer', 'ownerOrAdmin'],
+    // 'create':  ['passport', 'authenticated', 'addUserId'],
+    // 'destroy': ['passport', 'authenticated', 'hasIdParam', 'volunteer', 'ownerOrAdmin'],
   },
 };

@@ -371,6 +371,14 @@ module.exports = {
 
   },
 
+
+  //tests whether a user has filled out the correct fields to begin applying for jobs (tasks)
+  canApply: function(req, res) {
+    //TODO: implement me
+    return res.send(200);
+  },
+
+
   export: function (req, resp) {
     User.find().populate('tags').exec(function (err, users) {
 
