@@ -144,12 +144,28 @@
             <div id="tag_remote"></div>
           </div>
 
-
-          <div class="form-group task-language">
-            <% if(edit) { %>
-              <label>Languages</label>
+          <div class="form-group task-startedby">
+            <label for="startedBy">Start Date</label>
+            <% if(!edit) { %>
+              <div>
+                <!-- convert the ISO date code into a more human readable format -->
+                <% if (model.startedBy) { %><%- (new Date(model.startedBy)).toDateString() %><% } else { %>Not specified<% } %>
+              </div>
+            <% } else { %>
+              <input id="startedBy" class="form-control timepicker" type="text" placeholder="Click to select a start date">
             <% } %>
-            <div class="lang-wrapper"></div> <!-- populated by language_view.js -->
+          </div>
+
+          <div class="form-group task-completedby">
+            <label for="completedBy">End Date</label>
+            <% if(!edit) { %>
+              <div>
+                <!-- convert the ISO date code into a more human readable format -->
+                <% if (model.completedBy) { %><%- (new Date(model.completedBy)).toDateString() %><% } else { %>Not specified<% } %>
+              </div>
+            <% } else { %>
+              <input id="completedBy" class="form-control timepicker" type="text" placeholder="Click to select an end date">
+            <% } %>
           </div>
 
         </div> <!-- end box -->

@@ -38,17 +38,16 @@ var TaskItemView = BaseView.extend({
     'change .validate'                    : 'v',
     'keyup .validate'                     : 'v',
     'click #task-save'                    : 'submit',
-    // 'click #task-view'                    : 'view',
-    // "click #like-button"                  : 'like',
-    'click #volunteer'                    : 'volunteer',
-    'click #volunteered'                  : 'volunteered',
     "click #task-close"                   : "stateChange",
     "click #task-reopen"                  : "stateReopen",
+    "click .link-backbone"                : linkBackbone,
+    // 'click #task-view'                    : 'view',
+    // "click #like-button"                  : 'like',
+    // 'click #volunteer'                    : 'volunteer',
+    // 'click #volunteered'                  : 'volunteered',
     // "click #task-copy"                    : "copy",
     // "click .delete-volunteer"             : 'removeVolunteer',
-    "click .link-backbone"                : linkBackbone,
   },
-
 
   initialize: function (options) {
     var self = this;
@@ -59,8 +58,6 @@ var TaskItemView = BaseView.extend({
 
     this.tagFactory = new TagFactory();
   },
-
-
 
   render: function() {
 
@@ -139,6 +136,14 @@ var TaskItemView = BaseView.extend({
     });
     projectCollection.fetch(); //will trigger the "sync" above
 
+    //load time data
+    this.$('#startedBy').datetimepicker({
+      defaultDate: this.model.get("startedBy"),
+    });
+
+    this.$('#completedBy').datetimepicker({
+      defaultDate: this.model.get("completedBy"),
+    });
 
   },
 
@@ -240,6 +245,8 @@ var TaskItemView = BaseView.extend({
       description: this.$("#task-description textarea").val(),
       tags:        this.tagView.data(),
       projectId:   project ? project.get("id") : null,
+      startedBy:   this.$("#startedBy").val()   || undefined,
+      completedBy: this.$("#completedBy").val() || undefined,
     });
 
     this.$("#task-save").attr("disabled", "disabled");
