@@ -130,10 +130,10 @@
         <div class="box box-main">
           <h3>Deadline to Apply</h3>
           <% if(!edit) { %>
-            <div>
+            <h4>
               <!-- convert the ISO date code into a more human readable format -->
               <% if (model.applyBy) { %><%- (new Date(model.applyBy)).toDateString() %><% } else { %>Not specified<% } %>
-            </div>
+            </h4>
           <% } else { %>
             <input id="applyBy" class="form-control timepicker" type="text" placeholder="Click to select a deadline">
           <% } %>
