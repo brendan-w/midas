@@ -10,7 +10,8 @@ module.exports = {
     // Current state of the task
     state: {
         type: 'STRING',
-        defaultsTo: sails.config.taskState || 'open'
+        enum: ['open','public','assigned', 'closed','archived','completed'],
+        defaultsTo: sails.config.taskState || 'open',
     },
     // user id of the task owner
     userId: 'INTEGER',
@@ -20,6 +21,7 @@ module.exports = {
     title: 'STRING',
     // description of the task
     description: 'STRING',
+    startedBy: 'datetime',
     completedBy: 'datetime',
 
     publishedAt: 'datetime',
