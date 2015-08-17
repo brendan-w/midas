@@ -375,11 +375,11 @@ var TaskItemView = BaseView.extend({
   */
 
   cleanup: function () {
-    if (this.md)             this.md.cleanup();
-    if (this.tagView)        this.tagView.cleanup();
-    if (this.attachmentView) this.attachmentView.cleanup();
-    if (this.taskItemView)   this.taskItemView.cleanup();
-    if(this.applyModal)      this.applyModal.cleanup();
+    if(this.md)             this.md.cleanup();
+    if(this.tagView)        this.tagView.cleanup();
+    if(this.attachmentView) this.attachmentView.cleanup();
+    if(this.taskItemView)   this.taskItemView.cleanup();
+    if(this.applyModal)     this.applyModal.cleanup();
     // if (this.commentListController) { this.commentListController.cleanup(); }
     removeView(this);
   },

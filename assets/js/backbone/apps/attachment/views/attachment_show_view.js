@@ -1,8 +1,6 @@
 
 var Bootstrap = require('bootstrap');
 var _ = require('underscore');
-var jqIframe = require('blueimp-file-upload/js/jquery.iframe-transport');
-var jqFU = require('blueimp-file-upload/js/jquery.fileupload.js');
 var TimeAgo = require('../../../../vendor/jquery.timeago');
 var Backbone = require('backbone');
 var utils = require('../../../mixins/utilities');
@@ -12,14 +10,11 @@ var AITemplate = require('../templates/attachment_item_template.html');
 var ASTemplate = require('../templates/attachment_show_template.html');
 
 
-// var popovers = new Popovers();
 
 var AttachmentShowView = Backbone.View.extend({
 
   events: {
-    'click .file-delete'                : 'deleteAttachment',
-    // "mouseenter .project-people-div"    : popovers.popoverPeopleOn,
-    // "click .project-people-div"         : popovers.popoverClick,
+    'click .file-delete' : 'deleteAttachment',
   },
 
   initialize: function (options) {
@@ -27,28 +22,35 @@ var AttachmentShowView = Backbone.View.extend({
     this.id      = options.id;
     this.target  = options.target;
     this.edit    = (this.options.action == 'edit');
+    this.files   = [];
   },
 
   initializeFiles: function () {
     var self = this;
+
     $.ajax({
       url: '/api/attachment/findAllBy' + this.target + 'Id/' + this.id
     }).done(function (data) {
+
       if (data && (data.length > 0)) {
-        $(".attachment-none").hide();
+        self.$(".attachment-none").hide();
       }
-      _.each(data, function (f) {
-        var template = self.renderAttachment(f);
-        $(".attachment-tbody").append(template);
+
+      _.each(data, function (attachment) {
+        self.$(".attachment-tbody").append(self.renderFile(attachment.file, attachment.id));
       });
+
       $("time.timeago").timeago();
-      // popovers.popoverPeopleInit(".project-people-div");
     });
   },
 
 
   initializeFileUpload: function () {
     var self = this;
+
+    //TODO, move this event listener to the child view that request it
+    this.listenTo(this, "file:upload:success", this.attach);
+
 
     $('#attachment-fileupload').fileupload({
       url: "/api/file/create",
@@ -60,44 +62,33 @@ var AttachmentShowView = Backbone.View.extend({
       },
       progressall: function (e, data) {
         var progress = parseInt(data.loaded / data.total * 100, 10);
-        self.$('.attachment-fileupload .progress-bar').css(
-          'width',
-          progress + '%'
-        );
+        self.$('.attachment-fileupload .progress-bar').css('width', progress + '%');
       },
       done: function (e, data) {
-        // for IE8/9 that use iframe
-        if (data.dataType == 'iframe text') {
-          var result = JSON.parse(data.result);
-        }
-        // for modern XHR browsers
-        else {
-          var result = JSON.parse($(data.result).text());
-        }
+        if (data.dataType == 'iframe text')
+          var result = JSON.parse(data.result); // for IE8/9 that use iframe
+        else
+          var result = JSON.parse($(data.result).text()); // for modern XHR browsers
 
-        // store id in the database with the file
-        var aData = {
-          fileId: result[0].id
-        };
-        aData[self.target + 'Id'] = self.id;
-        $.ajax({
-          url: '/api/attachment',
-          type: 'POST',
-          data: JSON.stringify(aData),
-          dataType: 'json',
-          contentType: 'application/json'
-        }).done(function (attachment) {
-          self.$('.attachment-fileupload > .progress').hide();
-          self.renderNewAttachment(result[0], attachment);
-        });
+        //save the file object
+        var file = result[0];
+        self.files.push(file);
+
+        self.$('.attachment-fileupload > .progress').hide();
+        self.renderNewFile(file);
+
+        //broadcast an event
+        self.trigger("file:upload:success", file);
       },
       fail: function (e, data) {
+        self.$('.attachment-fileupload > .progress').hide();
+
         // notify the user that the upload failed
         var message = data.errorThrown;
-        self.$('.attachment-fileupload > .progress').hide();
         if (data.jqXHR.status == 413) {
           message = "The uploaded file exceeds the maximum file size.";
         }
+
         self.$(".file-upload-alert > span").html(message)
         self.$(".file-upload-alert").show();
       }
@@ -136,39 +127,62 @@ var AttachmentShowView = Backbone.View.extend({
     return this;
   },
 
-  renderAttachment: function (attachment) {
-    var data = {
-      a: attachment,
-      target: this.target,
-      user: window.cache.currentUser,
-      owner: this.options.owner
-    };
-    var templ = _.template(AITemplate)(data);
-    return templ;
+  renderFile: function (file, attach_id) {
+    return _.template(AITemplate)({
+      file:      file,
+      attach_id: attach_id,
+      target:    this.target,
+      user:      window.cache.currentUser,
+      owner:     this.options.owner,
+    });
   },
 
-  renderNewAttachment: function (file, attachment) {
-    attachment.file = file;
-    var templ = this.renderAttachment(attachment);
+  attach: function(file) {
+    //create an attachment relationship with the given file (already uploaded)
+    //or, the most recently uploaded file
+    file = file || this.files[this.files.length - 1];
+
+    //find this file's row in the table
+    var $file = this.$("tr[data-id='" + file.id + "']");
+    $file.find(".file-tag-waiting").show();
+
+    // store id in the database with the file
+    var data = { fileId: file.id };
+    data[this.target + 'Id'] = this.id;
+
+    $.ajax({
+      url:         '/api/attachment',
+      type:        'POST',
+      dataType:    'json',
+      contentType: 'application/json',
+      data:        JSON.stringify(data),
+    }).done(function (attachment) {
+      $file.find(".file-tag-waiting").hide();
+      $file.find(".file-delete").show();
+      $file.data("attach-id", attachment.id);
+    });
+  },
+
+  renderNewFile: function (file) {
     $(".attachment-none").hide();
     // put new at the top of the list rather than the bottom
-    $(".attachment-tbody").prepend(templ);
+    $(".attachment-tbody").prepend(this.renderFile(file));
     $("time.timeago").timeago();
-    // popovers.popoverPeopleInit(".project-people-div");
   },
 
   deleteAttachment: function (e) {
-    if (e.preventDefault) { e.preventDefault(); }
+    if(e.preventDefault) e.preventDefault();
+
+    var attach_id = $(e.currentTarget).closest("tr").data('attach-id');
+
     $.ajax({
-      url: '/api/attachment/' + $(e.currentTarget).data('id'),
+      url: '/api/attachment/' + attach_id,
       type: 'DELETE',
       success: function (d) {
         // remove from the DOM
-        var len = $($(e.currentTarget).parents('tbody')[0]).children().length;
-        $(e.currentTarget).parents('tr')[0].remove();
-        if (len == 2) {
-          $(".attachment-none").show();
-        }
+        $(e.currentTarget).closest('tr').remove();
+        var len = $(e.currentTarget).parents('tbody').eq(0).children().length;
+        if(len == 2) $(".attachment-none").show();
       }
     });
   },

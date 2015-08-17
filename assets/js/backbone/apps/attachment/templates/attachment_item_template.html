@@ -1,22 +1,17 @@
-<tr>
+
+<tr data-id="<%- file.id %>" data-attach-id="<% if(attach_id) { %><%-attach_id %><% } %>">
   <td>
+    <span class="file-tag-waiting fa fa-spinner fa-spin" style="display:none"></span>
     <span class="file-tag c3-bg white">file</span>
   </td>
   <td class="attachment-name">
-    <a href="/api/file/get/<%- a.file.id %>" class="file-link" data-id="<%- a.file.id %>" download="<%- a.file.name %>">
-      <%- a.file.name %>
+    <a href="/api/file/get/<%- file.id %>" class="file-link" data-id="<%- file.id %>" download="<%- file.name %>">
+      <%- file.name %>
       <% if ((user && user.isAdmin) || owner) { %>
-      <a href="#" class="file-delete" data-id="<%- a.id %>"><i class="fa fa-remove"></i></a>
+        <a href="#" class="file-delete" <% if(!attach_id) { %>style="display:none"<% } %>><i class="fa fa-remove"></i></a>
       <% } %>
       <br/>
-      <time class="timeago" datetime="<%- a.createdAt %>"><%- a.createdAt %></time>
+      <time class="timeago" datetime="<%- file.createdAt %>"><%- file.createdAt %></time>
     </a>
   </td>
-  <!--
-    <td class="file-person">
-      <div class="project-people-div" data-userid="<%- a.userId %>">
-        <img src="/api/user/photo/<%- a.userId %>" class="project-people" />
-      </div>
-    </td>
-  -->
 </tr>

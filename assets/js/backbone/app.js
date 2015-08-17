@@ -21,6 +21,9 @@ i18n = require('i18next-client/i18next.commonjs.withJQuery');
 moment = require('moment');
 require('bootstrap-datetimepicker/src/js/bootstrap-datetimepicker');
 require('timepicker/jquery.timepicker');
+require('blueimp-file-upload/js/jquery.iframe-transport');
+require('blueimp-file-upload/js/jquery.fileupload.js');
+
 
 // Set markdown defaults
 var marked = require('marked');
