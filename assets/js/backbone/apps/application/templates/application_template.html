@@ -1,7 +1,33 @@
-<form name="">
-  <section name="Apply for this job">
 
-    <h1>apply</h1>
+<style>
+  form[name="apply"] section
+  {
+    padding-top: 40px;
+    padding-bottom: 160px;
+  }
 
+  form[name="apply"] h4    { display:inline; }
+  form[name="apply"] input { display:inline; width:auto; }
+</style>
+
+
+<form name="apply">
+
+  <section name="Daily Rate">
+    <div class="form-group">
+      <label>Daily Rate</label>
+      <p>Please provide us your daily rate for this job in USD currency.</p>
+      <h4>$&nbsp;</h4><input class="form-control" type="number" pattern="^\d+(\.|\,)\d{2}$" value="0.00">
+    </div>
   </section>
+
+  <section name="P-11 Form">
+    <div class="form-group">
+      <label>Upload P-11 form</label>
+      <p>
+        Please fill out and upload the P-11 form provided on the job post. If a P-11 form is not available through the job post, you can find one on the <a href="/faq" class="linkBackbone">FAQ</a> page.
+      </p>
+    </div>
+  </section>
+
 </form>

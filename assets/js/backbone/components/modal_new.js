@@ -65,7 +65,6 @@ ModalView = BaseView.extend({
     //default callbacks
     this.on_next_cb   = function() { return true; };
     this.on_prev_cb   = function() { return true; };
-    this.on_submit_cb = function() {};
 
     //global enter key listener
     $(window).keypress(function(e) {
@@ -122,7 +121,7 @@ ModalView = BaseView.extend({
     this.$steps_list.empty(); //remove any step markers from before
 
     //if there are multiple pages, load them as steps in the header
-    if(this.num_pages > 2)
+    if(this.num_pages > 1)
     {
       this.$steps_list.show();
       this.$title.hide();
@@ -173,7 +172,7 @@ ModalView = BaseView.extend({
 
   updateButtons: function() {
     //if multiple pages
-    if(this.num_pages > 2)
+    if(this.num_pages > 1)
     {
       var is_first_page = (this.current_page === 0);
       var is_last_page = (this.current_page === this.num_pages - 1);

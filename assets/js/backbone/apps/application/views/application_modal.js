@@ -10,6 +10,7 @@ var FinishProfileTemplate = require('../templates/finish_profile_template.html')
 var ApplicationModal = Backbone.View.extend({
 
   events: {
+    'click .link-backbone' : linkBackbone,
   },
 
 
