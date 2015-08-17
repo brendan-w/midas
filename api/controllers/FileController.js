@@ -61,7 +61,8 @@ module.exports = {
           mimeType: upload.type || upload.headers['content-type'],
           fd: upload.fd.split('/').pop(),
           size: fdata.length,
-          data: fdata
+          data: fdata,
+          isPrivate: req.param('private')
         };
         // if the type of the file should be a square image
         // resize the image before storing it.
