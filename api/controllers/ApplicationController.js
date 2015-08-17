@@ -8,6 +8,8 @@
 module.exports = {
 
   create: function (req, res) {
+    console.log("CREATE APPLICATION");
+    res.send(200);
     /*
     var v = _.extend(req.body || {}, req.params);
     Apply.findOrCreate(v, v, function(err, newV) {

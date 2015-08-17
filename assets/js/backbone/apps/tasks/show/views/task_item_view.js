@@ -12,6 +12,7 @@ var ProjectCollection = require('../../../../entities/projects/projects_collecti
 // var CommentListController = require('../../../comments/list/controllers/comment_list_controller');
 // var VolunteerSupervisorNotifyTemplate = require('../templates/volunteer_supervisor_notify_template.html');
 // var      TaskEditFormView = require('../../edit/views/task_edit_form_view');
+var            ApplyModal = require('../../../application/views/application_modal');
 var        AttachmentView = require('../../../attachment/views/attachment_show_view');
 var               TagView = require('../../../tag/show/views/tag_show_view');
 var            TagFactory = require('../../../../components/tag_factory');
@@ -37,16 +38,17 @@ var TaskItemView = BaseView.extend({
   events: {
     'change .validate'                    : 'v',
     'keyup .validate'                     : 'v',
+    'click #task-apply'                   : 'apply',
     'click #task-save'                    : 'submit',
-    "click #task-close"                   : "close",
-    "click #task-reopen"                  : "reopen",
-    "click .link-backbone"                : linkBackbone,
+    'click #task-close'                   : 'close',
+    'click #task-reopen'                  : 'reopen',
+    'click .link-backbone'                : linkBackbone,
     // 'click #task-view'                    : 'view',
-    // "click #like-button"                  : 'like',
+    // 'click #like-button'                  : 'like',
     // 'click #volunteer'                    : 'volunteer',
     // 'click #volunteered'                  : 'volunteered',
-    // "click #task-copy"                    : "copy",
-    // "click .delete-volunteer"             : 'removeVolunteer',
+    // 'click #task-copy'                    : 'copy',
+    // 'click .delete-volunteer'             : 'removeVolunteer',
   },
 
   initialize: function (options) {
@@ -262,143 +264,13 @@ var TaskItemView = BaseView.extend({
     });
   },
 
-  volunteer: function (e) {
+  apply: function(e) {
     if (e.preventDefault) e.preventDefault();
-    if (!window.cache.currentUser) {
-      Backbone.history.navigate(window.location.pathname + '?volunteer', {
-        trigger: false,
-        replace: true
-      });
-      window.cache.userEvents.trigger("user:request:login");
-    } else {
-      var self = this;
-      var child = $(e.currentTarget).children("#like-button-icon");
-      var originalEvent = e;
 
-      if (this.modalAlert) { this.modalAlert.cleanup(); }
-      if (this.modalComponent) { this.modalComponent.cleanup(); }
-
-      // If user's profile has no name, ask them to enter one
-      if (!window.cache.currentUser.name) {
-        var modalContent = _.template(UpdateNameTemplate)({});
-        this.modalComponent = new ModalComponent({
-          el: "#modal-volunteer",
-          id: "update-name",
-          modalTitle: "What's your name?"
-        }).render();
-        this.modalAlert = new ModalAlert({
-          el: "#update-name .modal-template",
-          modalDiv: '#update-name',
-          content: modalContent,
-          validateBeforeSubmit: true,
-          cancel: i18n.t('volunteerModal.cancel'),
-          submit: i18n.t('volunteerModal.ok'),
-          callback: function(e) {
-            var name = $('#update-name-field').val();
-            $.ajax({
-              url: '/api/user/' + window.cache.currentUser.id,
-              method: 'PUT',
-              data: { name: name }
-            }).done(function(user) {
-              window.cache.currentUser.name = user.name;
-              self.volunteer(originalEvent);
-            });
-          }
-        }).render();
-        return;
-      }
-
-      this.modalComponent = new ModalComponent({
-        el: "#modal-volunteer",
-        id: "check-volunteer",
-        modalTitle: i18n.t("volunteerModal.title")
-      }).render();
-
-      // if ( UIConfig.supervisorEmail.useSupervisorEmail ) {
-      //   //not assigning as null because null injected into the modalContent var shows as a literal value
-      //   //    when what we want is nothing if value is null
-      //   var supervisorEmail = ( window.cache.currentUser.supervisorEmail ) ? window.cache.currentUser.supervisorEmail.value  : "";
-      //   var supervisorName = ( window.cache.currentUser.supervisorName ) ? window.cache.currentUser.supervisorName.value : "";
-      //   var validateBeforeSubmit = true;
-      //   var modalContent = _.template(VolunteerSupervisorNotifyTemplate)({supervisorEmail: supervisorEmail,supervisorName: supervisorName});
-      // } else {
-        validateBeforeSubmit = false;
-        var modalContent = _.template(VolunteerTextTemplate)({});
-      // }
-
-      this.modalAlert = new ModalAlert({
-        el: "#check-volunteer .modal-template",
-        modalDiv: '#check-volunteer',
-        content: modalContent,
-        cancel: i18n.t('volunteerModal.cancel'),
-        submit: i18n.t('volunteerModal.ok'),
-        validateBeforeSubmit: validateBeforeSubmit,
-        callback: function (e) {
-          /*
-          if ( UIConfig.supervisorEmail.useSupervisorEmail ) {
-            self.saveUserSettingByKey(window.cache.currentUser.id,{settingKey:"supervisorEmail",newValue: $('#userSuperVisorEmail').val(),oldValue: supervisorEmail});
-            self.saveUserSettingByKey(window.cache.currentUser.id,{settingKey:"supervisorName",newValue: $('#userSuperVisorName').val(),oldValue: supervisorName});
-          }
-          */
-
-          // user clicked the submit button
-          $.ajax({
-            url: '/api/volunteer/',
-            type: 'POST',
-            data: {
-              taskId: self.model.get("id")
-            }
-          }).done( function (data) {
-            $('.volunteer-true').show();
-            $('.volunteer-false').hide();
-            var html = '<div class="project-people-div" data-userid="' + data.userId + '" data-voluserid="' + data.userId + '"><img src="/api/user/photo/' + data.userId + '" class="project-people"/>';
-            if (self.options.action === "edit") {
-              html += '<a href="#" class="delete-volunteer volunteer-delete fa fa-times"  id="delete-volunteer-' + data.id + '" data-uid="' + data.userId + '" data-vid="' +  data.id + '"></a>';
-            }
-            html += '</div>';
-            $('#task-volunteers').append(html);
-          });
-        }
-      }).render();
-    }
-  },
-
-  volunteered: function (e) {
-    if (e.preventDefault) e.preventDefault();
-    // Not able to un-volunteer, so do nothing
-  },
-
-  removeVolunteer: function(e) {
-    if (e.stopPropagation()) e.stopPropagation();
-    if (e.preventDefault) e.preventDefault();
-    $(e.currentTarget).off("mouseenter");
-
-    var vId = $(e.currentTarget).data('vid');
-    var uId = $(e.currentTarget).data('uid');
-    var self = this;
-
-    if (typeof cache !== "undefined")
-    {
-      $.ajax({
-        url: '/api/volunteer/' + vId,
-        type: 'DELETE',
-        data: {
-          taskId: this.model.attributes,
-          vId: vId,
-        },
-      }).done(function (data) {
-          // done();
-      });
-    }
-
-    var oldVols = this.model.get("volunteers") || [];
-    var unchangedVols = _.filter(oldVols, function(vol){ return ( vol.id !== vId ); } , this)  || [];
-    this.model.set("volunteers", unchangedVols);
-    $('[data-voluserid="' + uId + '"]').remove();
-    if (window.cache.currentUser.id === uId) {
-      $('.volunteer-false').show();
-      $('.volunteer-true').hide();
-    }
+    if(this.applyModal) this.applyModal.cleanup();
+    this.applyModal = new ApplyModal({
+      el: this.$("#apply-wrapper"),
+    }).render();
   },
 
   close: function (e) {
@@ -503,10 +375,11 @@ var TaskItemView = BaseView.extend({
   */
 
   cleanup: function () {
-    if (this.md)               this.md.cleanup();
-    if (this.tagView)          this.tagView.cleanup();
-    if (this.attachmentView)   this.attachmentView.cleanup();
-    if (this.taskItemView)     this.taskItemView.cleanup();
+    if (this.md)             this.md.cleanup();
+    if (this.tagView)        this.tagView.cleanup();
+    if (this.attachmentView) this.attachmentView.cleanup();
+    if (this.taskItemView)   this.taskItemView.cleanup();
+    if(this.applyModal)      this.applyModal.cleanup();
     // if (this.commentListController) { this.commentListController.cleanup(); }
     removeView(this);
   },

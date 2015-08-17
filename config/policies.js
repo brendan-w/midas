@@ -36,6 +36,7 @@ module.exports.policies = {
   ApplicationController: {
     '*':        false,
     'create':   ['passport', 'authenticated', 'hasIdParam'],
+    'update':   ['passport', 'authenticated', 'canCreateTask'],
   },
 
   // Auth controller can be accessed by anyone
@@ -167,6 +168,7 @@ module.exports.policies = {
     'disable':       ['passport', 'authenticated', 'hasIdParam'],
     'enable':        ['passport', 'authenticated', 'hasIdParam', 'admin'],
     'resetPassword': ['passport', 'authenticated'],
+    'canApply':      ['passport', 'authenticated'],
     'emailCount':    ['test'],
     'export':        ['passport', 'authenticated', 'admin']
   },

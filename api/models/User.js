@@ -85,7 +85,8 @@ module.exports = {
   // TODO: add more fields, likely driven off subqueries
   exportFormat: {
     'user_id': 'id',
-    'name': {field: 'name', filter: exportUtils.nullToEmptyString},
+    'firstname': {field: 'firstname', filter: exportUtils.nullToEmptyString},
+    'lastname': {field: 'lastname', filter: exportUtils.nullToEmptyString},
     'username': {field: 'username', filter: exportUtils.nullToEmptyString},
     'title': {field: 'title', filter: exportUtils.nullToEmptyString},
 

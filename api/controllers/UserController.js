@@ -375,7 +375,26 @@ module.exports = {
   //tests whether a user has filled out the correct fields to begin applying for jobs (tasks)
   canApply: function(req, res) {
     //TODO: implement me
-    return res.send(200);
+    var allow = true;
+
+    User.findOneById(req.user[0].id)
+        .populate('tags')
+        .exec(function(err, user) {
+      if(err || !user) return res.send(400, { message: "Error looking up user for checking canApply." });
+
+      //check for the required fields
+      allow = allow && user.firstname;
+      allow = allow && user.lastname;
+      allow = allow && user.bio;
+      allow = allow && (_.where(user.tags, { type : "experience" }).length > 0);
+      allow = allow && (_.where(user.tags, { type : "education" }).length > 0);
+      allow = allow && (_.where(user.tags, { type : "task-type" }).length > 0);
+      allow = allow && (_.where(user.tags, { type : "remote" }).length > 0);
+      allow = allow && (_.where(user.tags, { type : "relocate" }).length > 0);
+
+      //send a boolean back allow/disallow
+      return res.send(allow);
+    });
   },
 
 

@@ -30,7 +30,7 @@ module.exports = {
 
     //the user's chosen daily rate
     rate: {
-      type: 'FLOAT',
+      type: 'INTEGER',
       required: true,
     },
 
