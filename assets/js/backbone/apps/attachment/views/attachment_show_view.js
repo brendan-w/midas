@@ -5,7 +5,6 @@ var TimeAgo = require('../../../../vendor/jquery.timeago');
 var Backbone = require('backbone');
 var utils = require('../../../mixins/utilities');
 var async = require('async');
-// var Popovers = require('../../../mixins/popovers');
 var AITemplate = require('../templates/attachment_item_template.html');
 var ASTemplate = require('../templates/attachment_show_template.html');
 
@@ -17,12 +16,28 @@ var AttachmentShowView = Backbone.View.extend({
     'click .file-delete' : 'deleteAttachment',
   },
 
+  /*
+    @param {String}  options.target       -   The model name to attach files to
+    @param {Integer} options.id           -   The Id of the target model to attach files to
+    @param {Boolean} options.is_private   -   Whether to prevent public access to this file
+    @param {Boolean} options.auto_attach  -   Whether to create an attachment relation for this file
+    @param {Boolean} options.auto_upload  -   Whether to upload files when they are selected (else, you will need to call `.upload()`)
+
+    upon a successful file upload (not yet attached), this view will emit the even:
+
+    "file:upload:success"
+
+    If auto_attach is set to true, this event will automatically be handled by the
+    `attach()` function
+  */
   initialize: function (options) {
-    this.options = options;
-    this.id      = options.id;
-    this.target  = options.target;
-    this.edit    = (this.options.action == 'edit');
-    this.files   = [];
+    this.options     = options;
+    this.id          = options.id;
+    this.target      = options.target;
+    this.is_private  = options.is_private  || true;
+    this.auto_upload = options.auto_upload || true;
+    this.auto_attach = options.auto_attach || true;
+    this.files       = [];
   },
 
   initializeFiles: function () {
@@ -48,17 +63,20 @@ var AttachmentShowView = Backbone.View.extend({
   initializeFileUpload: function () {
     var self = this;
 
-    //TODO, move this event listener to the child view that request it
-    this.listenTo(this, "file:upload:success", this.attach);
-
+    //if files should be attached to the given targets, then register
+    //the upload handler to be the file attacher.
+    if(this.auto_attach)
+      this.listenTo(this, "file:upload:success", this.attach);
 
     $('#attachment-fileupload').fileupload({
       url: "/api/file/create",
       dataType: 'text',
       acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+      formData: { 'private': self.is_private },
       add: function (e, data) {
-        self.$('.attachment-fileupload > .progress').show();
-        data.submit();
+        self.data = data;
+        if(self.auto_upload)
+          self.upload();
       },
       progressall: function (e, data) {
         var progress = parseInt(data.loaded / data.total * 100, 10);
@@ -77,7 +95,7 @@ var AttachmentShowView = Backbone.View.extend({
         self.$('.attachment-fileupload > .progress').hide();
         self.renderNewFile(file);
 
-        //broadcast an event
+        //broadcast the event that upload was successful
         self.trigger("file:upload:success", file);
       },
       fail: function (e, data) {
@@ -137,6 +155,12 @@ var AttachmentShowView = Backbone.View.extend({
     });
   },
 
+  upload: function(e) {
+    if(e && e.preventDefault) e.preventDefault();
+    this.$('.attachment-fileupload > .progress').show();
+    this.data.submit();
+  },
+
   attach: function(file) {
     //create an attachment relationship with the given file (already uploaded)
     //or, the most recently uploaded file
@@ -171,7 +195,7 @@ var AttachmentShowView = Backbone.View.extend({
   },
 
   deleteAttachment: function (e) {
-    if(e.preventDefault) e.preventDefault();
+    if(e && e.preventDefault) e.preventDefault();
 
     var attach_id = $(e.currentTarget).closest("tr").data('attach-id');
 
