@@ -1950,7 +1950,6 @@ ul.task-tags > li {
 }
 
 /* Banner Styles */
-
 .banner {
   background:#555;
   color:white;
@@ -1967,6 +1966,12 @@ ul.task-tags > li {
   padding-bottom: 40px;
   margin-bottom: 40px;
   border-bottom:1px solid white;
+}
+
+/* Group Page link to FAQ*/
+.group-faq-link {
+  text-decoration: underline;
+  margin: 5px 0px;
 }
 
 /* Language Form */
