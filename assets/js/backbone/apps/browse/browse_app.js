@@ -15,9 +15,8 @@ var VetListController = require('../vet/list/controllers/vet_list_controller');
 var HomeController = require('../home/controllers/home_controller');
 var LoginModal = require('../login/views/login_modal');
 var RegisterModal = require('../register/views/register_modal');
-var FaqController = require('../faq/controllers/faq_controller');
-var AboutController = require('../about/controllers/about_controller');
 var TalentController = require('../talent/controllers/talent_controller');
+var StaticView = require('../static/views/static_view');
 
 var BrowseRouter = Backbone.Router.extend({
 
@@ -80,7 +79,7 @@ var BrowseRouter = Backbone.Router.extend({
     if (this.adminMainController)   this.adminMainController.cleanup();
     if (this.vetListController)     this.vetListController.cleanup();
     if (this.faqController)         this.faqController.cleanup();
-    if (this.aboutController)       this.aboutController.cleanup();
+    if (this.staticView)            this.staticView.cleanup();
     if (this.talentController)      this.talentController.cleanup();
     this.data = { saved: false };
   },
@@ -97,17 +96,17 @@ var BrowseRouter = Backbone.Router.extend({
 
   showFaq: function () {
     this.cleanupChildren();
-    this.faqController = new FaqController({
-      el: '#container',
-      router: this
+    this.staticView = new StaticView({
+      el: "#container",
+      page: "faq",
     });
   },
 
   showAbout: function () {
     this.cleanupChildren();
-    this.aboutController = new AboutController({
-      el: '#container',
-      router: this
+    this.staticView = new StaticView({
+      el: "#container",
+      page: "about",
     });
   },
 
@@ -115,7 +114,7 @@ var BrowseRouter = Backbone.Router.extend({
     this.cleanupChildren();
     this.talentController = new TalentController({
       el: '#container',
-      router: this
+      router: this,
     });
   },
 
@@ -142,7 +141,7 @@ var BrowseRouter = Backbone.Router.extend({
       el: '#container',
       router: this,
       queryParams: this.parseQueryParams(queryStr),
-      data: this.data
+      data: this.data,
     });
   },
 
@@ -153,7 +152,7 @@ var BrowseRouter = Backbone.Router.extend({
       el: '#container',
       router: this,
       queryParams: this.parseQueryParams(queryStr),
-      data: this.data
+      data: this.data,
     });
   },
 
@@ -164,7 +163,7 @@ var BrowseRouter = Backbone.Router.extend({
       el: '#container',
       router: this,
       queryParams: this.parseQueryParams(queryStr),
-      data: this.data
+      data: this.data,
     });
   },
 
@@ -175,11 +174,11 @@ var BrowseRouter = Backbone.Router.extend({
     model.set({ id: id });
     
     this.projectShowController = new ProjectShowController({
+      data: this.data,
       model: model,
       router: this,
       id: id,
       action: action,
-      data: this.data
     });
   },
 
@@ -194,7 +193,7 @@ var BrowseRouter = Backbone.Router.extend({
       router: this,
       id: id,
       action: action,
-      data: this.data
+      data: this.data,
     });
   },
 
@@ -220,7 +219,7 @@ var BrowseRouter = Backbone.Router.extend({
     this.profileShowController = new ProfileShowController({
       id: id,
       action: action,
-      data: this.data
+      data: this.data,
     });
   },
 
@@ -228,7 +227,7 @@ var BrowseRouter = Backbone.Router.extend({
     this.cleanupChildren();
     this.adminMainController = new AdminMainController({
       el: "#container",
-      action: action
+      action: action,
     });
   },
 
