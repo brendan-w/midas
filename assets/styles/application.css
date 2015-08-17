@@ -111,6 +111,11 @@ input {
   padding: 0 0 0 5px;
 }
 
+.vertical-align {
+  display: table-cell;
+  vertical-align: middle;
+}
+
 .row {
   margin-left: 0;
   margin-right: 0;
@@ -1722,7 +1727,6 @@ ul.task-tags > li {
   vertical-align: middle;
   position: relative;
   height: 200px;
-  border: 1px solid black;
   padding: 5px;
 }
 
@@ -1730,6 +1734,7 @@ ul.task-tags > li {
   margin: auto;
   width: 80%;
   text-align: center;
+  font-weight: 600;
 }
 
 #home {
@@ -1833,6 +1838,14 @@ ul.task-tags > li {
     padding-top: 80px;
     padding-bottom: 80px;
   }
+}
+
+#home .description-font {
+  font-weight: 600;
+}
+
+.description-font h3{
+  font-weight: 600;
 }
 
 #home .value-prop {
@@ -1944,9 +1957,13 @@ ul.task-tags > li {
   width: 70%;
   margin-left: 15%;  
 }
-.two-column-padding {
-  padding-top: 20px;
+.home-member-options {
+  padding-top: 30px;
   padding-bottom: 20px;
+  height: 400px;
+}
+.home-member-descriptions {
+  margin: 20px 0px;
 }
 
 /* Banner Styles */
@@ -2035,6 +2052,66 @@ li.modal-step.active .circle {
 
 li.modal-step.active .name {
   color:#1CABE2;
+}
+
+/* Linked List Template */
+
+ul.link-list {
+  list-style: none;
+  padding-left: 0px;
+  margin-bottom: 0px;
+  overflow-y: auto;
+  max-height: 115px;
+}
+
+ul.link-list.edit input {
+  overflow: hidden;
+}
+
+ul.link-list.edit .form-group {
+  /* normal form-groups were a little too big */
+  margin-bottom: 5px;
+}
+
+li.link > div {
+  overflow: hidden;
+}
+
+/* The close buttons */
+li.link button {
+  padding: 5px 10px;
+}
+
+/* The URL inputs */
+li.link input {
+  width:100%;
+}
+
+.link-buttons {
+  margin-top: 10px;
+}
+
+/* Register Forms */
+
+/* Applicant */
+form section[name="Skills"] p {
+  margin-top: 10px;
+  margin-bottom: 30px;
+}
+
+/* Register Choose */
+form[name="choose"] {
+  text-align: center;
+  padding:150px 0px;
+}
+form[name="choose"] .form-title {
+  text-transform: uppercase;
+}
+form[name="choose"] button {
+  text-transform: uppercase;
+  width:100%;
+  padding-top: 12px;
+  padding-bottom: 12px;
 }
 
 
