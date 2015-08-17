@@ -2037,7 +2037,75 @@ li.modal-step.active .name {
   color:#1CABE2;
 }
 
+/* Application and Finish Profile Templates */
+form[name="apply"] section
+{
+  padding-top: 40px;
+  padding-bottom: 160px;
+}
+form[name="apply"] h4 { 
+  display:inline;
+}
+form[name="apply"] input { 
+  display:inline; 
+  width:auto; 
+}
 
+form[name="finish_profile"] section
+{
+  padding-top: 40px;
+  padding-bottom: 160px;
+}
+
+/* Link-List */
+ul.link-list {
+  list-style: none;
+  padding-left: 0px;
+  margin-bottom: 0px;
+  overflow-y: auto;
+  max-height: 115px;
+}
+ul.link-list.edit input {
+  overflow: hidden;
+}
+ul.link-list.edit .form-group {
+  /* normal form-groups were a little too big */
+  margin-bottom: 5px;
+}
+li.link > div {
+  overflow: hidden;
+}
+/* The close buttons */
+li.link button {
+  padding: 5px 10px;
+}
+/* The URL inputs */
+li.link input {
+  width:100%;
+}
+.link-buttons {
+  margin-top: 10px;
+}
+
+/* Register Templates */
+form section[name="Skills"] p {
+  margin-top: 10px;
+  margin-bottom: 30px;
+}
+
+form[name="choose"] {
+  text-align: center;
+  padding:150px 0px;
+}
+form[name="choose"] .form-title {
+  text-transform: uppercase;
+}
+form[name="choose"] button {
+  text-transform: uppercase;
+  width:100%;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
 
 
 
