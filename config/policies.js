@@ -77,7 +77,7 @@ module.exports.policies = {
     'cancel':             ['passport', 'authenticated', 'addUserId', 'hasIdParam'],
     'rsvp':               ['passport', 'authenticated', 'addUserId'],
     'ical':               ['passport', 'authenticated', 'addUserId', 'project'],
-    'destroy':            ['passport', 'authenticated', 'hasIdParam', 'admin']
+    'destroy':            ['passport', 'authenticated', 'hasIdParam', 'admin'],
   },
 
   // Disable the index blueprints for FileController due to security concerns
@@ -90,7 +90,7 @@ module.exports.policies = {
     'testupload': true,
 
     // everything else is protected
-    '*':          ['passport', 'protectedFile']
+    '*':          ['passport', 'authenticated', 'protectedFile'],
   },
 
   LikeController : {
@@ -106,7 +106,7 @@ module.exports.policies = {
     'unlikeu': ['passport', 'authenticated', 'addUserId', 'hasIdParam'],
     'create':  ['passport', 'authenticated', 'addUserId'],
     'destroy': false,
-    'update':  false
+    'update':  false,
   },
 
   LocationController : {

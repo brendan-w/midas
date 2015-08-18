@@ -7,8 +7,8 @@
   <td class="attachment-name">
     <a href="/api/file/get/<%- file.id %>" class="file-link" data-id="<%- file.id %>" download="<%- file.name %>">
       <%- file.name %>
-      <% if ((user && user.isAdmin) || owner) { %>
-        <a href="#" class="file-delete" <% if(!attach_id) { %>style="display:none"<% } %>><i class="fa fa-remove"></i></a>
+      <% if ((user && user.permissions.admin) || owner) { %>
+        <a href="#" class="file-delete"><i class="fa fa-remove"></i></a>
       <% } %>
       <br/>
       <time class="timeago" datetime="<%- file.createdAt %>"><%- file.createdAt %></time>

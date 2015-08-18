@@ -56,13 +56,13 @@ module.exports = {
         if (err || !fdata) { return done({message:'Error storing file.'}); }
         // Create a file object to put in the database.
         var f = {
-          userId: req.user[0].id,
-          name: upload.filename,
-          mimeType: upload.type || upload.headers['content-type'],
-          fd: upload.fd.split('/').pop(),
-          size: fdata.length,
-          data: fdata,
-          isPrivate: req.param('private')
+          userId:    req.user[0].id,
+          name:      upload.filename,
+          mimeType:  upload.type || upload.headers['content-type'],
+          fd:        upload.fd.split('/').pop(),
+          size:      fdata.length,
+          data:      fdata,
+          isPrivate: req.param('private') || true,
         };
         // if the type of the file should be a square image
         // resize the image before storing it.

@@ -13,7 +13,7 @@ var ASTemplate = require('../templates/attachment_show_template.html');
 var AttachmentShowView = Backbone.View.extend({
 
   events: {
-    'click .file-delete' : 'deleteAttachment',
+    'click .file-delete' : 'delete_file',
   },
 
   /*
@@ -21,8 +21,7 @@ var AttachmentShowView = Backbone.View.extend({
     @param {Integer} options.id           -   The Id of the target model to attach files to
     @param {Boolean} options.owner        -   Whether the current user owns this attachment view
     @param {Boolean} options.is_private   -   Whether to prevent public access to this file
-    @param {Boolean} options.auto_upload  -   prevents an attachment relation from being automatically created
-    @param {Boolean} options.auto_upload  -   Whether to upload files when they are selected (else, you will need to call `.upload()`)
+    @param {Boolean} options.auto_attach  -   prevents an attachment relation from being automatically created
 
     upon a successful file upload (not yet attached), this view will emit the even:
 
@@ -40,7 +39,6 @@ var AttachmentShowView = Backbone.View.extend({
     this.id          = options.id;
     this.target      = options.target;
     this.is_private  = options.is_private  !== undefined ? options.is_private  : false;
-    this.auto_upload = options.auto_upload !== undefined ? options.auto_upload : true;
     this.auto_attach = options.auto_attach !== undefined ? options.auto_attach : true;
     this.files       = [];
   },
@@ -82,9 +80,8 @@ var AttachmentShowView = Backbone.View.extend({
       acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
       formData: { 'private': self.is_private },
       add: function (e, data) {
-        self.data = data;
-        if(self.auto_upload)
-          self.upload();
+        self.$('.attachment-fileupload > .progress').show();
+        data.submit();
       },
       progressall: function (e, data) {
         var progress = parseInt(data.loaded / data.total * 100, 10);
@@ -166,12 +163,6 @@ var AttachmentShowView = Backbone.View.extend({
     });
   },
 
-  upload: function(e) {
-    if(e && e.preventDefault) e.preventDefault();
-    this.$('.attachment-fileupload > .progress').show();
-    this.data.submit();
-  },
-
   attach: function(file) {
     var self = this;
 
@@ -195,19 +186,8 @@ var AttachmentShowView = Backbone.View.extend({
       data:        JSON.stringify(data),
     }).done(function (attachment) {
       $file.find(".file-tag-waiting").hide();
-      $file.find(".file-delete").show();
       $file.data("attach-id", attachment.id);
       self.trigger("file:attach:success", attachment);
-    });
-  },
-
-  attachAllTo: function(id) {
-    var self = this;
-    this.id = id;
-    //TODO: this is a hack, since each `attach` call will emit its own
-    //success event. This is misleading to everything that uses this view
-    this.files.forEach(function(file) {
-      self.attach(file);
     });
   },
 
@@ -218,7 +198,7 @@ var AttachmentShowView = Backbone.View.extend({
     $("time.timeago").timeago();
   },
 
-  deleteAttachment: function (e) {
+  delete_file: function (e) {
     if(e && e.preventDefault) e.preventDefault();
 
     var $tr = $(e.currentTarget).closest("tr");
@@ -226,19 +206,30 @@ var AttachmentShowView = Backbone.View.extend({
     var attach_id = $tr.data('attach-id');
 
     $.ajax({
-      url: '/api/attachment/' + attach_id,
+      url: '/api/file/' + file_id,
       type: 'DELETE',
       success: function (d) {
-        // remove from the DOM
-        $(e.currentTarget).closest('tr').remove();
-        var len = $(e.currentTarget).parents('tbody').eq(0).children().length;
-        if(len == 2) $(".attachment-none").show();
+        var len = $tr.closest('tbody').eq(0).children().length;
+        if(len == 2) self.$(".attachment-none").show();
         // remove from the files list
         this.files = _.filter(this.files, function(file) {
           return file.id !== file_id;
         });
+
+        // remove from the DOM
+        $tr.remove();
       }
     });
+
+
+    //if it was attached, unattach it
+    if(attach_id)
+    {
+      $.ajax({
+        url: '/api/attachment/' + attach_id,
+        type: 'DELETE',
+      });
+    }
   },
 
   files: function() {

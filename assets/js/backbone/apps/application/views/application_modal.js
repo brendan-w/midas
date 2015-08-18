@@ -78,6 +78,7 @@ var ApplicationModal = Backbone.View.extend({
       target: "application",
       is_private:  true,
       auto_attach: false, //postpone attachment until we have an application ID to attach to
+      owner: true,
     }).render();
 
     this.modal.show();
@@ -97,6 +98,9 @@ var ApplicationModal = Backbone.View.extend({
     var data = {
       task: this.model.get("id"),
       rate: this.$("#application-rate").val(),
+      //these aren't actually part of the attachment model, but are submitted in the
+      //same request to ensure atomicity
+      files: _.map(this.attachmentView.files, function(file) { return file.id; }),
     };
 
     //when everything is said and done, the attachment will return success
@@ -113,8 +117,7 @@ var ApplicationModal = Backbone.View.extend({
 
       success:function(application) {
         console.log(application);
-        //attach the user's uploaded files to this application
-        self.attachmentView.attachAllTo(application.id);
+        self.modal.hide();
       },
     });
   },
