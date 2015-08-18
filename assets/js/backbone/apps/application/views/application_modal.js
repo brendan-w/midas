@@ -118,8 +118,12 @@ var ApplicationModal = Backbone.View.extend({
       data:        JSON.stringify(data),
 
       success:function(application) {
+        //wait for the modal to close
+        self.$el.bind('hidden.bs.modal', function() {
+          self.trigger("task:application:success");
+        });
+
         self.modal.hide();
-        self.trigger("task:application:success");
       },
     });
   },

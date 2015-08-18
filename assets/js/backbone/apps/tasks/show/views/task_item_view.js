@@ -79,7 +79,19 @@ var TaskItemView = BaseView.extend({
     this.$el.i18n();
     
     $("time.timeago").timeago();
-    
+
+    //show/hide the apply button accordingly
+    if(this.model.get("application"))
+    {
+      this.$("#task-apply").hide();
+      this.$("#task-applied").show();
+    }
+    else
+    {
+      this.$("#task-apply").show();
+      this.$("#task-applied").hide();
+    }
+
     /*
     if (window.location.search === '?volunteer' &&
         !this.model.get("volunteer")) {
@@ -272,6 +284,15 @@ var TaskItemView = BaseView.extend({
       el: this.$("#apply-wrapper"),
       model: this.model,
     }).render();
+
+    //when the application is finished, reload the page
+    this.listenTo(this.applyModal, "task:application:success", function(application) {
+      //hide the apply button
+      self.$("#task-apply").hide();
+      self.$("#task-applied").show();
+    });
+
+
   },
 
   close: function (e) {
