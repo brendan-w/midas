@@ -16,8 +16,8 @@ module.exports = {
     // with that project or task
     projectId: 'INTEGER',
     taskId: 'INTEGER',
-    // The userId of the person that created the attachment
     userId: 'INTEGER',
+    applicationId: 'INTEGER',
   }
 
 };

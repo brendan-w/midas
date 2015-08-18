@@ -3,6 +3,8 @@ var _        = require('underscore');
 var Backbone = require('backbone');
 var utils    = require('../../../mixins/utilities');
 
+var        AttachmentView = require('../../attachment/views/attachment_show_view.js');
+
 var   ApplicationTemplate = require('../templates/application_template.html');
 var FinishProfileTemplate = require('../templates/finish_profile_template.html');
 
@@ -69,6 +71,15 @@ var ApplicationModal = Backbone.View.extend({
 
     //render our form inside the Modal wrapper
     this.modal.renderForm(form);
+
+    if(this.attachmentView) this.attachmentView.cleanup();
+    this.attachmentView = new AttachmentView({
+      el: this.$(".attachment-wrapper"),
+      target: "application",
+      is_private:  true,
+      auto_attach: false, //postpone attachment until we have an application ID to attach to
+    }).render();
+
     this.modal.show();
   },
 
@@ -81,7 +92,31 @@ var ApplicationModal = Backbone.View.extend({
   },
 
   submitApplication: function() {
-    console.log("submit");
+    var self = this;
+
+    var data = {
+      task: this.model.get("id"),
+      rate: this.$("#application-rate").val(),
+    };
+
+    //when everything is said and done, the attachment will return success
+    this.listenTo(this.attachmentView, "file:attach:success", function(attachment) {
+      self.modal.hide();
+    });
+
+    $.ajax({
+      url:         "/api/application",
+      type:        'POST',
+      dataType:    'json',
+      contentType: 'application/json',
+      data:        JSON.stringify(data),
+
+      success:function(application) {
+        console.log(application);
+        //attach the user's uploaded files to this application
+        self.attachmentView.attachAllTo(application.id);
+      },
+    });
   },
 
   gotoProfile: function() {
@@ -94,7 +129,8 @@ var ApplicationModal = Backbone.View.extend({
   },
 
   cleanup: function () {
-    if(this.modal) this.modal.cleanup();
+    if(this.attachmentView) this.attachmentView.cleanup();
+    if(this.modal)          this.modal.cleanup();
     removeView(this);
   },
 });

@@ -39,7 +39,6 @@ CREATE TABLE application (
     "user" integer,
     "task" integer,
     "rate" money,
-    "p11" integer,
     "createdAt" timestamp with time zone,
     "updatedAt" timestamp with time zone,
     "deletedAt" timestamp with time zone
@@ -75,6 +74,7 @@ ALTER SEQUENCE application_id_seq OWNED BY application.id;
 
 CREATE TABLE attachment (
     "fileId" integer,
+    "applicationId" integer,
     "projectId" integer,
     "taskId" integer,
     "userId" integer,

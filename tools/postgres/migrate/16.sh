@@ -1,5 +1,7 @@
 #!/bin/bash
 
+psql -U $POSTGRESQL_USERNAME -d $POSTGRESQL_DATABASE -c "ALTER TABLE attachment ADD COLUMN \"applicationId\" integer"
+
 # Make the Vet table
 psql -U $POSTGRESQL_USERNAME -d $POSTGRESQL_DATABASE -c "
 
@@ -13,7 +15,6 @@ CREATE TABLE application (
     \"user\" integer,
     \"task\" integer,
     \"rate\" money,
-    \"p11\" integer,
     \"createdAt\" timestamp with time zone,
     \"updatedAt\" timestamp with time zone,
     \"deletedAt\" timestamp with time zone

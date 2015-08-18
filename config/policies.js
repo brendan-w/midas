@@ -35,7 +35,7 @@ module.exports.policies = {
 
   ApplicationController: {
     '*':        false,
-    'create':   ['passport', 'authenticated', 'hasIdParam'],
+    'create':   ['passport', 'authenticated'],
     'update':   ['passport', 'authenticated', 'canCreateTask'],
   },
 

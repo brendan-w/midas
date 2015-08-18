@@ -270,6 +270,7 @@ var TaskItemView = BaseView.extend({
     if(this.applyModal) this.applyModal.cleanup();
     this.applyModal = new ApplyModal({
       el: this.$("#apply-wrapper"),
+      model: this.model,
     }).render();
   },
 

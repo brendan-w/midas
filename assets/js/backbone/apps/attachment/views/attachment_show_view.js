@@ -19,13 +19,18 @@ var AttachmentShowView = Backbone.View.extend({
   /*
     @param {String}  options.target       -   The model name to attach files to
     @param {Integer} options.id           -   The Id of the target model to attach files to
+    @param {Boolean} options.owner        -   Whether the current user owns this attachment view
     @param {Boolean} options.is_private   -   Whether to prevent public access to this file
-    @param {Boolean} options.auto_attach  -   Whether to create an attachment relation for this file
+    @param {Boolean} options.auto_upload  -   prevents an attachment relation from being automatically created
     @param {Boolean} options.auto_upload  -   Whether to upload files when they are selected (else, you will need to call `.upload()`)
 
     upon a successful file upload (not yet attached), this view will emit the even:
 
     "file:upload:success"
+
+    or, in the event of an error:
+
+    "file:upload:error"
 
     If auto_attach is set to true, this event will automatically be handled by the
     `attach()` function
@@ -34,29 +39,32 @@ var AttachmentShowView = Backbone.View.extend({
     this.options     = options;
     this.id          = options.id;
     this.target      = options.target;
-    this.is_private  = options.is_private  || true;
-    this.auto_upload = options.auto_upload || true;
-    this.auto_attach = options.auto_attach || true;
+    this.is_private  = options.is_private  !== undefined ? options.is_private  : false;
+    this.auto_upload = options.auto_upload !== undefined ? options.auto_upload : true;
+    this.auto_attach = options.auto_attach !== undefined ? options.auto_attach : true;
     this.files       = [];
   },
 
   initializeFiles: function () {
     var self = this;
 
-    $.ajax({
-      url: '/api/attachment/findAllBy' + this.target + 'Id/' + this.id
-    }).done(function (data) {
+    if(this.target && this.id)
+    {
+      $.ajax({
+        url: '/api/attachment/findAllBy' + this.target + 'Id/' + this.id
+      }).done(function (data) {
 
-      if (data && (data.length > 0)) {
-        self.$(".attachment-none").hide();
-      }
+        if (data && (data.length > 0)) {
+          self.$(".attachment-none").hide();
+        }
 
-      _.each(data, function (attachment) {
-        self.$(".attachment-tbody").append(self.renderFile(attachment.file, attachment.id));
+        _.each(data, function (attachment) {
+          self.$(".attachment-tbody").append(self.renderFile(attachment.file, attachment.id));
+        });
+
+        $("time.timeago").timeago();
       });
-
-      $("time.timeago").timeago();
-    });
+    }
   },
 
 
@@ -109,6 +117,7 @@ var AttachmentShowView = Backbone.View.extend({
 
         self.$(".file-upload-alert > span").html(message)
         self.$(".file-upload-alert").show();
+        self.trigger("file:upload:error", data);
       }
     });
 
@@ -121,19 +130,21 @@ var AttachmentShowView = Backbone.View.extend({
       canAdd:
         // Admins
         window.cache.currentUser && window.cache.currentUser.permissions.admin ||
+        //Applicants
+        (this.target === 'application' && window.cache.currentUser.permissions.apply) ||
         // Project creator
-        (this.target ==='project' && this.options.owner) ||
+        (this.target === 'project' && this.options.owner) ||
         // Profile owner
-        (this.target ==='user' && this.options.owner) ||
+        (this.target === 'user' && this.options.owner) ||
         // Task creators for open tasks
         (
-          this.target ==='task' &&
+          this.target === 'task' &&
           this.options.owner &&
           ['open', 'assigned'].indexOf(this.options.state) !== -1
         ) ||
         // Participants for assigned tasks
         (
-          this.target ==='task' &&
+          this.target === 'task' &&
           this.options.volunteer &&
           this.options.state === 'assigned'
         )
@@ -162,6 +173,8 @@ var AttachmentShowView = Backbone.View.extend({
   },
 
   attach: function(file) {
+    var self = this;
+
     //create an attachment relationship with the given file (already uploaded)
     //or, the most recently uploaded file
     file = file || this.files[this.files.length - 1];
@@ -184,6 +197,17 @@ var AttachmentShowView = Backbone.View.extend({
       $file.find(".file-tag-waiting").hide();
       $file.find(".file-delete").show();
       $file.data("attach-id", attachment.id);
+      self.trigger("file:attach:success", attachment);
+    });
+  },
+
+  attachAllTo: function(id) {
+    var self = this;
+    this.id = id;
+    //TODO: this is a hack, since each `attach` call will emit its own
+    //success event. This is misleading to everything that uses this view
+    this.files.forEach(function(file) {
+      self.attach(file);
     });
   },
 
@@ -197,7 +221,9 @@ var AttachmentShowView = Backbone.View.extend({
   deleteAttachment: function (e) {
     if(e && e.preventDefault) e.preventDefault();
 
-    var attach_id = $(e.currentTarget).closest("tr").data('attach-id');
+    var $tr = $(e.currentTarget).closest("tr");
+    var file_id   = $tr.data('id');
+    var attach_id = $tr.data('attach-id');
 
     $.ajax({
       url: '/api/attachment/' + attach_id,
@@ -207,8 +233,16 @@ var AttachmentShowView = Backbone.View.extend({
         $(e.currentTarget).closest('tr').remove();
         var len = $(e.currentTarget).parents('tbody').eq(0).children().length;
         if(len == 2) $(".attachment-none").show();
+        // remove from the files list
+        this.files = _.filter(this.files, function(file) {
+          return file.id !== file_id;
+        });
       }
     });
+  },
+
+  files: function() {
+    return this.files;
   },
 
   cleanup: function () {

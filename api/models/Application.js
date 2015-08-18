@@ -33,10 +33,5 @@ module.exports = {
       type: 'INTEGER',
       required: true,
     },
-
-    p11: {
-      model: 'File',
-      required: true,
-    },
   },
 };
