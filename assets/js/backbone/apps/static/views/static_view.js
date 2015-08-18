@@ -6,8 +6,10 @@ var Login = require('../../../config/login.json');
 
 //templates
 var Templates = {
-  "about": require("../templates/about.html"),
-  "faq"  : require("../templates/faq.html"),
+  "about"   : require("../templates/about.html"),
+  "faq"     : require("../templates/faq.html"),
+  "terms"   : require("../templates/terms.html"),
+  "privacy" : require("../templates/privacy.html"),
 };
 
 

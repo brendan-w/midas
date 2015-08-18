@@ -841,6 +841,7 @@ ul.vet-list li.vetted .fa {
 }
 
 .search-row {
+  padding-top: 20px;
   margin-bottom: 25px;
 }
 
@@ -1772,6 +1773,7 @@ ul.task-tags > li {
 
 #home ul.de-uglify {
   padding-left: 40px;
+  padding-right: 40px;
   text-align: left;
 }
 
@@ -1842,6 +1844,10 @@ ul.task-tags > li {
 
 #home .description-font {
   font-weight: 600;
+}
+
+#home .list-font {
+  font-weight: 400;
 }
 
 .description-font h3{
@@ -1930,7 +1936,7 @@ ul.task-tags > li {
 }
 
 /* FAQ Styles */
-.faq-row {
+.static-row {
   width: 90%;
   margin: 0% 5%;
 }
@@ -1943,13 +1949,13 @@ ul.task-tags > li {
   margin-top: 10px
 }
 .faq-question p{
-  margin-bottom: 5px;
+  margin-bottom: 10px;
 }
 
 /* Home Styles */
 .home-banner {
-  padding-top: 80px;
-  padding-bottom: 60px;
+  padding-top: 60px;
+  padding-bottom: 40px;
   color:white;
 }
 .splash-wrap {
@@ -1971,10 +1977,25 @@ ul.task-tags > li {
   background:#555;
   color:white;
   padding: 30px 0px;
+  height: 350px;
 }
 
-.banner-title, .banner-desc {
+.group-banner {
+  background:#555;
   color:white;
+  padding: 30px 0px;
+}
+
+.group-banner-title, .banner-title, .banner-desc {
+  color:white;
+}
+
+.group-banner-title {
+  display:inline-block;
+  padding-top: 10px;
+  padding-bottom: 30px;
+  margin-bottom: 30px;
+  border-bottom:1px solid white;
 }
 
 .banner-title {
@@ -1983,6 +2004,10 @@ ul.task-tags > li {
   padding-bottom: 40px;
   margin-bottom: 40px;
   border-bottom:1px solid white;
+}
+
+.under-banner-pad {
+  padding-top: 20px;
 }
 
 /* Group Page link to FAQ*/
@@ -2190,7 +2215,17 @@ form[name="choose"] button {
   padding-bottom: 12px;
 }
 
+/* Terms of Service */
+.item-space li {
+  margin: 5px 0px;
+}
 
+.margin-none li {
+  margin: 0px;
+}
 
+.list-dash li:before{
+  content: "-   ";
+}
 
 

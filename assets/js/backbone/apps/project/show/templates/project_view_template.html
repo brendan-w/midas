@@ -11,7 +11,7 @@
 
 
 <!-- the big project banner -->
-<section class="banner">
+<section class="group-banner">
   <div class="container">
 
     <!-- the main group description box -->
@@ -22,7 +22,7 @@
           <!-- NORMAL MODE -->
 
           <div class="col-md-6 col-md-offset-3 text-center">
-            <h1 class="banner-title"><%- project.title %></h1>
+            <h1 class="group-banner-title"><%- project.title %></h1>
             <h3 class="banner-desc"><%= project.description_html %></h3>
 
             <!-- If the user is allowed to apply to jobs, present them with the vet button -->
@@ -56,7 +56,6 @@
             <% } %>
 
           </div>
-
         <% } else { %>
 
           <!-- EDIT MODE -->

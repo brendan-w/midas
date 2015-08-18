@@ -104,7 +104,15 @@ module.exports.routes = {
   controller: 'main',
   action: 'index'
   },
-
+  '/terms': {
+  controller: 'main',
+  action: 'index'
+  },
+  '/privacy': {
+  controller: 'main',
+  action: 'index'
+  },
+  
   '/index.html': '/',
 
   // Authentication routes
