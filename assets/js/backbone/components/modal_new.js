@@ -95,7 +95,8 @@ ModalView = BaseView.extend({
 
   /*
     @param {Object}  options
-    @param {Boolean} options.hideButtons    
+    @param {Boolean} options.hideButtons
+    @param {Boolean} options.hideCancel
     @param {String}  options.doneButtonText
     @param {String}  options.html
   */
@@ -115,6 +116,7 @@ ModalView = BaseView.extend({
 
     //hide the footer buttons, if requested
     this.$(".modal-footer").toggle(!options.hideButtons);
+    this.$(".wizard-cancel").toggle(!options.hideCancel);
 
     //set the "done" button text
     this.$submit.text(options.doneButtonText);

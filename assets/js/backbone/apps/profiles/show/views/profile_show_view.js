@@ -18,6 +18,7 @@ var     VetShowView = require('../../../vet/show/views/vet_show_view');
 var        LangView = require('../../../languages/views/language_view');
 var        LinkView = require('../../../links/views/link_view');
 var         TagView = require('../../../tag/show/views/tag_show_view');
+var    WelcomeModal = require('./welcome_modal');
 
 
 var ProfileShowView = Backbone.View.extend({
@@ -90,6 +91,15 @@ var ProfileShowView = Backbone.View.extend({
     this.initializeLinks();
     this.updatePhoto();
     this.updateProfileEmail();
+
+    if(window.location.hash === "#welcome")
+    {
+      if(this.welcomeModal) this.welcomeModal.cleanup();
+      this.welcomeModal = new WelcomeModal({
+        el: this.$(".welcome-wrapper"),
+      }).render();
+    }
+
     return this;
   },
 
@@ -403,6 +413,7 @@ var ProfileShowView = Backbone.View.extend({
     }
   },
   cleanup: function () {
+    if(this.welcomeModal) this.welcomeModal.cleanup();
     if (this.md)          this.md.cleanup();
     if (this.tagView)     this.tagView.cleanup();
     if (this.langView)    this.langView.cleanup();
