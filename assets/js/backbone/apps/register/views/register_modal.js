@@ -51,8 +51,6 @@ var Register = Backbone.View.extend({
   */
   render: function(target) {
     if(this.coreAccount) this.coreAccount.cleanup();
-    if(this.langView) this.langView.cleanup();
-    if(this.linkView) this.linkView.cleanup();
 
     this.target = target || "choose";
 
@@ -81,22 +79,6 @@ var Register = Backbone.View.extend({
       el: this.$(".core-account-info"),
     }).render();
 
-    //these will quietly fail if we're on a form that doesn't have them
-    this.langView = new LanguageView({
-      el: this.$(".lang-wrapper"),
-      edit: true,
-    }).render();
-
-    this.linkView = new LinkView({
-      el: this.$(".link-wrapper"),
-      edit: true,
-    }).render();
-
-    this.tagView = new TagView({
-      el: this.$el,
-      edit: true,
-    }).render();
-
     this.modal.show();
 
     return this;
@@ -123,25 +105,24 @@ var Register = Backbone.View.extend({
       type: this.target,
     };
 
-    //update their profile according to the other form pages
-    if(this.target = "applicant")
-    {
-      user_data.languages = this.langView.data();
-      user_data.links     = this.linkView.data();
-      user_data.tags      = this.tagView.data();
-    }
-
     //create the user
     //target should be either "applicant" or "poster:unapproved"
     this.coreAccount.submit(user_data, function(user) {
 
       //when the modal is hidden
       self.$el.bind('hidden.bs.modal', function() {
-        // if successful, reload page
-        Backbone.history.loadUrl();
+
+        if(self.target == "applicant")
+        {
+          //got to their profile in edit mode, with the welcome modal
+          Backbone.history.navigate("/profile/" + user.id + "/edit#welcome", { trigger: true });
+        }
+        else if(self.target == "poster:unapproved")
+        {
+          Backbone.history.navigate("/profile", { trigger: true });
+        }
+
         window.cache.userEvents.trigger("user:login:success", user);
-        // if (self.options.navigate)
-          // window.cache.userEvents.trigger("user:login:success:navigate", user);
       });
 
       self.modal.hide();
