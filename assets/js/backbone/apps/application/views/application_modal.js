@@ -18,6 +18,8 @@ var ApplicationModal = Backbone.View.extend({
 
   /*
     @param {Integer} options.id  -  The ID of the task that is being applied for
+
+    When done, this view will emit: "task:application:success"
   */
   initialize: function (options) {
     this.options = options;
@@ -74,11 +76,11 @@ var ApplicationModal = Backbone.View.extend({
 
     if(this.attachmentView) this.attachmentView.cleanup();
     this.attachmentView = new AttachmentView({
-      el: this.$(".attachment-wrapper"),
-      target: "application",
+      el:          this.$(".attachment-wrapper"),
+      target:      "application",
       is_private:  true,
-      auto_attach: false, //postpone attachment until we have an application ID to attach to
-      owner: true,
+      auto_attach: false, //attachment is done upon application submission
+      owner:       true,
     }).render();
 
     this.modal.show();
@@ -116,8 +118,8 @@ var ApplicationModal = Backbone.View.extend({
       data:        JSON.stringify(data),
 
       success:function(application) {
-        console.log(application);
         self.modal.hide();
+        self.trigger("task:application:success");
       },
     });
   },

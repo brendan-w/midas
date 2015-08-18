@@ -45,29 +45,38 @@ var authorized = function (id, userId, user, cb) {
 };
 
 var getMetadata = function(task, user, cb) {
-  task.like = false;
-  task.volunteer = false;
+  // task.like = false;
+  // task.volunteer = false;
   // get owner information
   task.owner = { userId: task.userId };
   userUtil.addUserName(task.owner, function (err) {
     if (err) { return cb(err, task); }
+    if (!user) {
+      return cb(null, task);
+    }
+    /*
     // Get like information for the task
     Like.countByTaskId(task.id, function (err, likes) {
       if (err) { return cb(err, task); }
       task.likeCount = likes;
-      if (!user) {
-        return cb(null, task);
-      }
       Like.findOne({ where: { userId: user.id, taskId: task.id }}, function (err, like) {
         if (err) { return cb(err, task); }
         if (like) { task.like = true; }
+    */
+        Application.findOne({ user: user.id, task: task.id }, function (err, a) {
+          if (err) { return cb(err, task); }
+          if (a) { task.application = a; }
+          return cb(null, task);
+        });
+        /*
         Volunteer.findOne({ where: { userId: user.id, taskId: task.id }}, function (err, v) {
           if (err) { return cb(err, task); }
           if (v) { task.volunteer = true; }
           return cb(null, task);
         });
-      });
-    });
+        */
+      // });
+    // });
   });
 };
 

@@ -11,7 +11,6 @@ var _ = require("underscore");
 module.exports = {
 
   create: function (req, res) {
-    console.log("CREATE APPLICATION", req.body);
 
     //these files are submitted along with the application to ensure atomicity    
     if(req.body.files === undefined) return res.send(400, { message: "No files were submitted with this application" });
