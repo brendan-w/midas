@@ -2001,10 +2001,7 @@ ul.task-tags > li {
 }
 
 /* Vetting */
-ul#vet-list-pending {
-  list-style: none;
-  padding-left: 0px;
-}
+
 li.vet button {
   width:100%;
   /* Although it is .disabled, it should stil be clickable */

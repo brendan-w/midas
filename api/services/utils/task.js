@@ -50,10 +50,8 @@ var getMetadata = function(task, user, cb) {
   // get owner information
   task.owner = { userId: task.userId };
   userUtil.addUserName(task.owner, function (err) {
-    if (err) { return cb(err, task); }
-    if (!user) {
-      return cb(null, task);
-    }
+    if (err) return cb(err, task);
+    if (!user) return cb(null, task);
     /*
     // Get like information for the task
     Like.countByTaskId(task.id, function (err, likes) {
@@ -63,10 +61,27 @@ var getMetadata = function(task, user, cb) {
         if (err) { return cb(err, task); }
         if (like) { task.like = true; }
     */
+
         Application.findOne({ user: user.id, task: task.id }, function (err, a) {
-          if (err) { return cb(err, task); }
-          if (a) { task.application = a; }
-          return cb(null, task);
+          if (err) return cb(err, task);
+          if (a) task.application = a;
+
+          //task owners get priveleges to see all applicants
+          if(task.isOwner)
+          {
+            //populate the applications field
+            Application.find({ task: task.id })
+                       .populate("user")
+                       .exec(function (err, applications) {
+              if(err) return cb(err, task);
+              task.applications = applications;
+              return cb(null, task);
+            });
+          }
+          else
+          {
+            return cb(null, task);
+          }
         });
         /*
         Volunteer.findOne({ where: { userId: user.id, taskId: task.id }}, function (err, v) {

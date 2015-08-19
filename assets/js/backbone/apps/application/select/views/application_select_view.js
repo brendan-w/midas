@@ -19,12 +19,15 @@ var ApplicationSelectView = BaseView.extend({
     var self = this;
     this.options = options;
     this.action  = options.action;
+
+    console.log(this.model);
   },
 
   render: function() {
 
     var data = {
-      model: this.model.toJSON(),
+      applications: this.model.get("applications"),
+      // model: this.model.toJSON(),
       user:  window.cache.currentUser,
       ui:    UIConfig,
     };

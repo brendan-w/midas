@@ -1,1 +1,74 @@
-<h1>ABCD</h1>
+
+<section>
+  <div class="container">
+
+    <div class="row box-pad-b">
+      <div class="col-md-12 nopadding">
+        <div class="row border-bottom">
+          <div class="col-sm-4"><h4>User</h4></div>
+          <div class="col-sm-1"><h4>Rate</h4></div>
+          <div class="col-sm-3"><h4>Files</h4></div>
+          <div class="col-sm-1"><h4>Vetted</h4></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <ul class="de-uglify">
+
+        <% _.each(applications, function(application) { %>
+
+          <li class="application row box" data-id="<%- application.id %>">
+
+            <!-- Applicant's Name -->
+            <div class="col-sm-4"><h3><a href="/profile/<%- application.user.id %>"><%- application.user.firstname + " " + application.user.lastname %></a></h3></div>
+
+            <!-- Rate -->
+            <div class="col-sm-1"><%- application.rate %></div>
+
+            <!-- Files -->
+            <div class="col-sm-3"></div>
+            
+            <!-- Vet Status -->
+            <div class="col-sm-1"></div>            
+
+            <!-- Accept Button -->
+            <div class="col-sm-1">
+
+              <% if (application.state == "accepted") { %>
+                <button class="btn btn-success" ><i class="fa fa-check"></i></button>
+              <% } else  { %>
+                <!-- The state string sent to the backend                                                               vvvvvvvv -->
+                <button class="btn btn-success application-state <% if(application.state != "pending") { %>disabled<% } %>" data-state="accepted">Accept</button>
+              <% } %>
+
+            </div>
+
+            <!-- Reject Button -->
+            <div class="col-sm-1">
+
+              <% if (application.state == "rejected") { %>
+                <button class="btn btn-danger" ><i class="fa fa-check"></i></button>
+              <% } else  { %>
+                <!-- The state string sent to the backend                                                              vvvvvvvv -->
+                <button class="btn btn-danger application-state <% if(application.state != "pending") { %>disabled<% } %>" data-state="rejected">Reject</button>
+              <% } %>
+
+            </div>
+          </li>
+
+        <%  }); %>
+
+        <% if(applications.length == 0) { %>
+          <div class="row">
+            <div class="col-sm-12">
+              <p>No applications</p>
+            </div>
+          </div>
+        <%  } %>
+
+      </ul>
+    </div>
+
+  </div>
+</section>
