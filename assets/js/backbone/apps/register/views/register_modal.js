@@ -21,7 +21,8 @@ var Register = Backbone.View.extend({
   events: {
     //for the "choose" target/form
     "click #register-as-applicant" : "gotoApplicantForm",
-    "click #register-as-poster" :    "gotoPosterForm",
+    "click #register-as-poster"    : "gotoPosterForm",
+    "click #login"                 : "gotoLogin",
   },
 
   initialize: function() {
@@ -127,6 +128,13 @@ var Register = Backbone.View.extend({
 
       self.modal.hide();
     });
+  },
+
+  gotoLogin: function(e) {
+    if(e && e.preventDefault) e.preventDefault();
+    console.log("asdf");
+    window.cache.userEvents.trigger("user:request:login");
+    this.modal.hide();
   },
 
   cleanup: function() {

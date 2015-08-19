@@ -14,7 +14,8 @@ var ForgotDoneTemplate = require('../templates/forgot_done_template.html');
 var LoginModal = Backbone.View.extend({
 
   events: {
-    "click #forgot-password": "gotoForgotForm",
+    "click #forgot-password" : "gotoForgotForm",
+    "click #register"        : "gotoRegister",
   },
 
   initialize: function (options) {
@@ -36,7 +37,7 @@ var LoginModal = Backbone.View.extend({
       if (window.cache.currentUser)
         Backbone.history.navigate(UIConfig.home.logged_in_path, { trigger: true });
       else
-        self.render("login", message)
+        self.render("login", message);
     });
 
     // clean up no matter how the modal is closed
@@ -165,6 +166,12 @@ var LoginModal = Backbone.View.extend({
       // self.$("#forgot-error").html(d.message);
       // self.$("#forgot-error").show();
     });
+  },
+
+  gotoRegister: function(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    window.cache.userEvents.trigger("user:register:show");
+    this.modal.hide();
   },
 
   cleanup: function () {

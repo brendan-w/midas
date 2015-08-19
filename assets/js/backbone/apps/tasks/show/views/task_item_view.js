@@ -292,7 +292,6 @@ var TaskItemView = BaseView.extend({
       self.$("#task-applied").show();
     });
 
-
   },
 
   close: function (e) {
