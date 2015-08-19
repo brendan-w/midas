@@ -15,7 +15,6 @@ var HomeView = Backbone.View.extend({
   events: {
     'click .tos-checkbox'  : 'toggleButton',
     'click .wizard-submit' : 'updateUserSetting',
-
     'click #home-login'    : 'triggerLogin',
     'click #home-register' : 'triggerRegister',
     'click #home-browse'   : 'triggerBrowse',
@@ -68,7 +67,7 @@ var HomeView = Backbone.View.extend({
 
   triggerBrowse: function(e) {
     if (e && e.preventDefault) e.preventDefault();
-    // window.cache.userEvents.trigger("user:request:login");
+    Backbone.history.navigate('/tasks', { trigger: true });
   },
 
   toggleButton: function (e) {
