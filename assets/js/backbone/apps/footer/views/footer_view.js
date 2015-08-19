@@ -24,7 +24,7 @@ var FooterView = Backbone.View.extend({
       if ($(window).height() > $('body').height())
       {
         var extra = $(window).height() - $('body').height();
-        extra /= 4;
+        extra /= 4;//TODO make this less arbitrary
         self.$el.css({ "margin-top": extra + "px" });
       }
     }

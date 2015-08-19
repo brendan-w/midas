@@ -304,7 +304,8 @@ var ProfileShowView = Backbone.View.extend({
       id: 'bio',
       placeholder: 'A short biography.',
       title: 'Biography',
-      rows: 4
+      rows: 4,
+      maxlength: 140,
     }).render();
   },
 
