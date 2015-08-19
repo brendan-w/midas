@@ -103,6 +103,10 @@ ul.de-uglify {
   padding-left: 0px;
 }
 
+.dim {
+  opacity: 0.5;
+}
+
 .clear {
   clear: both;
 }

@@ -83,24 +83,33 @@ var BrowseListView = Backbone.View.extend({
         var item = {
           item: model,
           user: window.cache.currentUser,
-          tagConfig: TagConfig,
-          tagShow: ['location', 'skill', 'topic', 'task-time-estimate', 'task-time-required']
+          tags: {},
+          // tagConfig: TagConfig,
+          // tagShow: ['location', 'skill', 'topic', 'task-time-estimate', 'task-time-required']
         };
 
-        if (this.options.collection[i].tags) {
-          item.tags = this.organizeTags(this.options.collection[i].tags);
-        } else {
-          item.tags =[];
-        }
-        if (this.options.collection[i].description) {
+        //do some pre-processing for the view
+
+
+        if(this.options.collection[i].tags)
+          item.tags = _(this.options.collection[i].tags).groupBy('type');
+        
+        if(!item.tags.location)
+          item.tags.location = []; //ensures that the view is always able to iterate
+
+        if(this.options.collection[i].description)
           item.item.descriptionHtml = marked(this.options.collection[i].description);
-        }
+
+        //compile the template
+
         var compiledTemplate = '';
-        if (this.options.target == 'projects') {
+
+        if(this.options.target == 'projects')
           compiledTemplate = _.template(ProjectListItem)(item);
-        } else {
+        else
           compiledTemplate = _.template(TaskListItem)(item);
-        }
+
+        //display it
         this.$el.append(compiledTemplate);
       }
     }

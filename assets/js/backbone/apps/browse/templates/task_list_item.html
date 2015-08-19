@@ -1,55 +1,41 @@
 <li data-id="<%- item.id %>" class="box task-box row">
 
-
-  <h3 class="task-list-title task-title-overflow-multi col-sm-4 col-md-3">
-    <a href="/tasks/<%- item.id %>" class="link-backbone c1">
-      <%- item.title %>
-    </a>
-  </h3>
-
-
-
-  <!-- Escaped by marked() -->
-  <!--
-  <div class="task-list-description task-desc-overflow-multi col-sm-6 col-md-4">
-    <%= item.descriptionHtml %>
+  <!-- deadline -->
+  <div class="col-md-4">
+    <h3 class="task-list-title task-title-overflow-multi">
+      <a href="/tasks/<%- item.id %>" class="link-backbone c1">
+        <%- item.title %>
+      </a>
+    </h3>
   </div>
-  -->
 
-  <!--
-  <div class="task-list-bottom border-top">
-
-    <% _.each(tagShow, function (tagType) { %>
-
-      <% if (tags[tagType]) { %>
-      <div class="task-list-tags c0 task-single-overflow">
-        <i class="task-list-icon-center <%- tagConfig.tags[tagType].icon %>"></i>
-        <% _.each(tags[tagType], function (t, i) { %>
-          <%- t.name %><% if (i + 1 < tags[tagType].length) { %>,<% } %>
-        <% }); %>
-      </div>
-      <% } %>
-
+  <!-- locations -->
+  <div class="col-md-3">
+    <% _.each(tags.location, function (location) { %>
+      <div><%- location.name %></div>
     <% }); %>
 
+    <% if(tags.location.length === 0) { %>
+      <span class="dim">Not specified</span>
+    <% } %>
   </div>
-  -->
 
-  <!--
-  <div class="task-list-bottom-person border-top">
-    <div class="task-list-person">
-      <div class="project-people-div pull-left" data-userid="<%- item.userId %>" style="text-align: right;">
-        <img src="/api/user/photo/<%- item.userId %>" class="project-people"/>
-      </div>
-      <div class="task-list-requestbox">
-        <div class="task-list-requested">requested by</div>
-        <div class="task-list-name"><%- item.user.name %></div>
-        <% if (item.user.agency) { %>
-        <div class="task-list-agency task-single-overflow"><%- item.user.agency.name %></div>
-        <% } %>
-      </div>
-    </div>
+  <!-- duration -->
+  <div class="col-md-2">
+    <% if (item.duration) { %>
+      <%- item.duration %>
+    <% } else { %>
+      <span class="dim">Not specified</span>
+    <% } %>
   </div>
-  -->
+
+  <!-- application deadline -->
+  <div class="col-md-3">
+    <% if (item.applyBy) { %>
+      <%- (new Date(item.applyBy)).toDateString() %>
+    <% } else { %>
+      <span class="dim">Not specified</span>
+    <% } %>    
+  </div>
 
 </li>
