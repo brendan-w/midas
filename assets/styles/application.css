@@ -2063,11 +2063,13 @@ li.modal-step.active .name {
 form[name="apply"] section
 {
   padding-top: 40px;
-  padding-bottom: 160px;
+  min-height: 260px;
 }
+
 form[name="apply"] h4 { 
   display:inline;
 }
+
 form[name="apply"] input { 
   display:inline; 
   width:auto; 
@@ -2129,9 +2131,11 @@ form[name="choose"] {
   text-align: center;
   padding:150px 0px;
 }
+
 form[name="choose"] .form-title {
   text-transform: uppercase;
 }
+
 form[name="choose"] button {
   text-transform: uppercase;
   width:100%;
@@ -2148,24 +2152,30 @@ ul.link-list {
   overflow-y: auto;
   max-height: 115px;
 }
+
 ul.link-list.edit input {
   overflow: hidden;
 }
+
 ul.link-list.edit .form-group {
   /* normal form-groups were a little too big */
   margin-bottom: 5px;
 }
+
 li.link > div {
   overflow: hidden;
 }
+
 /* The close buttons */
 li.link button {
   padding: 5px 10px;
 }
+
 /* The URL inputs */
 li.link input {
   width:100%;
 }
+
 .link-buttons {
   margin-top: 10px;
 }
@@ -2180,17 +2190,14 @@ form[name="choose"] {
   text-align: center;
   padding:150px 0px;
 }
+
 form[name="choose"] .form-title {
   text-transform: uppercase;
 }
+
 form[name="choose"] button {
   text-transform: uppercase;
   width:100%;
   padding-top: 12px;
   padding-bottom: 12px;
 }
-
-
-
-
-
