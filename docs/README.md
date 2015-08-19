@@ -14,20 +14,22 @@ The basics
   - Bootstrap
   - Files are compiled using Browserify
 
+
 The lay of the land
 -------------------
+
+The Backend:
 
 ```
 .
 ├── api/                  Main Sails.js backend directory
-│   ├── adapters/
 │   ├── controllers/
 │   ├── models/
 │   ├── notifications/
 │   ├── policies/         Sails.js' take on middleware
-│   ├── responses/        custom handlers on `res` 
+│   ├── responses/        custom handlers on `res`
 │   └── services/         Passport.js and utils
-├── app.js*
+├── app.js*               Entry point for the Sails.
 ├── assets/               Sails.js static files directory (frontend)
 │   ├── data/
 │   ├── fonts/
@@ -37,21 +39,74 @@ The lay of the land
 │   ├── styles/
 │   ├── uploads/
 │   └── users/
-├── config/            Sails.js app configs
+├── config/            Sails.js server/app configs
 ├── docs/              You are here
-├── test/
-│   ├── api/
-│   ├── browser/
-│   ├── data/
-│   └── demo/
+├── test/              Mocha test scripts
 ├── tools/
 │   ├── env.sh*        When sourced, this will set some env vars to sane defaults
 │   ├── init.sh*       Main setup script. Use `npm run init` to execute
-│   ├── permtool/
+│   ├── permtool/      Tool for loading user permissions into the database
 │   ├── postgres/      Database schema and migration scripts live here
-│   └── tagtool/
+│   └── tagtool/       Tool for loading tags into the database
 └── views/             The lone HTML view that serves as the base for the single page app
     ├── layout.ejs
     └── main/
         └── index.ejs
 ```
+
+The Frontend:
+
+```
+.
+└── assets/
+    └── js
+        ├── backbone
+        │   ├── apps
+        │   │   ├── admin
+        │   │   ├── application
+        │   │   ├── attachment
+        │   │   ├── browse
+        │   │   ├── comments
+        │   │   ├── events
+        │   │   ├── footer
+        │   │   ├── home
+        │   │   ├── languages
+        │   │   ├── links
+        │   │   ├── login
+        │   │   ├── nav
+        │   │   ├── profiles
+        │   │   ├── project
+        │   │   ├── projectowner
+        │   │   ├── register
+        │   │   ├── static
+        │   │   ├── tag
+        │   │   ├── talent
+        │   │   ├── tasks
+        │   │   └── vet
+        │   ├── base
+        │   ├── components
+        │   ├── config
+        │   ├── entities          Backbone models
+        │   └── mixins
+        └── vendor
+```
+
+The frontend begins its execution in
+
+assets/js/backbone/app.js
+assets/js/backbone/app-run.js
+assets/js/backbone/apps/apps_router.js
+assets/js/backbone/apps/browse/browse_app.js
+
+`browse_app.js` is the main page switcher. From there, executaion fans out to whichever
+
+
+
+The Tagging System
+------------------
+
+One of the core ways Midas stores information is in tags. These are objects with name and type strings as attributes. Almost every dropdown in Midas is simply viewing/editting tags of a certain type. All tags are stored in the `tagentity` table, are referenced by ID in other tables. The default set of tags is specified in `tools/tagtool/unicef.tags` and will be loaded into the database upon the `npm run init`
+
+The frontend uses "select2" for rendering dropdown controls. To help connect select2 with the tagging system, you will find a series of wrapper functions in `assets/js/backbone/components/tag_factory.js`. These will help transact tags of a given type, and will setup things like auto-completion for you.
+
+Since the same sets/options of tag dropdown are used in multiple places, there is Backbone view (`assets/js/backbone/apps/tag/show/views/tag_show_view.js`) containing some default tag instantiations.

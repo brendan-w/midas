@@ -27,7 +27,7 @@ function findAll (target, req, res) {
     async.each(ats, getFile, function (err) {
       if (err) { return res.send(400, { message: 'Error fetching files.' }); }
       res.send(ats);
-    })
+    });
   });
 };
 
