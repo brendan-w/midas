@@ -255,6 +255,14 @@ aside h4 {
   background-color: #1CABE2;
 }
 
+.btn-c4 {
+  background-color: #009900;
+}
+
+.nav >li > a:hover.btn-c4, .nav > li > a:focus.btn-c4 {
+  background-color: #66CC66 !important;
+}
+
 .btn-c2 {
   background-color: #007eb1;
   color: #fff;

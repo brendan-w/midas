@@ -39,6 +39,8 @@ var BrowseRouter = Backbone.Router.extend({
     'faq(/)'                    : 'showFaq',
     'about(/)'                  : 'showAbout',
     'talent(/)'                 : 'showTalent',
+    'terms(/)'                  : 'showTerms',
+    'privacy(/)'                : 'showPrivacy',
   },
 
   data: { saved: false },
@@ -100,6 +102,22 @@ var BrowseRouter = Backbone.Router.extend({
     this.staticView = new StaticView({
       el: "#container",
       page: "faq",
+    });
+  },
+
+  showTerms: function () {
+    this.cleanupChildren();
+    this.staticView = new StaticView({
+      el: "#container",
+      page: "terms",
+    });
+  },
+
+  showPrivacy: function () {
+    this.cleanupChildren();
+    this.staticView = new StaticView({
+      el: "#container",
+      page: "privacy",
     });
   },
 
