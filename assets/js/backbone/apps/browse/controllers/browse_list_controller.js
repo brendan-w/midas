@@ -102,7 +102,7 @@ Browse.ListController = BaseController.extend({
 
     if (this.newTaskModal) this.newTaskModal.cleanup();
     this.newTaskModal = new NewTaskModal({
-      el: "#addTask-wrapper",
+      el: this.$("#addTask-wrapper"),
       collection: this.tasksCollection,
     }).render();
   },

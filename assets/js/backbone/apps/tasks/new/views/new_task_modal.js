@@ -82,11 +82,8 @@ var NewTaskModal = Backbone.View.extend({
       doneButtonText: 'Post ' + i18n.t('Task'),
     });
 
-    this.initializeSelect2();
+    // this.initializeSelect2();
     this.initializeTextArea();
-
-    // Important: Hide all non-currently opened sections of wizard.
-    this.$("section:not(.current)").hide();
 
     this.modal.show();
 

@@ -63,8 +63,8 @@ ModalView = BaseView.extend({
     this.options = options;
 
     //default callbacks
-    this.on_next_cb   = function() { return true; };
-    this.on_prev_cb   = function() { return true; };
+    this.on_next_cb = function() { return true; };
+    this.on_prev_cb = function() { return true; };
 
     //global enter key listener
     $(window).keypress(function(e) {
@@ -113,6 +113,8 @@ ModalView = BaseView.extend({
     this.$form     = this.$body.find(">form");
     this.$pages    = this.$form.children("section");
     this.num_pages = this.$pages.length;
+
+    console.log(this.$form, this.$pages, this.$pages.eq(0));
 
     //hide the footer buttons, if requested
     this.$(".modal-footer").toggle(!options.hideButtons);

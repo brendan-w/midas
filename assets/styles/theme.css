@@ -166,10 +166,6 @@ aside h4 {
   color: black;
 }
 
-/* including #task-form to test for adverse effects */
-#task-form label {
-  display: block;
-}
 
 /**
  * BUTTONS
