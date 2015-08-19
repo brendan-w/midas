@@ -7,7 +7,7 @@ var utilities = require('../../../../mixins/utilities');
 var ModalView       = require('../../../../components/modal_new');
 var MarkdownEditor  = require('../../../../components/markdown_editor');
 var NewTaskTemplate = require('../templates/new_task_template.html');
-var TagFactory      = require('../../../../components/tag_factory');
+var TagView         = require('../../../tag/show/views/tag_show_view');
 
 
 var NewTaskModal = Backbone.View.extend({
@@ -21,52 +21,16 @@ var NewTaskModal = Backbone.View.extend({
     @param {Object}  options
     @param {Integer} options.projectId   -  optional Id of the parent project
   */
-  initialize: function (options) {
+  initialize: function(options) {
     this.options = _.extend(options, this.defaults);
 
     //ID of the parent project
     //if no projectId is specified, then the tasks created will be orphaned
     this.projectId = options.projectId || null;
-
-    this.data = {};
-    this.data.newTag = {};
-    this.data.newItemTags = [];
-    this.data.existingTags = [];
-
-    this.tagFactory = new TagFactory();
-    this.initializeSelect2Data();
   },
 
-  initializeSelect2Data: function () {
-    var self = this;
 
-    var types = [
-      "task-skills-required",
-      "task-time-required",
-      "task-people",
-      "task-length",
-      "task-time-estimate"
-    ];
-
-    this.tagSources = {};
-
-    var requestAllTagsByType = function (type) {
-      $.ajax({
-        url: '/api/ac/tag?type=' + type + '&list',
-        type: 'GET',
-        async: false,
-        success: function (data) {
-          self.tagSources[type] = data;
-        }
-      });
-    };
-
-    async.each(types, requestAllTagsByType, function (err) {
-      self.render();
-    });
-  },
-
-  render: function () {
+  render: function() {
     if(this.modal) this.modal.cleanup();
 
     this.modal = new ModalView({
@@ -82,7 +46,7 @@ var NewTaskModal = Backbone.View.extend({
       doneButtonText: 'Post ' + i18n.t('Task'),
     });
 
-    // this.initializeSelect2();
+    this.initializeTags();
     this.initializeTextArea();
 
     this.modal.show();
@@ -91,76 +55,24 @@ var NewTaskModal = Backbone.View.extend({
     return this;
   },
 
-  v: function (e) {
+  v: function(e) {
     return validate(e);
   },
 
-  next: function ($page) {
+  next: function($page) {
     return !validateAll($page);
   },
 
-  initializeSelect2: function () {
-    var self = this;
-
-    self.tagFactory.createTagDropDown({
-      type:"skill",
-      selector:"#task_tag_skills",
-      width: "100%",
-      tokenSeparators: [","],
-    });
-
-    self.tagFactory.createTagDropDown({
-      type:"topic",
-      selector:"#task_tag_topics",
-      width: "100%",
-      tokenSeparators: [","],
-    });
-
-    self.tagFactory.createTagDropDown({
-      type:"location",
-      selector:"#task_tag_location",
-      width: "100%",
-      tokenSeparators: [","],
-    });
-
-    self.$(".el-specific-location").hide();
-
-    // ------------------------------ //
-    // PRE-DEFINED SELECT MENUS BELOW //
-    // ------------------------------ //
-    self.$("#skills-required").select2({
-      placeholder: "Required/Not Required",
-      width: 'resolve'
-    });
-
-    self.$("#time-required").select2({
-      placeholder: 'Time Commitment',
-      width: 'resolve'
-    });
-
-    self.$("#people").select2({
-      placeholder: 'Personnel Needed',
-      width: 'resolve'
-    });
-
-    self.$("#length").select2({
-      placeholder: 'Deadline',
-      width: 'resolve'
-    });
-
-    self.$("#time-estimate").select2({
-      placeholder: 'Estimated Time Required',
-      width: 'resolve'
-    });
-
-    self.$("#task-location").select2({
-      placeholder: 'Work Location',
-      width: 'resolve'
-    });
-
+  initializeTags: function() {
+    if(this.tagView) this.tagView.cleanup();
+    this.TagView = new TagView({
+      el:     this.el,
+      edit:   true,
+      target: "task",
+    }).render();
   },
 
-  initializeTextArea: function () {
+  initializeTextArea: function() {
     if (this.md) { this.md.cleanup(); }
     this.md = new MarkdownEditor({
       data: '',
@@ -173,19 +85,11 @@ var NewTaskModal = Backbone.View.extend({
     }).render();
   },
 
-  locationChange: function (e) {
-    if (_.isEqual(e.currentTarget.value, "true")) {
-      this.$(".el-specific-location").show();
-    } else {
-      this.$(".el-specific-location").hide();
-    }
-  },
-
   submit: function($form) {
     var self = this;
 
     //when the collection add is successful, redirect to the newly created task
-    this.listenTo(this.collection, "task:save:success", function (data) {
+    this.listenTo(this.collection, "task:save:success", function(data) {
 
       // redirect when the modal is fully hidden
       self.$el.bind('hidden.bs.modal', function() {
@@ -203,10 +107,10 @@ var NewTaskModal = Backbone.View.extend({
     });
   },
 
-
-  cleanup: function () {
-    if(this.md) { this.md.cleanup(); }
-    if(this.modal) this.modal.cleanup();
+  cleanup: function() {
+    if(this.md)      this.md.cleanup();
+    if(this.tagView) this.tagView.cleanup();
+    if(this.modal)   this.modal.cleanup();
     removeView(this);
   }
 

@@ -114,8 +114,6 @@ ModalView = BaseView.extend({
     this.$pages    = this.$form.children("section");
     this.num_pages = this.$pages.length;
 
-    console.log(this.$form, this.$pages, this.$pages.eq(0));
-
     //hide the footer buttons, if requested
     this.$(".modal-footer").toggle(!options.hideButtons);
     this.$(".wizard-cancel").toggle(!options.hideCancel);

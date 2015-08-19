@@ -1,175 +1,79 @@
-<form id="task-form" class="form-inline">
+<form id="task-form">
 
   <section name="Terms">
-    <div class="row">
-      <div class="col-md-12">
-        <p>We’re glad you want to create an <span data-i18n="task">opportunity</span>!
-          Before continuing please review the following responsibilities.
-        </p>
+    <p>We’re glad you want to create an <span data-i18n="task">opportunity</span>!
+      Before continuing please review the following responsibilities.
+    </p>
 
-        <p>As a Creator I will:
-        <ul>
-          <li><strong>Respond promptly and positively</strong> to
-            <span data-i18n="task">opportunity</span> takers</li>
-          <li>Lay out clear and realistic <strong>deliverables</strong></li>
-          <li>Be clear about <strong>how much time is needed</strong> to complete the
-            <span data-i18n="task">opportunity</span>
-          </li>
-          <li>Define the <strong>skills</strong> needed</li>
-          <li>Be prepared to <strong>onboard</strong> the
-            <span data-i18n="task">opportunity</span> taker.
-            If the <span data-i18n="task">opportunity</span>
-            assigned is a simple one, take the time to explain it.
-            If the <span data-i18n="task">opportunity</span>
-            is big or long-term, be prepared to mentor the participant.
-          </li>
-        </ul>
-        </p>
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" id="task-responsibilities" class="validate" data-validate="checked">
-            <span id="task-responsibilities-cta">
-              I agree to fulfill these responsibilities.
-            </span>
-          </label>
-          <span class="help-block error-checked" style="display:none;">
-            You need to check this box to proceed.
-          </span>
-        </div>
-      </div>
+    <p>As a Creator I will:
+    <ul>
+      <li><strong>Respond promptly and positively</strong> to
+        <span data-i18n="task">opportunity</span> takers</li>
+      <li>Lay out clear and realistic <strong>deliverables</strong></li>
+      <li>Be clear about <strong>how much time is needed</strong> to complete the
+        <span data-i18n="task">opportunity</span>
+      </li>
+      <li>Define the <strong>skills</strong> needed</li>
+      <li>Be prepared to <strong>onboard</strong> the
+        <span data-i18n="task">opportunity</span> taker.
+        If the <span data-i18n="task">opportunity</span>
+        assigned is a simple one, take the time to explain it.
+        If the <span data-i18n="task">opportunity</span>
+        is big or long-term, be prepared to mentor the participant.
+      </li>
+    </ul>
+    </p>
+    <div class="checkbox">
+      <label>
+        <input type="checkbox" id="task-responsibilities" class="validate" data-validate="checked">
+        <span id="task-responsibilities-cta">
+          I agree to fulfill these responsibilities.
+        </span>
+      </label>
+      <span class="help-block error-checked" style="display:none;">
+        You need to check this box to proceed.
+      </span>
     </div>
   </section>
 
-  <section name="Job Title">
+  <section name="Basics">
     <div class="form-group">
-      <label for="task-title">
-        What problem are you trying to solve?
-      </label>
+      <label for="task-title">Job Title</label>
+      <input type="text" id="task-title" class="fullwidth form-control validate"
+             placeholder="A short description of the problem." data-validate="empty,count100"/>
+      <span class="help-block error-empty" style="display:none;">You must enter a title for this <span
+          data-i18n="task">opportunity</span></span>
+      <span class="help-block error-count100" style="display:none;">The short description of the problem must be less than 100 characters.</span>
+    </div>
 
-      <div class="row">
-        <div class="col-md-12">
-          <input type="text" id="task-title" class="fullwidth form-control validate"
-                 placeholder="A short description of the problem." data-validate="empty,count100"/>
-          <span class="help-block error-empty" style="display:none;">You must enter a title for this <span
-              data-i18n="task">opportunity</span></span>
-          <span class="help-block error-count100" style="display:none;">The short description of the problem must be less than 100 characters.</span>
-        </div>
-      </div>
+    <div class="form-group">
+      <label for="task-description">Job Description</label>
+      <div id="task-description" class="markdown-edit"></div>
+      <span class="help-block error-empty" style="display:none;">You must enter a description for this <span data-i18n="task">opportunity</span></span>
     </div>
   </section>
 
   <section name="Skills">
-    <div class="form-group">
-      <label for="people">
-        We need
-      </label>
-      <select id="people" class="dropdown">
-        <% _.each(tags['task-people'], function (person) { %>
-          <option value="<%- person.id %>"><%- person.name %></option>
-        <% }); %>
-      </select>
 
-      <label for="topics">
-        to work on an <span data-i18n="task">opportunity</span> about these topics:
-      </label>
-      <div class="row">
-        <div class="col-md-12">
-          <input type="hidden" id="task_tag_topics" class="fullwidth" name="topic" />
-        </div>
-      </div>
+    <div class="form-group task-skills">
+      <label for="tag_skills">Skills</label>
+      <div id="tag_skills"></div> <!-- handled by TagShowView.js -->
     </div>
 
-    <hr/>
-
-    <div class="form-group">
-      <label for="skills-required">
-        The following skills are useful and
-      </label>
-      <select id="skills-required" name="skills-required" class="dropdown">
-        <% _.each(tags['task-skills-required'], function(requirement) { %>
-          <option value="<%- requirement.id %>"><%- requirement.name %></option>
-        <% }); %>
-      </select>
-      <label for="skills">
-        to complete this <span data-i18n="task">opportunity</span>:
-      </label>
-      <div class="row">
-        <div class="col-md-12">
-          <input type="hidden" id="task_tag_skills" name="skills" class="fullwidth" />
-        </div>
-      </div>
+    <div class="form-group task-topics">
+      <label for="tag_topics">Topics</label>
+      <div id="tag_topics"></div> <!-- handled by TagShowView.js -->
     </div>
 
   </section>
 
-  <section name="Time">
-    <div class="form-group">
-      <label for="time-required">
-        This
-      </label>
-      <select id="time-required" class="dropdown">
-        <% _.each(tags['task-time-required'], function (time) { %>
-          <option value="<%- time.id %>"><%- time.name %></option>
-        <% }); %>
-      </select>
+  <section name="Details">
 
-      <label for="time-estimate">
-        <span data-i18n="task">opportunity</span> will require
-      </label>
-      <select id="time-estimate" class="dropdown">
-        <% _.each(tags['task-time-estimate'], function (timeEstimate) { %>
-          <option value="<%- timeEstimate.id %>"><%- timeEstimate.name %></option>
-        <% }); %>
-      </select>
-
-
-
-      <label for="length">
-        of work, and must be completed within
-      </label>
-      <select id="length" class="dropdown">
-        <% _.each(tags['task-length'], function (item) { %>
-          <option value="<%- item.id %>"><%- item.name %></option>
-        <% }) %>
-      </select>
+    <div class="form-group task-location">
+      <label for="tag_location">Locations</label>
+      <div id="tag_location"></div> <!-- handled by TagShowView.js -->
     </div>
 
-    <hr/>
-
-    <div class="form-group">
-      <label for="task-location">
-        The participant(s) must be located
-      </label>
-      <select id="task-location" class="dropdown">
-        <option value="false">anywhere</option>
-        <option value="true">at specific location(s)</option>
-      </select> to complete this task.
-
-      <div class="row el-specific-location">
-        <div class="col-md-12">
-          <div class="form-group task-skills fullwidth">
-            <label for="location">
-              The specific location(s) are:
-            </label>
-            <input type="hidden" id="task_tag_location" name="location" class="fullwidth"/>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section name="Description">
-    <div class="form-group">
-      <label for="task-description">
-        Describe the <span data-i18n="task">opportunity</span> details, including goals, expected outcomes and deliverables.
-      </label>
-      <div class="row">
-        <div class="col-md-12">
-          <div class="markdown-edit"></div>
-          <span class="help-block error-empty" style="display:none;">You must enter a description for this <span data-i18n="task">opportunity</span></span>
-        </div>
-      </div>
-    </div>
   </section>
 
 </form>
