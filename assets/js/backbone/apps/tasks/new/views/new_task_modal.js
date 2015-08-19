@@ -51,7 +51,6 @@ var NewTaskModal = Backbone.View.extend({
     this.initializeTextArea();
 
     this.modal.show();
-    this.modal.gotoPage(3);
 
     // Return this for chaining.
     return this;
@@ -67,7 +66,7 @@ var NewTaskModal = Backbone.View.extend({
 
   initializeTags: function() {
     if(this.tagView) this.tagView.cleanup();
-    this.TagView = new TagView({
+    this.tagView = new TagView({
       el:     this.el,
       edit:   true,
       target: "task",
@@ -108,9 +107,12 @@ var NewTaskModal = Backbone.View.extend({
 
     this.collection.addAndSave({
       title:       this.$("#task-title").val(),
-      description: this.$("#task-description").val(),
+      description: this.$("#task-description textarea").val(),
       projectId:   this.projectId,
-      tags:        this.tagFactory.getTagsFrom(this.$("#task_tag_topics, #task_tag_skills, #task_tag_location, #skills-required, #people, #time-required, #time-estimate, #length")),
+      tags:        this.tagView.data(),
+      applyBy:     this.$("#applyBy").val()   || undefined,
+      startedBy:   this.$("#startedBy").val() || undefined,
+      duration:    this.$("#duration").val(),
     });
   },
 
