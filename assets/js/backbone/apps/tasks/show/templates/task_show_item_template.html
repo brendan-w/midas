@@ -127,7 +127,11 @@
           <% if(!edit) { %>
             <h4>
               <!-- convert the ISO date code into a more human readable format -->
-              <% if (model.applyBy) { %><%- (new Date(model.applyBy)).toDateString() %><% } else { %>Not specified<% } %>
+              <% if (model.applyBy) { %>
+                <%- (new Date(model.applyBy)).toDateString() %>
+              <% } else { %>
+                <span class="dim">Not specified</span>
+              <% } %>
             </h4>
           <% } else { %>
             <input id="applyBy" class="form-control timepicker" type="text" placeholder="Click to select a deadline">
@@ -156,7 +160,11 @@
             <% if(!edit) { %>
               <div>
                 <!-- convert the ISO date code into a more human readable format -->
-                <% if (model.startedBy) { %><%- (new Date(model.startedBy)).toDateString() %><% } else { %>Not specified<% } %>
+                <% if (model.startedBy) { %>
+                  <%- (new Date(model.startedBy)).toDateString() %>
+                <% } else { %>
+                  <span class="dim">Not specified</span>
+                <% } %>
               </div>
             <% } else { %>
               <input id="startedBy" class="form-control timepicker" type="text" placeholder="Click to select a start date">
@@ -166,7 +174,12 @@
           <div class="form-group task-duration">
             <label for="duration">Duration</label>
             <% if(!edit) { %>
-              <div><% if (model.duration) { %><%- model.duration %><% } else { %>Not specified<% } %></div>
+              <div>
+                <% if (model.duration) { %>
+                  <%- model.duration %>
+                <% } else { %>
+                  <span class="dim">Not specified</span>
+                <% } %></div>
             <% } else { %>
               <input id="duration" class="form-control" type="text" value="" placeholder="Type a duration">
             <% } %>

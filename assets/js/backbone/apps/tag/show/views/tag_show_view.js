@@ -211,7 +211,7 @@ var TagShowView = Backbone.View.extend({
 
   tagStringFor: function(tag_type, seperator) {
     var str = _(this.tags).chain().where({ type : tag_type }).pluck("name").value().join(seperator);
-    return (str.length === 0) ? "Not specified" : str;
+    return (str.length === 0) ? "<span class='dim'>Not specified</span>" : str;
   },
 
   data: function() {
