@@ -18,6 +18,7 @@ var RegisterModal = require('../register/views/register_modal');
 var TalentController = require('../talent/controllers/talent_controller');
 var StaticView = require('../static/views/static_view');
 
+
 var BrowseRouter = Backbone.Router.extend({
 
   routes: {
@@ -189,11 +190,12 @@ var BrowseRouter = Backbone.Router.extend({
     model.set({ id: id });
     
     this.taskShowController = new TaskShowController({
-      model: model,
+      el: '#container',
+      model:  model,
       router: this,
-      id: id,
+      id:     id,
       action: action,
-      data: this.data,
+      data:   this.data,
     });
   },
 

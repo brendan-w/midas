@@ -14,7 +14,6 @@ var VetListView = BaseView.extend({
 
   events: {
     "click .vet-state" : "set_vet_state",
-    "click .vet-state" : "set_vet_state",
   },
 
   initialize: function(options) {

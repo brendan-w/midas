@@ -1,9 +1,9 @@
 
 var _        = require('underscore');
 var Backbone = require('backbone');
-var utils    = require('../../../mixins/utilities');
+var utils    = require('../../../../mixins/utilities');
 
-var        AttachmentView = require('../../attachment/views/attachment_show_view.js');
+var        AttachmentView = require('../../../attachment/views/attachment_show_view.js');
 
 var   ApplicationTemplate = require('../templates/application_template.html');
 var FinishProfileTemplate = require('../templates/finish_profile_template.html');
