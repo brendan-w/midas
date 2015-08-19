@@ -152,7 +152,7 @@
           </div>
 
           <div class="form-group task-startedby">
-            <label for="startedBy">Start Date</label>
+            <label for="startedBy">Anticipated Start Date</label>
             <% if(!edit) { %>
               <div>
                 <!-- convert the ISO date code into a more human readable format -->
@@ -163,15 +163,12 @@
             <% } %>
           </div>
 
-          <div class="form-group task-completedby">
-            <label for="completedBy">End Date</label>
+          <div class="form-group task-duration">
+            <label for="duration">Duration</label>
             <% if(!edit) { %>
-              <div>
-                <!-- convert the ISO date code into a more human readable format -->
-                <% if (model.completedBy) { %><%- (new Date(model.completedBy)).toDateString() %><% } else { %>Not specified<% } %>
-              </div>
+              <div><% if (model.duration) { %><%- model.duration %><% } else { %>Not specified<% } %></div>
             <% } else { %>
-              <input id="completedBy" class="form-control timepicker" type="text" placeholder="Click to select an end date">
+              <input id="duration" class="form-control" type="text" value="" placeholder="Type a duration">
             <% } %>
           </div>
 

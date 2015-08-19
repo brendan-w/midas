@@ -15,7 +15,6 @@ var ProjectCollection = require('../../../../entities/projects/projects_collecti
 var            ApplyModal = require('../../../application/views/application_modal');
 var        AttachmentView = require('../../../attachment/views/attachment_show_view');
 var               TagView = require('../../../tag/show/views/tag_show_view');
-var            TagFactory = require('../../../../components/tag_factory');
 var        ModalComponent = require('../../../../components/modal');
 var            ModalAlert = require('../../../../components/modal_alert');
 var        MarkdownEditor = require('../../../../components/markdown_editor');
@@ -57,8 +56,6 @@ var TaskItemView = BaseView.extend({
     this.options = options;
     this.action  = options.action;
     this.edit    = (options.action == 'edit');
-
-    this.tagFactory = new TagFactory();
   },
 
   render: function() {
@@ -159,9 +156,9 @@ var TaskItemView = BaseView.extend({
       defaultDate: this.model.get("startedBy"),
     });
 
-    this.$('#completedBy').datetimepicker({
-      defaultDate: this.model.get("completedBy"),
-    });
+    // this.$('#completedBy').datetimepicker({
+    //   defaultDate: this.model.get("completedBy"),
+    // });
 
   },
 
@@ -265,7 +262,8 @@ var TaskItemView = BaseView.extend({
       projectId:   project ? project.get("id") : null,
       applyBy:     this.$("#applyBy").val()     || undefined,
       startedBy:   this.$("#startedBy").val()   || undefined,
-      completedBy: this.$("#completedBy").val() || undefined,
+      // completedBy: this.$("#completedBy").val() || undefined,
+      duration:    this.$("#duration").val(),
     });
 
     this.$("#task-save").attr("disabled", "disabled");

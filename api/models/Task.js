@@ -28,6 +28,8 @@ module.exports = {
     startedBy: 'datetime',
     // end time
     completedBy: 'datetime',
+    // duration
+    duration: 'STRING',
 
 
     publishedAt: 'datetime',

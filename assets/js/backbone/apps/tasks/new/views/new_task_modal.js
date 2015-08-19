@@ -47,9 +47,11 @@ var NewTaskModal = Backbone.View.extend({
     });
 
     this.initializeTags();
+    this.initializeDates();
     this.initializeTextArea();
 
     this.modal.show();
+    this.modal.gotoPage(3);
 
     // Return this for chaining.
     return this;
@@ -70,6 +72,11 @@ var NewTaskModal = Backbone.View.extend({
       edit:   true,
       target: "task",
     }).render();
+  },
+
+  initializeDates: function() {
+    this.$('#applyBy').datetimepicker();
+    this.$('#startedBy').datetimepicker();
   },
 
   initializeTextArea: function() {
