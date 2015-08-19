@@ -1620,16 +1620,15 @@ ul.task-tags > li {
     white-space: nowrap
   }
 
+  .task-title-overflow-multi{
+    overflow: hidden;
+    height: 100%;
+  }
+
   .task-desc-overflow-multi{
     overflow: hidden;
     height: 100px;
     line-height: 1.5em;
-  }
-
-  .task-title-overflow-multi{
-    overflow: hidden;
-    height: 50px;
-    line-height: 1.55em;
   }
 
   .task-desc-overflow-multi:before {
