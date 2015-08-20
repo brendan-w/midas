@@ -41,6 +41,15 @@ var StaticView = Backbone.View.extend({
 
     this.$el.i18n();
 
+    //manually scroll to IDs specified in the hash, since the page
+    //is never actually (re)loaded by the browser
+    if(window.location.hash)
+    {
+      var element = this.$(window.location.hash);
+      if(element.length > 0)
+        element.get(0).scrollIntoView();
+    }
+
     return this;
   },
 
