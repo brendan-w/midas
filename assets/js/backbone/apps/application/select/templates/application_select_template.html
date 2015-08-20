@@ -6,12 +6,17 @@
       <div class="col-md-12 nopadding">
 
         <div class="pull-right">
-          <button class="btn btn-success">Accept and Assign</button>
+          <a href="/tasks/<%- task.id %>" class="btn btn-c2 link-backbone" id="profile-cancel">Back to Job</a>
+          <button class="btn btn-c2">Accept and Assign</button>
         </div>
 
-        <p class="col-sm-4">
-          Use this page to accept applicants for this job. By clicking "Accept and Assign", all applicants will recieve an email notifying them of acceptance/rejection, and this job will be marked as "Assigned".
-        </p>
+
+        <div class="col-sm-4">
+          <h3>Applicants for <%- task.title %></h3>
+          <p>
+            After clicking "Accept and Assign", all applicants will recieve an email notifying them of acceptance or rejection, and this job will be marked as "Assigned".
+          </p>
+        </div>
 
       </div>
     </div>
@@ -19,10 +24,10 @@
     <div class="row box-pad-b">
       <div class="col-md-12 nopadding">
         <div class="row border-bottom">
-          <div class="col-sm-4"><h4>User</h4></div>
+          <div class="col-sm-3"><h4>User</h4></div>
           <div class="col-sm-1"><h4>Rate</h4></div>
           <div class="col-sm-3"><h4>Files</h4></div>
-          <div class="col-sm-3"><h4>Pre-approved for</h4></div>
+          <div class="col-sm-4"><h4>Pre-approved for</h4></div>
           <div class="col-sm-1"><h4>Accept</h4></div>
         </div>
       </div>
@@ -36,7 +41,7 @@
           <li class="application row box" data-id="<%- application.id %>" data-user-id="<%- application.user.id %>">
 
             <!-- Applicant's Name -->
-            <div class="col-sm-4"><h3><a href="/profile/<%- application.user.id %>"><%- application.user.firstname + " " + application.user.lastname %></a></h3></div>
+            <div class="col-sm-3"><h3><a href="/profile/<%- application.user.id %>" target="_blank"><%- application.user.firstname + " " + application.user.lastname %></a></h3></div>
 
             <!-- Rate -->
             <div class="col-sm-1"><%- application.rate %></div>
@@ -58,9 +63,21 @@
 
               </ul>
             </div>
-            
+
             <!-- Vet Status -->
-            <div class="col-sm-3"></div>
+            <div class="col-sm-4">
+              <ul class="vet-list">
+                  <!-- simply add a .vetted class to each <li> that the user is vetted for -->
+                  <% _.each(application.vets, function(vet) { %>
+
+                    <li class="vetted">
+                      <i class='fa fa-check-circle'>&nbsp;</i>
+                      <span><%= vet.project.title %></span>
+                    </li>
+
+                  <%  }); %>
+              </ul>
+            </div>
 
             <!-- Accept Button -->
             <div class="col-sm-1">

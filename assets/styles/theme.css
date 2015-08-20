@@ -207,18 +207,6 @@ aside h4 {
   background-image: none;
 }
 
-.btn-c3 {
-  background-color: white;
-  color: #4D4D4D;
-}
-
-.btn-c3:hover,
-.btn-c3.hover {
-  background-color: #4D4D4D;
-  color: #F0F0F0;
-}
-
-
 .btn-c0 {
   background-color: #E0E0E0;
   color: #4D4D4D;
@@ -295,6 +283,7 @@ aside h4 {
   /*border-color: #BE471B;*/
   /*color: #BE471B;*/
 }
+
 
 .nav > li > a:hover.btn-c2, .nav > li > a:focus.btn-c2 {
   background-color: #297BB5;

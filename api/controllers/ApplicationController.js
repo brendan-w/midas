@@ -14,7 +14,8 @@ module.exports = {
 
   create: function (req, res) {
 
-    //these files are submitted along with the application to ensure atomicity    
+    //file IDs are submitted along with the application to ensure atomicity
+
     if(req.body.files === undefined) return res.send(400, { message: "No files were submitted with this application" });
     if(req.body.rate  === undefined) return res.send(400, { message: "Application is missing the rate" });
     if(req.body.task  === undefined) return res.send(400, { message: "Application is missing the task ID" });

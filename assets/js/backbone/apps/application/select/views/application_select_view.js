@@ -45,7 +45,7 @@ var ApplicationSelectView = BaseView.extend({
 
     var data = {
       applications: applications,
-      model: this.model.toJSON(),
+      task: this.model.toJSON(),
       user:  window.cache.currentUser,
       ui:    UIConfig,
     };
