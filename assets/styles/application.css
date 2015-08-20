@@ -1607,6 +1607,27 @@ ul.task-tags > li {
 .task-show-creation > time {
   font-weight: bold;
 }
+
+.task-state-wrapper {
+  position: relative; /* needed for a child with height:100% to stay contained */
+}
+
+.task-state {
+  background-color: #6C6;
+  position:absolute;
+  top:0px;
+  right:0px;
+  min-width:80px;
+  height:100%;
+  text-align: center;
+  padding-top:2em; /* TODO: make this dynamic with proper centering */
+}
+
+.task-state > * {
+  color:white !important; /* override the default heading color */
+  text-transform: uppercase;
+}
+
 #stateFilters label {
   display: block;
   font-weight: normal;
