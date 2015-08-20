@@ -1787,7 +1787,6 @@ ul.task-tags > li {
   height: 60px;
   color: black;
   padding: 10px 20px;
-  border: 1px solid black;
   -webkit-border-radius: 4px;
 }
 
@@ -1957,6 +1956,8 @@ ul.task-tags > li {
 
 /* Home Styles */
 .home-banner {
+  background-size: cover;
+  background-position: center center;
   padding-top: 60px;
   padding-bottom: 40px;
   color:white;
@@ -1976,8 +1977,11 @@ ul.task-tags > li {
 }
 
 /* Banner Styles */
+
+/* Section Style */
 .banner {
-  background:#555;
+  background-size: cover;
+  background-position: center center;
   color:white;
   padding: 30px 0px;
   height: 350px;
@@ -2003,7 +2007,7 @@ ul.task-tags > li {
 
 .banner-title {
   display:inline-block;
-  padding-top: 30px;
+  padding-top: 40px;
   padding-bottom: 40px;
   margin-bottom: 40px;
   border-bottom:1px solid white;
