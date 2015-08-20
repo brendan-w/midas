@@ -28,7 +28,8 @@ var EditorTemplate = require('./markdown_editor_template.html');
 MarkdownEditor = BaseComponent.extend({
 
   events: {
-    "click .btn"                 : "clickButton"
+    "click .btn"       : "clickButton",
+    "keydown textarea" : "onKeyDown",
   },
 
   initialize: function (options) {
@@ -63,6 +64,20 @@ MarkdownEditor = BaseComponent.extend({
     return this;
   },
 
+  onKeyDown: function (e) {
+    if(this.options.maxlength)
+    {
+      var chars_left = this.options.maxlength - this.$("textarea").val().length;
+      chars_left = Math.max(0, chars_left);
+      this.$('#charactersLeft').text(chars_left);
+      this.$('#charsLeft').css("color", (chars_left == 0) ? "red" : "auto");
+    }
+    else
+    {
+      this.$('#charsLeft').hide();
+    }
+  },
+
   render: function () {
     var data = {
       id: this.options.id,
@@ -75,6 +90,7 @@ MarkdownEditor = BaseComponent.extend({
     };
     var template = _.template(EditorTemplate)(data);
     this.$el.html(template);
+    this.onKeyDown();
     return this;
   },
 
