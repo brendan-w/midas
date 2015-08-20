@@ -20,13 +20,27 @@ var ApplicationSelectView = BaseView.extend({
     this.options = options;
     this.action  = options.action;
 
-    console.log(this.model);
+
   },
 
   render: function() {
 
+    //show loading icon
+
+    $.ajax({
+      url: "/api/application/findApplicantsForTask/" + this.model.get("id"),
+      type: "GET",
+      success: this.render_applicants,
+    });
+
+    return this;
+  },
+
+  render_applicants: function(applications) {
+    console.log(applications);
+    return;
     var data = {
-      applications: this.model.get("applications"),
+      // applications: this.model.get("applications"),
       // model: this.model.toJSON(),
       user:  window.cache.currentUser,
       ui:    UIConfig,
@@ -35,7 +49,6 @@ var ApplicationSelectView = BaseView.extend({
     this.$el.html(_.template(ApplicationSelectTemplate)(data));
     this.$el.i18n();
 
-    return this;
   },
 
   cleanup: function () {

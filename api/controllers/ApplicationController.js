@@ -1,5 +1,7 @@
 
 var _ = require("underscore");
+var async = require("async");
+
 
 /**
  * ApplyController
@@ -31,9 +33,9 @@ module.exports = {
 
       //now that we have an application ID to attach files to, attach the requested files
       //TODO:check for bad file IDs
-      var attachments = _.map(req.body.files, function(file) {
+      var attachments = _.map(req.body.files, function(fileId) {
         return {
-          fileId: file,
+          file: fileId,
           applicationId: a.id,
         };
       });
@@ -49,6 +51,47 @@ module.exports = {
         }
         res.send(a);
       });
+    });
+  },
+
+  //lookup all applicants for the given task ID
+  findApplicantsForTask: function(req, res) {
+
+    //find the applications for this task
+    Application.find({ task : req.params.id})
+               .populate("user")
+               .exec(function(err, applications) {
+      if(err) return res.send(400, { message: "Error looking up applications" });
+
+      //populate the user's vets and submitted files
+      function populate_vets_and_files(application, callback) {
+
+        //populate vets
+        Vet.find({ user: application.user.id })
+           .populate("project")
+           .exec(function(err, vets) {
+
+            if(err) return callback("Error looking up vets for applicant", undefined);
+            application.vets = vets;
+
+            //populate files
+            Attachment.find({ applicationId: application.id })
+                      .populate("file")
+                      .exec(function(err, files) {
+              if(err) return callback("Error looking up files for applicant", undefined);
+
+              application.files = files;
+              return callback(null, application);
+            });
+        });
+      }
+
+      //use async to populate all missing fields on each applicant
+      async.map(applications, populate_vets_and_files, function(err, applications){
+        if(err) return res.send(400, { message: err });
+        res.send(applications); //all done
+      });
+
     });
   },
 

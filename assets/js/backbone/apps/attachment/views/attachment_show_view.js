@@ -175,7 +175,7 @@ var AttachmentShowView = Backbone.View.extend({
     $file.find(".file-tag-waiting").show();
 
     // store id in the database with the file
-    var data = { fileId: file.id };
+    var data = { file: file.id };
     data[this.target + 'Id'] = this.id;
 
     $.ajax({

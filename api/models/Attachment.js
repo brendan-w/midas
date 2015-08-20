@@ -11,7 +11,11 @@ module.exports = {
 
   attributes: {
     // reference to the file that has been attached
-    fileId: 'INTEGER',
+    file: {
+      model: 'File',
+      required: true,
+    },
+
     // Select ONE of project or task, to associate this attachment
     // with that project or task
     projectId: 'INTEGER',

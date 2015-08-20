@@ -62,26 +62,11 @@ var getMetadata = function(task, user, cb) {
         if (like) { task.like = true; }
     */
 
+        //used for telling of someone has already applied for a task
         Application.findOne({ user: user.id, task: task.id }, function (err, a) {
           if (err) return cb(err, task);
           if (a) task.application = a;
-
-          //task owners get priveleges to see all applicants
-          if(task.isOwner)
-          {
-            //populate the applications field
-            Application.find({ task: task.id })
-                       .populate("user")
-                       .exec(function (err, applications) {
-              if(err) return cb(err, task);
-              task.applications = applications;
-              return cb(null, task);
-            });
-          }
-          else
-          {
-            return cb(null, task);
-          }
+          return cb(null, task);
         });
         /*
         Volunteer.findOne({ where: { userId: user.id, taskId: task.id }}, function (err, v) {

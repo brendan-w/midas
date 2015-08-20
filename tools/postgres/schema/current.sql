@@ -73,7 +73,7 @@ ALTER SEQUENCE application_id_seq OWNED BY application.id;
 --
 
 CREATE TABLE attachment (
-    "fileId" integer,
+    "file" integer,
     "applicationId" integer,
     "projectId" integer,
     "taskId" integer,

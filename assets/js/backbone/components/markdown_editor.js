@@ -65,12 +65,18 @@ MarkdownEditor = BaseComponent.extend({
   },
 
   onKeyDown: function (e) {
+    var text = this.$("textarea").val();
     if(this.options.maxlength)
     {
-      var chars_left = this.options.maxlength - this.$("textarea").val().length;
-      chars_left = Math.max(0, chars_left);
-      this.$('#charactersLeft').text(chars_left);
-      this.$('#charsLeft').css("color", (chars_left == 0) ? "red" : "auto");
+      // this.$('#charsLeft').show();
+
+      if(text)
+      {
+        var chars_left = this.options.maxlength - text.length;
+        chars_left = Math.max(0, chars_left);
+        this.$('#charactersLeft').text(chars_left);
+        this.$('#charsLeft').css("color", (chars_left == 0) ? "red" : "auto");
+      }
     }
     else
     {
@@ -80,13 +86,13 @@ MarkdownEditor = BaseComponent.extend({
 
   render: function () {
     var data = {
-      id: this.options.id,
-      validate: this.options.validate,
-      rows: this.options.rows,
-      maxlength: this.options.maxlength,
+      id:          this.options.id,
+      validate:    this.options.validate,
+      rows:        this.options.rows,
+      maxlength:   this.options.maxlength,
       placeholder: this.options.placeholder,
-      title: this.options.title,
-      data: this.options.data
+      title:       this.options.title,
+      data:        this.options.data
     };
     var template = _.template(EditorTemplate)(data);
     this.$el.html(template);
