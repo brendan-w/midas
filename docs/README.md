@@ -1,7 +1,8 @@
 
-Welcome to a remix of the [Midas](https://github.com/18F/midas) project.
+Welcome to a remix of the [Midas](https://github.com/18F/midas) project
+-----------------------------------------------------------------------
 
-Everything in this `/doc` directory is meant for developers.
+Everything in this `/doc` directory is meant for developers or adventerous folks.
 
 
 The basics
@@ -11,8 +12,8 @@ The basics
   - PostgreSQL database
   - Auth is done with Passport.js
 - Frontend is a Backbone single page app
-  - Bootstrap
   - Files are compiled using Browserify
+  - Bootstrap for styles
 
 
 The lay of the land
@@ -61,7 +62,7 @@ The Frontend:
 └── assets/
     └── js
         ├── backbone
-        │   ├── apps
+        │   ├── apps                Each subdirectory here is a different page or component of the Backbone app
         │   │   ├── admin
         │   │   ├── application
         │   │   ├── attachment
@@ -102,11 +103,29 @@ assets/js/backbone/apps/browse/browse_app.js
 
 
 
+Deviations from Midas
+---------------------
+
+The Backend is largely intact. The major differences are the addition of a user permissions table (rather than the simple `isAdmin` flag on the users table). Because of this, there are a few more Sails.js `.populate("permissions")` statements. The backend also has a few extra tables for storing links and language information. Nothing radically intensive.
+
+The Frontend has seen some major changes. Whole templates and views had to be overhauled. There are a number of unnused files left around from this overhaul. For instance, some  Where possible, we commented out original midas functionality, rather than delete it entirely
+
+
+
 The Tagging System
 ------------------
 
-One of the core ways Midas stores information is in tags. These are objects with name and type strings as attributes. Almost every dropdown in Midas is simply viewing/editting tags of a certain type. All tags are stored in the `tagentity` table, are referenced by ID in other tables. The default set of tags is specified in `tools/tagtool/unicef.tags` and will be loaded into the database upon the `npm run init`
+One of the core ways Midas stores information is in "tags". These are objects with name and type strings as attributes. Almost every dropdown in Midas is simply viewing/editting tags of a certain type. All tags are stored in the `tagentity` table, are referenced by ID in other tables. The default set of tags is specified in `tools/tagtool/unicef.tags` and will be loaded into the database upon the `npm run init`
 
 The frontend uses "select2" for rendering dropdown controls. To help connect select2 with the tagging system, you will find a series of wrapper functions in `assets/js/backbone/components/tag_factory.js`. These will help transact tags of a given type, and will setup things like auto-completion for you.
 
 Since the same sets/options of tag dropdown are used in multiple places, there is Backbone view (`assets/js/backbone/apps/tag/show/views/tag_show_view.js`) containing some default tag instantiations.
+
+
+
+Misc things of note
+-------------------
+
+- Not all entities in the frontend have proper backbone models, so don't be suprised if you start seeing a bunch of json being transacted with jQuery ajax calls.
+- There are files marked "Controllers" in the frontend. These are actually Backbone views (since Backbone doesn't have anything called controllers). See issue #40
+- 
