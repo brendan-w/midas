@@ -4,11 +4,26 @@
 
     <div class="row box-pad-b">
       <div class="col-md-12 nopadding">
+
+        <div class="pull-right">
+          <button class="btn btn-success">Accept and Assign</button>
+        </div>
+
+        <p class="col-sm-4">
+          Use this page to accept applicants for this job. By clicking "Accept and Assign", all applicants will recieve an email notifying them of acceptance/rejection, and this job will be marked as "Assigned".
+        </p>
+
+      </div>
+    </div>
+
+    <div class="row box-pad-b">
+      <div class="col-md-12 nopadding">
         <div class="row border-bottom">
           <div class="col-sm-4"><h4>User</h4></div>
           <div class="col-sm-1"><h4>Rate</h4></div>
           <div class="col-sm-3"><h4>Files</h4></div>
-          <div class="col-sm-1"><h4>Vetted</h4></div>
+          <div class="col-sm-3"><h4>Pre-approved for</h4></div>
+          <div class="col-sm-1"><h4>Accept</h4></div>
         </div>
       </div>
     </div>
@@ -18,7 +33,7 @@
 
         <% _.each(applications, function(application) { %>
 
-          <li class="application row box" data-id="<%- application.id %>">
+          <li class="application row box" data-id="<%- application.id %>" data-user-id="<%- application.user.id %>">
 
             <!-- Applicant's Name -->
             <div class="col-sm-4"><h3><a href="/profile/<%- application.user.id %>"><%- application.user.firstname + " " + application.user.lastname %></a></h3></div>
@@ -30,30 +45,11 @@
             <div class="col-sm-3"></div>
             
             <!-- Vet Status -->
-            <div class="col-sm-1"></div>            
+            <div class="col-sm-3"></div>
 
             <!-- Accept Button -->
             <div class="col-sm-1">
-
-              <% if (application.state == "accepted") { %>
-                <button class="btn btn-success" ><i class="fa fa-check"></i></button>
-              <% } else  { %>
-                <!-- The state string sent to the backend                                                               vvvvvvvv -->
-                <button class="btn btn-success application-state <% if(application.state != "pending") { %>disabled<% } %>" data-state="accepted">Accept</button>
-              <% } %>
-
-            </div>
-
-            <!-- Reject Button -->
-            <div class="col-sm-1">
-
-              <% if (application.state == "rejected") { %>
-                <button class="btn btn-danger" ><i class="fa fa-check"></i></button>
-              <% } else  { %>
-                <!-- The state string sent to the backend                                                              vvvvvvvv -->
-                <button class="btn btn-danger application-state <% if(application.state != "pending") { %>disabled<% } %>" data-state="rejected">Reject</button>
-              <% } %>
-
+              <input type="checkbox" class="form-control">
             </div>
           </li>
 
