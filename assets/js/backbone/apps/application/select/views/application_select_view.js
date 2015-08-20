@@ -24,31 +24,34 @@ var ApplicationSelectView = BaseView.extend({
   },
 
   render: function() {
-
+    var self = this;
     //show loading icon
 
+    //fetch the applicants for this job
     $.ajax({
       url: "/api/application/findApplicantsForTask/" + this.model.get("id"),
       type: "GET",
-      success: this.render_applicants,
+      success: function(applications) {
+        self.render_applicants(applications);
+      },
     });
 
     return this;
   },
 
   render_applicants: function(applications) {
+
     console.log(applications);
-    return;
+
     var data = {
-      // applications: this.model.get("applications"),
-      // model: this.model.toJSON(),
+      applications: applications,
+      model: this.model.toJSON(),
       user:  window.cache.currentUser,
       ui:    UIConfig,
     };
 
     this.$el.html(_.template(ApplicationSelectTemplate)(data));
     this.$el.i18n();
-
   },
 
   cleanup: function () {

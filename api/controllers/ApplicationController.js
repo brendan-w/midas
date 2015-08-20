@@ -77,10 +77,17 @@ module.exports = {
             //populate files
             Attachment.find({ applicationId: application.id })
                       .populate("file")
-                      .exec(function(err, files) {
-              if(err) return callback("Error looking up files for applicant", undefined);
+                      .exec(function(err, attachments) {
+              if(err) return callback("Error looking up attachments for applicant", undefined);
 
-              application.files = files;
+              application.files = [];
+
+              //remove the data
+              attachments.forEach(function(attachment) {
+                delete attachment.file['data'];
+                application.files.push(attachment.file);
+              });
+
               return callback(null, application);
             });
         });
