@@ -66,7 +66,23 @@ var ApplicationSelectView = BaseView.extend({
         applications.push($application.data("id"));
     });
 
-    console.log(applications);
+    //if no applicants were selected, stop here
+    if(applications.length == 0)
+    {
+      alertGlobal("Please select applications to accept");
+      return;
+    }
+
+    //send the accept request
+    $.ajax({
+      url:         "/api/application/acceptApplicantsForTask/" + this.model.get("id"),
+      type:        'POST',
+      contentType: 'application/json',
+      data:        JSON.stringify(applications),
+      success: function() {
+
+      },
+    })
   },
 
   cleanup: function () {

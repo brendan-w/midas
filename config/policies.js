@@ -34,10 +34,11 @@ module.exports.policies = {
   },
 
   ApplicationController: {
-    '*':                     false,
-    'create':                ['passport', 'authenticated'],
-    'update':                ['passport', 'authenticated', 'canCreateTask'],
-    'findApplicantsForTask': ['passport', 'authenticated', 'hasIdParam', 'task'],
+    '*':                       false,
+    'create':                  ['passport', 'authenticated'],
+    'update':                  ['passport', 'authenticated', 'canCreateTask'],
+    'findApplicantsForTask':   ['passport', 'authenticated', 'hasIdParam', 'task', 'ownerOrAdmin'],
+    'acceptApplicantsForTask': ['passport', 'authenticated', 'hasIdParam', 'task', 'ownerOrAdmin'],
   },
 
   // Auth controller can be accessed by anyone
