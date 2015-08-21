@@ -4,8 +4,8 @@
 <div class="box-pad-lr border-bottom">
   <h3>
     Available <span data-i18n="TaskPlural">Jobs</span>
-    <% if (user) { %>
-      <a href="#addTask" class="btn btn-c0 btn-sm file-add add-task" data-toggle="modal" data-backdrop="static">
+    <% if (user && user.permissions.task_create) { %>
+      <a href="#addTask" class="btn btn-c0 btn-sm file-add add-task pull-right" data-toggle="modal" data-backdrop="static">
         <i class="fa fa-plus">&nbsp;</i>Post A <span data-i18n="Task">Job</span>
       </a>
     <% } %>

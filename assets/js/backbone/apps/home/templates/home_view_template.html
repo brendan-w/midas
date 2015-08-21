@@ -8,8 +8,10 @@
     <div class="row">
           <!-- <div class="col-md-6 col-md-offset-3 text-center"> -->
           <div class="splash-wrap text-center">
-            <h2 class="home-banner"> unicefjobs.ninja connects the right talent with unique jobs emerging in social innovation at UNICEF. </h2>
-            <button class="btn start-button" id="home-register" data-i18n="home.callToRegister">Sign Up</button>
+            <h2 class="home-banner"> unicefjobs.ninja connects the right talent with unique jobs emerging in social innovation at UNICEF. </h2>            
+            <% if(!user) { %>
+              <button class="btn start-button" id="home-register" data-i18n="home.callToRegister">Sign Up</button>
+            <% } %>
             <button class="btn start-button" id="home-browse" data-i18n="home.callToBrowse">Browse Jobs</button>
           </div>
     </div>

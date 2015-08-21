@@ -37,7 +37,7 @@
       </div>
 
       <!-- The add-task button -->
-      <% if(user) { %>
+      <% if(user && user.permissions.task_create) { %>
       <div class="col-md-4 nopadding browse-buttons">
         <a href="#addTask" class="btn btn-c2 add-opportunity pull-right" data-toggle="modal" data-backdrop="static"><i class="fa fa-plus">&nbsp;</i>Post A <span data-i18n="Task">Opportunity</span></a>
       </div>
