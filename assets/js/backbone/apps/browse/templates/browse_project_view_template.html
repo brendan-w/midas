@@ -19,7 +19,7 @@
   <div class="container">
 
     <!-- The add-group button row -->
-    <% if(user) { %>
+    <% if(user && user.permissions.project_create) { %>
     <div class="row">
       <div class="col-md-12 nopadding under-banner-pad">
         <a href="#addProject" class="btn btn-c2 add-project pull-right" data-toggle="modal" data-backdrop="static"><i class="fa fa-plus">&nbsp;</i>Add A <span data-i18n="Project">Project</span></a>
@@ -29,7 +29,7 @@
 
 
     <!-- header row -->
-    <div class="row box-pad-b">
+    <div class="row box-pad-b under-banner-pad">
       <div class="col-md-12 nopadding">
         <div class="row border-bottom">
           <div class="col-sm-5 col-md-3"><h4>Area</h4></div>

@@ -40,7 +40,7 @@ var HomeView = Backbone.View.extend({
     var compiledTemplate;
     var data = {
       hostname: window.location.hostname,
-      user: window.cache.currentUser || {},
+      user: window.cache.currentUser,
     };
     this.$el.addClass('home');
     compiledTemplate = _.template(HomeTemplate)(data);
