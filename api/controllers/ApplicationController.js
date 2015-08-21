@@ -67,7 +67,7 @@ module.exports = {
     Application.find(where)
                .populate("user")
                .exec(function(err, applications) {
-      if(err) return res.send(400, { message: "Error looking up applications" });
+      if(err) return res.serverError(err, "Error looking up applications.");
 
       //populate the user's vets and submitted files
       function populate_vets_and_files(application, callback) {
@@ -77,14 +77,14 @@ module.exports = {
            .populate("project")
            .exec(function(err, vets) {
 
-            if(err) return callback("Error looking up vets for applicant", undefined);
+            if(err) return callback(err, undefined);
             application.vets = vets;
 
             //populate files
             Attachment.find({ applicationId: application.id })
                       .populate("file")
                       .exec(function(err, attachments) {
-              if(err) return callback("Error looking up attachments for applicant", undefined);
+              if(err) return callback(err, undefined);
 
               application.files = [];
 
@@ -101,7 +101,7 @@ module.exports = {
 
       //use async to populate all missing fields on each applicant
       async.map(applications, populate_vets_and_files, function(err, applications){
-        if(err) return res.send(400, { message: err });
+        if(err) return res.serverError(err, "Error looking up application details.");
 
         if(req.task.projectId)
         {
@@ -135,8 +135,33 @@ module.exports = {
 
   acceptApplicantsForTask: function(req, res) {
 
+    var accepted_application_ids = req.body;
+    var where = {
+      task  : req.params.id,
+      state : "pending",
+    };
 
-    // async.map()
+    //find the applications for this task
+    Application.find(where).exec(function(err, applications) {
+
+      function accept_or_reject(application, callback)
+      {
+        var accepted = _(accepted_application_ids).contains(application.id);
+        var update = {};
+        update.state = accepted ? "accepted" : "rejected";
+
+        //updated the record in the database
+        Application.update({ id: application.id }, update, function(err, application) {
+          if(err) return callback(err,  null);
+          else    return callback(null, application);
+        });
+      }
+
+      async.map(applications, accept_or_reject, function(err, applications){
+        if(err) return res.serverError(err, "Error accepting applications.");
+        return res.send(200);
+      });
+    });
   },
 
 };

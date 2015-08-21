@@ -227,8 +227,11 @@ global.validate = function (e) {
   return result;
 };
 
-//wrapper function for validating all elements within
-//a form. Simply add the .validate class to your <input>
+
+/**
+ * wrapper function for validating all elements within
+ * a form. It looks for all elements with the class .validate
+ */
 global.validateAll = function ($form) {
   // find all the validation elements
   var abort = false;
@@ -299,4 +302,13 @@ global.linkBackbone = function (e) {
   if (e.preventDefault) e.preventDefault();
   var href = $(e.currentTarget).attr('href');
   Backbone.history.navigate(href, { trigger: true });
+};
+
+/**
+ * simple function giving quick access to the global alert
+ */
+global.alertGlobal = function(message) {
+  var alert = $('.alert-global');
+  alert.html(message);
+  alert.show();
 };

@@ -52,6 +52,8 @@ Backbone.$ = jQuery;
 // in otherwise show the error.
 $(function () {
   $(document).ajaxError(function (e, jqXHR, settings, errorText) {
+
+    console.log(arguments);
     $('.spinner').hide();
 
     //if it's an auth error, open a login modal
