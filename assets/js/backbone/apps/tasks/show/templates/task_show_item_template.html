@@ -18,22 +18,42 @@
 
               <% if(model.isOwner || (user && user.permissions.admin)) { %>
 
-                <!-- Edit -->
-                <a href="/tasks/<%- model.id %>/edit" class="btn btn-c2 link-backbone">
-                  <i class="fa fa-pencil">&nbsp;</i>Edit <span data-i18n="Task">Job</span>
-                </a>
+                <div class="navbar-side">
+                  <ul class="nav nav-pills nav-stacked">
 
-                <!-- Change Job State -->
-                <a href="#" id="task-close" class="btn btn-c2 link-backbone">
-                  <i class="fa fa-times-circle">&nbsp;</i>
-                  Change <span data-i18n="Task">Opportunity</span> State
-                </a>
+                    <!-- Edit -->
+                    <li>
+                      <a href="/tasks/<%- model.id %>/edit" class="link-backbone">
+                        <i class="fa fa-pencil">&nbsp;</i>Edit <span data-i18n="Task">Job</span>
+                      </a>
+                    </li>
+
+                    <!-- View Applicants -->
+                    <li>
+                      <a href="/tasks/<%- model.id %>/select" class="link-backbone">
+                        <i class="fa fa-check-circle">&nbsp;</i>View/Select Applicants
+                      </a>
+                    </li>
+
+                    <!-- Change Job State -->
+                    <li>
+                      <a href="#" id="task-close" class="link-backbone">
+                        <i class="fa fa-times-circle">&nbsp;</i>
+                        Change <span data-i18n="Task">Opportunity</span> State
+                      </a>
+                    </li>
+
+                  </ul>
+                </div>
 
               <% } %>
 
             <% } else { %>
 
+              <!-- Discard Changes -->
               <a href="/tasks/<%- model.id %>" class="btn btn-c0 link-backbone" id="task-cancel">Discard Changes</a>
+              
+              <!-- Save Job -->
               <button id="task-save" class="btn btn-c2" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Saving..." data-success-text="Saved!" data-fail-text="Save Failed.">Save <span data-i18n="Task">Job</span></button>
 
             <% } %>
@@ -86,7 +106,10 @@
           <% if(!edit) { %>
             <div class="form-group">
               <button id="task-apply" class="btn btn-midas">Apply</button>
-              <p id="task-applied">Thanks for applying</p>
+              <div id="task-applied">
+                <h4>You have applied</h4>
+                <p>Thank you</p>
+              </div>
             </div>
           <% } %>
 
