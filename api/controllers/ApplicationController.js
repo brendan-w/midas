@@ -58,8 +58,13 @@ module.exports = {
   //lookup all applicants for the given task ID
   findApplicantsForTask: function(req, res) {
 
+    var where = {
+      task  : req.params.id,
+      state : "pending",
+    };
+
     //find the applications for this task
-    Application.find({ task : req.params.id})
+    Application.find(where)
                .populate("user")
                .exec(function(err, applications) {
       if(err) return res.send(400, { message: "Error looking up applications" });
@@ -97,10 +102,41 @@ module.exports = {
       //use async to populate all missing fields on each applicant
       async.map(applications, populate_vets_and_files, function(err, applications){
         if(err) return res.send(400, { message: err });
+
+        if(req.task.projectId)
+        {
+          //if this job was associated with a project,
+          //sort the applicants based on vet status for this group
+          applications.sort(function(a, b) {
+            //determine if the applicants are vetted for this group
+            var a_vetted = _.findWhere(a.vets, { project : req.task.projectId }).length != undefined;
+            var b_vetted = _.findWhere(b.vets, { project : req.task.projectId }).length != undefined;
+
+            if(a && b)       return 0;
+            else if(!a && b) return -1;
+            else if(a && !b) return 1;
+            else             return 0;
+          });
+        }
+        else
+        {
+          //if this job is orphaned,
+          //sort based on number of vets
+          applications.sort(function(a, b) {
+            return b.vets.length - a.vets.length; //descending number of vets
+          });
+        }
+
         res.send(applications); //all done
       });
 
     });
+  },
+
+  acceptApplicantsForTask: function(req, res) {
+
+
+    // async.map()
   },
 
 };

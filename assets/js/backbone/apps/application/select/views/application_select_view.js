@@ -12,7 +12,8 @@ var ApplicationSelectTemplate = require('../templates/application_select_templat
 var ApplicationSelectView = BaseView.extend({
 
   events: {
-    'click .link-backbone' : linkBackbone,
+    'click #accept-applicants' : 'accept',
+    'click .link-backbone'     : linkBackbone,
   },
 
   initialize: function (options) {
@@ -25,7 +26,7 @@ var ApplicationSelectView = BaseView.extend({
 
   render: function() {
     var self = this;
-    //show loading icon
+    //TODO: show a loading icon
 
     //fetch the applicants for this job
     $.ajax({
@@ -41,8 +42,6 @@ var ApplicationSelectView = BaseView.extend({
 
   render_applicants: function(applications) {
 
-    console.log(applications);
-
     var data = {
       applications: applications,
       task: this.model.toJSON(),
@@ -52,6 +51,22 @@ var ApplicationSelectView = BaseView.extend({
 
     this.$el.html(_.template(ApplicationSelectTemplate)(data));
     this.$el.i18n();
+  },
+
+  accept: function(e) {
+    if (e && e.preventDefault) e.preventDefault();
+
+    var applications = [];
+
+    //build up a list of IDs for the selected applicants
+    this.$("li.application").each(function(i, application) {
+      var $application = $(application);
+      var selected = $application.find(".applicant-select").is(":checked");
+      if(selected)
+        applications.push($application.data("id"));
+    });
+
+    console.log(applications);
   },
 
   cleanup: function () {
