@@ -28,7 +28,7 @@
             <!-- If the user is allowed to apply to jobs, present them with the vet button -->
             <% if(user && user.permissions.apply) { %>
               <div id="vet-none" style="display:none;">
-                <button id="project-vet" class="btn btn-c2">Get pre-approved for this group</button>
+                <button id="project-vet" class="btn btn-c2">Get pre-approved for this <span data-i18n="project">group</span></button>
                 <div class="group-faq-link"><a class="link-backbone white" href="/faq#pre-approve">What does it mean to get vetted?</a></div>
               </div>
               <div id="vet-pending" style="display:none;">
