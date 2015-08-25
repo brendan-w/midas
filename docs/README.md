@@ -93,11 +93,11 @@ The Frontend:
         │   │   ├── talent
         │   │   ├── tasks
         │   │   └── vet
-        │   ├── base
-        │   ├── components
-        │   ├── config
+        │   ├── base              Base Backbone view classes, to be inherited from, by the views above
+        │   ├── components        Common views, used site-wide, such as Modals, Markdown editors, and the Tag Factory
+        │   ├── config            Global config JSON
         │   ├── entities          Backbone models
-        │   └── mixins
+        │   └── mixins            More utilities, including the global `utilities.js` file 
         └── vendor
 ```
 
@@ -110,6 +110,12 @@ assets/js/backbone/apps/browse/browse_app.js
 
 `browse_app.js` is the main page switcher. From there, executaion fans out to whichever
 
+
+Terminology
+-----------
+
+- `Jobs` are referred to as `tasks` in the code. Files and paths such as `TaskController.js` and `/api/task/1` simply refer to Jobs.
+- `Areas` are collections of jobs. Internally, they are called `projects`. Each `Job` can be associated to an `Area`, or be orphaned.
 
 
 Deviations from Midas
@@ -132,7 +138,7 @@ Since the same sets/options of tag dropdown are used in multiple places, there i
 
 
 
-Misc things of note
+Misc. things of note
 -------------------
 
 - Not all entities in the frontend have proper backbone models, so don't be suprised if you start seeing a bunch of json being transacted with jQuery ajax calls.
