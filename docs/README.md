@@ -111,12 +111,6 @@ assets/js/backbone/apps/browse/browse_app.js
 `browse_app.js` is the main page switcher. From there, executaion fans out to whichever
 
 
-Terminology
------------
-
-- `Jobs` are referred to as `tasks` in the code. Files and paths such as `TaskController.js` and `/api/task/1` simply refer to Jobs.
-- `Areas` are collections of jobs. Internally, they are called `projects`. Each `Job` can be associated to an `Area`, or be orphaned.
-
 
 Deviations from Midas
 ---------------------
@@ -124,6 +118,13 @@ Deviations from Midas
 The Backend is largely intact. The major differences are the addition of a user permissions table (rather than the simple `isAdmin` flag on the users table). Because of this, there are a few more Sails.js `.populate("permissions")` statements. The backend also has a few extra tables for storing links and language information. Nothing radically intensive.
 
 The Frontend has seen some major changes. Whole templates and views had to be overhauled. There are a number of unnused files left around from this overhaul. For instance, some of the "normal" and "edit" templates were merged into the same file (for ease, and consistency of development). In some places (where it was not intrusive), we simply commented out original midas functionality, rather than delete it entirely. Do not be surprised if you see a bunch of code that never get's used.
+
+
+Terminology
+-----------
+
+- `Jobs` are referred to as `tasks` in the code. Files and paths such as `TaskController.js` and `/api/task/1` simply refer to Jobs.
+- `Areas` are collections of jobs. Internally, they are called `projects`. Each `Job` can be associated to an `Area`, or be orphaned.
 
 
 
@@ -136,6 +137,11 @@ The frontend uses "select2" for rendering dropdown controls. To help connect sel
 
 Since the same sets/options of tag dropdown are used in multiple places, there is Backbone view (`assets/js/backbone/apps/tag/show/views/tag_show_view.js`) containing some default tag instantiations.
 
+
+Defaults and User Roles
+-----------------------
+
+This site has a permissions system, with settings for a few of the site's basic functions. Each row in the `permissions` table is identified by a string as a primary key. The default permissions can be found in `tools/permtool/unicef.perms`. This JS file is simply loaded using Sails upon `npm run init`. Also in the `tools/` directory, you will find the default tags in `tools/tagtool/unicef.tags`. Both of these files can be loaded into the database using their respective JS cli's in the same directories. These CLI scripts will create tags that are NOT already present in the database. It will skip existing entries, and will never delete.
 
 
 Misc. things of note
