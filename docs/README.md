@@ -16,6 +16,15 @@ The basics
   - Bootstrap for styles
 
 
+Repo Branches
+-------------
+
+- `devel` kept up-to-date with 18F's development branch
+- `master` kept up-to-date with 18F's release branch
+- `unicef-devel` This fork's development branch
+- `unicef-master` This fork's release branch
+
+
 The lay of the land
 -------------------
 
@@ -108,7 +117,7 @@ Deviations from Midas
 
 The Backend is largely intact. The major differences are the addition of a user permissions table (rather than the simple `isAdmin` flag on the users table). Because of this, there are a few more Sails.js `.populate("permissions")` statements. The backend also has a few extra tables for storing links and language information. Nothing radically intensive.
 
-The Frontend has seen some major changes. Whole templates and views had to be overhauled. There are a number of unnused files left around from this overhaul. For instance, some  Where possible, we commented out original midas functionality, rather than delete it entirely
+The Frontend has seen some major changes. Whole templates and views had to be overhauled. There are a number of unnused files left around from this overhaul. For instance, some of the "normal" and "edit" templates were merged into the same file (for ease, and consistency of development). In some places (where it was not intrusive), we simply commented out original midas functionality, rather than delete it entirely. Do not be surprised if you see a bunch of code that never get's used.
 
 
 
@@ -128,4 +137,4 @@ Misc things of note
 
 - Not all entities in the frontend have proper backbone models, so don't be suprised if you start seeing a bunch of json being transacted with jQuery ajax calls.
 - There are files marked "Controllers" in the frontend. These are actually Backbone views (since Backbone doesn't have anything called controllers). See issue #40
-- 
+- Some models sent from the API have extra fields added to them by the controllers. For instance, some will carry an `.isOwner` flag, for convenience.
