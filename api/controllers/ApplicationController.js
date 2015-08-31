@@ -107,12 +107,13 @@ module.exports = {
         {
           //applicants have already been selected, so "sort" them based on application state
           var groups = _(applications).groupBy(function(app) { return app.state });
-          groups.accepted = groups.accepted || [];
+          groups.accepted = groups.accepted || []; //make sure they all exist, even as empty arrays
           groups.rejected = groups.rejected || [];
           groups.pending  = groups.pending  || [];
 
           //re-assemble the list, placing accepted applicants at the top
           applications = [].concat(groups.accepted, groups.rejected, groups.pending);
+          console.log(applications);
         }
         else
         {

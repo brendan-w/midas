@@ -81,7 +81,13 @@
 
             <!-- Accept Button -->
             <div class="col-sm-1">
-              <input type="checkbox" class="form-control applicant-select">
+              <% if(application.state === "pending") { %>
+                <input type="checkbox" class="form-control applicant-select">
+              <% } else if(application.state === "accepted") { %>
+                <i class="application-accepted fa fa-check-circle"></i>
+              <% } else if(application.state === "rejected") { %>
+                <i class="application-rejected fa fa-times-circle"></i>
+              <% } %>
             </div>
           </li>
 

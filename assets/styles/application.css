@@ -2257,3 +2257,16 @@ form[name="choose"] button {
 .list-dash li:before{
   content: "-   ";
 }
+
+.application-accepted,
+.application-rejected {
+  font-size: 20px
+}
+
+.application-accepted {
+  color:green;
+}
+
+.application-rejected {
+  color:red;
+}
