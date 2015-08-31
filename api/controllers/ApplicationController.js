@@ -56,11 +56,11 @@ module.exports = {
   },
 
   //lookup all applicants for the given task ID
+  //these may pe applicants in any state (accepted/rejected/pending)
   findApplicantsForTask: function(req, res) {
 
     var where = {
       task  : req.params.id,
-      state : "pending",
     };
 
     //find the applications for this task
@@ -103,28 +103,43 @@ module.exports = {
       async.map(applications, populate_vets_and_files, function(err, applications){
         if(err) return res.serverError(err, "Error looking up application details.");
 
-        if(req.task.projectId)
+        if(req.task.state == "assigned")
         {
-          //if this job was associated with a project,
-          //sort the applicants based on vet status for this group
-          applications.sort(function(a, b) {
-            //determine if the applicants are vetted for this group
-            var a_vetted = _.findWhere(a.vets, { project : req.task.projectId }).length != undefined;
-            var b_vetted = _.findWhere(b.vets, { project : req.task.projectId }).length != undefined;
+          //applicants have already been selected, so "sort" them based on application state
+          var groups = _(applications).groupBy(function(app) { return app.state });
+          groups.accepted = groups.accepted || [];
+          groups.rejected = groups.rejected || [];
+          groups.pending  = groups.pending  || [];
 
-            if(a && b)       return 0;
-            else if(!a && b) return -1;
-            else if(a && !b) return 1;
-            else             return 0;
-          });
+          //re-assemble the list, placing accepted applicants at the top
+          applications = [].concat(groups.accepted, groups.rejected, groups.pending);
         }
         else
         {
-          //if this job is orphaned,
-          //sort based on number of vets
-          applications.sort(function(a, b) {
-            return b.vets.length - a.vets.length; //descending number of vets
-          });
+          //applicants haven't been selected yet
+          if(req.task.projectId)
+          {
+            //if this job was associated with a project,
+            //sort the applicants based on vet status for this group
+            applications.sort(function(a, b) {
+              //determine if the applicants are vetted for this group
+              var a_vetted = _.findWhere(a.vets, { project : req.task.projectId }).length != undefined;
+              var b_vetted = _.findWhere(b.vets, { project : req.task.projectId }).length != undefined;
+
+              if(a && b)       return 0;
+              else if(!a && b) return -1;
+              else if(a && !b) return 1;
+              else             return 0;
+            });
+          }
+          else
+          {
+            //if this job is orphaned,
+            //sort based on number of vets
+            applications.sort(function(a, b) {
+              return b.vets.length - a.vets.length; //descending number of vets
+            });
+          }
         }
 
         res.send(applications); //all done
@@ -135,7 +150,7 @@ module.exports = {
 
   acceptApplicantsForTask: function(req, res) {
 
-    var accepted_application_ids = req.body;
+    var accepted_application_ids = req.body; //array of application ID's to accept
     var where = {
       task  : req.params.id,
       state : "pending",
@@ -144,6 +159,7 @@ module.exports = {
     //find the applications for this task
     Application.find(where).exec(function(err, applications) {
 
+      //accepts or rejects a single applicant
       function accept_or_reject(application, callback)
       {
         var accepted = _(accepted_application_ids).contains(application.id);
