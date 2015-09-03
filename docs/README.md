@@ -2,7 +2,7 @@
 Welcome to a remix of the [Midas](https://github.com/18F/midas) project
 -----------------------------------------------------------------------
 
-Everything in this `/doc` directory is meant for developers or adventerous folks.
+Everything in this `/doc` directory is meant for developers (or adventerous folks).
 
 
 The basics
@@ -115,9 +115,9 @@ assets/js/backbone/apps/browse/browse_app.js
 Deviations from Midas
 ---------------------
 
-The Backend is largely intact. The major differences are the addition of a user permissions table (rather than the simple `isAdmin` flag on the users table). Because of this, there are a few more Sails.js `.populate("permissions")` statements. The backend also has a few extra tables for storing links and language information. Nothing radically intensive.
+The Backend is largely intact. The major differences are the addition of a user permissions table (rather than the simple `isAdmin` flag on the users table). Because of this, there are a few more Sails.js `.populate("permissions")` statements. The backend also has a few extra tables for storing links and language information. Nothing radically intensive. Most merge conflicts will occur in `api/models/User.js`, with the functions `validate_permissions`, and the Sails.js hook `beforeCreate`. 
 
-The Frontend has seen some major changes. Whole templates and views had to be overhauled. There are a number of unnused files left around from this overhaul. For instance, some of the "normal" and "edit" templates were merged into the same file (for ease, and consistency of development). In some places (where it was not intrusive), we simply commented out original midas functionality, rather than delete it entirely. Do not be surprised if you see a bunch of code that never get's used.
+The Frontend has seen some major changes. Whole templates and views had to be overhauled. There are a number of unused files left around from this overhaul. For instance, some of the "normal" and "edit" templates were merged into the same file (for ease, and consistency of development). In some places (where it was not intrusive), we simply commented out original midas functionality, rather than delete it entirely. Do not be surprised if you see a bunch of code that never get's used.
 
 
 Terminology
