@@ -176,7 +176,12 @@ module.exports = {
 
       async.map(applications, accept_or_reject, function(err, applications){
         if(err) return res.serverError(err, "Error accepting applications.");
-        return res.send(200);
+
+        //mark this task as assigned
+        Task.update({ id: req.params.id }, { state: "assigned" }, function(err, task) {
+          if(err) return res.serverError(err, "Error marking task as \"assigned\"");
+          return res.send(200);
+        });
       });
     });
   },

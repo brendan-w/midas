@@ -20,8 +20,6 @@ var ApplicationSelectView = BaseView.extend({
     var self = this;
     this.options = options;
     this.action  = options.action;
-
-
   },
 
   render: function() {
@@ -55,6 +53,7 @@ var ApplicationSelectView = BaseView.extend({
 
   accept: function(e) {
     if (e && e.preventDefault) e.preventDefault();
+    var self = this;
 
     var applications = [];
 
@@ -78,9 +77,9 @@ var ApplicationSelectView = BaseView.extend({
       url:         "/api/application/acceptApplicantsForTask/" + this.model.get("id"),
       type:        'POST',
       contentType: 'application/json',
-      data:        JSON.stringify(applications),
+      data:        JSON.stringify(applications), //transmit the IDs of applications to accept
       success: function() {
-
+        self.render();
       },
     })
   },

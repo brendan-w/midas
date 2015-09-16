@@ -2,7 +2,7 @@
 Welcome to a remix of the [Midas](https://github.com/18F/midas) project
 -----------------------------------------------------------------------
 
-Everything in this `/doc` directory is meant for developers (or adventerous folks).
+Everything in this `/doc` directory is meant for developers (or adventurous folks).
 
 
 The basics
