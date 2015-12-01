@@ -959,6 +959,7 @@ CREATE TABLE task (
     "publishedAt" timestamp with time zone,
     "assignedAt" timestamp with time zone,
     "completedAt" timestamp with time zone,
+    "duration" text,
     id integer NOT NULL,
     "createdAt" timestamp with time zone,
     "updatedAt" timestamp with time zone,
