@@ -28,8 +28,9 @@ var EditorTemplate = require('./markdown_editor_template.html');
 MarkdownEditor = BaseComponent.extend({
 
   events: {
-    "click .btn"       : "clickButton",
-    "keydown textarea" : "onKeyDown",
+    "click .btn"      : "clickButton",
+    "keyup textarea"  : "update_char_limit",
+    "change textarea" : "update_char_limit",
   },
 
   initialize: function (options) {
@@ -64,19 +65,15 @@ MarkdownEditor = BaseComponent.extend({
     return this;
   },
 
-  onKeyDown: function (e) {
-    var text = this.$("textarea").val();
+  update_char_limit: function (e) {
     if(this.options.maxlength)
     {
-      // this.$('#charsLeft').show();
-
-      if(text)
-      {
-        var chars_left = this.options.maxlength - text.length;
-        chars_left = Math.max(0, chars_left);
-        this.$('#charactersLeft').text(chars_left);
-        this.$('#charsLeft').css("color", (chars_left == 0) ? "red" : "auto");
-      }
+      this.$('#charsLeft').show();
+      var text = this.$("textarea").val();
+      var chars_left = this.options.maxlength - text.length;
+      chars_left = Math.max(0, chars_left);
+      this.$('#charactersLeft').text(chars_left);
+      this.$('#charsLeft').css("color", (chars_left == 0) ? "red" : "auto");
     }
     else
     {
@@ -96,7 +93,7 @@ MarkdownEditor = BaseComponent.extend({
     };
     var template = _.template(EditorTemplate)(data);
     this.$el.html(template);
-    this.onKeyDown();
+    this.update_char_limit();
     return this;
   },
 
